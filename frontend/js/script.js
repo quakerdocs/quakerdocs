@@ -2,16 +2,13 @@
 function inject(filename, element) {
     fetch(filename, {method: 'GET', mode: 'no-cors', credentials: 'same-origin'})
         .then(response => {
-            console.log(response)
-            console.log(response.ok)
             return response.text()
         })
         .then(data => {
-            console.log(data)
             var parser = new DOMParser();
             var htmlDoc = parser.parseFromString(data, 'text/html');
-            content = htmlDoc.getElementsByClassName('section')[0].innerHTML
-            console.log(content)
+            content = htmlDoc.querySelector('div.document').innerHTML
+            // navigation = htmlDoc.querySelector('ul.current')
             document.querySelector(element).innerHTML = content
         })
         .catch(console.log)
