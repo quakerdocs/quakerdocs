@@ -1,0 +1,9 @@
+#navbar {
+    border-bottom: solid 2px;
+    border-color: var(--gray);
+}
+
+#menuPanel {
+    border-right: solid 2px;
+    border-color: var(--gray);
+}

@@ -1,0 +1,10 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css";
+
+:root {
+  --black: #272727;
+  --midnight-blue: #34495e;
+  --dark-midnight-blue: #2c3e50;
+  --white: #ecf0f1;
+  --gray: #bdc3c7;
+}
+
