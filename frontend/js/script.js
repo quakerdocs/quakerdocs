@@ -10,6 +10,6 @@ function inject(filename, src_element, dst_element) {
         .catch(console.log)
 }
 
-window.onload = function(e) {
-    inject('./pages/checking-for-plagiarism.html', 'div.section', 'div#content')
-}
+// window.onload = function(e) {
+//     inject('./pages/checking-for-plagiarism.html', 'div.section', 'div#content')
+// }

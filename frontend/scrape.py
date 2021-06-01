@@ -9,7 +9,7 @@ import os
 # Root is parent folder of python folder.
 ROOT = os.getcwd().replace('python', '')
 HTML_SRC = ROOT + "/src_pages"
-HTML_DST = ROOT + "/dst_pages"
+HTML_DST = ROOT + "/"
 HTML_TEMPLATE = "index.html"
 
 def get_html_src_files(path=HTML_SRC):
@@ -37,9 +37,9 @@ def scrape_and_merge(src_doc, template_doc):
     template_soup = BeautifulSoup(template_doc, 'html.parser')
 
     content = src_soup.select('div.section')[0]
-    target = template_soup.find("div", {"id": "content"})
+    template_soup.html.select('div#content')[0].append(content)
 
-    target.replace_with(content)
+    navigation = src_soup.select('li.toctree-l1')
 
     return str(template_soup.prettify())
 
