@@ -13,19 +13,32 @@ HTML_DST = ROOT + "/"
 HTML_TEMPLATE = "index.html"
 
 def get_html_src_files(path=HTML_SRC):
+    """
+    Retrieve all files in the given HTML source path.
+    """
     files = os.listdir(HTML_SRC)
     return list(files)
 
 def read_file(filename, is_source=True):
+    """
+    Read all data in filename, in the HTML source directory if is_source is
+    True, in the ROOT directory otherwise.
+    """
     path = HTML_SRC if is_source else ROOT
     with open(f"{path}/{filename}", 'r') as f:
         return f.read()
 
 def write_file(filename, content):
+    """
+    Write content to filename in the destination HTML directory.
+    """
     with open(f"{HTML_DST}/{filename}", 'w+') as f:
         f.write(content)
 
 def transfer_html_data(filename, template_file=HTML_TEMPLATE):
+    """
+    Transfer all necessary HTML data from filename to template_file.
+    """
     src_doc = read_file(filename)
     template_doc = read_file(template_file, False)
 
@@ -33,13 +46,14 @@ def transfer_html_data(filename, template_file=HTML_TEMPLATE):
     write_file(filename, new_content)
 
 def scrape_and_merge(src_doc, template_doc):
+    """
+    Retrieve the data from the HTML section in src_doc and paste it into
+    template_doc.
+    """
     src_soup = BeautifulSoup(src_doc, 'html.parser')
     template_soup = BeautifulSoup(template_doc, 'html.parser')
-
     content = src_soup.select('div.section')[0]
     template_soup.html.select('div#content')[0].append(content)
-
-    navigation = src_soup.select('li.toctree-l1')
 
     return str(template_soup.prettify())
 
