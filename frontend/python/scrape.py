@@ -1,55 +1,55 @@
 """
 This script scrapes the HTML files created by sphinx-build that are stored in
-the HTML_SRC. TODO: It is used in the Makefile right after the HTML
-files are created by sphinx-build.
+the HTML_SRC.
 """
 
 from bs4 import BeautifulSoup
 import os
 
-HTML_SRC = "../src_pages"
-HTML_DEST = "../dst_pages"
-HTML_TEMPLATE = "../index.html"
+# Root is parent folder of python folder.
+ROOT = os.getcwd().replace('python', '')
+HTML_SRC = ROOT + "/src_pages"
+HTML_DST = ROOT + "/dst_pages"
+HTML_TEMPLATE = "index.html"
 
-def scrape(src_doc, dest_doc):
-    src_soup = BeautifulSoup(src_doc, 'html.parser')
-    dest_soup = BeautifulSoup(dest_doc, 'html.parser')
+def get_html_src_files(path=HTML_SRC):
+    files = os.listdir(HTML_SRC)
+    return list(files)
 
-    content = src_soup.select('div.section')
-    dest_soup.select('div#content').append(content)
-
-    return str(dest_soup)
-
-
-def write_file(filename, content):
-    with open(filename, 'w') as f:
-        f.write(content)
-
-
-def read_file(filename):
-    with open(filename, 'r') as f:
+def read_file(filename, is_source=True):
+    path = HTML_SRC if is_source else ROOT
+    with open(f"{path}/{filename}", 'r') as f:
         return f.read()
 
+def write_file(filename, content):
+    with open(f"{HTML_DST}/{filename}", 'w+') as f:
+        f.write(content)
 
-def get_html_files(directory=HTML_SRC):
-    files = os.listdir(directory)
-    return list(files)
+def transfer_html_data(filename, template_file=HTML_TEMPLATE):
+    src_doc = read_file(filename)
+    template_doc = read_file(template_file, False)
+
+    new_content = scrape_and_merge(src_doc, template_doc)
+    write_file(filename, new_content)
+
+def scrape_and_merge(src_doc, template_doc):
+    src_soup = BeautifulSoup(src_doc, 'html.parser')
+    template_soup = BeautifulSoup(template_doc, 'html.parser')
+
+    content = src_soup.select('div.section')[0]
+    target = template_soup.find("div", {"id": "content"})
+
+    target.replace_with(content)
+
+    return str(template_soup.prettify())
 
 
 def main():
-    files = get_html_files()
-    if not os.path.exists(HTML_DEST):
-        os.makedirs(HTML_DEST)
+    src_files = get_html_src_files()
 
-    os.chdir(HTML_SRC)
-    for f in files:
-        src_doc = read_file(f)
-        dest_doc = read_file(HTML_TEMPLATE)
-        # os.chdir(HTML_DEST)
-        new_content = scrape(src_doc, dest_doc)
-        write_file(f, new_content)
-        # os.chdir(HTML_SRC)
-
+    for src_file in src_files:
+        transfer_html_data(src_file)
 
 if __name__ == "__main__":
     main()
+
