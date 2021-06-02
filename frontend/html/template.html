@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="/css/general.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/content.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <script src="/js/script.js"></script>
 </head>
 
@@ -16,14 +15,14 @@
 
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="#">
+            <a class="navbar-item" href="/">
                 <h1 class="title"></h1>
             </a>
 
             <a class="navbar-item" href="#">
-                <button class="button is-light" onclick="overlayOn()">
-                    <span class="icon"><i class="fa fa-search"></i></span>
-                    <span>Search</span>
+                <button class="button is-light" onclick="showSearchOverlay()">
+                    <span class="material-icons md-22">search</span>
+                    <span> Search</span>
                 </button>
             </a>
 
@@ -34,41 +33,44 @@
             </a>
         </div>
 
-        <div id="overlay" onclick="overlayOff()">
-            <div class="search-box" onclick="event.stopPropagation()">
-                <div class="search-bar">
-                    <i class="fa fa-search"> </i>
-                    <input type="text" placeholder="Search..." id="searchbar" name="searchbar">
-                </div>
-                <div id="search-results" class="search-results"></div>
-            </div>
-        </div>
-
         <div class="navbar-menu">
-            <div class="navbar-start">
-
-                <!-- <a class="navbar-item column is-4">
-                    <input class="input" type="text" placeholder="Search">
-                </a> -->
-
+            <div class="navbar-start"></div>
             <div class="navbar-end"></div>
         </div>
     </nav>
 
-    <section class="main-content columns is-fullheight">
+    <div id="search" class="modal">
+        <div class="modal-background" onclick="hideSearchOverlay()"></div>
+        <div class="modal-content height panel">
+            <p class="panel-heading">
+                <span>Search</span>
+                <button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+            </p>
 
-        <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a> -->
+            <p class="panel-tabs">
+                <a class="is-active">All</a>
+                <a>Something</a>
+            </p>
+
+            <div class="panel-block">
+                <p class="control has-icons-left">
+                <input id="searchbar" class="input is-link" type="text" placeholder="Search">
+                <span class="icon is-left">
+                    <span class="material-icons">search</span>
+                </span>
+                </p>
+            </div>
+
+            <div id="search-results" class="results max-height"></div>
+        </div>
+    </div>
+
+    <section class="main-content columns is-fullheight">
 
         <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-mobile"></aside>
 
         <div id="mini-menu" class="hide">
-            <div class="mini-menu-list">
-
-            </div>
+            <div class="mini-menu-list"></div>
         </div>
 
         <div class="container hero is-fullheight">

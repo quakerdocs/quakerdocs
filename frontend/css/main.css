@@ -89,3 +89,21 @@
 .mini-menu-list a:hover {background-color: #ddd;}
 
 .search {color:blue}
+
+.panel {
+    background-color: white;
+}
+
+.results {
+    max-height: 60%;
+    overflow: auto;
+}
+
+.modal-content {
+    height: 80%;
+    max-height: 80%;
+}
+
+.md-22 {
+    font-size: 22px !important;
+}

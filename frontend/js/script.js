@@ -24,13 +24,13 @@ function toggleFunction() {
     }
 }
 
-function overlayOn() {
-    document.getElementById("overlay").style.display = "block";
-    activateSearch();
+function showSearchOverlay() {
+    document.getElementById("search").classList.add("is-active")
+    activateSearch()
 }
 
-function overlayOff() {
-    document.getElementById("overlay").style.display = "none";
+function hideSearchOverlay() {
+    document.getElementById("search").classList.remove("is-active")
 }
 
 class Result {
@@ -101,7 +101,7 @@ function* performSearch(query) {
 function renderResults(searcher, resultsWrapper) {
     let content = '';
     for (let r of searcher) {
-        content += `<li><a href=${r.page}>${r.title}</a></li>`
+        content += `<a href="${r.page}" class="panel-block">${r.title}</a>`
     }
 
     resultsWrapper.innerHTML = `<ul>${content}</ul>`;
