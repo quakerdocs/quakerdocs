@@ -13,7 +13,7 @@ import copy
 ROOT = os.getcwd().replace('python', '')
 HTML_SRC = ROOT + "/src_pages"
 HTML_DST = ROOT + "/dist/"
-HTML_TEMPLATE = ROOT + "/templates/template.html"
+HTML_TEMPLATE = ROOT + "/html/template.html"
 
 
 def get_html_src_files():
