@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <title>
    Docs
+   Set up Git uploads for a CodeGrade assignment — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <link href="css/general.css" rel="stylesheet" type="text/css"/>
@@ -17,6 +18,7 @@
     <a class="navbar-item" href="#">
      <h1 class="title">
       Docs
+      CodeGrade  documentation
      </h1>
     </a>
     <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
@@ -64,18 +66,18 @@
     <div class="sphinxsidebarwrapper">
      <h1 class="logo">
       <a href="../index.html">
-       Sphinx test
+       CodeGrade
       </a>
      </h1>
      <h3>
       Navigation
      </h3>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Guides
       </span>
      </p>
-     <ul class="current menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="current menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="use-codegrade-as-a-student.html">
         How to use CodeGrade as a student
@@ -121,13 +123,13 @@
         Set up hand-in requirements for a CodeGrade assignment
        </a>
       </li>
-      <li class="toctree-l1">
-       <a class="reference internal" href="setting-up-git-uploads.html">
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
         Set up Git uploads for a CodeGrade assignment
        </a>
       </li>
-      <li class="toctree-l1 current">
-       <a class="current reference internal" href="#">
+      <li class="toctree-l1">
+       <a class="reference internal" href="checking-for-plagiarism.html">
         Check for plagiarism in a CodeGrade assignment
        </a>
       </li>
@@ -172,12 +174,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Documentation
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../user/overview.html">
         Overview of CodeGrade
@@ -239,12 +241,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        About CodeGrade
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../about/about.html">
         About CodeGrade
@@ -263,14 +265,14 @@
         <ul>
          <li>
           Previous:
-          <a href="setting-up-git-uploads.html" title="previous chapter">
-           Set up Git uploads for a CodeGrade assignment
+          <a href="setting-up-hand-in-requirements.html" title="previous chapter">
+           Set up hand-in requirements for a CodeGrade assignment
           </a>
          </li>
          <li>
           Next:
-          <a href="dividing-submissions.html" title="next chapter">
-           Divide submissions over graders
+          <a href="checking-for-plagiarism.html" title="next chapter">
+           Check for plagiarism in a CodeGrade assignment
           </a>
          </li>
         </ul>
@@ -278,47 +280,49 @@
       </ul>
      </div>
      <div id="searchbox" role="search" style="display: none">
-      <h3>
+      <h3 id="searchlabel">
        Quick search
       </h3>
       <div class="searchformwrapper">
        <form action="../search.html" class="search" method="get">
-        <input name="q" type="text"/>
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
         <input type="submit" value="Go"/>
-        <input name="check_keywords" type="hidden" value="yes"/>
-        <input name="area" type="hidden" value="default"/>
        </form>
       </div>
      </div>
-     <script type="text/javascript">
+     <script>
       $('#searchbox').show(0);
      </script>
     </div>
    </aside>
    <div class="container hero is-fullheight">
     <div class="content" id="content">
-     <div class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
-      <span id="checking-for-plagiarism">
+     <section class="section" id="set-up-git-uploads-for-a-codegrade-assignment">
+      <span id="guide-git-uploads">
       </span>
       <h1>
-       Check for plagiarism in a CodeGrade assignment
-       <a class="headerlink" href="#check-for-plagiarism-in-a-codegrade-assignment" title="Permalink to this headline">
+       Set up Git uploads for a CodeGrade assignment
+       <a class="headerlink" href="#set-up-git-uploads-for-a-codegrade-assignment" title="Permalink to this headline">
         ¶
        </a>
       </h1>
       <p>
-       CodeGrade has integrated state of the art plagiarism software powered by JPlag
-to find possible plagiarism cases in CodeGrade assignments. This guide will walk
-you through setting up a plagiarism run.
+       It can be very desirable or convenient to allow students to hand in to
+CodeGrade directly via Git. Learning to work with Git is often a learning
+goal for students and combining this with CodeGrade’s features makes it very
+well suited for education.
       </p>
-      <ol class="arabic">
+      <p>
+       To set up Git submissions for your CodeGrade assignment, follow the steps below:
+      </p>
+      <ol class="arabic simple">
        <li>
-        <p class="first">
+        <p>
          Go to the
          <strong>
           Assignment Management
          </strong>
-         page for the assignment you want to do plagiarism detection on by clicking on the
+         page for the assignment you want to enable git submissions for by clicking on the
          <a href="#id1">
           <span class="problematic" id="id2">
            :fa:`cog`
@@ -328,124 +332,167 @@ you through setting up a plagiarism run.
         </p>
        </li>
        <li>
-        <p class="first">
-         On the
+        <p>
+         Under the
          <strong>
-          Assignment Management
+          General
          </strong>
-         page, navigate to the
+         tab, locate the
          <strong>
-          Plagiarism
+          Allowed upload types
          </strong>
-         tab. This is where plagiarism checks can be run and where previous plagiarism checks can be reviewed.
+         section.
         </p>
        </li>
        <li>
-        <p class="first">
-         Set up the options to apply to your assignment:
-        </p>
-        <blockquote>
-         <div>
-          <ul class="simple">
-           <li>
-            <strong>
-             Language
-            </strong>
-            : Language of the code in the assignment.
-           </li>
-          </ul>
-          <div class="admonition note">
-           <p class="first admonition-title">
-            Note
-           </p>
-           <p class="last">
-            Please contact us if your required language is not present in this list.
-           </p>
-          </div>
-          <ul class="simple">
-           <li>
-            <strong>
-             Suffixes to include:
-            </strong>
-            Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
-           </li>
-           <li>
-            <strong>
-             Minimal similarity:
-            </strong>
-            The minimal average similarity to include in the results, the default is an average of 25%.
-           </li>
-           <li>
-            <strong>
-             Old assignments:
-            </strong>
-            Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
-           </li>
-           <li>
-            <strong>
-             Old submissions:
-            </strong>
-            Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
-           </li>
-           <li>
-            <strong>
-             Base code:
-            </strong>
-            Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
-           </li>
-          </ul>
-         </div>
-        </blockquote>
-       </li>
-       <li>
-        <p class="first">
-         Click the
+        <p>
+         Select the
          <strong>
-          Run
+          GitHub/GitLab
          </strong>
-         button to start the plagiarism check. A new entry will be created above the option fields and will display the progress.
+         checkbox to enable submissions via Git.
         </p>
        </li>
        <li>
-        <p class="first">
-         When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         The following
+        <p>
+         <em>
+          Optionally
+         </em>
+         , deselect the
          <strong>
-          Plagiarism Overview
+          File uploader
          </strong>
-         page displays an overview of all plagiarism cases between students (or optionally between supplied old code). Click on any row to investigate the specific case.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         The
+         checkbox to
          <strong>
-          Plagiarism Comparison
+          only
          </strong>
-         shows two code views with the files that contain potential plagiarism, the actual individual plagiarism cases are highlighted with a colour corresponding to the colours in the top menu. Press these to compare manually.
+         allow students to submit via Git and not have an additional file uploader present on the hand-in page.
         </p>
        </li>
       </ol>
-      <div class="admonition note">
-       <p class="first admonition-title">
-        Note
+      <p>
+       You have now enabled Git submissions for your CodeGrade assignment. Students
+will be shown instructions on configuring their Git repository to work together
+with CodeGrade, by setting up a
+       <em>
+        deploy key
+       </em>
+       and
+       <em>
+        webhook
+       </em>
+       . After setting this
+up correctly, students’ work will be uploaded to CodeGrade with every
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         git
+        </span>
+        <span class="pre">
+         push
+        </span>
+       </code>
+       they execute. Encourage students to set this up before starting to
+work on the assignment, so a nice history of submissions is created in CodeGrade.
+      </p>
+      <div class="admonition warning">
+       <p class="admonition-title">
+        Warning
        </p>
-       <p class="last">
-        Click the
+       <p>
+        Git submissions work together with all of CodeGrade’s features
         <strong>
-         Export
+         except Hand-in
+Requirements.
         </strong>
-        button on the top right hand corner to export
-a plagiarism report. Plagiarism cases can be exported in Docx or LaTeX
-format, so that additions and further comments can be added before
-exporting as PDF.
+        Utilize i.e. CodeGrade Continuous Feedback to still give the
+students immediate feedback for every
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          push
+         </span>
+        </code>
+        .
        </p>
       </div>
-     </div>
+      <div class="admonition warning">
+       <p class="admonition-title">
+        Warning
+       </p>
+       <p>
+        CodeGrade has a size limit on student submissions. Exceeding this size limit
+will result in a warning message when regularly handing in, but not when
+using git to upload. If a student exceeds this limit, files exceeding the
+limit are silently deleted. This very rare case does result in a
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          cg-size-limit-exceeded
+         </span>
+        </code>
+        file to show up in the Code Viewer.
+       </p>
+      </div>
+      <div class="admonition note">
+       <p class="admonition-title">
+        Note
+       </p>
+       <p>
+        Want to see how your students use Git or even assess this automatically? The
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          .git
+         </span>
+        </code>
+        folder containing all information is accessible in the student
+submission to be inspected in our Code Viewer or assessed in AutoTest, run
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          git
+         </span>
+         <span class="pre">
+          fetch
+         </span>
+         <span class="pre">
+          --unshallow
+         </span>
+        </code>
+        to make sure the information is complete. You
+can also click on the
+        <em>
+         Github
+        </em>
+        or
+        <em>
+         GitLab
+        </em>
+        link to directly access the
+student repository.
+       </p>
+      </div>
+      <div class="admonition note">
+       <p class="admonition-title">
+        Note
+       </p>
+       <p>
+        If your CodeGrade assignment is set up as a Group assignment, all members
+of the group will have the same
+        <em>
+         deploy key
+        </em>
+        and
+        <em>
+         webhook
+        </em>
+        and can hand in
+for the whole group using Git in the same way they would for an individual
+assignment.
+        <strong>
+         All members of the group will still have to open the CodeGrade
+assignment at least once in their LMS for this configuration to be
+generated! (This does not apply to stand-alone CodeGrade usage)
+        </strong>
+       </p>
+      </div>
+     </section>
     </div>
    </div>
   </section>
