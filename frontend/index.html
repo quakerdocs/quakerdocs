@@ -18,7 +18,7 @@
                 <h1 class="title">Docs</h1>
             </a>
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menuPanel">
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -63,11 +63,19 @@
 
         <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-mobile"></aside>
 
+        <div id="mini-menu" class="hide">
+            <div class="mini-menu-list">
+                <a>something</a>
+                <a>another thing</a>
+                <a>mad thing</a>
+            </div>
+        </div>
+
+
         <div class="container hero is-fullheight">
             <div id="content" class="content"></div>
         </div>
 
     </section>
-
 </body>
 </html>
