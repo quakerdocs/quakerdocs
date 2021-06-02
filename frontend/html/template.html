@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/general.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="js/script.js"></script>
+</head>
+
+<body>
+
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                <h1 class="title"></h1>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+
+            <button class="btn search" onclick="overlayOn()"><i class="fa fa-search"> Search</i></button>
+        </div>
+
+        <div id="overlay" onclick="overlayOff()">
+            <div class="search-box" onclick="event.stopPropagation()">
+                <div class="search-bar">
+                    <i class="fa fa-search"> </i>
+                    <input type="text" placeholder="Search..." name="searchbar">
+                </div>
+                <div class="search-results"></div>
+            </div>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+
+                <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+
+            <div class="navbar-end"></div>
+        </div>
+    </nav>
+
+    <section class="main-content columns is-fullheight">
+
+        <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+
+        <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-mobile">
+        <div class="container hero is-fullheight">
+            <div id="content" class="content"></div>
+        </div>
+        </aside>
+
+        <div id="mini-menu" class="hide">
+            <div class="mini-menu-list">
+                <a>something</a>
+                <a>another thing</a>
+                <a>mad thing</a>
+            </div>
+        </div>
+
+
+        <div class="container hero is-fullheight">
+            <div id="content" class="content section"></div>
+        </div>
+
+    </section>
+</body>
+</html>
