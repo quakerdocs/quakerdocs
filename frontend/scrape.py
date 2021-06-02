@@ -62,14 +62,16 @@ def scrape_and_merge(src_doc, template_doc):
 
     # Add the title of the src_doc to template_doc.
     title = src_soup.find('title').contents[0]
+    print(title)
     template_soup.html.select('title')[0].append(title)
     template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
 
+    print("\n")
     # Retrieve the id of the content div/section
     regex = re.compile('[^a-zA-Z -]')
     regID = regex.sub('', title.split('—')[0][:-1])
     contentID = regID.replace(' ', '-').lower()
-
+    # print(contentID)
     # Add the main page content from src_doc to template_doc.
     content = src_soup.select('#' + contentID)[0]
     content['class'] = content.get('class', []) + ["section"]
