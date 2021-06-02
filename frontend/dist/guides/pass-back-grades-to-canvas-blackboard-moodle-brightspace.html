@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <title>
    Docs
+   Pass back grades to Canvas, Blackboard, Moodle or Brightspace — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <link href="css/general.css" rel="stylesheet" type="text/css"/>
@@ -17,6 +18,7 @@
     <a class="navbar-item" href="#">
      <h1 class="title">
       Docs
+      CodeGrade  documentation
      </h1>
     </a>
     <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
@@ -64,18 +66,18 @@
     <div class="sphinxsidebarwrapper">
      <h1 class="logo">
       <a href="../index.html">
-       Sphinx test
+       CodeGrade
       </a>
      </h1>
      <h3>
       Navigation
      </h3>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Guides
       </span>
      </p>
-     <ul class="current menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="current menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="use-codegrade-as-a-student.html">
         How to use CodeGrade as a student
@@ -126,8 +128,8 @@
         Set up Git uploads for a CodeGrade assignment
        </a>
       </li>
-      <li class="toctree-l1 current">
-       <a class="current reference internal" href="#">
+      <li class="toctree-l1">
+       <a class="reference internal" href="checking-for-plagiarism.html">
         Check for plagiarism in a CodeGrade assignment
        </a>
       </li>
@@ -136,8 +138,8 @@
         Divide submissions over graders
        </a>
       </li>
-      <li class="toctree-l1">
-       <a class="reference internal" href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
         Pass back grades to Canvas, Blackboard, Moodle or Brightspace
        </a>
       </li>
@@ -172,12 +174,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Documentation
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../user/overview.html">
         Overview of CodeGrade
@@ -239,12 +241,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        About CodeGrade
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../about/about.html">
         About CodeGrade
@@ -263,14 +265,14 @@
         <ul>
          <li>
           Previous:
-          <a href="setting-up-git-uploads.html" title="previous chapter">
-           Set up Git uploads for a CodeGrade assignment
+          <a href="dividing-submissions.html" title="previous chapter">
+           Divide submissions over graders
           </a>
          </li>
          <li>
           Next:
-          <a href="dividing-submissions.html" title="next chapter">
-           Divide submissions over graders
+          <a href="creating-managing-and-using-snippets.html" title="next chapter">
+           Create, manage and use snippets
           </a>
          </li>
         </ul>
@@ -278,174 +280,91 @@
       </ul>
      </div>
      <div id="searchbox" role="search" style="display: none">
-      <h3>
+      <h3 id="searchlabel">
        Quick search
       </h3>
       <div class="searchformwrapper">
        <form action="../search.html" class="search" method="get">
-        <input name="q" type="text"/>
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
         <input type="submit" value="Go"/>
-        <input name="check_keywords" type="hidden" value="yes"/>
-        <input name="area" type="hidden" value="default"/>
        </form>
       </div>
      </div>
-     <script type="text/javascript">
+     <script>
       $('#searchbox').show(0);
      </script>
     </div>
    </aside>
    <div class="container hero is-fullheight">
     <div class="content" id="content">
-     <div class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
-      <span id="checking-for-plagiarism">
-      </span>
+     <section class="section" id="pass-back-grades-to-canvas-blackboard-moodle-or-brightspace">
       <h1>
-       Check for plagiarism in a CodeGrade assignment
-       <a class="headerlink" href="#check-for-plagiarism-in-a-codegrade-assignment" title="Permalink to this headline">
+       Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       <a class="headerlink" href="#pass-back-grades-to-canvas-blackboard-moodle-or-brightspace" title="Permalink to this headline">
         ¶
        </a>
       </h1>
       <p>
-       CodeGrade has integrated state of the art plagiarism software powered by JPlag
-to find possible plagiarism cases in CodeGrade assignments. This guide will walk
-you through setting up a plagiarism run.
+       Passing back grades in CodeGrade is straightforward:
       </p>
-      <ol class="arabic">
+      <ol class="arabic simple">
        <li>
-        <p class="first">
+        <p>
          Go to the
          <strong>
           Assignment Management
          </strong>
-         page for the assignment you want to do plagiarism detection on by clicking on the
+         page by clicking on the
          <a href="#id1">
           <span class="problematic" id="id2">
            :fa:`cog`
           </span>
          </a>
-         button.
+         icon.
         </p>
        </li>
        <li>
-        <p class="first">
-         On the
+        <p>
+         In the upper right corner, change the state of the assignment to
          <strong>
-          Assignment Management
+          Done
          </strong>
-         page, navigate to the
-         <strong>
-          Plagiarism
-         </strong>
-         tab. This is where plagiarism checks can be run and where previous plagiarism checks can be reviewed.
+         by pressing the green
+         <a href="#id3">
+          <span class="problematic" id="id4">
+           :fa:`check`
+          </span>
+         </a>
+         icon.
         </p>
        </li>
        <li>
-        <p class="first">
-         Set up the options to apply to your assignment:
-        </p>
-        <blockquote>
-         <div>
-          <ul class="simple">
-           <li>
-            <strong>
-             Language
-            </strong>
-            : Language of the code in the assignment.
-           </li>
-          </ul>
-          <div class="admonition note">
-           <p class="first admonition-title">
-            Note
-           </p>
-           <p class="last">
-            Please contact us if your required language is not present in this list.
-           </p>
-          </div>
-          <ul class="simple">
-           <li>
-            <strong>
-             Suffixes to include:
-            </strong>
-            Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
-           </li>
-           <li>
-            <strong>
-             Minimal similarity:
-            </strong>
-            The minimal average similarity to include in the results, the default is an average of 25%.
-           </li>
-           <li>
-            <strong>
-             Old assignments:
-            </strong>
-            Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
-           </li>
-           <li>
-            <strong>
-             Old submissions:
-            </strong>
-            Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
-           </li>
-           <li>
-            <strong>
-             Base code:
-            </strong>
-            Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
-           </li>
-          </ul>
-         </div>
-        </blockquote>
-       </li>
-       <li>
-        <p class="first">
-         Click the
-         <strong>
-          Run
-         </strong>
-         button to start the plagiarism check. A new entry will be created above the option fields and will display the progress.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         The following
-         <strong>
-          Plagiarism Overview
-         </strong>
-         page displays an overview of all plagiarism cases between students (or optionally between supplied old code). Click on any row to investigate the specific case.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         The
-         <strong>
-          Plagiarism Comparison
-         </strong>
-         shows two code views with the files that contain potential plagiarism, the actual individual plagiarism cases are highlighted with a colour corresponding to the colours in the top menu. Press these to compare manually.
+        <p>
+         All grades are now automatically sent back to Canvas, Blackboard, Moodle or Brightspace.
         </p>
        </li>
       </ol>
       <div class="admonition note">
-       <p class="first admonition-title">
+       <p class="admonition-title">
         Note
        </p>
-       <p class="last">
-        Click the
+       <p>
+        While the
+assignment is in the (
+        <a href="#id5">
+         <span class="problematic" id="id6">
+          :fa:`check`
+         </span>
+        </a>
+        )
         <strong>
-         Export
+         Done
         </strong>
-        button on the top right hand corner to export
-a plagiarism report. Plagiarism cases can be exported in Docx or LaTeX
-format, so that additions and further comments can be added before
-exporting as PDF.
+        state, all grades and changes to
+grades are immediately sent back to Canvas, Blackboard, Moodle or Brightspace.
        </p>
       </div>
-     </div>
+     </section>
     </div>
    </div>
   </section>

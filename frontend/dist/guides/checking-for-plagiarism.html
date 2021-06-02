@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <title>
    Docs
+   Check for plagiarism in a CodeGrade assignment — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <link href="css/general.css" rel="stylesheet" type="text/css"/>
@@ -17,6 +18,7 @@
     <a class="navbar-item" href="#">
      <h1 class="title">
       Docs
+      CodeGrade  documentation
      </h1>
     </a>
     <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
@@ -64,18 +66,18 @@
     <div class="sphinxsidebarwrapper">
      <h1 class="logo">
       <a href="../index.html">
-       Sphinx test
+       CodeGrade
       </a>
      </h1>
      <h3>
       Navigation
      </h3>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Guides
       </span>
      </p>
-     <ul class="current menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="current menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="use-codegrade-as-a-student.html">
         How to use CodeGrade as a student
@@ -172,12 +174,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Documentation
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../user/overview.html">
         Overview of CodeGrade
@@ -239,12 +241,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        About CodeGrade
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../about/about.html">
         About CodeGrade
@@ -278,26 +280,24 @@
       </ul>
      </div>
      <div id="searchbox" role="search" style="display: none">
-      <h3>
+      <h3 id="searchlabel">
        Quick search
       </h3>
       <div class="searchformwrapper">
        <form action="../search.html" class="search" method="get">
-        <input name="q" type="text"/>
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
         <input type="submit" value="Go"/>
-        <input name="check_keywords" type="hidden" value="yes"/>
-        <input name="area" type="hidden" value="default"/>
        </form>
       </div>
      </div>
-     <script type="text/javascript">
+     <script>
       $('#searchbox').show(0);
      </script>
     </div>
    </aside>
    <div class="container hero is-fullheight">
     <div class="content" id="content">
-     <div class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
+     <section class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
       <span id="checking-for-plagiarism">
       </span>
       <h1>
@@ -313,7 +313,7 @@ you through setting up a plagiarism run.
       </p>
       <ol class="arabic">
        <li>
-        <p class="first">
+        <p>
          Go to the
          <strong>
           Assignment Management
@@ -328,7 +328,7 @@ you through setting up a plagiarism run.
         </p>
        </li>
        <li>
-        <p class="first">
+        <p>
          On the
          <strong>
           Assignment Management
@@ -341,64 +341,76 @@ you through setting up a plagiarism run.
         </p>
        </li>
        <li>
-        <p class="first">
+        <p>
          Set up the options to apply to your assignment:
         </p>
         <blockquote>
          <div>
           <ul class="simple">
            <li>
-            <strong>
-             Language
-            </strong>
-            : Language of the code in the assignment.
+            <p>
+             <strong>
+              Language
+             </strong>
+             : Language of the code in the assignment.
+            </p>
            </li>
           </ul>
           <div class="admonition note">
-           <p class="first admonition-title">
+           <p class="admonition-title">
             Note
            </p>
-           <p class="last">
+           <p>
             Please contact us if your required language is not present in this list.
            </p>
           </div>
           <ul class="simple">
            <li>
-            <strong>
-             Suffixes to include:
-            </strong>
-            Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
+            <p>
+             <strong>
+              Suffixes to include:
+             </strong>
+             Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
+            </p>
            </li>
            <li>
-            <strong>
-             Minimal similarity:
-            </strong>
-            The minimal average similarity to include in the results, the default is an average of 25%.
+            <p>
+             <strong>
+              Minimal similarity:
+             </strong>
+             The minimal average similarity to include in the results, the default is an average of 25%.
+            </p>
            </li>
            <li>
-            <strong>
-             Old assignments:
-            </strong>
-            Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
+            <p>
+             <strong>
+              Old assignments:
+             </strong>
+             Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
+            </p>
            </li>
            <li>
-            <strong>
-             Old submissions:
-            </strong>
-            Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
+            <p>
+             <strong>
+              Old submissions:
+             </strong>
+             Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
+            </p>
            </li>
            <li>
-            <strong>
-             Base code:
-            </strong>
-            Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
+            <p>
+             <strong>
+              Base code:
+             </strong>
+             Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
+            </p>
            </li>
           </ul>
          </div>
         </blockquote>
        </li>
        <li>
-        <p class="first">
+        <p>
          Click the
          <strong>
           Run
@@ -407,12 +419,12 @@ you through setting up a plagiarism run.
         </p>
        </li>
        <li>
-        <p class="first">
+        <p>
          When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.
         </p>
        </li>
        <li>
-        <p class="first">
+        <p>
          The following
          <strong>
           Plagiarism Overview
@@ -421,7 +433,7 @@ you through setting up a plagiarism run.
         </p>
        </li>
        <li>
-        <p class="first">
+        <p>
          The
          <strong>
           Plagiarism Comparison
@@ -431,10 +443,10 @@ you through setting up a plagiarism run.
        </li>
       </ol>
       <div class="admonition note">
-       <p class="first admonition-title">
+       <p class="admonition-title">
         Note
        </p>
-       <p class="last">
+       <p>
         Click the
         <strong>
          Export
@@ -445,7 +457,7 @@ format, so that additions and further comments can be added before
 exporting as PDF.
        </p>
       </div>
-     </div>
+     </section>
     </div>
    </div>
   </section>

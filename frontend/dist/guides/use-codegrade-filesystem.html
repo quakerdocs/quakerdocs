@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <title>
    Docs
+   Use the CodeGrade Filesystem to locally mount CodeGrade — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <link href="css/general.css" rel="stylesheet" type="text/css"/>
@@ -17,6 +18,7 @@
     <a class="navbar-item" href="#">
      <h1 class="title">
       Docs
+      CodeGrade  documentation
      </h1>
     </a>
     <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
@@ -64,18 +66,18 @@
     <div class="sphinxsidebarwrapper">
      <h1 class="logo">
       <a href="../index.html">
-       Sphinx test
+       CodeGrade
       </a>
      </h1>
      <h3>
       Navigation
      </h3>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Guides
       </span>
      </p>
-     <ul class="current menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="current menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="use-codegrade-as-a-student.html">
         How to use CodeGrade as a student
@@ -126,8 +128,8 @@
         Set up Git uploads for a CodeGrade assignment
        </a>
       </li>
-      <li class="toctree-l1 current">
-       <a class="current reference internal" href="#">
+      <li class="toctree-l1">
+       <a class="reference internal" href="checking-for-plagiarism.html">
         Check for plagiarism in a CodeGrade assignment
        </a>
       </li>
@@ -166,18 +168,18 @@
         Install the CodeGrade Filesystem
        </a>
       </li>
-      <li class="toctree-l1">
-       <a class="reference internal" href="use-codegrade-filesystem.html">
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
         Use the CodeGrade Filesystem to locally mount CodeGrade
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        User Documentation
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../user/overview.html">
         Overview of CodeGrade
@@ -239,12 +241,12 @@
        </a>
       </li>
      </ul>
-     <p class="caption menu-label menu-label menu-label menu-label menu-label menu-label">
+     <p class="caption menu-label">
       <span class="caption-text">
        About CodeGrade
       </span>
      </p>
-     <ul class="menu-list menu-list menu-list menu-list menu-list menu-list">
+     <ul class="menu-list">
       <li class="toctree-l1">
        <a class="reference internal" href="../about/about.html">
         About CodeGrade
@@ -263,14 +265,14 @@
         <ul>
          <li>
           Previous:
-          <a href="setting-up-git-uploads.html" title="previous chapter">
-           Set up Git uploads for a CodeGrade assignment
+          <a href="installing-codegrade-filesystem.html" title="previous chapter">
+           Install the CodeGrade Filesystem
           </a>
          </li>
          <li>
           Next:
-          <a href="dividing-submissions.html" title="next chapter">
-           Divide submissions over graders
+          <a href="../user/overview.html" title="next chapter">
+           Overview of CodeGrade
           </a>
          </li>
         </ul>
@@ -278,174 +280,222 @@
       </ul>
      </div>
      <div id="searchbox" role="search" style="display: none">
-      <h3>
+      <h3 id="searchlabel">
        Quick search
       </h3>
       <div class="searchformwrapper">
        <form action="../search.html" class="search" method="get">
-        <input name="q" type="text"/>
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
         <input type="submit" value="Go"/>
-        <input name="check_keywords" type="hidden" value="yes"/>
-        <input name="area" type="hidden" value="default"/>
        </form>
       </div>
      </div>
-     <script type="text/javascript">
+     <script>
       $('#searchbox').show(0);
      </script>
     </div>
    </aside>
    <div class="container hero is-fullheight">
     <div class="content" id="content">
-     <div class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
-      <span id="checking-for-plagiarism">
+     <section class="section" id="use-the-codegrade-filesystem-to-locally-mount-codegrade">
+      <span id="guide-use-codegrade-filesystem">
       </span>
       <h1>
-       Check for plagiarism in a CodeGrade assignment
-       <a class="headerlink" href="#check-for-plagiarism-in-a-codegrade-assignment" title="Permalink to this headline">
+       Use the CodeGrade Filesystem to locally mount CodeGrade
+       <a class="headerlink" href="#use-the-codegrade-filesystem-to-locally-mount-codegrade" title="Permalink to this headline">
         ¶
        </a>
       </h1>
       <p>
-       CodeGrade has integrated state of the art plagiarism software powered by JPlag
-to find possible plagiarism cases in CodeGrade assignments. This guide will walk
-you through setting up a plagiarism run.
+       The CodeGrade Filesystem is a unique way to mount your CodeGrade instance
+locally on your system. This provides the teacher much flexibility by allowing
+to test, review and grade work from students locally, in your favourite editor
+and using all required tools.
       </p>
-      <ol class="arabic">
+      <p>
+       The CodeGrade Filesystem is an external application that has to be installed
+on your system manually. Please consult the
+       <a class="reference internal" href="installing-codegrade-filesystem.html#guide-install-filesystem">
+        <span class="std std-ref">
+         installing guide
+        </span>
+       </a>
+       for instructions on installing the CodeGrade
+Filesystem on your operating system.
+      </p>
+      <ol class="arabic simple">
        <li>
-        <p class="first">
-         Go to the
-         <strong>
-          Assignment Management
-         </strong>
-         page for the assignment you want to do plagiarism detection on by clicking on the
-         <a href="#id1">
-          <span class="problematic" id="id2">
-           :fa:`cog`
-          </span>
-         </a>
-         button.
+        <p>
+         Open the CodeGrade Filesystem application.
         </p>
        </li>
        <li>
-        <p class="first">
-         On the
-         <strong>
-          Assignment Management
-         </strong>
-         page, navigate to the
-         <strong>
-          Plagiarism
-         </strong>
-         tab. This is where plagiarism checks can be run and where previous plagiarism checks can be reviewed.
+        <p>
+         Select your institution, or select
+         <em>
+          Other
+         </em>
+         to enter a custom CodeGrade URL.
         </p>
        </li>
        <li>
-        <p class="first">
-         Set up the options to apply to your assignment:
+        <p>
+         Enter your username and password.
+        </p>
+       </li>
+      </ol>
+      <div class="admonition note">
+       <p class="admonition-title">
+        Note
+       </p>
+       <p>
+        This is your CodeGrade username and password for the selected CodeGrade instance. Click
+        <a class="reference internal" href="setup-password-for-codegrade-account.html#guide-set-up-password">
+         <span class="std std-ref">
+          here
+         </span>
+        </a>
+        to learn how to set up your CodeGrade password.
+       </p>
+      </div>
+      <ol class="arabic" start="4">
+       <li>
+        <p>
+         Optionally set advanced options in the
+         <em>
+          Advanced
+         </em>
+         tab:
         </p>
         <blockquote>
          <div>
           <ul class="simple">
            <li>
-            <strong>
-             Language
-            </strong>
-            : Language of the code in the assignment.
-           </li>
-          </ul>
-          <div class="admonition note">
-           <p class="first admonition-title">
-            Note
-           </p>
-           <p class="last">
-            Please contact us if your required language is not present in this list.
-           </p>
-          </div>
-          <ul class="simple">
-           <li>
-            <strong>
-             Suffixes to include:
-            </strong>
-            Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
+            <p>
+             <strong>
+              Mount location
+             </strong>
+             : Specify a custom location for the CodeGrade mount, this defaults to the desktop.
+            </p>
            </li>
            <li>
-            <strong>
-             Minimal similarity:
-            </strong>
-            The minimal average similarity to include in the results, the default is an average of 25%.
+            <p>
+             <strong>
+              Option - Revision mode
+             </strong>
+             : Enable revision mode to save and send all additions, edits and deletions in student submissions back to the student as a
+             <em>
+              Teacher Revision
+             </em>
+             . Disable to not synchronise additions, edits or deletions with the CodeGrade server.
+            </p>
            </li>
            <li>
-            <strong>
-             Old assignments:
-            </strong>
-            Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
+            <p>
+             <strong>
+              Option - Assigned to me
+             </strong>
+             : Enable to only show submissions that are assigned to you. This option only has effect if submissions are actually assigned and you are one of the assignees.
+            </p>
            </li>
            <li>
-            <strong>
-             Old submissions:
-            </strong>
-            Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
+            <p>
+             <strong>
+              Option - Latest submissions only
+             </strong>
+             : Enable to only show the most recent submission of each student, rather than all their submissions.
+            </p>
            </li>
            <li>
-            <strong>
-             Base code:
-            </strong>
-            Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
+            <p>
+             <strong>
+              Notifications
+             </strong>
+             : Set the verbosity of notifications, default and recommended is
+             <em>
+              All
+             </em>
+             .
+            </p>
            </li>
           </ul>
          </div>
         </blockquote>
        </li>
        <li>
-        <p class="first">
-         Click the
-         <strong>
-          Run
-         </strong>
-         button to start the plagiarism check. A new entry will be created above the option fields and will display the progress.
+        <p>
+         Press
+         <em>
+          Mount
+         </em>
+         to mount the CodeGrade server to your computer.
         </p>
        </li>
        <li>
-        <p class="first">
-         When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         The following
-         <strong>
-          Plagiarism Overview
-         </strong>
-         page displays an overview of all plagiarism cases between students (or optionally between supplied old code). Click on any row to investigate the specific case.
-        </p>
-       </li>
-       <li>
-        <p class="first">
-         The
-         <strong>
-          Plagiarism Comparison
-         </strong>
-         shows two code views with the files that contain potential plagiarism, the actual individual plagiarism cases are highlighted with a colour corresponding to the colours in the top menu. Press these to compare manually.
+        <p>
+         Press the pink
+         <em>
+          mountpoint
+         </em>
+         on the top of the CodeGrade Filesystem to navigate to the mount. In this directory an organised overview of courses, assignments and submissions can be found, tested and reviewed.
         </p>
        </li>
       </ol>
+      <p>
+       With the CodeGrade Filesystem mounted, you have access to all submissions in
+your courses on CodeGrade. These submissions can be opened in your favourite
+editor to test, review and grade without any overhead.
+      </p>
+      <p>
+       Multiple
+       <em>
+        “special files”
+       </em>
+       can be found in student submissions too, these are
+generated automatically by CodeGrade Filesystem and can be used to review and
+grade code. Use the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         .cg_grade
+        </span>
+       </code>
+       file to grade work, use the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         .cg_rubric
+        </span>
+       </code>
+       file to fill in the rubric (if present) and use the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         .cg_feedback
+        </span>
+       </code>
+       file to
+write general feedback. Saving these files results in automatically updating
+the values on the CodeGrade server too.
+      </p>
       <div class="admonition note">
-       <p class="first admonition-title">
+       <p class="admonition-title">
         Note
        </p>
-       <p class="last">
-        Click the
-        <strong>
-         Export
-        </strong>
-        button on the top right hand corner to export
-a plagiarism report. Plagiarism cases can be exported in Docx or LaTeX
-format, so that additions and further comments can be added before
-exporting as PDF.
+       <p>
+        In addition to our AutoTest platform, the use of the
+        <em>
+         special files
+        </em>
+        can allow you to locally run automatic grading scripts that write to the special files to synchronise with the CodeGrade server.
        </p>
       </div>
-     </div>
+      <p>
+       Ultimately, to remove the CodeGrade mount, simply press the
+       <em>
+        Stop
+       </em>
+       button or
+close the CodeGrade Filesystem application.
+      </p>
+     </section>
     </div>
    </div>
   </section>
