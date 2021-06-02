@@ -7,9 +7,9 @@
    Setting up AutoTest — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -255,32 +230,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="set-up-a-rubric-for-an-assignment.html" title="previous chapter">
-           Set up a rubric for an assignment
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="enabling-continuous-feedback-for-an-assignment.html" title="next chapter">
-           Enabling Continuous Feedback for an assignment
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -297,211 +246,228 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="setting-up-autotest">
-      <span id="id1">
-      </span>
-      <h1>
-       Setting up AutoTest
-       <a class="headerlink" href="#setting-up-autotest" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       If you want to automatically grade your assignment, you can use AutoTest to do
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="setting-up-autotest">
+        <span id="id1">
+        </span>
+        <h1>
+         Setting up AutoTest
+         <a class="headerlink" href="#setting-up-autotest" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         If you want to automatically grade your assignment, you can use AutoTest to do
 so. AutoTest will automatically fill in rubric categories by running tests
 on submissions. These tests are run automatically on our secure and reliable
 AutoTest servers in the cloud.
-      </p>
-      <ol class="arabic">
-       <li>
-        <p>
-         Go to the
-         <strong>
-          Assignment Management
-         </strong>
-         page by clicking on the
-         <a href="#id2">
-          <span class="problematic" id="id3">
-           :fa:`cog`
-          </span>
-         </a>
-         icon.
         </p>
-       </li>
-       <li>
-        <p>
-         Navigate to the
-         <strong>
-          AutoTest
-         </strong>
-         page.
-        </p>
-       </li>
-       <li>
-        <p>
-         Firstly, let’s setup the AutoTest run:
-        </p>
-        <blockquote>
-         <div>
-          <ol class="loweralpha simple">
-           <li>
-            <p>
-             Select when to make the results visible.
-            </p>
-            <ul class="simple">
+        <ol class="arabic">
+         <li>
+          <p>
+           Go to the
+           <strong>
+            Assignment Management
+           </strong>
+           page by clicking on the
+           <a href="#id2">
+            <span class="problematic" id="id3">
+             :fa:`cog`
+            </span>
+           </a>
+           icon.
+          </p>
+         </li>
+         <li>
+          <p>
+           Navigate to the
+           <strong>
+            AutoTest
+           </strong>
+           page.
+          </p>
+         </li>
+         <li>
+          <p>
+           Firstly, let’s setup the AutoTest run:
+          </p>
+          <blockquote>
+           <div>
+            <ol class="loweralpha simple">
              <li>
               <p>
-               <strong>
-                Immediately
-               </strong>
-               : let students view the results immediately after
+               Select when to make the results visible.
+              </p>
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  Immediately
+                 </strong>
+                 : let students view the results immediately after
 uploading, this is known as Continuous Feedback.
-              </p>
-             </li>
-             <li>
-              <p>
-               <strong>
-                When assignment is done
-               </strong>
-               : let students view the result after the
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  When assignment is done
+                 </strong>
+                 : let students view the result after the
 assignment state is set to done, just like any other feedback.
-              </p>
+                </p>
+               </li>
+              </ul>
              </li>
-            </ul>
-           </li>
-           <li>
-            <p>
-             Select the rubric calculation mode.
-            </p>
-            <ul class="simple">
              <li>
               <p>
-               <strong>
-                Minimum
-               </strong>
-               : a category’s item will be chosen when the lower bound of
+               Select the rubric calculation mode.
+              </p>
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  Minimum
+                 </strong>
+                 : a category’s item will be chosen when the lower bound of
 this item is reached (e.g. when a category has 4 items and 75% of the
 tests succeed, the maximum item is filled in).
-              </p>
-             </li>
-             <li>
-              <p>
-               <strong>
-                Maximum
-               </strong>
-               : a category’s item will be chosen when the upper bound of
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  Maximum
+                 </strong>
+                 : a category’s item will be chosen when the upper bound of
 this item is reached (e.g. you need 100% passed tests to have the
 maximum item filled in).
-              </p>
+                </p>
+               </li>
+              </ul>
              </li>
-            </ul>
-           </li>
-           <li>
-            <p>
-             Select a preferred revision.
-            </p>
-            <ul class="simple">
              <li>
               <p>
-               <strong>
-                Student
-               </strong>
-               : AutoTest is always run on the code the student has
+               Select a preferred revision.
+              </p>
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  Student
+                 </strong>
+                 : AutoTest is always run on the code the student has
 submitted.
-              </p>
-             </li>
-             <li>
-              <p>
-               <strong>
-                Teacher
-               </strong>
-               : AutoTest is run on the teacher’s revision of the code if
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  Teacher
+                 </strong>
+                 : AutoTest is run on the teacher’s revision of the code if
 it is available. Otherwise AutoTest is run on the student’s
 submission.
+                </p>
+               </li>
+              </ul>
+             </li>
+             <li>
+              <p>
+               Upload your fixtures (this could be unit tests, setup scripts or
+anything else you need).  These fixtures will be available through the
+               <code class="docutils literal notranslate">
+                <span class="pre">
+                 $FIXTURES
+                </span>
+               </code>
+               directory.
               </p>
              </li>
-            </ul>
-           </li>
-           <li>
-            <p>
-             Upload your fixtures (this could be unit tests, setup scripts or
-anything else you need).  These fixtures will be available through the
-             <code class="docutils literal notranslate">
-              <span class="pre">
-               $FIXTURES
-              </span>
-             </code>
-             directory.
-            </p>
-           </li>
-           <li>
-            <p>
-             <em>
-              Optionally
-             </em>
-             input a global setup script to run, for example to install
+             <li>
+              <p>
+               <em>
+                Optionally
+               </em>
+               input a global setup script to run, for example to install
 packages you might need.
-             <span class="xref std std-ref">
-              Click here
-             </span>
-             to see which
+               <span class="xref std std-ref">
+                Click here
+               </span>
+               to see which
 packages are installed by default.
-            </p>
-           </li>
-           <li>
-            <p>
-             <em>
-              Optionally
-             </em>
-             input a per student setup script to run, for example to
+              </p>
+             </li>
+             <li>
+              <p>
+               <em>
+                Optionally
+               </em>
+               input a per student setup script to run, for example to
 compile the students’ code. Do all of your global setup in the global
 setup script, as this speeds up the AutoTest run.
-            </p>
-           </li>
-          </ol>
-         </div>
-        </blockquote>
-       </li>
-       <li>
+              </p>
+             </li>
+            </ol>
+           </div>
+          </blockquote>
+         </li>
+         <li>
+          <p>
+           Add a level to put your AutoTest categories in.
+          </p>
+          <blockquote>
+           <div>
+            <div class="admonition note">
+             <p class="admonition-title">
+              Note
+             </p>
+             <p>
+              For most use cases just one level is enough to do all your automatic grading with.
+             </p>
+            </div>
+           </div>
+          </blockquote>
+         </li>
+         <li>
+          <p>
+           Add your AutoTest categories.
+          </p>
+          <blockquote>
+           <div>
+            <div class="toctree-wrapper compound">
+            </div>
+           </div>
+          </blockquote>
+         </li>
+        </ol>
         <p>
-         Add a level to put your AutoTest categories in.
-        </p>
-        <blockquote>
-         <div>
-          <div class="admonition note">
-           <p class="admonition-title">
-            Note
-           </p>
-           <p>
-            For most use cases just one level is enough to do all your automatic grading with.
-           </p>
-          </div>
-         </div>
-        </blockquote>
-       </li>
-       <li>
-        <p>
-         Add your AutoTest categories.
-        </p>
-        <blockquote>
-         <div>
-          <div class="toctree-wrapper compound">
-          </div>
-         </div>
-        </blockquote>
-       </li>
-      </ol>
-      <p>
-       Now that AutoTest is set up, you can run it. Simply press the
-       <em>
-        run
-       </em>
-       button to
+         Now that AutoTest is set up, you can run it. Simply press the
+         <em>
+          run
+         </em>
+         button to
 start the AutoTest run.
-      </p>
-     </section>
+        </p>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>

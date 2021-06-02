@@ -7,9 +7,9 @@
    Set up Git uploads for a CodeGrade assignment — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="setting-up-hand-in-requirements.html" title="previous chapter">
-           Set up hand-in requirements for a CodeGrade assignment
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="checking-for-plagiarism.html" title="next chapter">
-           Check for plagiarism in a CodeGrade assignment
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,204 +244,221 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="set-up-git-uploads-for-a-codegrade-assignment">
-      <span id="guide-git-uploads">
-      </span>
-      <h1>
-       Set up Git uploads for a CodeGrade assignment
-       <a class="headerlink" href="#set-up-git-uploads-for-a-codegrade-assignment" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       It can be very desirable or convenient to allow students to hand in to
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="set-up-git-uploads-for-a-codegrade-assignment">
+        <span id="guide-git-uploads">
+        </span>
+        <h1>
+         Set up Git uploads for a CodeGrade assignment
+         <a class="headerlink" href="#set-up-git-uploads-for-a-codegrade-assignment" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         It can be very desirable or convenient to allow students to hand in to
 CodeGrade directly via Git. Learning to work with Git is often a learning
 goal for students and combining this with CodeGrade’s features makes it very
 well suited for education.
-      </p>
-      <p>
-       To set up Git submissions for your CodeGrade assignment, follow the steps below:
-      </p>
-      <ol class="arabic simple">
-       <li>
-        <p>
-         Go to the
-         <strong>
-          Assignment Management
-         </strong>
-         page for the assignment you want to enable git submissions for by clicking on the
-         <a href="#id1">
-          <span class="problematic" id="id2">
-           :fa:`cog`
-          </span>
-         </a>
-         button.
         </p>
-       </li>
-       <li>
         <p>
-         Under the
-         <strong>
-          General
-         </strong>
-         tab, locate the
-         <strong>
-          Allowed upload types
-         </strong>
-         section.
+         To set up Git submissions for your CodeGrade assignment, follow the steps below:
         </p>
-       </li>
-       <li>
+        <ol class="arabic simple">
+         <li>
+          <p>
+           Go to the
+           <strong>
+            Assignment Management
+           </strong>
+           page for the assignment you want to enable git submissions for by clicking on the
+           <a href="#id1">
+            <span class="problematic" id="id2">
+             :fa:`cog`
+            </span>
+           </a>
+           button.
+          </p>
+         </li>
+         <li>
+          <p>
+           Under the
+           <strong>
+            General
+           </strong>
+           tab, locate the
+           <strong>
+            Allowed upload types
+           </strong>
+           section.
+          </p>
+         </li>
+         <li>
+          <p>
+           Select the
+           <strong>
+            GitHub/GitLab
+           </strong>
+           checkbox to enable submissions via Git.
+          </p>
+         </li>
+         <li>
+          <p>
+           <em>
+            Optionally
+           </em>
+           , deselect the
+           <strong>
+            File uploader
+           </strong>
+           checkbox to
+           <strong>
+            only
+           </strong>
+           allow students to submit via Git and not have an additional file uploader present on the hand-in page.
+          </p>
+         </li>
+        </ol>
         <p>
-         Select the
-         <strong>
-          GitHub/GitLab
-         </strong>
-         checkbox to enable submissions via Git.
-        </p>
-       </li>
-       <li>
-        <p>
-         <em>
-          Optionally
-         </em>
-         , deselect the
-         <strong>
-          File uploader
-         </strong>
-         checkbox to
-         <strong>
-          only
-         </strong>
-         allow students to submit via Git and not have an additional file uploader present on the hand-in page.
-        </p>
-       </li>
-      </ol>
-      <p>
-       You have now enabled Git submissions for your CodeGrade assignment. Students
+         You have now enabled Git submissions for your CodeGrade assignment. Students
 will be shown instructions on configuring their Git repository to work together
 with CodeGrade, by setting up a
-       <em>
-        deploy key
-       </em>
-       and
-       <em>
-        webhook
-       </em>
-       . After setting this
+         <em>
+          deploy key
+         </em>
+         and
+         <em>
+          webhook
+         </em>
+         . After setting this
 up correctly, students’ work will be uploaded to CodeGrade with every
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         git
-        </span>
-        <span class="pre">
-         push
-        </span>
-       </code>
-       they execute. Encourage students to set this up before starting to
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           git
+          </span>
+          <span class="pre">
+           push
+          </span>
+         </code>
+         they execute. Encourage students to set this up before starting to
 work on the assignment, so a nice history of submissions is created in CodeGrade.
-      </p>
-      <div class="admonition warning">
-       <p class="admonition-title">
-        Warning
-       </p>
-       <p>
-        Git submissions work together with all of CodeGrade’s features
-        <strong>
-         except Hand-in
+        </p>
+        <div class="admonition warning">
+         <p class="admonition-title">
+          Warning
+         </p>
+         <p>
+          Git submissions work together with all of CodeGrade’s features
+          <strong>
+           except Hand-in
 Requirements.
-        </strong>
-        Utilize i.e. CodeGrade Continuous Feedback to still give the
+          </strong>
+          Utilize i.e. CodeGrade Continuous Feedback to still give the
 students immediate feedback for every
-        <code class="docutils literal notranslate">
-         <span class="pre">
-          push
-         </span>
-        </code>
-        .
-       </p>
-      </div>
-      <div class="admonition warning">
-       <p class="admonition-title">
-        Warning
-       </p>
-       <p>
-        CodeGrade has a size limit on student submissions. Exceeding this size limit
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            push
+           </span>
+          </code>
+          .
+         </p>
+        </div>
+        <div class="admonition warning">
+         <p class="admonition-title">
+          Warning
+         </p>
+         <p>
+          CodeGrade has a size limit on student submissions. Exceeding this size limit
 will result in a warning message when regularly handing in, but not when
 using git to upload. If a student exceeds this limit, files exceeding the
 limit are silently deleted. This very rare case does result in a
-        <code class="docutils literal notranslate">
-         <span class="pre">
-          cg-size-limit-exceeded
-         </span>
-        </code>
-        file to show up in the Code Viewer.
-       </p>
-      </div>
-      <div class="admonition note">
-       <p class="admonition-title">
-        Note
-       </p>
-       <p>
-        Want to see how your students use Git or even assess this automatically? The
-        <code class="docutils literal notranslate">
-         <span class="pre">
-          .git
-         </span>
-        </code>
-        folder containing all information is accessible in the student
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            cg-size-limit-exceeded
+           </span>
+          </code>
+          file to show up in the Code Viewer.
+         </p>
+        </div>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          Want to see how your students use Git or even assess this automatically? The
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            .git
+           </span>
+          </code>
+          folder containing all information is accessible in the student
 submission to be inspected in our Code Viewer or assessed in AutoTest, run
-        <code class="docutils literal notranslate">
-         <span class="pre">
-          git
-         </span>
-         <span class="pre">
-          fetch
-         </span>
-         <span class="pre">
-          --unshallow
-         </span>
-        </code>
-        to make sure the information is complete. You
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            git
+           </span>
+           <span class="pre">
+            fetch
+           </span>
+           <span class="pre">
+            --unshallow
+           </span>
+          </code>
+          to make sure the information is complete. You
 can also click on the
-        <em>
-         Github
-        </em>
-        or
-        <em>
-         GitLab
-        </em>
-        link to directly access the
+          <em>
+           Github
+          </em>
+          or
+          <em>
+           GitLab
+          </em>
+          link to directly access the
 student repository.
-       </p>
-      </div>
-      <div class="admonition note">
-       <p class="admonition-title">
-        Note
-       </p>
-       <p>
-        If your CodeGrade assignment is set up as a Group assignment, all members
+         </p>
+        </div>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          If your CodeGrade assignment is set up as a Group assignment, all members
 of the group will have the same
-        <em>
-         deploy key
-        </em>
-        and
-        <em>
-         webhook
-        </em>
-        and can hand in
+          <em>
+           deploy key
+          </em>
+          and
+          <em>
+           webhook
+          </em>
+          and can hand in
 for the whole group using Git in the same way they would for an individual
 assignment.
-        <strong>
-         All members of the group will still have to open the CodeGrade
+          <strong>
+           All members of the group will still have to open the CodeGrade
 assignment at least once in their LMS for this configuration to be
 generated! (This does not apply to stand-alone CodeGrade usage)
-        </strong>
-       </p>
+          </strong>
+         </p>
+        </div>
+       </section>
       </div>
-     </section>
+     </div>
     </div>
    </div>
   </section>

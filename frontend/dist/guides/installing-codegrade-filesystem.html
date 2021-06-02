@@ -7,9 +7,9 @@
    Install the CodeGrade Filesystem — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="cannot-find-feature-in-codegrade.html" title="previous chapter">
-           I cannot find a feature in CodeGrade
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="use-codegrade-filesystem.html" title="next chapter">
-           Use the CodeGrade Filesystem to locally mount CodeGrade
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,73 +244,90 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="install-the-codegrade-filesystem">
-      <span id="guide-install-filesystem">
-      </span>
-      <h1>
-       Install the CodeGrade Filesystem
-       <a class="headerlink" href="#install-the-codegrade-filesystem" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       The CodeGrade Filesystem is a unique way to mount your CodeGrade instance
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="install-the-codegrade-filesystem">
+        <span id="guide-install-filesystem">
+        </span>
+        <h1>
+         Install the CodeGrade Filesystem
+         <a class="headerlink" href="#install-the-codegrade-filesystem" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         The CodeGrade Filesystem is a unique way to mount your CodeGrade instance
 locally on your system. This provides the teacher much flexibility by allowing
 to test, review and grade work from students locally, in your favourite editor
 and using all required tools.
-      </p>
-      <p>
-       The CodeGrade Filesystem is available for Windows, MacOS and Debian/Ubuntu.
+        </p>
+        <p>
+         The CodeGrade Filesystem is available for Windows, MacOS and Debian/Ubuntu.
 Installing the CodeGrade Filesystem is very straightforward by using our
 supplied installer or installer script. This will install
 the CodeGrade Filesystem and all required software to successfully run it.
-      </p>
-      <ol class="arabic simple">
-       <li>
-        <p>
-         Download the latest CodeGrade Filesystem installer for your operating system from
-         <a class="reference external" href="https://codegrade.com/filesystem/">
-          https://codegrade.com/filesystem/
-         </a>
-         .
         </p>
-       </li>
-       <li>
-        <p>
-         Open the installer (or run the installer script) and follow the instructions to install CodeGrade Filesystem.
-        </p>
-       </li>
-      </ol>
-      <div class="admonition note">
-       <p class="admonition-title">
-        Note
-       </p>
-       <p>
-        MacOS possibly raises a security error when opening the installer. To still open the installer, navigate to
-        <em>
-         System Preferences
-        </em>
-        to the tab
-        <em>
-         Security &amp; Privacy
-        </em>
-        . Press the
-        <em>
-         Open Anyway
-        </em>
-        button to open the installer anyway, this is not a security risk.
-       </p>
+        <ol class="arabic simple">
+         <li>
+          <p>
+           Download the latest CodeGrade Filesystem installer for your operating system from
+           <a class="reference external" href="https://codegrade.com/filesystem/">
+            https://codegrade.com/filesystem/
+           </a>
+           .
+          </p>
+         </li>
+         <li>
+          <p>
+           Open the installer (or run the installer script) and follow the instructions to install CodeGrade Filesystem.
+          </p>
+         </li>
+        </ol>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          MacOS possibly raises a security error when opening the installer. To still open the installer, navigate to
+          <em>
+           System Preferences
+          </em>
+          to the tab
+          <em>
+           Security &amp; Privacy
+          </em>
+          . Press the
+          <em>
+           Open Anyway
+          </em>
+          button to open the installer anyway, this is not a security risk.
+         </p>
+        </div>
+        <ol class="arabic simple" start="3">
+         <li>
+          <p>
+           After installing, the CodeGrade Filesystem can be opened and used to mount your CodeGrade instance to your computer.
+          </p>
+         </li>
+        </ol>
+       </section>
       </div>
-      <ol class="arabic simple" start="3">
-       <li>
-        <p>
-         After installing, the CodeGrade Filesystem can be opened and used to mount your CodeGrade instance to your computer.
-        </p>
-       </li>
-      </ol>
-     </section>
+     </div>
     </div>
    </div>
   </section>

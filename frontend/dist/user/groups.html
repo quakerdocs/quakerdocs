@@ -7,9 +7,9 @@
    Groups — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -265,32 +240,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="plagiarism.html" title="previous chapter">
-           Plagiarism Detection
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="permissions.html" title="next chapter">
-           Permissions
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -307,114 +256,131 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="groups">
-      <span id="groups-chapter">
-      </span>
-      <h1>
-       Groups
-       <a class="headerlink" href="#groups" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       CodeGrade supports group assignments through the concept of
-       <em>
-        group sets
-       </em>
-       and
-       <em>
-        groups
-       </em>
-       . This chapter explains these concepts and how to create and use group
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="groups">
+        <span id="groups-chapter">
+        </span>
+        <h1>
+         Groups
+         <a class="headerlink" href="#groups" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade supports group assignments through the concept of
+         <em>
+          group sets
+         </em>
+         and
+         <em>
+          groups
+         </em>
+         . This chapter explains these concepts and how to create and use group
 assignments.
-      </p>
-      <section id="group-set">
-       <h2>
-        Group set
-        <a class="headerlink" href="#group-set" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        Groups are connected to a
-        <em>
-         group set
-        </em>
-        , this group set is in turn is coupled to
+        </p>
+        <section id="group-set">
+         <h2>
+          Group set
+          <a class="headerlink" href="#group-set" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          Groups are connected to a
+          <em>
+           group set
+          </em>
+          , this group set is in turn is coupled to
 zero or more assignments. A group set determines the minimum and maximum size
 for each group in this group set. To create a group set go to the
-        <a class="reference internal" href="management.html#course-management">
-         <span class="std std-ref">
-          course management page
-         </span>
-        </a>
-        and select the
-        <em>
-         Groups
-        </em>
-        tab. Here you can add and delete group sets.
-       </p>
-       <p>
-        After you have created a group set you can connect this group set to an
+          <a class="reference internal" href="management.html#course-management">
+           <span class="std std-ref">
+            course management page
+           </span>
+          </a>
+          and select the
+          <em>
+           Groups
+          </em>
+          tab. Here you can add and delete group sets.
+         </p>
+         <p>
+          After you have created a group set you can connect this group set to an
 assignment. To do this go to the
-        <a class="reference internal" href="management.html#assignment-management">
-         <span class="std std-ref">
-          assignment management page
-         </span>
-        </a>
-        and go to the
-        <em>
-         Group
+          <a class="reference internal" href="management.html#assignment-management">
+           <span class="std std-ref">
+            assignment management page
+           </span>
+          </a>
+          and go to the
+          <em>
+           Group
 Assignment
-        </em>
-        tab, select the wanted group set and press
-        <em>
-         Submit
-        </em>
-        . You can connect
+          </em>
+          tab, select the wanted group set and press
+          <em>
+           Submit
+          </em>
+          . You can connect
 a group set to multiple assignments, which then share the same groups.
-       </p>
-       <p>
-        When an assignment is a group assignment it is impossible for students to submit
+         </p>
+         <p>
+          When an assignment is a group assignment it is impossible for students to submit
 when they are not in a group, or when their group is smaller than the minimum
 size.
-       </p>
-      </section>
-      <section id="id1">
-       <h2>
-        Groups
-        <a class="headerlink" href="#id1" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        Groups are connected to a group set. For each group set students are connected
+         </p>
+        </section>
+        <section id="id1">
+         <h2>
+          Groups
+          <a class="headerlink" href="#id1" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          Groups are connected to a group set. For each group set students are connected
 to one or zero groups.
-       </p>
-       <p>
-        When navigating pages of a course with group sets a new button should appear in
+         </p>
+         <p>
+          When navigating pages of a course with group sets a new button should appear in
 the sidebar, the
-        <em>
-         Groups
-        </em>
-        button. After clicking on this button and selecting a
+          <em>
+           Groups
+          </em>
+          button. After clicking on this button and selecting a
 group set you can add, delete and change groups for this group set. By default
 students can join groups, leave groups, and edit the name of their group. See
-        <a class="reference internal" href="permissions.html#permissions-chapter">
-         <span class="std std-ref">
-          permissions chapter
-         </span>
-        </a>
-        for more information. Students
+          <a class="reference internal" href="permissions.html#permissions-chapter">
+           <span class="std std-ref">
+            permissions chapter
+           </span>
+          </a>
+          for more information. Students
 also get prompted a pop-up when submitting to a group assignment if they are not
 in a group or if their group is too small. Using they pop-up they can join and
 create groups. It is currently not possible to randomly assign students to
 groups.
-       </p>
-      </section>
-     </section>
+         </p>
+        </section>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>

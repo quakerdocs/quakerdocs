@@ -7,9 +7,9 @@
    Divide submissions over graders — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -270,32 +245,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="checking-for-plagiarism.html" title="previous chapter">
-           Check for plagiarism in a CodeGrade assignment
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html" title="next chapter">
-           Pass back grades to Canvas, Blackboard, Moodle or Brightspace
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -312,190 +261,207 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="divide-submissions-over-graders">
-      <span id="dividing-submissions">
-      </span>
-      <h1>
-       Divide submissions over graders
-       <a class="headerlink" href="#divide-submissions-over-graders" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       CodeGrade offers multiple tools to divide submissions over the graders in your
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="divide-submissions-over-graders">
+        <span id="dividing-submissions">
+        </span>
+        <h1>
+         Divide submissions over graders
+         <a class="headerlink" href="#divide-submissions-over-graders" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade offers multiple tools to divide submissions over the graders in your
 course. Graders can be divided manually or randomly. Additionally, divisions
 (both manual or random) can be reused over multiple assignments.
-      </p>
-      <p>
-       Dividing submissions over your graders has multiple advantages. In addition to
+        </p>
+        <p>
+         Dividing submissions over your graders has multiple advantages. In addition to
 having a clear way to communicate with your graders, it also allows your graders
 to easily filter the submission-lists on the CodeGrade website and in the
 Filesystem to only show their submissions to grade.
-      </p>
-      <section id="manually-dividing-submissions">
-       <h2>
-        Manually dividing submissions
-        <a class="headerlink" href="#manually-dividing-submissions" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <ol class="arabic simple">
-        <li>
-         <p>
-          Navigate to the
-          <strong>
-           “Submission list”
-          </strong>
-          of an assignment, by simply clicking on the name of the assignment.
-         </p>
-        </li>
-        <li>
-         <p>
-          If available, uncheck the
-          <strong>
-           “Assigned to me”
-          </strong>
-          filter to display a list of all submissions.
-         </p>
-        </li>
-        <li>
-         <p>
-          It is now possible to manually divide the submissions by using the dropdown in the
-          <strong>
-           “Assigned to”
-          </strong>
-          column. This dropdown shows all graders available in this course.
-         </p>
-        </li>
-        <li>
-         <p>
-          Click any grader in this list to assign the submission to this grader.
-         </p>
-        </li>
-       </ol>
-      </section>
-      <section id="randomly-dividing-submissions">
-       <h2>
-        Randomly dividing submissions
-        <a class="headerlink" href="#randomly-dividing-submissions" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <ol class="arabic simple">
-        <li>
-         <p>
-          Go to the
-          <strong>
-           Assignment Management
-          </strong>
-          page for the assignment you want to do divide the submissions for by clicking on the
-          <a href="#id1">
-           <span class="problematic" id="id2">
-            :fa:`cog`
-           </span>
+        </p>
+        <section id="manually-dividing-submissions">
+         <h2>
+          Manually dividing submissions
+          <a class="headerlink" href="#manually-dividing-submissions" title="Permalink to this headline">
+           ¶
           </a>
-          button.
-         </p>
-        </li>
-        <li>
+         </h2>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Navigate to the
+            <strong>
+             “Submission list”
+            </strong>
+            of an assignment, by simply clicking on the name of the assignment.
+           </p>
+          </li>
+          <li>
+           <p>
+            If available, uncheck the
+            <strong>
+             “Assigned to me”
+            </strong>
+            filter to display a list of all submissions.
+           </p>
+          </li>
+          <li>
+           <p>
+            It is now possible to manually divide the submissions by using the dropdown in the
+            <strong>
+             “Assigned to”
+            </strong>
+            column. This dropdown shows all graders available in this course.
+           </p>
+          </li>
+          <li>
+           <p>
+            Click any grader in this list to assign the submission to this grader.
+           </p>
+          </li>
+         </ol>
+        </section>
+        <section id="randomly-dividing-submissions">
+         <h2>
+          Randomly dividing submissions
+          <a class="headerlink" href="#randomly-dividing-submissions" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Go to the
+            <strong>
+             Assignment Management
+            </strong>
+            page for the assignment you want to do divide the submissions for by clicking on the
+            <a href="#id1">
+             <span class="problematic" id="id2">
+              :fa:`cog`
+             </span>
+            </a>
+            button.
+           </p>
+          </li>
+          <li>
+           <p>
+            Navigate to the
+            <strong>
+             “Graders”
+            </strong>
+            tab to find the grading dashboard with a list of all graders available in this assignment.
+           </p>
+          </li>
+          <li>
+           <p>
+            Select the graders you want to divide the submissions over in the
+            <strong>
+             “Divide Submissions”
+            </strong>
+            section, optionally adjust the weight or percentages of the graders.
+           </p>
+          </li>
+          <li>
+           <p>
+            Press the
+            <strong>
+             “Divide”
+            </strong>
+            button to the divide the submissions over the selected graders in respect to the given weights.
+           </p>
+          </li>
+         </ol>
+        </section>
+        <section id="connecting-divisions-between-assignments">
+         <h2>
+          Connecting divisions between assignments
+          <a class="headerlink" href="#connecting-divisions-between-assignments" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
          <p>
-          Navigate to the
-          <strong>
-           “Graders”
-          </strong>
-          tab to find the grading dashboard with a list of all graders available in this assignment.
-         </p>
-        </li>
-        <li>
-         <p>
-          Select the graders you want to divide the submissions over in the
-          <strong>
-           “Divide Submissions”
-          </strong>
-          section, optionally adjust the weight or percentages of the graders.
-         </p>
-        </li>
-        <li>
-         <p>
-          Press the
-          <strong>
-           “Divide”
-          </strong>
-          button to the divide the submissions over the selected graders in respect to the given weights.
-         </p>
-        </li>
-       </ol>
-      </section>
-      <section id="connecting-divisions-between-assignments">
-       <h2>
-        Connecting divisions between assignments
-        <a class="headerlink" href="#connecting-divisions-between-assignments" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        It is possible to re-use both manual and random divisions in other assignments.
+          It is possible to re-use both manual and random divisions in other assignments.
 For instance if you require the same graders to grade the same students /
 submissions for all assignments. Once you have divided the submissions on one
 assignment following either of the above methods, you can follow the steps
 below to connect this division to other assignments too:
-       </p>
-       <ol class="arabic simple">
-        <li>
-         <p>
-          Go to the
-          <strong>
-           Assignment Management
-          </strong>
-          page for the assignment you want to connect to the division of a previous assignment by clicking on the
-          <a href="#id3">
-           <span class="problematic" id="id4">
-            :fa:`cog`
-           </span>
-          </a>
-          button.
          </p>
-        </li>
-        <li>
-         <p>
-          Navigate to the
-          <strong>
-           “Graders”
-          </strong>
-          tab to find the grading dashboard with a list of all graders available in this assignment.
-         </p>
-        </li>
-        <li>
-         <p>
-          In the
-          <strong>
-           “Divide Submissions”
-          </strong>
-          section, use the
-          <strong>
-           “Connect divisions to”
-          </strong>
-          dropdown to select the assignment you want to connect the divisions to.
-         </p>
-        </li>
-       </ol>
-       <div class="admonition warning">
-        <p class="admonition-title">
-         Warning
-        </p>
-        <p>
-         Changing divisions in an assignment that is connected to a previously divided
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Go to the
+            <strong>
+             Assignment Management
+            </strong>
+            page for the assignment you want to connect to the division of a previous assignment by clicking on the
+            <a href="#id3">
+             <span class="problematic" id="id4">
+              :fa:`cog`
+             </span>
+            </a>
+            button.
+           </p>
+          </li>
+          <li>
+           <p>
+            Navigate to the
+            <strong>
+             “Graders”
+            </strong>
+            tab to find the grading dashboard with a list of all graders available in this assignment.
+           </p>
+          </li>
+          <li>
+           <p>
+            In the
+            <strong>
+             “Divide Submissions”
+            </strong>
+            section, use the
+            <strong>
+             “Connect divisions to”
+            </strong>
+            dropdown to select the assignment you want to connect the divisions to.
+           </p>
+          </li>
+         </ol>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           Changing divisions in an assignment that is connected to a previously divided
 assignment will not change the division for the previous assignment
-         <strong>
-          or
-         </strong>
-         for other assignments connected to this previous assignment.
-        </p>
-       </div>
-      </section>
-     </section>
+           <strong>
+            or
+           </strong>
+           for other assignments connected to this previous assignment.
+          </p>
+         </div>
+        </section>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>
