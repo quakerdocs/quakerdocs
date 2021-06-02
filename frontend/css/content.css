@@ -18,6 +18,10 @@ div.warning p.admonition-title, .code .error {
     font-weight: bold;
 }
 
-section {
+section, div.compound {
     margin-bottom: 2em;
+}
+
+.caption-text {
+    font-weight: bold;
 }
