@@ -20,13 +20,18 @@
                 <h1 class="title"></h1>
             </a>
 
+            <a class="navbar-item" href="#">
+                <button class="button is-light" onclick="overlayOn()">
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                    <span>Search</span>
+                </button>
+            </a>
+
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
-
-            <button class="btn search" onclick="overlayOn()"><i class="fa fa-search"> Search</i></button>
         </div>
 
         <div id="overlay" onclick="overlayOff()">
