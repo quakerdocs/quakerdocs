@@ -1,7 +1,9 @@
 div.admonition, div.attention, div.caution, div.danger, div.error,
 div.hint, div.important, div.note, div.tip, div.warning {
-    margin: 2em;
+    margin-top: 2em;
+    margin-bottom: 2em;
     border: medium outset;
+    border-radius: 6px;
     padding: 1em;
 }
 
