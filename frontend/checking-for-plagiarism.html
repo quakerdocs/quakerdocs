@@ -8,9 +8,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <link href="css/general.css" rel="stylesheet" type="text/css"/>
   <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
-  </script>
- </head>
+  <script src="js/script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(function(){
+      $("#sidebar").load("sidebar.html");
+    });
+    </script>
+</head>
  <body>
   <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
    <div class="navbar-brand">
@@ -55,90 +60,10 @@
    </div>
   </nav>
   <section class="main-content columns is-fullheight">
-   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a> -->
-   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
-    <p class="menu-label">
-     Sectie
-    </p>
-    <ul class="menu-list">
-     <li>
-      <a>
-       Kozijnen
-      </a>
-     </li>
-     <li>
-      <a>
-       Meubels
-      </a>
-     </li>
-    </ul>
-    <p class="menu-label">
-     Nog een sectie
-    </p>
-    <ul class="menu-list">
-     <li>
-      <a>
-       Dure dingen
-      </a>
-     </li>
-     <li>
-      <a class="is-active">
-       Stoelen
-      </a>
-      <ul>
-       <li>
-        <a>
-         Tegels
-        </a>
-       </li>
-       <li>
-        <a>
-         Servies
-        </a>
-       </li>
-       <li>
-        <a>
-         Kasten
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li>
-      <a>
-       Banken
-      </a>
-     </li>
-     <li>
-      <a>
-       Lampen
-      </a>
-     </li>
-     <li>
-      <a>
-       Trappen
-      </a>
-     </li>
-    </ul>
-    <p class="menu-label">
-     Fietsen
-    </p>
-    <ul class="menu-list">
-     <li>
-      <a>
-       Eenwielers
-      </a>
-     </li>
-     <li>
-      <a>
-       Nog iets
-      </a>
-     </li>
-    </ul>
-   </aside>
+   <div id="sidebar">
+
+   </div>
+
    <div class="container hero is-fullheight">
     <div class="content" id="content">
      <div class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
