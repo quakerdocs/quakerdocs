@@ -55,10 +55,15 @@ def scrape_and_merge(src_doc, template_doc):
 
     # Add the main page content from src_doc to template_doc.
     content = src_soup.select('div.section')[0]
-    template_soup.html.select('div#content')[0].append(content)
-
-    # Add the side bar content from src_doc to template_doc.
     sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
+
+    for el in sidebar:
+        if el.name == 'p':
+            el['class'] = el.get('class', []) + ['menu-label']
+        elif el.name == 'ul':
+            el['class'] = el.get('class', []) + ['menu-list']
+
+    template_soup.html.select('div#content')[0].append(content)
     template_soup.html.select('aside#menuPanel')[0].append(sidebar)
 
     # Add the title of the src_doc to template_doc.
