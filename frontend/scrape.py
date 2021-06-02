@@ -39,7 +39,8 @@ def scrape_and_merge(src_doc, template_doc):
     content = src_soup.select('div.section')[0]
     template_soup.html.select('div#content')[0].append(content)
 
-    navigation = src_soup.select('li.toctree-l1')
+    sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
+    template_soup.html.select('aside#menuPanel')[0].append(sidebar)
 
     return str(template_soup.prettify())
 
@@ -49,7 +50,7 @@ def create_sidebar_file(src_file, dst_file):
 
     src_soup = BeautifulSoup(src_doc, 'html.parser')
 
-    sidebar = src_soup.select('div.sphinxsidebar')[0]
+    sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
 
     write_file(dst_file, str(sidebar.prettify()))
 
@@ -60,7 +61,7 @@ def main():
     for src_file in src_files:
         transfer_html_data(src_file)
 
-    create_sidebar_file(src_file, "sidebar.html")
+    # create_sidebar_file(src_file, "sidebar.html")
 
 if __name__ == "__main__":
     main()
