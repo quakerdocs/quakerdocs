@@ -1,7 +1,10 @@
 
-var ROOT = document.location.hostname
-// Used to toggle the menu on small screens when clicking on the menu button
+const ROOT = document.location.hostname
+
 function toggleFunction() {
+    /* Used to toggle the menu on small screens when clicking on the menu
+     * button.
+     */
     var x = document.getElementById("mini-menu");
     if (x.className.indexOf("hide") == -1) {
         x.className = x.className.replace("", "hide");
@@ -12,11 +15,20 @@ function toggleFunction() {
 
 function showSearchOverlay() {
     document.getElementById("search").classList.add("is-active")
+
+    // Prevent background from scrolling while search window is open.
+    document.documentElement.style.overflow = 'hidden';
+    document.body.scroll = "no";
+
     activateSearch()
 }
 
 function hideSearchOverlay() {
     document.getElementById("search").classList.remove("is-active")
+
+    // Allow background to scroll again.
+    document.documentElement.style.overflow = 'scroll';
+    document.body.scroll = "yes";
 }
 
 class Result {
@@ -38,6 +50,7 @@ function activateSearch() {
     const resultsWrapper = document.getElementById("search-results")
 
     if (searchInput) {
+        // Update search results when a key is pressed.
         searchInput.addEventListener('keyup', () => {
             let input = searchInput.value;
             if (input.length) {
@@ -84,11 +97,15 @@ function* performSearch(query) {
     }
 }
 
-var text;
 function renderResults(searcher, resultsWrapper) {
+    /* Render the title of the search results aswell as a little bit
+     * (200 characters) of text contained in the article.
+     */
     let content = '';
     for (let r of searcher) {
-        var text = null;
+        let text = "";
+
+        // Send ajax request to get text from the page.
         $.ajax({
             url: `../${r.page}`,
             type: 'get',
@@ -96,15 +113,20 @@ function renderResults(searcher, resultsWrapper) {
             async: false,
             success: function(data) {
                 var html_data = $(data);
-                var p_text = $("#content p", html_data)[0].textContent
 
-                text = $.trim(p_text);
+                // If no text is found, keep an empty string.
+                try {
+                    var p_text = $("#content p", html_data)[0].textContent
+                } catch (error) {
+                    return;
+                }
+
+                text = $.trim(p_text).substr(0, 200) + "...";
             }
         });
 
-        console.log(text);
-        content += `<a href="../${r.page}" class="panel-block"><h1>${r.title}</h1>
-                    <p>${text}</p></a>`
+        content += `<div onclick="location.href='../${r.page}'" class="result"><h1 class="result-title"><strong>
+                    ${r.title}</strong></h1><p class="result-content">${text}</p></div>`
     }
 
     resultsWrapper.innerHTML = `<ul>${content}</ul>`;

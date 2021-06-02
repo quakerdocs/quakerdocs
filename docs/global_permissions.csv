@@ -1,0 +1,17 @@
+Name,Description
+**Add users**,Users with this permission can add other users to the website.
+**Snippets** \*,Users with this permission can use the snippets feature on the website.
+**Edit user info** \*,Users with this permission can edit their own personal information.
+**Edit password** \*,Users with this permission can edit their own password.
+**Create course**,Users with this permission can create new courses.
+**Manage site users**,Users with this permission can change the global permissions for other users on the site.
+**Search users** \*,"Users with this permission can search for users on the side, this means they can see all other users on the site."
+**Impersonate users**,"Users with this permission can impersonate users, i.e. they can login as other users."
+**Manage LTI providers**,"Users with this permission can edit and list existing, and create new LTI providers."
+**Manage SSO Providers**,Users with this permission can connect new SSO Identity Providers.
+**Manage site settings**,Users with this permission can manage the settings of this CodeGrade instance
+**Manage background jobs**,"Users with this permission can view, stop, and restart background jobs."
+**Create a tenant**,Users with this permission can create new tenants on the system
+**Create courses for other tenants**,Users with this permission can create courses for other tenants than their own
+**See other tenant statistics**,Users with this permission can see the statistics of their own and other tenants.
+**Search users in other tenant**,Users with this permission can search users of other tenants

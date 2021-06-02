@@ -46,15 +46,36 @@
 }
 
 .results {
-    max-height: 60%;
+    max-height: 80%;
     overflow: auto;
 }
 
 .modal-content {
     height: 80%;
     max-height: 80%;
+    overflow: hidden;
 }
 
 .md-22 {
     font-size: 22px !important;
+}
+
+.result {
+    border: none;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.result:hover {
+    background: #ddd;
+}
+
+.result-title {
+    text-align: center;
+    font-size: 20px;
+}
+
+.result-content {
+    padding: 0px 0px 0px 20px;
+    color:grey;
 }
