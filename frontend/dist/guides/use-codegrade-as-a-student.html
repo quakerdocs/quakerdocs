@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Docs
+   How to use CodeGrade as a student — CodeGrade  documentation
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
+  </script>
+ </head>
+ <body>
+  <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
+   <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+     <h1 class="title">
+      CodeGrade
+     </h1>
+    </a>
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+    </a>
+   </div>
+   <div class="navbar-menu">
+    <div class="navbar-start">
+     <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+     <div class="navbar-end">
+     </div>
+    </div>
+   </div>
+  </nav>
+  <section class="main-content columns is-fullheight">
+   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
+    <div class="sphinxsidebarwrapper">
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Guides
+      </span>
+     </p>
+     <ul class="current menu-list">
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
+        How to use CodeGrade as a student
+       </a>
+       <ul>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#handing-in">
+          Handing in
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#viewing-feedback">
+          Viewing feedback
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#giving-peer-feedback">
+          Giving peer feedback
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#viewing-peer-feedback">
+          Viewing peer feedback
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="getting-started-with-codegrade.html">
+        Getting started with CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="autotest-best-practices.html">
+        Best Practices for AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="creating-an-assignment.html">
+        Create a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="set-up-a-rubric-for-an-assignment.html">
+        Set up a rubric for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setting-up-autotest.html">
+        Setting up AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="enabling-continuous-feedback-for-an-assignment.html">
+        Enabling Continuous Feedback for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="set-up-group-assignment.html">
+        Set up a CodeGrade group assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setting-up-hand-in-requirements.html">
+        Set up hand-in requirements for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setting-up-git-uploads.html">
+        Set up Git uploads for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="checking-for-plagiarism.html">
+        Check for plagiarism in a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="dividing-submissions.html">
+        Divide submissions over graders
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+        Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="creating-managing-and-using-snippets.html">
+        Create, manage and use snippets
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setup-password-for-codegrade-account.html">
+        Set up a password for my CodeGrade account
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="using-shortcuts.html">
+        Using shortcuts
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="cannot-find-feature-in-codegrade.html">
+        I cannot find a feature in CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="installing-codegrade-filesystem.html">
+        Install the CodeGrade Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="use-codegrade-filesystem.html">
+        Use the CodeGrade Filesystem to locally mount CodeGrade
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Documentation
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/overview.html">
+        Overview of CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/codeviewer.html">
+        Code Viewer
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/management.html">
+        Course and Assignment Management
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/plagiarism.html">
+        Plagiarism Detection
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/groups.html">
+        Groups
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/permissions.html">
+        Permissions
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/preferences.html">
+        Settings and Site Preferences
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference external" href="https://fs-docs.codegra.de">
+        Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/lms.html">
+        LMS Integration
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/analytics-dashboard.html">
+        Analytics Dashboard
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/exam-mode.html">
+        Exam mode
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/notifications.html">
+        Notifications
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       About CodeGrade
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about/about.html">
+        About CodeGrade
+       </a>
+      </li>
+     </ul>
+     <div id="searchbox" role="search" style="display: none">
+      <h3 id="searchlabel">
+       Quick search
+      </h3>
+      <div class="searchformwrapper">
+       <form action="../search.html" class="search" method="get">
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
+        <input type="submit" value="Go"/>
+       </form>
+      </div>
+     </div>
+     <script>
+      $('#searchbox').show(0);
+     </script>
+    </div>
+   </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
+   <div class="container hero is-fullheight">
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="how-to-use-codegrade-as-a-student">
+        <h1>
+         How to use CodeGrade as a student
+         <a class="headerlink" href="#how-to-use-codegrade-as-a-student" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         Using CodeGrade as a student is easy and offers you the ability to get a lot
+more feedback and optionally automated test results.
+        </p>
+        <p>
+         When you open an assignment in CodeGrade or your LMS (Blackboard, Brightspace,
+Canvas, Moddle, etc.) you are presented with a number of actions you can
+perform.
+        </p>
+        <ul class="simple">
+         <li>
+          <p>
+           <strong>
+            Latest submission
+           </strong>
+           : Go to your latest submission.
+          </p>
+         </li>
+         <li>
+          <p>
+           <strong>
+            Upload files
+           </strong>
+           : Create a new submission by uploading files.
+          </p>
+         </li>
+         <li>
+          <p>
+           <strong>
+            Set up Git
+           </strong>
+           : Show instructions on how to connect a Git provider to your
+assignment, this allows you to create submissions by pushing to a Git
+repository.
+          </p>
+         </li>
+         <li>
+          <p>
+           <strong>
+            Rubric
+           </strong>
+           : Show the rubric of this assignment.
+          </p>
+         </li>
+         <li>
+          <p>
+           <strong>
+            Groups
+           </strong>
+           : Create and/or join groups.
+          </p>
+         </li>
+         <li>
+          <p>
+           <strong>
+            Peer feedback
+           </strong>
+           : Give feedback to your fellow students.
+          </p>
+         </li>
+         <li>
+          <p>
+           <strong>
+            Course feedback
+           </strong>
+           : Show an overview of the feedback you received to all
+assignments of this course.
+          </p>
+         </li>
+        </ul>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          Some of these are not available when they are not applicable, e.g. when an
+assignment is not set up as a group assignment, the groups button will be
+hidden.
+         </p>
+        </div>
+        <section id="handing-in">
+         <h2>
+          Handing in
+          <a class="headerlink" href="#handing-in" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Click the “Upload files” button.
+           </p>
+          </li>
+          <li>
+           <p>
+            Optionally, if the teacher has set hand-in instructions, they are displayed
+at the top of the page. Make sure to follow your teacher’s requirements when
+uploading files!
+           </p>
+          </li>
+          <li>
+           <p>
+            You can either drag and drop files onto the upload field or select them via
+your browser’s file picker dialog. You can either upload separate files, or
+an archive (such as a zip or tar). Archives are automatically extracted (but
+archives contained in other archives are not).
+           </p>
+          </li>
+          <li>
+           <p>
+            Press submit.
+           </p>
+          </li>
+          <li>
+           <p>
+            If the teacher enabled Continuous Feedback, you will now be able to see
+Automated Test results coming in (this might take a few minutes).
+           </p>
+          </li>
+         </ol>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           Keep in mind that Continuous Feedback is preliminary, and the rubric will
+not yet be filled in. You only get a grade after the deadline when the
+teacher graded your assignment.
+          </p>
+         </div>
+         <ol class="arabic simple" start="6">
+          <li>
+           <p>
+            Click on tests to see why they succeeded or failed. Improve your code and
+try again.
+           </p>
+          </li>
+         </ol>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           Always test your code first on your own system to make sure it works,
+before uploading to CodeGrade.
+          </p>
+         </div>
+         <section id="handing-in-with-git">
+          <h3>
+           Handing in with Git
+           <a class="headerlink" href="#handing-in-with-git" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           Some CodeGrade assignments allow you to hand in code by pushing to a Git
+repository (GitLab or Github). If an assignment is set up to allow for Git
+submissions the “Set up Git” button shows you instructions on how to set up a
+deploy key and webhook URL for your repository.
+          </p>
+          <div class="admonition note">
+           <p class="admonition-title">
+            Note
+           </p>
+           <p>
+            Working in a group
+            <strong>
+             and
+            </strong>
+            handing in using Git? Make sure all members of
+the group have opened the CodeGrade assignment in Canvas, Moodle,
+Blackboard or Brightspace before handing in.
+            <em>
+             This does not apply to stand-
+alone usage of CodeGrade!
+            </em>
+           </p>
+          </div>
+          <div class="admonition warning">
+           <p class="admonition-title">
+            Warning
+           </p>
+           <p>
+            CodeGrade has a size limit for uploading submissions. Handing in via git
+can result in files exceeding this size limit to be silently deleted. Always
+check your submission in CodeGrade when working with large repositories.
+            <em>
+             If the size limit is exceeded, a file named ``cg-size-limit-exceeded``
+will show up in your submission.
+            </em>
+           </p>
+          </div>
+         </section>
+        </section>
+        <section id="viewing-feedback">
+         <h2>
+          Viewing feedback
+          <a class="headerlink" href="#viewing-feedback" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          After your assignment is graded, you can view your feedback through CodeGrade.
+         </p>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Navigate to the assignment, or click on your grade in the grade center.
+           </p>
+          </li>
+          <li>
+           <p>
+            View your feedback. On the Feedback Overview, you can view your inline
+feedback comments with some context. Browse to the Code to view the inline
+feedback with all of your code. Finally, on the AutoTest tab you can view
+the output of the Automated Testing system.
+           </p>
+          </li>
+         </ol>
+        </section>
+        <section id="giving-peer-feedback">
+         <h2>
+          Giving peer feedback
+          <a class="headerlink" href="#giving-peer-feedback" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          When an assignment is set up as a peer feedback assignment, you can review
+assignments of your fellow students by clicking on the “Peer feedback” button.
+You are now presented with a list of the other students you have to review. At
+the bottom of the list it tells you the deadline for giving peer feedback.
+         </p>
+         <p>
+          After you click on the student you want to review, you are taken to the Code
+Viewer page of their latest submission. Click on any line of code to comment on
+it.
+         </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           It may be possible that the other student does not receive your feedback
+immediately. This happens when your teacher has set up the assignment to
+not automatically approve peer feedback comments. In this case a teacher or
+teaching assistant must manually approve a comment for it to be published
+to the other student.
+          </p>
+         </div>
+         <section id="number-of-given-comments">
+          <h3>
+           Number of given comments
+           <a class="headerlink" href="#number-of-given-comments" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           On the right side of the list with students you have to review, it shows the
+number of comments you have already given to each student. It may contain two
+numbers when the other student has done another submission after you have
+already given them some feedback. If this happens, the first number is the
+amount of comments you have given on their latest submission, and the
+second is the total amount of comments you placed on all of their submissions
+(the last one included).
+          </p>
+         </section>
+        </section>
+        <section id="viewing-peer-feedback">
+         <h2>
+          Viewing peer feedback
+          <a class="headerlink" href="#viewing-peer-feedback" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          On the Code Viewer page of your own submission, the feedback you have received
+will be visible within your code, just like the feedback you receive from your
+teacher. You can also go to the feedback overview to get an overview of all
+feedback you have received, both from teachers and your peers.
+         </p>
+         <p>
+          An extra “Peer Feedback” tab is also available on the Code Viewer page, where
+you can get an overview of all feedback you have given. Click on the entries on
+the right side of the page to move between students and files. At the bottom of
+this page it shows you a list of students you have been assigned but have not
+yet given feedback to, if any.
+         </p>
+        </section>
+       </section>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+ </body>
+</html>

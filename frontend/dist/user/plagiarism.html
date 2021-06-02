@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Docs
+   Plagiarism Detection — CodeGrade  documentation
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
+  </script>
+ </head>
+ <body>
+  <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
+   <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+     <h1 class="title">
+      CodeGrade
+     </h1>
+    </a>
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+    </a>
+   </div>
+   <div class="navbar-menu">
+    <div class="navbar-start">
+     <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+     <div class="navbar-end">
+     </div>
+    </div>
+   </div>
+  </nav>
+  <section class="main-content columns is-fullheight">
+   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
+    <div class="sphinxsidebarwrapper">
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Guides
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/use-codegrade-as-a-student.html">
+        How to use CodeGrade as a student
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/getting-started-with-codegrade.html">
+        Getting started with CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/autotest-best-practices.html">
+        Best Practices for AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/creating-an-assignment.html">
+        Create a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/set-up-a-rubric-for-an-assignment.html">
+        Set up a rubric for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-autotest.html">
+        Setting up AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/enabling-continuous-feedback-for-an-assignment.html">
+        Enabling Continuous Feedback for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/set-up-group-assignment.html">
+        Set up a CodeGrade group assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-hand-in-requirements.html">
+        Set up hand-in requirements for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-git-uploads.html">
+        Set up Git uploads for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/checking-for-plagiarism.html">
+        Check for plagiarism in a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/dividing-submissions.html">
+        Divide submissions over graders
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+        Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/creating-managing-and-using-snippets.html">
+        Create, manage and use snippets
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setup-password-for-codegrade-account.html">
+        Set up a password for my CodeGrade account
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/using-shortcuts.html">
+        Using shortcuts
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/cannot-find-feature-in-codegrade.html">
+        I cannot find a feature in CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/installing-codegrade-filesystem.html">
+        Install the CodeGrade Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/use-codegrade-filesystem.html">
+        Use the CodeGrade Filesystem to locally mount CodeGrade
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Documentation
+      </span>
+     </p>
+     <ul class="current menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="overview.html">
+        Overview of CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="codeviewer.html">
+        Code Viewer
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="management.html">
+        Course and Assignment Management
+       </a>
+      </li>
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
+        Plagiarism Detection
+       </a>
+       <ul>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#running-the-plagiarism-checker">
+          Running the Plagiarism Checker
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#reviewing-plagiarism">
+          Reviewing Plagiarism
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="groups.html">
+        Groups
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="permissions.html">
+        Permissions
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="preferences.html">
+        Settings and Site Preferences
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference external" href="https://fs-docs.codegra.de">
+        Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="lms.html">
+        LMS Integration
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="analytics-dashboard.html">
+        Analytics Dashboard
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="exam-mode.html">
+        Exam mode
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="notifications.html">
+        Notifications
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       About CodeGrade
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about/about.html">
+        About CodeGrade
+       </a>
+      </li>
+     </ul>
+     <div id="searchbox" role="search" style="display: none">
+      <h3 id="searchlabel">
+       Quick search
+      </h3>
+      <div class="searchformwrapper">
+       <form action="../search.html" class="search" method="get">
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
+        <input type="submit" value="Go"/>
+       </form>
+      </div>
+     </div>
+     <script>
+      $('#searchbox').show(0);
+     </script>
+    </div>
+   </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
+   <div class="container hero is-fullheight">
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <p>
+        piup.. _plagiarism-chapter:
+       </p>
+       <section id="plagiarism-detection">
+        <h1>
+         Plagiarism Detection
+         <a class="headerlink" href="#plagiarism-detection" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade’s code plagiarism detection feature can be found on the
+         <a class="reference internal" href="management.html#management-chapter">
+          <span class="std std-ref">
+           assignment management
+          </span>
+         </a>
+         page. Here, new plagiarism
+runs can be done and previous runs can be examined for plagiarism.
+        </p>
+        <div class="admonition warning">
+         <p class="admonition-title">
+          Warning
+         </p>
+         <p>
+          Individual plagiarism cases should always be manually reviewed.
+         </p>
+        </div>
+        <section id="running-the-plagiarism-checker">
+         <h2>
+          Running the Plagiarism Checker
+          <a class="headerlink" href="#running-the-plagiarism-checker" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          As of writing, CodeGrade offers plagiarism detection using the
+          <a class="reference external" href="https://github.com/jplag/jplag">
+           JPlag
+          </a>
+          code plagiarism detection tool.
+Alternative plagiarism tools will be supported in the near future.
+         </p>
+         <p>
+          Multiple settings can be set when checking for plagiarism:
+         </p>
+         <ul class="simple">
+          <li>
+           <p>
+            The programming language has to be selected from a list of supported
+languages. If the required language is not present in the list, it is no
+problem to select a language with similar syntax and structure.
+           </p>
+          </li>
+          <li>
+           <p>
+            Suffixes, separated by commas, of the files to include can be given. Set to
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              .*
+             </span>
+            </code>
+            to include files with all suffixes and leave empty to automatically
+select suffixes based on the chosen programming language.
+           </p>
+          </li>
+          <li>
+           <p>
+            The minimal average similarity of a case to include in the results can be
+set. For JPlag this is a percentage:
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              100
+             </span>
+            </code>
+            means exactly the same and
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              50
+             </span>
+            </code>
+            means an average of 50%. This is default set to
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              25
+             </span>
+            </code>
+            .
+           </p>
+          </li>
+          <li>
+           <p>
+            Finally an old assignment can be selected to include in the plagiarism check.
+This can for instance be the same assignment from a previous year or course.
+Submissions from previous assignments are only used to check with current
+submissions and cases between two previous submissions are not included in
+the results.
+           </p>
+          </li>
+         </ul>
+         <p>
+          Additionally, instead of selecting an old CodeGrade assignment to check against,
+an archive with old submissions to check against can be uploaded.
+This should be an archive whose top level entries are treated as a separate
+submission. The top level entry can either be a directory or archive whose
+contents count as a submission, or a single regular file which counts as the
+entire submission.
+         </p>
+         <p>
+          Finally, an archive with
+          <em>
+           base code
+          </em>
+          can be uploaded. Code in this archive will
+be excluded in the plagiarism check to reduce the amount of false positives.
+         </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           It is often a good practice to upload template code or provided code
+snippets as
+           <em>
+            base code
+           </em>
+           to be excluded.
+          </p>
+         </div>
+         <section id="jplag-characteristics">
+          <h3>
+           JPlag Characteristics
+           <a class="headerlink" href="#jplag-characteristics" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           JPlag is an open source software plagiarism detection tool that is developed by
+the Karlsruhe Institute of Technology, who describe JPlag as:
+          </p>
+          <blockquote>
+           <div>
+            <p>
+             JPlag is a system that finds similarities among multiple sets of source
+code files.  This way it can detect software plagiarism. JPlag does not
+merely compare bytes of text, but is aware of programming language syntax
+and program structure and hence is robust against many kinds of attempts to
+disguise similarities between plagiarized files.  JPlag currently supports
+Java, C#, C, C++, Scheme and natural language text.
+            </p>
+            <p>
+             JPlag is typically used to detect and thus discourage the unallowed copying
+of student exercise programs in programming education. But in principle it
+can also be used to detect stolen software parts among large amounts of
+source text or modules that have been duplicated (and only slightly
+modified). JPlag has already played a part in several intellectual property
+cases where it has been successfully used by expert witnesses.
+            </p>
+           </div>
+          </blockquote>
+          <p>
+           Taken from
+           <a class="reference external" href="https://jplag.ipd.kit.edu/">
+            JPlag
+           </a>
+           , please consult for more
+information.
+          </p>
+         </section>
+         <section id="extend-jplag-with-codegrade">
+          <h3>
+           Extend JPlag with CodeGrade
+           <a class="headerlink" href="#extend-jplag-with-codegrade" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           At CodeGrade we have extended JPlag to understand a lot more languages at the
+request of our partners. Do you need support for a language that is not on the
+list of supported languages? Send us an email at
+           <a class="reference external" href="mailto:support%40codegrade.com">
+            support
+            <span>
+             @
+            </span>
+            codegrade
+            <span>
+             .
+            </span>
+            com
+           </a>
+           and we’ll see what we can do!
+          </p>
+          <p>
+           The languages we have added so far are:
+          </p>
+          <ul class="simple">
+           <li>
+            <p>
+             JavaScript
+            </p>
+           </li>
+           <li>
+            <p>
+             JSON
+            </p>
+           </li>
+           <li>
+            <p>
+             Jupyter notebooks
+            </p>
+           </li>
+           <li>
+            <p>
+             PHP
+            </p>
+           </li>
+           <li>
+            <p>
+             R
+            </p>
+           </li>
+           <li>
+            <p>
+             Scala
+            </p>
+           </li>
+          </ul>
+         </section>
+        </section>
+        <section id="reviewing-plagiarism">
+         <h2>
+          Reviewing Plagiarism
+          <a class="headerlink" href="#reviewing-plagiarism" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          After the plagiarism checker is done running, its results can be found under the
+          <em>
+           Previous Runs
+          </em>
+          tab. The run can be deleted by pressing the
+          <a href="#id1">
+           <span class="problematic" id="id2">
+            :fa:`times`
+           </span>
+          </a>
+          button
+or reviewed by clicking on the entry itself to find an overview page with all
+the potential plagiarism cases.
+         </p>
+         <p>
+          This overview page displays potential plagiarism cases between students, with
+the maximum score and the average score. The cases can be filtered on student
+name by using the filter bar on top.
+         </p>
+         <p>
+          More details can be found by clicking on the individual cases. The individual
+plagiarism comparison page displays the specific correspondences found between
+the submissions of the students. These individual correspondences are coloured
+differently, clicking a correspondence will display the correspondence in
+the code. This page can be used to review the individual plagiarism cases.
+         </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           Use the plagiarism button in the sidebar to quickly toggle between plagiarism cases when reviewing individual cases.
+          </p>
+         </div>
+         <section id="exporting-plagiarism-cases">
+          <h3>
+           Exporting Plagiarism Cases
+           <a class="headerlink" href="#exporting-plagiarism-cases" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           A report for an individual potential plagiarism case can be exported from the
+individual plagiarism comparison page. Either a
+           <a class="reference external" href="https://www.latex-project.org/">
+            LaTeX
+           </a>
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             .tex
+            </span>
+           </code>
+           or a
+           <a class="reference external" href="https://docs.microsoft.com/en-us/openspecs/office_standards/ms-docx/b839fe1f-e1ca-4fa6-8c26-5954d0abbccd">
+            Docx
+           </a>
+           file that includes the code segments and can be supplemented with additional
+comments can be exported.
+          </p>
+          <p>
+           Select the plagiarism correspondences to be included in the report and press the
+           <em>
+            Export
+           </em>
+           button to generate the
+           <cite>
+            .tex
+           </cite>
+           file.
+          </p>
+          <p>
+           Optionally, select the
+           <em>
+            Each listing on a separate page
+           </em>
+           option under
+           <strong>
+            Options
+           </strong>
+           to have each listing (i.e. printed code segment) on a new page.
+          </p>
+          <div class="admonition note">
+           <p class="admonition-title">
+            Note
+           </p>
+           <p>
+            Make sure pop-ups from CodeGrade are allowed in your browser if downloading fails.
+           </p>
+          </div>
+         </section>
+        </section>
+       </section>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+ </body>
+</html>

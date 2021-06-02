@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Docs
+   The CodeGrade Documentation — CodeGrade  documentation
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
+  </script>
+ </head>
+ <body>
+  <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
+   <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+     <h1 class="title">
+      CodeGrade
+     </h1>
+    </a>
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+    </a>
+   </div>
+   <div class="navbar-menu">
+    <div class="navbar-start">
+     <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+     <div class="navbar-end">
+     </div>
+    </div>
+   </div>
+  </nav>
+  <section class="main-content columns is-fullheight">
+   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
+    <div class="sphinxsidebarwrapper">
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Guides
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/use-codegrade-as-a-student.html">
+        How to use CodeGrade as a student
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/getting-started-with-codegrade.html">
+        Getting started with CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/autotest-best-practices.html">
+        Best Practices for AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/creating-an-assignment.html">
+        Create a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/set-up-a-rubric-for-an-assignment.html">
+        Set up a rubric for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/setting-up-autotest.html">
+        Setting up AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/enabling-continuous-feedback-for-an-assignment.html">
+        Enabling Continuous Feedback for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/set-up-group-assignment.html">
+        Set up a CodeGrade group assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/setting-up-hand-in-requirements.html">
+        Set up hand-in requirements for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/setting-up-git-uploads.html">
+        Set up Git uploads for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/checking-for-plagiarism.html">
+        Check for plagiarism in a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/dividing-submissions.html">
+        Divide submissions over graders
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+        Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/creating-managing-and-using-snippets.html">
+        Create, manage and use snippets
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/setup-password-for-codegrade-account.html">
+        Set up a password for my CodeGrade account
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/using-shortcuts.html">
+        Using shortcuts
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/cannot-find-feature-in-codegrade.html">
+        I cannot find a feature in CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/installing-codegrade-filesystem.html">
+        Install the CodeGrade Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="guides/use-codegrade-filesystem.html">
+        Use the CodeGrade Filesystem to locally mount CodeGrade
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Documentation
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/overview.html">
+        Overview of CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/codeviewer.html">
+        Code Viewer
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/management.html">
+        Course and Assignment Management
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/plagiarism.html">
+        Plagiarism Detection
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/groups.html">
+        Groups
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/permissions.html">
+        Permissions
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/preferences.html">
+        Settings and Site Preferences
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference external" href="https://fs-docs.codegra.de">
+        Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/lms.html">
+        LMS Integration
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/analytics-dashboard.html">
+        Analytics Dashboard
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/exam-mode.html">
+        Exam mode
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="user/notifications.html">
+        Notifications
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       About CodeGrade
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="about/about.html">
+        About CodeGrade
+       </a>
+      </li>
+     </ul>
+     <div id="searchbox" role="search" style="display: none">
+      <h3 id="searchlabel">
+       Quick search
+      </h3>
+      <div class="searchformwrapper">
+       <form action="search.html" class="search" method="get">
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
+        <input type="submit" value="Go"/>
+       </form>
+      </div>
+     </div>
+     <script>
+      $('#searchbox').show(0);
+     </script>
+    </div>
+   </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
+   <div class="container hero is-fullheight">
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section class="fa fa-fontawesome" id="the-codegrade-documentation">
+        <h1>
+         The CodeGrade Documentation
+         <a class="headerlink" href="#the-codegrade-documentation" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         Not using CodeGrade yet at your institution? Find more information and contact
+details on
+         <a class="reference external" href="https://codegrade.com">
+          the CodeGrade website
+         </a>
+         .
+        </p>
+        <div class="toctree-wrapper compound" id="user-guides">
+         <p class="caption">
+          <span class="caption-text">
+           User Guides
+          </span>
+         </p>
+         <ul>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/use-codegrade-as-a-student.html">
+            How to use CodeGrade as a student
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/use-codegrade-as-a-student.html#handing-in">
+              Handing in
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/use-codegrade-as-a-student.html#viewing-feedback">
+              Viewing feedback
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/use-codegrade-as-a-student.html#giving-peer-feedback">
+              Giving peer feedback
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/use-codegrade-as-a-student.html#viewing-peer-feedback">
+              Viewing peer feedback
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/getting-started-with-codegrade.html">
+            Getting started with CodeGrade
+           </a>
+           <ul class="simple">
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/autotest-best-practices.html">
+            Best Practices for AutoTest
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#when-to-use-hidden-steps">
+              When to use hidden steps?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#where-do-i-compile-students-code-and-how-do-i-stop-when-compiling-fails">
+              Where do I compile students’ code (and how do I stop when compiling fails?)
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-use-weights-and-set-rubric-points-when-using-a-discrete-rubric-category">
+              How to use weights and set rubric points when using a discrete rubric category?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-manually-adjust-autotest-grades">
+              How to manually adjust AutoTest grades?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-install-packages-and-third-party-software">
+              How to install packages and third party software?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-assess-style-and-structure">
+              How to assess style and structure?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-use-a-unit-testing-framework">
+              How to use a unit testing framework?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-integrate-existing-grading-scripts">
+              How to integrate existing grading scripts?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-do-i-combine-autotest-and-manual-function-testing">
+              How do I combine AutoTest and manual function testing?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-hide-fixtures">
+              How to hide fixtures?
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-use-io-tests-with-floating-point-numbers">
+              How to use IO tests with floating point numbers
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-let-io-tests-pass-when-the-exit-code-is-not-0">
+              How to let IO tests pass when the exit code is not 0
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-view-autotest-generated-files">
+              How to view AutoTest generated files
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/autotest-best-practices.html#how-to-access-submission-metadata-from-the-tests">
+              How to access submission metadata from the tests
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/creating-an-assignment.html">
+            Create a CodeGrade assignment
+           </a>
+           <ul class="simple">
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/set-up-a-rubric-for-an-assignment.html">
+            Set up a rubric for an assignment
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/set-up-a-rubric-for-an-assignment.html#references">
+              References
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/setting-up-autotest.html">
+            Setting up AutoTest
+           </a>
+           <ul class="simple">
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/enabling-continuous-feedback-for-an-assignment.html">
+            Enabling Continuous Feedback for an assignment
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/set-up-group-assignment.html">
+            Set up a CodeGrade group assignment
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/setting-up-hand-in-requirements.html">
+            Set up hand-in requirements for a CodeGrade assignment
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/setting-up-git-uploads.html">
+            Set up Git uploads for a CodeGrade assignment
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/checking-for-plagiarism.html">
+            Check for plagiarism in a CodeGrade assignment
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/dividing-submissions.html">
+            Divide submissions over graders
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/dividing-submissions.html#manually-dividing-submissions">
+              Manually dividing submissions
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/dividing-submissions.html#randomly-dividing-submissions">
+              Randomly dividing submissions
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/dividing-submissions.html#connecting-divisions-between-assignments">
+              Connecting divisions between assignments
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+            Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/creating-managing-and-using-snippets.html">
+            Create, manage and use snippets
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/creating-managing-and-using-snippets.html#personal-snippets">
+              Personal Snippets
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/creating-managing-and-using-snippets.html#course-snippets">
+              Course Snippets
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="guides/creating-managing-and-using-snippets.html#using-snippets">
+              Using snippets
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/setup-password-for-codegrade-account.html">
+            Set up a password for my CodeGrade account
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/using-shortcuts.html">
+            Using shortcuts
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/cannot-find-feature-in-codegrade.html">
+            I cannot find a feature in CodeGrade
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/installing-codegrade-filesystem.html">
+            Install the CodeGrade Filesystem
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="guides/use-codegrade-filesystem.html">
+            Use the CodeGrade Filesystem to locally mount CodeGrade
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="toctree-wrapper compound">
+         <p class="caption">
+          <span class="caption-text">
+           User Documentation
+          </span>
+         </p>
+         <ul>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/overview.html">
+            Overview of CodeGrade
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/overview.html#general-site">
+              General Site
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/overview.html#filesystem">
+              Filesystem
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/overview.html#account-management">
+              Account Management
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/codeviewer.html">
+            Code Viewer
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/codeviewer.html#code-viewer-for-teachers">
+              Code Viewer for Teachers
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/codeviewer.html#code-viewer-for-students">
+              Code Viewer for Students
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/codeviewer.html#settings">
+              Settings
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/management.html">
+            Course and Assignment Management
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/management.html#course-management">
+              Course Management
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/management.html#assignment-management">
+              Assignment Management
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/plagiarism.html">
+            Plagiarism Detection
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/plagiarism.html#running-the-plagiarism-checker">
+              Running the Plagiarism Checker
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/plagiarism.html#reviewing-plagiarism">
+              Reviewing Plagiarism
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/groups.html">
+            Groups
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/groups.html#group-set">
+              Group set
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/groups.html#id1">
+              Groups
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/permissions.html">
+            Permissions
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/permissions.html#site-permissions">
+              Site Permissions
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/permissions.html#course-permissions">
+              Course Permissions
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/preferences.html">
+            Settings and Site Preferences
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/preferences.html#site-preferences">
+              Site Preferences
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/preferences.html#account-information-settings">
+              Account Information Settings
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/preferences.html#manage-site">
+              Manage Site
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference external" href="https://fs-docs.codegra.de">
+            Filesystem
+           </a>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/lms.html">
+            LMS Integration
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#blackboard">
+              Blackboard
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#brightspace">
+              Brightspace
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#canvas">
+              Canvas
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#moodle">
+              Moodle
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#sakai">
+              Sakai
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#other-lms">
+              Other LMS
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/lms.html#codegrade-lms-behaviour">
+              CodeGrade LMS Behaviour
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/analytics-dashboard.html">
+            Analytics Dashboard
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#general-statistics">
+              General statistics
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#filters">
+              Filters
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#submission-statistics">
+              Submission statistics
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#grade-statistics">
+              Grade statistics
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#rubric-statistics">
+              Rubric statistics
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#relative-statistics">
+              Relative statistics
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/analytics-dashboard.html#examples">
+              Examples
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/exam-mode.html">
+            Exam mode
+           </a>
+           <ul>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/exam-mode.html#exam-duration">
+              Exam duration
+             </a>
+            </li>
+            <li class="toctree-l2">
+             <a class="reference internal" href="user/exam-mode.html#student-login-links">
+              Student login links
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="toctree-l1">
+           <a class="reference internal" href="user/notifications.html">
+            Notifications
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="toctree-wrapper compound">
+         <p class="caption">
+          <span class="caption-text">
+           About CodeGrade
+          </span>
+         </p>
+         <ul>
+          <li class="toctree-l1">
+           <a class="reference internal" href="about/about.html">
+            About CodeGrade
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="toctree-wrapper compound">
+        </div>
+       </section>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+ </body>
+</html>

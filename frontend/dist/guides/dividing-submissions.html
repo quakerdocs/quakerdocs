@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Docs
+   Divide submissions over graders — CodeGrade  documentation
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
+  </script>
+ </head>
+ <body>
+  <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
+   <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+     <h1 class="title">
+      CodeGrade
+     </h1>
+    </a>
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+    </a>
+   </div>
+   <div class="navbar-menu">
+    <div class="navbar-start">
+     <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+     <div class="navbar-end">
+     </div>
+    </div>
+   </div>
+  </nav>
+  <section class="main-content columns is-fullheight">
+   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
+    <div class="sphinxsidebarwrapper">
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Guides
+      </span>
+     </p>
+     <ul class="current menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="use-codegrade-as-a-student.html">
+        How to use CodeGrade as a student
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="getting-started-with-codegrade.html">
+        Getting started with CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="autotest-best-practices.html">
+        Best Practices for AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="creating-an-assignment.html">
+        Create a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="set-up-a-rubric-for-an-assignment.html">
+        Set up a rubric for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setting-up-autotest.html">
+        Setting up AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="enabling-continuous-feedback-for-an-assignment.html">
+        Enabling Continuous Feedback for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="set-up-group-assignment.html">
+        Set up a CodeGrade group assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setting-up-hand-in-requirements.html">
+        Set up hand-in requirements for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setting-up-git-uploads.html">
+        Set up Git uploads for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="checking-for-plagiarism.html">
+        Check for plagiarism in a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
+        Divide submissions over graders
+       </a>
+       <ul>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#manually-dividing-submissions">
+          Manually dividing submissions
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#randomly-dividing-submissions">
+          Randomly dividing submissions
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#connecting-divisions-between-assignments">
+          Connecting divisions between assignments
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+        Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="creating-managing-and-using-snippets.html">
+        Create, manage and use snippets
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="setup-password-for-codegrade-account.html">
+        Set up a password for my CodeGrade account
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="using-shortcuts.html">
+        Using shortcuts
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="cannot-find-feature-in-codegrade.html">
+        I cannot find a feature in CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="installing-codegrade-filesystem.html">
+        Install the CodeGrade Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="use-codegrade-filesystem.html">
+        Use the CodeGrade Filesystem to locally mount CodeGrade
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Documentation
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/overview.html">
+        Overview of CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/codeviewer.html">
+        Code Viewer
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/management.html">
+        Course and Assignment Management
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/plagiarism.html">
+        Plagiarism Detection
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/groups.html">
+        Groups
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/permissions.html">
+        Permissions
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/preferences.html">
+        Settings and Site Preferences
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference external" href="https://fs-docs.codegra.de">
+        Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/lms.html">
+        LMS Integration
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/analytics-dashboard.html">
+        Analytics Dashboard
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/exam-mode.html">
+        Exam mode
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../user/notifications.html">
+        Notifications
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       About CodeGrade
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about/about.html">
+        About CodeGrade
+       </a>
+      </li>
+     </ul>
+     <div id="searchbox" role="search" style="display: none">
+      <h3 id="searchlabel">
+       Quick search
+      </h3>
+      <div class="searchformwrapper">
+       <form action="../search.html" class="search" method="get">
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
+        <input type="submit" value="Go"/>
+       </form>
+      </div>
+     </div>
+     <script>
+      $('#searchbox').show(0);
+     </script>
+    </div>
+   </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
+   <div class="container hero is-fullheight">
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="divide-submissions-over-graders">
+        <span id="dividing-submissions">
+        </span>
+        <h1>
+         Divide submissions over graders
+         <a class="headerlink" href="#divide-submissions-over-graders" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade offers multiple tools to divide submissions over the graders in your
+course. Graders can be divided manually or randomly. Additionally, divisions
+(both manual or random) can be reused over multiple assignments.
+        </p>
+        <p>
+         Dividing submissions over your graders has multiple advantages. In addition to
+having a clear way to communicate with your graders, it also allows your graders
+to easily filter the submission-lists on the CodeGrade website and in the
+Filesystem to only show their submissions to grade.
+        </p>
+        <section id="manually-dividing-submissions">
+         <h2>
+          Manually dividing submissions
+          <a class="headerlink" href="#manually-dividing-submissions" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Navigate to the
+            <strong>
+             “Submission list”
+            </strong>
+            of an assignment, by simply clicking on the name of the assignment.
+           </p>
+          </li>
+          <li>
+           <p>
+            If available, uncheck the
+            <strong>
+             “Assigned to me”
+            </strong>
+            filter to display a list of all submissions.
+           </p>
+          </li>
+          <li>
+           <p>
+            It is now possible to manually divide the submissions by using the dropdown in the
+            <strong>
+             “Assigned to”
+            </strong>
+            column. This dropdown shows all graders available in this course.
+           </p>
+          </li>
+          <li>
+           <p>
+            Click any grader in this list to assign the submission to this grader.
+           </p>
+          </li>
+         </ol>
+        </section>
+        <section id="randomly-dividing-submissions">
+         <h2>
+          Randomly dividing submissions
+          <a class="headerlink" href="#randomly-dividing-submissions" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Go to the
+            <strong>
+             Assignment Management
+            </strong>
+            page for the assignment you want to do divide the submissions for by clicking on the
+            <a href="#id1">
+             <span class="problematic" id="id2">
+              :fa:`cog`
+             </span>
+            </a>
+            button.
+           </p>
+          </li>
+          <li>
+           <p>
+            Navigate to the
+            <strong>
+             “Graders”
+            </strong>
+            tab to find the grading dashboard with a list of all graders available in this assignment.
+           </p>
+          </li>
+          <li>
+           <p>
+            Select the graders you want to divide the submissions over in the
+            <strong>
+             “Divide Submissions”
+            </strong>
+            section, optionally adjust the weight or percentages of the graders.
+           </p>
+          </li>
+          <li>
+           <p>
+            Press the
+            <strong>
+             “Divide”
+            </strong>
+            button to the divide the submissions over the selected graders in respect to the given weights.
+           </p>
+          </li>
+         </ol>
+        </section>
+        <section id="connecting-divisions-between-assignments">
+         <h2>
+          Connecting divisions between assignments
+          <a class="headerlink" href="#connecting-divisions-between-assignments" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          It is possible to re-use both manual and random divisions in other assignments.
+For instance if you require the same graders to grade the same students /
+submissions for all assignments. Once you have divided the submissions on one
+assignment following either of the above methods, you can follow the steps
+below to connect this division to other assignments too:
+         </p>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            Go to the
+            <strong>
+             Assignment Management
+            </strong>
+            page for the assignment you want to connect to the division of a previous assignment by clicking on the
+            <a href="#id3">
+             <span class="problematic" id="id4">
+              :fa:`cog`
+             </span>
+            </a>
+            button.
+           </p>
+          </li>
+          <li>
+           <p>
+            Navigate to the
+            <strong>
+             “Graders”
+            </strong>
+            tab to find the grading dashboard with a list of all graders available in this assignment.
+           </p>
+          </li>
+          <li>
+           <p>
+            In the
+            <strong>
+             “Divide Submissions”
+            </strong>
+            section, use the
+            <strong>
+             “Connect divisions to”
+            </strong>
+            dropdown to select the assignment you want to connect the divisions to.
+           </p>
+          </li>
+         </ol>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           Changing divisions in an assignment that is connected to a previously divided
+assignment will not change the division for the previous assignment
+           <strong>
+            or
+           </strong>
+           for other assignments connected to this previous assignment.
+          </p>
+         </div>
+        </section>
+       </section>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+ </body>
+</html>

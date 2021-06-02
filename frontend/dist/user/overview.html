@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Docs
+   Overview of CodeGrade — CodeGrade  documentation
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
+  </script>
+ </head>
+ <body>
+  <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
+   <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+     <h1 class="title">
+      CodeGrade
+     </h1>
+    </a>
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+    </a>
+   </div>
+   <div class="navbar-menu">
+    <div class="navbar-start">
+     <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+     <div class="navbar-end">
+     </div>
+    </div>
+   </div>
+  </nav>
+  <section class="main-content columns is-fullheight">
+   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
+    <div class="sphinxsidebarwrapper">
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Guides
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/use-codegrade-as-a-student.html">
+        How to use CodeGrade as a student
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/getting-started-with-codegrade.html">
+        Getting started with CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/autotest-best-practices.html">
+        Best Practices for AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/creating-an-assignment.html">
+        Create a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/set-up-a-rubric-for-an-assignment.html">
+        Set up a rubric for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-autotest.html">
+        Setting up AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/enabling-continuous-feedback-for-an-assignment.html">
+        Enabling Continuous Feedback for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/set-up-group-assignment.html">
+        Set up a CodeGrade group assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-hand-in-requirements.html">
+        Set up hand-in requirements for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-git-uploads.html">
+        Set up Git uploads for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/checking-for-plagiarism.html">
+        Check for plagiarism in a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/dividing-submissions.html">
+        Divide submissions over graders
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+        Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/creating-managing-and-using-snippets.html">
+        Create, manage and use snippets
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setup-password-for-codegrade-account.html">
+        Set up a password for my CodeGrade account
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/using-shortcuts.html">
+        Using shortcuts
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/cannot-find-feature-in-codegrade.html">
+        I cannot find a feature in CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/installing-codegrade-filesystem.html">
+        Install the CodeGrade Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/use-codegrade-filesystem.html">
+        Use the CodeGrade Filesystem to locally mount CodeGrade
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Documentation
+      </span>
+     </p>
+     <ul class="current menu-list">
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
+        Overview of CodeGrade
+       </a>
+       <ul>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#general-site">
+          General Site
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#filesystem">
+          Filesystem
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#account-management">
+          Account Management
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="codeviewer.html">
+        Code Viewer
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="management.html">
+        Course and Assignment Management
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="plagiarism.html">
+        Plagiarism Detection
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="groups.html">
+        Groups
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="permissions.html">
+        Permissions
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="preferences.html">
+        Settings and Site Preferences
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference external" href="https://fs-docs.codegra.de">
+        Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="lms.html">
+        LMS Integration
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="analytics-dashboard.html">
+        Analytics Dashboard
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="exam-mode.html">
+        Exam mode
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="notifications.html">
+        Notifications
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       About CodeGrade
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about/about.html">
+        About CodeGrade
+       </a>
+      </li>
+     </ul>
+     <div id="searchbox" role="search" style="display: none">
+      <h3 id="searchlabel">
+       Quick search
+      </h3>
+      <div class="searchformwrapper">
+       <form action="../search.html" class="search" method="get">
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
+        <input type="submit" value="Go"/>
+       </form>
+      </div>
+     </div>
+     <script>
+      $('#searchbox').show(0);
+     </script>
+    </div>
+   </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
+   <div class="container hero is-fullheight">
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="overview-of-codegrade">
+        <h1>
+         Overview of CodeGrade
+         <a class="headerlink" href="#overview-of-codegrade" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade can be used both as a stand-alone web application and as a module in
+your LMS. The following chapters apply to both situations. Please consult the
+         <a class="reference internal" href="lms.html#lms-chapter">
+          <span class="std std-ref">
+           LMS Integration
+          </span>
+         </a>
+         chapter for detailed information of
+integrating CodeGrade with your Learning Management System.
+        </p>
+        <p>
+         This chapter provides a brief overview of the components and navigation in
+CodeGrade.
+        </p>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          CodeGrade uses an extensive
+          <a class="reference internal" href="permissions.html#permissions-chapter">
+           <span class="std std-ref">
+            permissions
+           </span>
+          </a>
+          system
+that may allow certain features to be disabled on your CodeGrade account.
+         </p>
+        </div>
+        <section id="general-site">
+         <h2>
+          General Site
+          <a class="headerlink" href="#general-site" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade allows for the
+          <a class="reference internal" href="management.html#management-chapter">
+           <span class="std std-ref">
+            creation of courses and assignments
+           </span>
+          </a>
+          .
+         </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           CodeGrade assignments can also be created in co-operative Learning
+Management Systems.
+          </p>
+         </div>
+         <p>
+          Each assignment is part of a course and each course can have multiple
+assignments linked to it. All courses and assignments have individual settings
+pages. With the right
+          <a class="reference internal" href="permissions.html#permissions-chapter">
+           <span class="std std-ref">
+            permissions
+           </span>
+          </a>
+          these pages allow
+for adding users to the course, changing the details of an assignment, dividing
+submissions over teachers, setting up automatic testing, setting hand-in
+requirements, sending notifications to students and teachers and adding or
+customizing rubrics.
+         </p>
+         <p>
+          Assignments handed in via CodeGrade can be viewed using the
+          <a class="reference internal" href="codeviewer.html#codeviewer-chapter">
+           <span class="std std-ref">
+            Codeviewer
+           </span>
+          </a>
+          . The Codeviewer allows for a convenient way to review and
+grade submissions online. The features include line for line feedback and a file
+browser.
+         </p>
+         <p>
+          New courses can be created by the site administrators. They can also add
+students, teachers and teaching assistants to these courses. New roles can be
+created and
+          <a class="reference internal" href="permissions.html#permissions-chapter">
+           <span class="std std-ref">
+            permissions
+           </span>
+          </a>
+          of existing roles can be
+altered by site administrators too. All users on CodeGrade can set
+          <a class="reference internal" href="preferences.html#preferences-chapter">
+           <span class="std std-ref">
+            personal site preferences and edit account information
+           </span>
+          </a>
+          .
+         </p>
+        </section>
+        <section id="filesystem">
+         <h2>
+          Filesystem
+          <a class="headerlink" href="#filesystem" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          The
+          <a class="reference external" href="https://fs-docs.codegra.de">
+           CodeGrade Filesystem
+          </a>
+          (or CodeGra.fs) can be
+used in combination with the web application.  It can mount a local CodeGrade
+instance on your computer to browse the assignments and files on the server. The
+filesystem can be used for students to locally work on the CodeGrade mount and
+thus automatically hand in the assignment with each save.  For teachers the
+filesystem can be used to locally grade work without any overhead using a
+preferred editor.
+         </p>
+         <p>
+          All features of the online
+          <a class="reference internal" href="codeviewer.html#codeviewer-chapter">
+           <span class="std std-ref">
+            Codeviewer
+           </span>
+          </a>
+          (e.g. line for
+line feedback, filling in rubrics and adding general grades and feedback) can
+also be done locally using the filesystem. Editor plugins can be installed and
+used for most popular editors to enable this.
+         </p>
+        </section>
+        <section id="account-management">
+         <h2>
+          Account Management
+          <a class="headerlink" href="#account-management" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <section id="creating-a-new-account">
+          <h3>
+           Creating a new account
+           <a class="headerlink" href="#creating-a-new-account" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           You must have a CodeGrade account in order to use CodeGrade and follow courses.
+If your CodeGrade instance is linked with a Learning Management System (LMS)
+a new account will automatically be registered when you visit your first
+CodeGrade assignment in your LMS.
+          </p>
+          <p>
+           Otherwise you can create an account by navigating to your institute’s CodeGrade
+site (e.g. uva.codegra.de) and clicking the ‘Register’ button. Here you can
+register a new account by entering your full name, a valid email address and
+a password. Also a unique username has to be chosen to finish registration,
+please keep in mind that this username cannot be changed after your
+registration is complete.
+          </p>
+          <p>
+           You are now registered and logged in to CodeGrade!
+          </p>
+          <div class="admonition note">
+           <p class="admonition-title">
+            Note
+           </p>
+           <p>
+            Registering a new account in this way may not be available on your
+CodeGrade instance.
+           </p>
+          </div>
+         </section>
+         <section id="logging-in-to-an-existing-account">
+          <h3>
+           Logging in to an existing account
+           <a class="headerlink" href="#logging-in-to-an-existing-account" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           There are multiple ways to log in to CodeGrade. If you visit CodeGrade via your
+Learning Management System (Blackboard, Canvas, etc.) you do not need to enter
+any password as you will automatically be logged in. If you are on a standalone
+CodeGrade instance, you can log in either with a username and password
+combination or via a single sign-on (SSO) provider.
+          </p>
+          <p>
+           To log in with your username and password, you need to already have registered
+an account. Visit &lt;instance&gt;.codegra.de, click ‘Login’ in the sidebar, and
+enter your username and password. After clicking the ‘Login’ button you are now
+logged in to CodeGrade!
+          </p>
+          <p>
+           To log in with SSO select your institution in the list of SSO providers. You
+will be taken to a page where you can log in to the SSO system, which will take
+you back to CodeGrade afterwards. When you return you will be logged in to
+CodeGrade.
+          </p>
+          <p>
+           Click ‘Forgot password’ in the case you have forgotten your password. After
+entering your username, a temporary link will be sent in an email which allows
+you to reset your password. Please consult your institute in the case of
+a forgotten username or an incorrect email address.
+          </p>
+          <div class="admonition note">
+           <p class="admonition-title">
+            Note
+           </p>
+           <p>
+            Please check your spam filter if no email is received shortly after
+the request.
+           </p>
+          </div>
+         </section>
+        </section>
+       </section>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+ </body>
+</html>
