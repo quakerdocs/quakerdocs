@@ -1,21 +1,20 @@
 import os
 import json
 import doctest
-from collections import Counter
+from collections import Counter, defaultdict
 from nltk.corpus import stopwords
 import re
+import string
 
 stopwords = set(stopwords.words('english'))
 
-# [(url, title), ...]
-# {"word": [(index, freq), (index, freq), ...]}
 
 class IndexGenerator:
     def __init__(self):
-        self.urltitles = []
-        self.index = {}
+        self.urltitles = []  # [(url, title), ...]
+        self.index = defaultdict(list)  # {"word": [(index, freq), ...]}
 
-        keep_chars = ''.join(map(chr, range(ord('a'), ord('z') + 1))) + ' \n'
+        keep_chars = string.ascii_lowercase + ' \n'
         print(keep_chars)
         remove_chars = ''.join(c for c in map(chr, range(256)) if not c in keep_chars)
         self.translate = str.maketrans("", "", remove_chars)
@@ -42,11 +41,13 @@ class IndexGenerator:
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             print(word, count)
             if count > 0:
-                pass
+                self.index[word].append(i, count)
 
 
 def test():
     """
+    Currently just a demonstration of doctest
+
     >>> test()
     True
     >>> test()
