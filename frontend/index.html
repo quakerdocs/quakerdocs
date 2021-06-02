@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/general.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="js/script.js"></script>
 </head>
 
@@ -24,7 +25,17 @@
                 <span aria-hidden="true"></span>
             </a>
 
-            <button class="btn search"><i class="fa fa-search"></i></button>
+            <button class="btn search" onclick="overlayOn()"><i class="fa fa-search"> Search</i></button>
+        </div>
+
+        <div id="overlay" onclick="overlayOff()">
+            <div class="search-box" onclick="event.stopPropagation()">
+                <div class="search-bar">
+                    <i class="fa fa-search"> </i>
+                    <input type="text" placeholder="Search..." name="searchbar">
+                </div>
+                <div class="search-results"></div>
+            </div>
         </div>
 
         <div class="navbar-menu">
