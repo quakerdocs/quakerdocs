@@ -108,8 +108,10 @@ def main():
     transfer_html_data(HTML_DST + 'index.html')
 
     dirs = [d for d in os.listdir(HTML_DST) if os.path.isdir(os.path.join(HTML_DST, d))]
+    print(dirs)
     for d in dirs:
         d = os.path.join(HTML_DST, d)
+        print(d)
         os.chdir(d)
         src_files = get_html_src_files()
 
@@ -123,4 +125,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
