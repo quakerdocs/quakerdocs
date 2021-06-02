@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import os
 import shutil
 import re
+import copy
 
 # Root is parent folder of python folder.
 ROOT = os.getcwd().replace('python', '')
@@ -82,7 +83,13 @@ def scrape_and_merge(src_doc, template_doc):
         elif el.name == 'ul':
             el['class'] = el.get('class', []) + ['menu-list']
 
-    template_soup.html.select('aside#menuPanel')[0].append(sidebar)
+    active_a = src_soup.select('a.current')
+    if active_a:
+        active_a = active_a[0]
+        active_a['class'] = active_a.get('class', []) + ['is-active']
+
+    template_soup.html.select('aside#menuPanel')[0].append(copy.copy(sidebar))
+    template_soup.html.select('div#mini-menu')[0].append(sidebar)
 
     return str(template_soup.prettify())
 
