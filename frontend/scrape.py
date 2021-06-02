@@ -53,7 +53,16 @@ def scrape_and_merge(src_doc, template_doc):
     src_soup = BeautifulSoup(src_doc, 'html.parser')
     template_soup = BeautifulSoup(template_doc, 'html.parser')
     content = src_soup.select('div.section')[0]
+    sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
+
+    for el in sidebar:
+        if el.name == 'p':
+            el['class'] = el.get('class', []) + ['menu-label']
+        elif el.name == 'ul':
+            el['class'] = el.get('class', []) + ['menu-list']
+
     template_soup.html.select('div#content')[0].append(content)
+    template_soup.html.select('aside#menuPanel')[0].append(sidebar)
 
     return str(template_soup.prettify())
 
