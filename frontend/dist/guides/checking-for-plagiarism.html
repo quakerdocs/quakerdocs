@@ -7,9 +7,9 @@
    Check for plagiarism in a CodeGrade assignment — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="setting-up-git-uploads.html" title="previous chapter">
-           Set up Git uploads for a CodeGrade assignment
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="dividing-submissions.html" title="next chapter">
-           Divide submissions over graders
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,169 +244,186 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
-      <span id="checking-for-plagiarism">
-      </span>
-      <h1>
-       Check for plagiarism in a CodeGrade assignment
-       <a class="headerlink" href="#check-for-plagiarism-in-a-codegrade-assignment" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       CodeGrade has integrated state of the art plagiarism software powered by JPlag
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="check-for-plagiarism-in-a-codegrade-assignment">
+        <span id="checking-for-plagiarism">
+        </span>
+        <h1>
+         Check for plagiarism in a CodeGrade assignment
+         <a class="headerlink" href="#check-for-plagiarism-in-a-codegrade-assignment" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade has integrated state of the art plagiarism software powered by JPlag
 to find possible plagiarism cases in CodeGrade assignments. This guide will walk
 you through setting up a plagiarism run.
-      </p>
-      <ol class="arabic">
-       <li>
-        <p>
-         Go to the
-         <strong>
-          Assignment Management
-         </strong>
-         page for the assignment you want to do plagiarism detection on by clicking on the
-         <a href="#id1">
-          <span class="problematic" id="id2">
-           :fa:`cog`
-          </span>
-         </a>
-         button.
         </p>
-       </li>
-       <li>
-        <p>
-         On the
-         <strong>
-          Assignment Management
-         </strong>
-         page, navigate to the
-         <strong>
-          Plagiarism
-         </strong>
-         tab. This is where plagiarism checks can be run and where previous plagiarism checks can be reviewed.
-        </p>
-       </li>
-       <li>
-        <p>
-         Set up the options to apply to your assignment:
-        </p>
-        <blockquote>
-         <div>
-          <ul class="simple">
-           <li>
-            <p>
-             <strong>
-              Language
-             </strong>
-             : Language of the code in the assignment.
-            </p>
-           </li>
-          </ul>
-          <div class="admonition note">
-           <p class="admonition-title">
-            Note
-           </p>
-           <p>
-            Please contact us if your required language is not present in this list.
-           </p>
-          </div>
-          <ul class="simple">
-           <li>
-            <p>
-             <strong>
-              Suffixes to include:
-             </strong>
-             Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Minimal similarity:
-             </strong>
-             The minimal average similarity to include in the results, the default is an average of 25%.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Old assignments:
-             </strong>
-             Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Old submissions:
-             </strong>
-             Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Base code:
-             </strong>
-             Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
-            </p>
-           </li>
-          </ul>
-         </div>
-        </blockquote>
-       </li>
-       <li>
-        <p>
-         Click the
-         <strong>
-          Run
-         </strong>
-         button to start the plagiarism check. A new entry will be created above the option fields and will display the progress.
-        </p>
-       </li>
-       <li>
-        <p>
-         When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.
-        </p>
-       </li>
-       <li>
-        <p>
-         The following
-         <strong>
-          Plagiarism Overview
-         </strong>
-         page displays an overview of all plagiarism cases between students (or optionally between supplied old code). Click on any row to investigate the specific case.
-        </p>
-       </li>
-       <li>
-        <p>
-         The
-         <strong>
-          Plagiarism Comparison
-         </strong>
-         shows two code views with the files that contain potential plagiarism, the actual individual plagiarism cases are highlighted with a colour corresponding to the colours in the top menu. Press these to compare manually.
-        </p>
-       </li>
-      </ol>
-      <div class="admonition note">
-       <p class="admonition-title">
-        Note
-       </p>
-       <p>
-        Click the
-        <strong>
-         Export
-        </strong>
-        button on the top right hand corner to export
+        <ol class="arabic">
+         <li>
+          <p>
+           Go to the
+           <strong>
+            Assignment Management
+           </strong>
+           page for the assignment you want to do plagiarism detection on by clicking on the
+           <a href="#id1">
+            <span class="problematic" id="id2">
+             :fa:`cog`
+            </span>
+           </a>
+           button.
+          </p>
+         </li>
+         <li>
+          <p>
+           On the
+           <strong>
+            Assignment Management
+           </strong>
+           page, navigate to the
+           <strong>
+            Plagiarism
+           </strong>
+           tab. This is where plagiarism checks can be run and where previous plagiarism checks can be reviewed.
+          </p>
+         </li>
+         <li>
+          <p>
+           Set up the options to apply to your assignment:
+          </p>
+          <blockquote>
+           <div>
+            <ul class="simple">
+             <li>
+              <p>
+               <strong>
+                Language
+               </strong>
+               : Language of the code in the assignment.
+              </p>
+             </li>
+            </ul>
+            <div class="admonition note">
+             <p class="admonition-title">
+              Note
+             </p>
+             <p>
+              Please contact us if your required language is not present in this list.
+             </p>
+            </div>
+            <ul class="simple">
+             <li>
+              <p>
+               <strong>
+                Suffixes to include:
+               </strong>
+               Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Minimal similarity:
+               </strong>
+               The minimal average similarity to include in the results, the default is an average of 25%.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Old assignments:
+               </strong>
+               Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Old submissions:
+               </strong>
+               Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Base code:
+               </strong>
+               Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.
+              </p>
+             </li>
+            </ul>
+           </div>
+          </blockquote>
+         </li>
+         <li>
+          <p>
+           Click the
+           <strong>
+            Run
+           </strong>
+           button to start the plagiarism check. A new entry will be created above the option fields and will display the progress.
+          </p>
+         </li>
+         <li>
+          <p>
+           When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.
+          </p>
+         </li>
+         <li>
+          <p>
+           The following
+           <strong>
+            Plagiarism Overview
+           </strong>
+           page displays an overview of all plagiarism cases between students (or optionally between supplied old code). Click on any row to investigate the specific case.
+          </p>
+         </li>
+         <li>
+          <p>
+           The
+           <strong>
+            Plagiarism Comparison
+           </strong>
+           shows two code views with the files that contain potential plagiarism, the actual individual plagiarism cases are highlighted with a colour corresponding to the colours in the top menu. Press these to compare manually.
+          </p>
+         </li>
+        </ol>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          Click the
+          <strong>
+           Export
+          </strong>
+          button on the top right hand corner to export
 a plagiarism report. Plagiarism cases can be exported in Docx or LaTeX
 format, so that additions and further comments can be added before
 exporting as PDF.
-       </p>
+         </p>
+        </div>
+       </section>
       </div>
-     </section>
+     </div>
     </div>
    </div>
   </section>

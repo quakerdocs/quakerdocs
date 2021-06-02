@@ -7,9 +7,9 @@
    Set up a CodeGrade group assignment — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="enabling-continuous-feedback-for-an-assignment.html" title="previous chapter">
-           Enabling Continuous Feedback for an assignment
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="setting-up-hand-in-requirements.html" title="next chapter">
-           Set up hand-in requirements for a CodeGrade assignment
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,148 +244,165 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="set-up-a-codegrade-group-assignment">
-      <span id="set-up-group-assignment">
-      </span>
-      <h1>
-       Set up a CodeGrade group assignment
-       <a class="headerlink" href="#set-up-a-codegrade-group-assignment" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       Groups for group assignments are managed entirely within CodeGrade. Group sets
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="set-up-a-codegrade-group-assignment">
+        <span id="set-up-group-assignment">
+        </span>
+        <h1>
+         Set up a CodeGrade group assignment
+         <a class="headerlink" href="#set-up-a-codegrade-group-assignment" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         Groups for group assignments are managed entirely within CodeGrade. Group sets
 are created in CodeGrade on a course-level, meaning that multiple assignments
 within one course can have the same groups.
-      </p>
-      <div class="admonition warning">
-       <p class="admonition-title">
-        Warning
-       </p>
-       <p>
-        It is important that a regular individual assignment is created within your LMS (
+        </p>
+        <div class="admonition warning">
+         <p class="admonition-title">
+          Warning
+         </p>
+         <p>
+          It is important that a regular individual assignment is created within your LMS (
 Canvas, Blackboard, Moodle or BrightSpace), and
-        <strong>
-         not
-        </strong>
-        a group assignment.
+          <strong>
+           not
+          </strong>
+          a group assignment.
 CodeGrade handles all the groups and makes sure grades and feedback is
 passed back correctly to the corresponding group members. Click
-        <a class="reference internal" href="creating-an-assignment.html#creating-assignment-guide">
-         <span class="std std-ref">
-          here
-         </span>
-        </a>
-        to find out how to create a
+          <a class="reference internal" href="creating-an-assignment.html#creating-assignment-guide">
+           <span class="std std-ref">
+            here
+           </span>
+          </a>
+          to find out how to create a
 CodeGrade assignment.
-       </p>
-      </div>
-      <ol class="arabic">
-       <li>
-        <p>
-         A group set for your course in CodeGrade has to be created firstly. Click the
-         <a href="#id1">
-          <span class="problematic" id="id2">
-           :fa:`cog`
-          </span>
-         </a>
-         button next to your course to go to the
-         <strong>
-          “Course Management”
-         </strong>
-         page.
-        </p>
-       </li>
-       <li>
-        <p>
-         Navigate to the
-         <strong>
-          “Groups”
-         </strong>
-         tab to find an overview of previously created group sets or to create a new group set.
-        </p>
-       </li>
-       <li>
-        <p>
-         Click the
-         <strong>
-          “Add group set”
-         </strong>
-         button to create a new group set, specify the minimum and maximum group sizes and press
-         <a href="#id3">
-          <span class="problematic" id="id4">
-           :fa:`save`
-          </span>
-         </a>
-         to save.
-        </p>
-        <blockquote>
-         <div>
-          <div class="admonition note">
-           <p class="admonition-title">
-            Note
-           </p>
-           <p>
-            If minimum group size is set to
-            <strong>
-             1
-            </strong>
-            , individual users that are not in
+         </p>
+        </div>
+        <ol class="arabic">
+         <li>
+          <p>
+           A group set for your course in CodeGrade has to be created firstly. Click the
+           <a href="#id1">
+            <span class="problematic" id="id2">
+             :fa:`cog`
+            </span>
+           </a>
+           button next to your course to go to the
+           <strong>
+            “Course Management”
+           </strong>
+           page.
+          </p>
+         </li>
+         <li>
+          <p>
+           Navigate to the
+           <strong>
+            “Groups”
+           </strong>
+           tab to find an overview of previously created group sets or to create a new group set.
+          </p>
+         </li>
+         <li>
+          <p>
+           Click the
+           <strong>
+            “Add group set”
+           </strong>
+           button to create a new group set, specify the minimum and maximum group sizes and press
+           <a href="#id3">
+            <span class="problematic" id="id4">
+             :fa:`save`
+            </span>
+           </a>
+           to save.
+          </p>
+          <blockquote>
+           <div>
+            <div class="admonition note">
+             <p class="admonition-title">
+              Note
+             </p>
+             <p>
+              If minimum group size is set to
+              <strong>
+               1
+              </strong>
+              , individual users that are not in
 a group can still hand in submissions too.
-           </p>
-          </div>
-         </div>
-        </blockquote>
-       </li>
-       <li>
+             </p>
+            </div>
+           </div>
+          </blockquote>
+         </li>
+         <li>
+          <p>
+           Now that a new group set is created, this group set can be linked to assignments. Go to the
+           <strong>
+            “Assignment Management”
+           </strong>
+           page of the assignment you want to make a group assignment by clicking the
+           <a href="#id5">
+            <span class="problematic" id="id6">
+             :fa:`cog`
+            </span>
+           </a>
+           button.
+          </p>
+         </li>
+         <li>
+          <p>
+           On the
+           <strong>
+            “General”
+           </strong>
+           tab, scroll down to the
+           <strong>
+            “Group Assignment”
+           </strong>
+           section. Here, select the desired group set and confirm by pressing
+           <strong>
+            “Submit”
+           </strong>
+           . Your assignment is now a group assignment!
+          </p>
+         </li>
+        </ol>
         <p>
-         Now that a new group set is created, this group set can be linked to assignments. Go to the
-         <strong>
-          “Assignment Management”
-         </strong>
-         page of the assignment you want to make a group assignment by clicking the
-         <a href="#id5">
-          <span class="problematic" id="id6">
-           :fa:`cog`
-          </span>
-         </a>
-         button.
-        </p>
-       </li>
-       <li>
-        <p>
-         On the
-         <strong>
-          “General”
-         </strong>
-         tab, scroll down to the
-         <strong>
-          “Group Assignment”
-         </strong>
-         section. Here, select the desired group set and confirm by pressing
-         <strong>
-          “Submit”
-         </strong>
-         . Your assignment is now a group assignment!
-        </p>
-       </li>
-      </ol>
-      <p>
-       By default, students can create new groups and join groups within a group set
+         By default, students can create new groups and join groups within a group set
 themselves. The names of groups are automatically generated but can be manually
 changed afterwards. If you want to change this default behaviour (e.g. make it
 impossible for students to create or join groups themselves), please consult the
-       <a class="reference internal" href="../user/permissions.html#permissions-chapter">
-        <span class="std std-ref">
-         permissions documentation
-        </span>
-       </a>
-       to find out more about
+         <a class="reference internal" href="../user/permissions.html#permissions-chapter">
+          <span class="std std-ref">
+           permissions documentation
+          </span>
+         </a>
+         to find out more about
 the permissions that make this possible.
-      </p>
-     </section>
+        </p>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>

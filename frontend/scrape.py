@@ -12,7 +12,8 @@ import re
 ROOT = os.getcwd().replace('python', '')
 HTML_SRC = ROOT + "/src_pages"
 HTML_DST = ROOT + "/dist/"
-HTML_TEMPLATE = ROOT + "/index.html"
+HTML_TEMPLATE = ROOT + "/html/template.html"
+
 
 def get_html_src_files():
     """
@@ -20,6 +21,7 @@ def get_html_src_files():
     """
     files = os.listdir()
     return [f for f in files if f.endswith('.html')]
+
 
 def read_file(filename):
     """
@@ -29,12 +31,14 @@ def read_file(filename):
     with open(filename, 'r') as f:
         return f.read()
 
+
 def write_file(filename, content):
     """
     Write content to filename in the destination HTML directory.
     """
     with open(filename, 'w+') as f:
         f.write(content)
+
 
 def transfer_html_data(filename, template_file=HTML_TEMPLATE):
     """
@@ -45,6 +49,7 @@ def transfer_html_data(filename, template_file=HTML_TEMPLATE):
 
     new_content = scrape_and_merge(src_doc, template_doc)
     write_file(filename, new_content)
+
 
 def scrape_and_merge(src_doc, template_doc):
     """
@@ -57,21 +62,19 @@ def scrape_and_merge(src_doc, template_doc):
 
     # Add the title of the src_doc to template_doc.
     title = src_soup.find('title').contents[0]
-    print(title)
     template_soup.html.select('title')[0].append(title)
-    template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
+    # template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
 
-    print("\n")
-    # Retrieve the id of the content div/section
-    regex = re.compile('[^a-zA-Z -]')
-    regID = regex.sub('', title.split('—')[0][:-1])
-    contentID = regID.replace(' ', '-').lower()
-    # print(contentID)
-    # Add the main page content from src_doc to template_doc.
-    content = src_soup.select('#' + contentID)[0]
-    content['class'] = content.get('class', []) + ["section"]
+    content = src_soup.select('div.bodywrapper')[0]
+    template_soup.html.select('div#content')[0].append(content)
 
+    # Scrape and merge navigation sidebar
     sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
+    title = sidebar.h1.a.text
+    sidebar.h1.decompose()
+    template_soup.html.select('h1.title')[0].append(title)
+    sidebar.h3.decompose()
+    sidebar.select('div.relations')[0].decompose()
 
     for el in sidebar:
         if el.name == 'p':
@@ -79,34 +82,32 @@ def scrape_and_merge(src_doc, template_doc):
         elif el.name == 'ul':
             el['class'] = el.get('class', []) + ['menu-list']
 
-    template_soup.html.select('div#content')[0].append(content)
     template_soup.html.select('aside#menuPanel')[0].append(sidebar)
 
     return str(template_soup.prettify())
 
+
 def copy_dir(src_dir, dst_dir):
-    if os.path.exists(src_dir):
+    if os.path.exists(dst_dir):
         shutil.rmtree(dst_dir)
     shutil.copytree(src_dir, dst_dir)
+
 
 def main():
     if not os.path.exists(HTML_DST):
         os.mkdir(HTML_DST)
 
     copy_dir(HTML_SRC, HTML_DST)
-
-    # src_files = get_html_src_files(HTML_DST)
-    # for src_file in src_files:
-    #     transfer_html_data(src_file)
+    transfer_html_data(HTML_DST + 'index.html')
 
     dirs = [d for d in os.listdir(HTML_DST) if os.path.isdir(os.path.join(HTML_DST, d))]
-    print(dirs)
     for d in dirs:
         d = os.path.join(HTML_DST, d)
         os.chdir(d)
         src_files = get_html_src_files()
 
         for src_file in src_files:
+            print("Scraping", src_file)
             transfer_html_data(src_file)
 
     copy_dir(os.path.join(ROOT, 'css'), HTML_DST + 'css')

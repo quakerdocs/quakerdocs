@@ -7,9 +7,9 @@
    Permissions — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -265,32 +240,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="groups.html" title="previous chapter">
-           Groups
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="preferences.html" title="next chapter">
-           Settings and Site Preferences
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -307,115 +256,132 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="permissions">
-      <span id="permissions-chapter">
-      </span>
-      <h1>
-       Permissions
-       <a class="headerlink" href="#permissions" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       CodeGrade works with an extensive permission system to allow different types of
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="permissions">
+        <span id="permissions-chapter">
+        </span>
+        <h1>
+         Permissions
+         <a class="headerlink" href="#permissions" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade works with an extensive permission system to allow different types of
 users (
-       <em>
-        roles
-       </em>
-       ) to access and manage things on the site.
-      </p>
-      <p>
-       The permissions are divided into site-wide permissions and course
+         <em>
+          roles
+         </em>
+         ) to access and manage things on the site.
+        </p>
+        <p>
+         The permissions are divided into site-wide permissions and course
 permissions. Site-wide permissions are administered by the site administrators
 and apply to all courses. Course permissions only apply to one course and
 CodeGrade users can have different roles and permissions for different courses.
-      </p>
-      <section id="site-permissions">
-       <span id="id1">
-       </span>
-       <h2>
-        Site Permissions
-        <a class="headerlink" href="#site-permissions" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        General site permissions can be accessed by the
-        <a href="#id2">
-         <span class="problematic" id="id3">
-          :fa:`tachometer`
+        </p>
+        <section id="site-permissions">
+         <span id="id1">
          </span>
-        </a>
-        button, which
+         <h2>
+          Site Permissions
+          <a class="headerlink" href="#site-permissions" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          General site permissions can be accessed by the
+          <a href="#id2">
+           <span class="problematic" id="id3">
+            :fa:`tachometer`
+           </span>
+          </a>
+          button, which
 is only visible to site administrators. Four roles are provided for site
 permissions: admin, staff, student and nobody (no role).
-       </p>
-       <p>
-        The available global permissions can be found in the
-        <a href="#id6">
-         <span class="problematic" id="id7">
-          `table below &lt;GlobalPermissions_&gt;`_
+         </p>
+         <p>
+          The available global permissions can be found in the
+          <a href="#id6">
+           <span class="problematic" id="id7">
+            `table below &lt;GlobalPermissions_&gt;`_
+           </span>
+          </a>
+          .
+         </p>
+        </section>
+        <section id="course-permissions">
+         <span id="id4">
          </span>
-        </a>
-        .
-       </p>
-      </section>
-      <section id="course-permissions">
-       <span id="id4">
-       </span>
-       <h2>
-        Course Permissions
-        <a class="headerlink" href="#course-permissions" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        Permissions and roles can be specified per course, this can be done in
-        <a class="reference internal" href="management.html#course-management">
-         <span class="std std-ref">
-          course management
-         </span>
-        </a>
-        under the
-        <em>
-         roles
-        </em>
-        tab. The five
+         <h2>
+          Course Permissions
+          <a class="headerlink" href="#course-permissions" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          Permissions and roles can be specified per course, this can be done in
+          <a class="reference internal" href="management.html#course-management">
+           <span class="std std-ref">
+            course management
+           </span>
+          </a>
+          under the
+          <em>
+           roles
+          </em>
+          tab. The five
 default roles are: designer, observer, student, TA (teaching assistant) and
 teacher. Default roles can be removed, their permissions can be altered and new
 roles can be added to the course.
-       </p>
-       <p>
-        The available course permissions can be found in the
-        <span class="xref std std-ref">
-         table below
-        </span>
-        .
-       </p>
-       <div class="admonition note">
-        <p class="admonition-title">
-         Note
-        </p>
-        <p>
-         Roles can only be removed if no current users act in that role in the course.
-        </p>
-       </div>
-       <div class="admonition note">
-        <p class="admonition-title">
-         Note
-        </p>
-        <p>
-         Permissions indicated with
-         <cite>
-          *
-         </cite>
-         are added by default for new roles.
-        </p>
-       </div>
-      </section>
-     </section>
+         </p>
+         <p>
+          The available course permissions can be found in the
+          <span class="xref std std-ref">
+           table below
+          </span>
+          .
+         </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           Roles can only be removed if no current users act in that role in the course.
+          </p>
+         </div>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           Permissions indicated with
+           <cite>
+            *
+           </cite>
+           are added by default for new roles.
+          </p>
+         </div>
+        </section>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>

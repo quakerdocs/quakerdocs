@@ -7,9 +7,9 @@
    I cannot find a feature in CodeGrade — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="using-shortcuts.html" title="previous chapter">
-           Using shortcuts
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="installing-codegrade-filesystem.html" title="next chapter">
-           Install the CodeGrade Filesystem
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,37 +244,54 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="i-cannot-find-a-feature-in-codegrade">
-      <h1>
-       I cannot find a feature in CodeGrade
-       <a class="headerlink" href="#i-cannot-find-a-feature-in-codegrade" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       CodeGrade has an elaborate permission system on course level. With this
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="i-cannot-find-a-feature-in-codegrade">
+        <h1>
+         I cannot find a feature in CodeGrade
+         <a class="headerlink" href="#i-cannot-find-a-feature-in-codegrade" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade has an elaborate permission system on course level. With this
 permission system, course administrators can allow or disallow users to see
 specific features or execute specific actions within CodeGrade.
-      </p>
-      <p>
-       Because of this, it can be possible that a specific feature or action is
+        </p>
+        <p>
+         Because of this, it can be possible that a specific feature or action is
 unreachable on your CodeGrade account. Please consult your course administrator
 to allow the certain action on your account.
-      </p>
-      <div class="admonition warning">
-       <p class="admonition-title">
-        Warning
-       </p>
-       <p>
-        If CodeGrade releases new features in the course of your course that bring
+        </p>
+        <div class="admonition warning">
+         <p class="admonition-title">
+          Warning
+         </p>
+         <p>
+          If CodeGrade releases new features in the course of your course that bring
 new permissions, these permissions are automatically disabled on all
 roles (and thus accounts) for security reasons. Please carefully add these
 permissions to the corresponding roles to be able to use them.
-       </p>
+         </p>
+        </div>
+       </section>
       </div>
-     </section>
+     </div>
     </div>
    </div>
   </section>

@@ -7,9 +7,9 @@
    Use the CodeGrade Filesystem to locally mount CodeGrade — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="installing-codegrade-filesystem.html" title="previous chapter">
-           Install the CodeGrade Filesystem
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="../user/overview.html" title="next chapter">
-           Overview of CodeGrade
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,207 +244,224 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="use-the-codegrade-filesystem-to-locally-mount-codegrade">
-      <span id="guide-use-codegrade-filesystem">
-      </span>
-      <h1>
-       Use the CodeGrade Filesystem to locally mount CodeGrade
-       <a class="headerlink" href="#use-the-codegrade-filesystem-to-locally-mount-codegrade" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       The CodeGrade Filesystem is a unique way to mount your CodeGrade instance
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="use-the-codegrade-filesystem-to-locally-mount-codegrade">
+        <span id="guide-use-codegrade-filesystem">
+        </span>
+        <h1>
+         Use the CodeGrade Filesystem to locally mount CodeGrade
+         <a class="headerlink" href="#use-the-codegrade-filesystem-to-locally-mount-codegrade" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         The CodeGrade Filesystem is a unique way to mount your CodeGrade instance
 locally on your system. This provides the teacher much flexibility by allowing
 to test, review and grade work from students locally, in your favourite editor
 and using all required tools.
-      </p>
-      <p>
-       The CodeGrade Filesystem is an external application that has to be installed
+        </p>
+        <p>
+         The CodeGrade Filesystem is an external application that has to be installed
 on your system manually. Please consult the
-       <a class="reference internal" href="installing-codegrade-filesystem.html#guide-install-filesystem">
-        <span class="std std-ref">
-         installing guide
-        </span>
-       </a>
-       for instructions on installing the CodeGrade
+         <a class="reference internal" href="installing-codegrade-filesystem.html#guide-install-filesystem">
+          <span class="std std-ref">
+           installing guide
+          </span>
+         </a>
+         for instructions on installing the CodeGrade
 Filesystem on your operating system.
-      </p>
-      <ol class="arabic simple">
-       <li>
-        <p>
-         Open the CodeGrade Filesystem application.
         </p>
-       </li>
-       <li>
+        <ol class="arabic simple">
+         <li>
+          <p>
+           Open the CodeGrade Filesystem application.
+          </p>
+         </li>
+         <li>
+          <p>
+           Select your institution, or select
+           <em>
+            Other
+           </em>
+           to enter a custom CodeGrade URL.
+          </p>
+         </li>
+         <li>
+          <p>
+           Enter your username and password.
+          </p>
+         </li>
+        </ol>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          This is your CodeGrade username and password for the selected CodeGrade instance. Click
+          <a class="reference internal" href="setup-password-for-codegrade-account.html#guide-set-up-password">
+           <span class="std std-ref">
+            here
+           </span>
+          </a>
+          to learn how to set up your CodeGrade password.
+         </p>
+        </div>
+        <ol class="arabic" start="4">
+         <li>
+          <p>
+           Optionally set advanced options in the
+           <em>
+            Advanced
+           </em>
+           tab:
+          </p>
+          <blockquote>
+           <div>
+            <ul class="simple">
+             <li>
+              <p>
+               <strong>
+                Mount location
+               </strong>
+               : Specify a custom location for the CodeGrade mount, this defaults to the desktop.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Option - Revision mode
+               </strong>
+               : Enable revision mode to save and send all additions, edits and deletions in student submissions back to the student as a
+               <em>
+                Teacher Revision
+               </em>
+               . Disable to not synchronise additions, edits or deletions with the CodeGrade server.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Option - Assigned to me
+               </strong>
+               : Enable to only show submissions that are assigned to you. This option only has effect if submissions are actually assigned and you are one of the assignees.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Option - Latest submissions only
+               </strong>
+               : Enable to only show the most recent submission of each student, rather than all their submissions.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                Notifications
+               </strong>
+               : Set the verbosity of notifications, default and recommended is
+               <em>
+                All
+               </em>
+               .
+              </p>
+             </li>
+            </ul>
+           </div>
+          </blockquote>
+         </li>
+         <li>
+          <p>
+           Press
+           <em>
+            Mount
+           </em>
+           to mount the CodeGrade server to your computer.
+          </p>
+         </li>
+         <li>
+          <p>
+           Press the pink
+           <em>
+            mountpoint
+           </em>
+           on the top of the CodeGrade Filesystem to navigate to the mount. In this directory an organised overview of courses, assignments and submissions can be found, tested and reviewed.
+          </p>
+         </li>
+        </ol>
         <p>
-         Select your institution, or select
-         <em>
-          Other
-         </em>
-         to enter a custom CodeGrade URL.
-        </p>
-       </li>
-       <li>
-        <p>
-         Enter your username and password.
-        </p>
-       </li>
-      </ol>
-      <div class="admonition note">
-       <p class="admonition-title">
-        Note
-       </p>
-       <p>
-        This is your CodeGrade username and password for the selected CodeGrade instance. Click
-        <a class="reference internal" href="setup-password-for-codegrade-account.html#guide-set-up-password">
-         <span class="std std-ref">
-          here
-         </span>
-        </a>
-        to learn how to set up your CodeGrade password.
-       </p>
-      </div>
-      <ol class="arabic" start="4">
-       <li>
-        <p>
-         Optionally set advanced options in the
-         <em>
-          Advanced
-         </em>
-         tab:
-        </p>
-        <blockquote>
-         <div>
-          <ul class="simple">
-           <li>
-            <p>
-             <strong>
-              Mount location
-             </strong>
-             : Specify a custom location for the CodeGrade mount, this defaults to the desktop.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Option - Revision mode
-             </strong>
-             : Enable revision mode to save and send all additions, edits and deletions in student submissions back to the student as a
-             <em>
-              Teacher Revision
-             </em>
-             . Disable to not synchronise additions, edits or deletions with the CodeGrade server.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Option - Assigned to me
-             </strong>
-             : Enable to only show submissions that are assigned to you. This option only has effect if submissions are actually assigned and you are one of the assignees.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Option - Latest submissions only
-             </strong>
-             : Enable to only show the most recent submission of each student, rather than all their submissions.
-            </p>
-           </li>
-           <li>
-            <p>
-             <strong>
-              Notifications
-             </strong>
-             : Set the verbosity of notifications, default and recommended is
-             <em>
-              All
-             </em>
-             .
-            </p>
-           </li>
-          </ul>
-         </div>
-        </blockquote>
-       </li>
-       <li>
-        <p>
-         Press
-         <em>
-          Mount
-         </em>
-         to mount the CodeGrade server to your computer.
-        </p>
-       </li>
-       <li>
-        <p>
-         Press the pink
-         <em>
-          mountpoint
-         </em>
-         on the top of the CodeGrade Filesystem to navigate to the mount. In this directory an organised overview of courses, assignments and submissions can be found, tested and reviewed.
-        </p>
-       </li>
-      </ol>
-      <p>
-       With the CodeGrade Filesystem mounted, you have access to all submissions in
+         With the CodeGrade Filesystem mounted, you have access to all submissions in
 your courses on CodeGrade. These submissions can be opened in your favourite
 editor to test, review and grade without any overhead.
-      </p>
-      <p>
-       Multiple
-       <em>
-        “special files”
-       </em>
-       can be found in student submissions too, these are
+        </p>
+        <p>
+         Multiple
+         <em>
+          “special files”
+         </em>
+         can be found in student submissions too, these are
 generated automatically by CodeGrade Filesystem and can be used to review and
 grade code. Use the
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         .cg_grade
-        </span>
-       </code>
-       file to grade work, use the
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         .cg_rubric
-        </span>
-       </code>
-       file to fill in the rubric (if present) and use the
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         .cg_feedback
-        </span>
-       </code>
-       file to
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           .cg_grade
+          </span>
+         </code>
+         file to grade work, use the
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           .cg_rubric
+          </span>
+         </code>
+         file to fill in the rubric (if present) and use the
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           .cg_feedback
+          </span>
+         </code>
+         file to
 write general feedback. Saving these files results in automatically updating
 the values on the CodeGrade server too.
-      </p>
-      <div class="admonition note">
-       <p class="admonition-title">
-        Note
-       </p>
-       <p>
-        In addition to our AutoTest platform, the use of the
-        <em>
-         special files
-        </em>
-        can allow you to locally run automatic grading scripts that write to the special files to synchronise with the CodeGrade server.
-       </p>
-      </div>
-      <p>
-       Ultimately, to remove the CodeGrade mount, simply press the
-       <em>
-        Stop
-       </em>
-       button or
+        </p>
+        <div class="admonition note">
+         <p class="admonition-title">
+          Note
+         </p>
+         <p>
+          In addition to our AutoTest platform, the use of the
+          <em>
+           special files
+          </em>
+          can allow you to locally run automatic grading scripts that write to the special files to synchronise with the CodeGrade server.
+         </p>
+        </div>
+        <p>
+         Ultimately, to remove the CodeGrade mount, simply press the
+         <em>
+          Stop
+         </em>
+         button or
 close the CodeGrade Filesystem application.
-      </p>
-     </section>
+        </p>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>

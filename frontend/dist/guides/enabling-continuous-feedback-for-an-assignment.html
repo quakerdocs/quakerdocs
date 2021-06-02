@@ -7,9 +7,9 @@
    Enabling Continuous Feedback for an assignment — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -253,32 +228,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="setting-up-autotest.html" title="previous chapter">
-           Setting up AutoTest
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="set-up-group-assignment.html" title="next chapter">
-           Set up a CodeGrade group assignment
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -295,109 +244,126 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="enabling-continuous-feedback-for-an-assignment">
-      <h1>
-       Enabling Continuous Feedback for an assignment
-       <a class="headerlink" href="#enabling-continuous-feedback-for-an-assignment" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       CodeGrade Continuous Feedback allows students to instantly get insightful
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="enabling-continuous-feedback-for-an-assignment">
+        <h1>
+         Enabling Continuous Feedback for an assignment
+         <a class="headerlink" href="#enabling-continuous-feedback-for-an-assignment" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade Continuous Feedback allows students to instantly get insightful
 automated feedback every time they hand in a new revision of their submission.
 The tests that run in Continuous Feedback are (a subset of) the AutoTest tests,
 this means that Continuous Feedback has the same security and reliability as
 CodeGrade AutoTest.
-      </p>
-      <p>
-       To enable Continuous Feedback for a CodeGrade assignment, first make sure an
+        </p>
+        <p>
+         To enable Continuous Feedback for a CodeGrade assignment, first make sure an
 AutoTest is set up. Please follow the steps in
-       <a class="reference internal" href="setting-up-autotest.html#setting-up-autotest">
-        <span class="std std-ref">
-         Setting up AutoTest
-        </span>
-       </a>
-       to learn how to do this. After
-your desired tests are set up, follow the steps below to enable Continuous
-Feedback:
-      </p>
-      <ol class="arabic simple">
-       <li>
-        <p>
-         Go to the
-         <strong>
-          Assignment Management
-         </strong>
-         page by clicking on the
-         <a href="#id1">
-          <span class="problematic" id="id2">
-           :fa:`cog`
-          </span>
-         </a>
-         icon.
-        </p>
-       </li>
-       <li>
-        <p>
-         Navigate to the
-         <strong>
-          AutoTest
-         </strong>
-         page.
-        </p>
-       </li>
-       <li>
-        <p>
-         Set up the AutoTest for your assignment by following the steps in the
          <a class="reference internal" href="setting-up-autotest.html#setting-up-autotest">
           <span class="std std-ref">
-           Setting up AutoTest guide
+           Setting up AutoTest
           </span>
          </a>
-         .
+         to learn how to do this. After
+your desired tests are set up, follow the steps below to enable Continuous
+Feedback:
         </p>
-       </li>
-       <li>
+        <ol class="arabic simple">
+         <li>
+          <p>
+           Go to the
+           <strong>
+            Assignment Management
+           </strong>
+           page by clicking on the
+           <a href="#id1">
+            <span class="problematic" id="id2">
+             :fa:`cog`
+            </span>
+           </a>
+           icon.
+          </p>
+         </li>
+         <li>
+          <p>
+           Navigate to the
+           <strong>
+            AutoTest
+           </strong>
+           page.
+          </p>
+         </li>
+         <li>
+          <p>
+           Set up the AutoTest for your assignment by following the steps in the
+           <a class="reference internal" href="setting-up-autotest.html#setting-up-autotest">
+            <span class="std std-ref">
+             Setting up AutoTest guide
+            </span>
+           </a>
+           .
+          </p>
+         </li>
+         <li>
+          <p>
+           All created AutoTest tests are automatically used for Continuous Feedback too. Differentiate between AutoTest and Continuous Feedback by hiding and disabling individual tests for Continuous Feedback, this is done by pressing the
+           <a href="#id3">
+            <span class="problematic" id="id4">
+             :fa:`eye`
+            </span>
+           </a>
+           button next to the test.
+          </p>
+         </li>
+         <li>
+          <p>
+           After setting up AutoTest and hiding and disabling individual tests you do not want used in Continuous Feedback, turn on Continuous Feedback for your assignment by setting the
+           <em>
+            Results Visibility
+           </em>
+           mode to
+           <em>
+            Immediate
+           </em>
+           .
+          </p>
+         </li>
+        </ol>
         <p>
-         All created AutoTest tests are automatically used for Continuous Feedback too. Differentiate between AutoTest and Continuous Feedback by hiding and disabling individual tests for Continuous Feedback, this is done by pressing the
-         <a href="#id3">
-          <span class="problematic" id="id4">
-           :fa:`eye`
-          </span>
-         </a>
-         button next to the test.
-        </p>
-       </li>
-       <li>
-        <p>
-         After setting up AutoTest and hiding and disabling individual tests you do not want used in Continuous Feedback, turn on Continuous Feedback for your assignment by setting the
-         <em>
-          Results Visibility
-         </em>
-         mode to
-         <em>
-          Immediate
-         </em>
-         .
-        </p>
-       </li>
-      </ol>
-      <p>
-       Continuous Feedback is now turned on for your assignment. Near instant feedback
+         Continuous Feedback is now turned on for your assignment. Near instant feedback
 will be presented to the students for every submission they make.
-      </p>
-      <div class="admonition warning">
-       <p class="admonition-title">
-        Warning
-       </p>
-       <p>
-        If you have created hidden steps, the rubric is not filled in immediately,
+        </p>
+        <div class="admonition warning">
+         <p class="admonition-title">
+          Warning
+         </p>
+         <p>
+          If you have created hidden steps, the rubric is not filled in immediately,
 but only after the deadline of the assignment has passed.
-       </p>
+         </p>
+        </div>
+       </section>
       </div>
-     </section>
+     </div>
     </div>
    </div>
   </section>

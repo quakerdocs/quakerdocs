@@ -7,9 +7,9 @@
    Exam mode — CodeGrade  documentation
   </title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="css/general.css" rel="stylesheet" type="text/css"/>
-  <link href="css/main.css" rel="stylesheet" type="text/css"/>
-  <script src="js/script.js">
+  <link href="/css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/script.js">
   </script>
  </head>
  <body>
@@ -17,11 +17,10 @@
    <div class="navbar-brand">
     <a class="navbar-item" href="#">
      <h1 class="title">
-      Docs
-      CodeGrade  documentation
+      CodeGrade
      </h1>
     </a>
-    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" role="button">
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
      <span aria-hidden="true">
      </span>
      <span aria-hidden="true">
@@ -32,27 +31,11 @@
    </div>
    <div class="navbar-menu">
     <div class="navbar-start">
-     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-       Version
-      </a>
-      <div class="navbar-dropdown">
-       <a class="navbar-item">
-        0.1
-       </a>
-       <a class="navbar-item">
-        1.0
-       </a>
-       <a class="navbar-item">
-        1.1
-       </a>
-      </div>
-     </div>
-    </div>
-    <!-- <a class="navbar-item column is-4">
+     <!-- <a class="navbar-item column is-4">
                     <input class="input" type="text" placeholder="Search">
                 </a> -->
-    <div class="navbar-end">
+     <div class="navbar-end">
+     </div>
     </div>
    </div>
   </nav>
@@ -64,14 +47,6 @@
         </a> -->
    <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
     <div class="sphinxsidebarwrapper">
-     <h1 class="logo">
-      <a href="../index.html">
-       CodeGrade
-      </a>
-     </h1>
-     <h3>
-      Navigation
-     </h3>
      <p class="caption menu-label">
       <span class="caption-text">
        User Guides
@@ -265,32 +240,6 @@
        </a>
       </li>
      </ul>
-     <div class="relations">
-      <h3>
-       Related Topics
-      </h3>
-      <ul>
-       <li>
-        <a href="../index.html">
-         Documentation overview
-        </a>
-        <ul>
-         <li>
-          Previous:
-          <a href="analytics-dashboard.html" title="previous chapter">
-           Analytics Dashboard
-          </a>
-         </li>
-         <li>
-          Next:
-          <a href="notifications.html" title="next chapter">
-           Notifications
-          </a>
-         </li>
-        </ul>
-       </li>
-      </ul>
-     </div>
      <div id="searchbox" role="search" style="display: none">
       <h3 id="searchlabel">
        Quick search
@@ -307,72 +256,89 @@
      </script>
     </div>
    </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
    <div class="container hero is-fullheight">
-    <div class="content" id="content">
-     <section class="section" id="exam-mode">
-      <span id="id1">
-      </span>
-      <h1>
-       Exam mode
-       <a class="headerlink" href="#exam-mode" title="Permalink to this headline">
-        ¶
-       </a>
-      </h1>
-      <p>
-       With CodeGrade’s exam mode you can automate when an assignment is visible to
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="exam-mode">
+        <span id="id1">
+        </span>
+        <h1>
+         Exam mode
+         <a class="headerlink" href="#exam-mode" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         With CodeGrade’s exam mode you can automate when an assignment is visible to
 students and send an email to students with a link to the assignment, with
 which they can then log in to the assignment. When logged in via such a link
 the student will only have access to the course of this exam.
-      </p>
-      <p>
-       In exam mode all the usual assignment tools are available, such as the rubric
+        </p>
+        <p>
+         In exam mode all the usual assignment tools are available, such as the rubric
 for grading, or the plagiarism checker. You can even set up an AutoTest
 configuration to give your students continuous and automated feedback during
 the exam.
-      </p>
-      <section id="exam-duration">
-       <h2>
-        Exam duration
-        <a class="headerlink" href="#exam-duration" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        For exams you do not configure a deadline, but rather a start and a duration.
+        </p>
+        <section id="exam-duration">
+         <h2>
+          Exam duration
+          <a class="headerlink" href="#exam-duration" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          For exams you do not configure a deadline, but rather a start and a duration.
 Set the start by selecting a date and time in the “available at” field. At this
 moment the assignment’s state will switch from
-        <strong>
-         hidden
-        </strong>
-        to
-        <strong>
-         open
-        </strong>
-        automatically and students can start submitting their solutions, for the set
+          <strong>
+           hidden
+          </strong>
+          to
+          <strong>
+           open
+          </strong>
+          automatically and students can start submitting their solutions, for the set
 duration of the exam.
-       </p>
-      </section>
-      <section id="student-login-links">
-       <h2>
-        Student login links
-        <a class="headerlink" href="#student-login-links" title="Permalink to this headline">
-         ¶
-        </a>
-       </h2>
-       <p>
-        With exam mode enabled it is possible to automatically send an email to the
+         </p>
+        </section>
+        <section id="student-login-links">
+         <h2>
+          Student login links
+          <a class="headerlink" href="#student-login-links" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          With exam mode enabled it is possible to automatically send an email to the
 students of the course that contains a link to the exam. This email is sent
 twice, the first time a few days before the exam, and once more half an hour
 before the exam starts, so students do not have to search through their email
 history to log in to the exam.
-       </p>
-       <p>
-        Once the exam has started students can click the big “Start” button to start
+         </p>
+         <p>
+          Once the exam has started students can click the big “Start” button to start
 the exam. They can also choose to log in automatically when the exam starts.
 Then they have until the end of the exam to submit their solutions.
-       </p>
-      </section>
-     </section>
+         </p>
+        </section>
+       </section>
+      </div>
+     </div>
     </div>
    </div>
   </section>
