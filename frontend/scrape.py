@@ -5,12 +5,14 @@ the HTML_SRC.
 
 from bs4 import BeautifulSoup
 import os
+import re
 
 # Root is parent folder of python folder.
 ROOT = os.getcwd().replace('python', '')
 HTML_SRC = ROOT + "/src_pages"
-HTML_DST = ROOT + "/"
-HTML_TEMPLATE = "index.html"
+HTML_DST = ROOT + "/gen_pages"
+HTML_TEMPLATE = "/templates/template.html"
+
 
 def get_html_src_files(path=HTML_SRC):
     """
@@ -18,6 +20,7 @@ def get_html_src_files(path=HTML_SRC):
     """
     files = os.listdir(HTML_SRC)
     return list(files)
+
 
 def read_file(filename, is_source=True):
     """
@@ -28,12 +31,14 @@ def read_file(filename, is_source=True):
     with open(f"{path}/{filename}", 'r') as f:
         return f.read()
 
+
 def write_file(filename, content):
     """
     Write content to filename in the destination HTML directory.
     """
     with open(f"{HTML_DST}/{filename}", 'w+') as f:
         f.write(content)
+
 
 def transfer_html_data(filename, template_file=HTML_TEMPLATE):
     """
@@ -45,16 +50,30 @@ def transfer_html_data(filename, template_file=HTML_TEMPLATE):
     new_content = scrape_and_merge(src_doc, template_doc)
     write_file(filename, new_content)
 
+
 def scrape_and_merge(src_doc, template_doc):
     """
     Retrieve the data from the HTML section in src_doc and paste it into a copy
     template_doc.
     """
+
     src_soup = BeautifulSoup(src_doc, 'html.parser')
     template_soup = BeautifulSoup(template_doc, 'html.parser')
 
+    # Add the title of the src_doc to template_doc.
+    title = src_soup.find('title').contents[0]
+    template_soup.html.select('title')[0].append(title)
+    template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
+
+    # Retrieve the id of the content div/section
+    regex = re.compile('[^a-zA-Z -]')
+    regID = regex.sub('', title.split('—')[0][:-1])
+    contentID = regID.replace(' ', '-').lower()
+
     # Add the main page content from src_doc to template_doc.
-    content = src_soup.select('div.section')[0]
+    content = src_soup.select('#' + contentID)[0]
+    content['class'] = content.get('class', []) + ["section"]
+
     sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
 
     for el in sidebar:
@@ -65,11 +84,6 @@ def scrape_and_merge(src_doc, template_doc):
 
     template_soup.html.select('div#content')[0].append(content)
     template_soup.html.select('aside#menuPanel')[0].append(sidebar)
-
-    # Add the title of the src_doc to template_doc.
-    title = src_soup.find('title').contents[0]
-    template_soup.html.select('title')[0].append(title)
-    template_soup.html.select('h1.title')[0].append(title.split("—")[1][1:])
 
     return str(template_soup.prettify())
 
@@ -82,6 +96,6 @@ def main():
 
     # create_sidebar_file(src_file, "sidebar.html")
 
+
 if __name__ == "__main__":
     main()
-
