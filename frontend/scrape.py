@@ -44,11 +44,23 @@ def scrape_and_merge(src_doc, template_doc):
     return str(template_soup.prettify())
 
 
+def create_sidebar_file(src_file, dst_file):
+    src_doc = read_file(src_file)
+
+    src_soup = BeautifulSoup(src_doc, 'html.parser')
+
+    sidebar = src_soup.select('div.sphinxsidebar')[0]
+
+    write_file(dst_file, str(sidebar.prettify()))
+
+
 def main():
     src_files = get_html_src_files()
 
     for src_file in src_files:
         transfer_html_data(src_file)
+
+    create_sidebar_file(src_file, "sidebar.html")
 
 if __name__ == "__main__":
     main()
