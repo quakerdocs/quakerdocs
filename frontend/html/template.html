@@ -5,70 +5,74 @@
     <meta charset="UTF-8">
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<<<<<<< HEAD
+    <link rel="stylesheet" type="text/css" href="/css/content.css">
     <link rel="stylesheet" type="text/css" href="/css/general.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/content.css">
-=======
-    <link rel="stylesheet" type="text/css" href="../css/general.css">
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
->>>>>>> 7c02cc55e32762b0d7948bbb357194c62e3ab0b0
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <script src="../js/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
 </head>
 
 <body>
 
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="#">
+            <a class="navbar-item" href="/">
                 <h1 class="title"></h1>
             </a>
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
+            <a class="navbar-item" href="#">
+                <button class="button is-light" onclick="showSearchOverlay()">
+                    <span class="material-icons md-22">search</span>
+                    <span> Search</span>
+                </button>
+            </a>
+
+            <a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
-
-            <button class="btn search" onclick="overlayOn()"><i class="fa fa-search"> Search</i></button>
-        </div>
-
-        <div id="overlay" onclick="overlayOff()">
-            <div class="search-box" onclick="event.stopPropagation()">
-                <div class="search-bar">
-                    <i class="fa fa-search"> </i>
-                    <input type="text" placeholder="Search..." name="searchbar">
-                </div>
-                <div class="search-results"></div>
-            </div>
         </div>
 
         <div class="navbar-menu">
-            <div class="navbar-start">
-
-                <!-- <a class="navbar-item column is-4">
-                    <input class="input" type="text" placeholder="Search">
-                </a> -->
-
+            <div class="navbar-start"></div>
             <div class="navbar-end"></div>
         </div>
     </nav>
 
+    <div id="search" class="modal">
+        <div class="modal-background" onclick="hideSearchOverlay()"></div>
+        <div class="modal-content height panel">
+            <p class="panel-heading">
+                <span>Search</span>
+                <button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+            </p>
+
+            <p class="panel-tabs">
+                <a class="is-active">All</a>
+                <a>Something</a>
+            </p>
+
+            <div class="panel-block">
+                <p class="control has-icons-left">
+                <input id="searchbar" class="input is-link" type="text" placeholder="Search">
+                <span class="icon is-left">
+                    <span class="material-icons">search</span>
+                </span>
+                </p>
+            </div>
+
+            <div id="search-results" class="results max-height"></div>
+        </div>
+    </div>
+
     <section class="main-content columns is-fullheight">
 
-        <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a> -->
-
-        <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-mobile"></aside>
+        <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-touch"></aside>
 
         <div id="mini-menu" class="hide">
-            <div class="mini-menu-list">
-
-            </div>
+            <div class="mini-menu-list"></div>
         </div>
 
         <div class="container hero is-fullheight">
