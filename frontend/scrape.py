@@ -47,28 +47,26 @@ def transfer_html_data(filename, template_file=HTML_TEMPLATE):
 
 def scrape_and_merge(src_doc, template_doc):
     """
-    Retrieve the data from the HTML section in src_doc and paste it into
+    Retrieve the data from the HTML section in src_doc and paste it into a copy
     template_doc.
     """
     src_soup = BeautifulSoup(src_doc, 'html.parser')
     template_soup = BeautifulSoup(template_doc, 'html.parser')
+
+    # Add the main page content from src_doc to template_doc.
     content = src_soup.select('div.section')[0]
     template_soup.html.select('div#content')[0].append(content)
 
+    # Add the side bar content from src_doc to template_doc.
     sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
     template_soup.html.select('aside#menuPanel')[0].append(sidebar)
 
+    # Add the title of the src_doc to template_doc.
+    title = src_soup.find('title').contents[0]
+    template_soup.html.select('title')[0].append(title)
+    template_soup.html.select('h1.title')[0].append(title.split("—")[1][1:])
+
     return str(template_soup.prettify())
-
-
-def create_sidebar_file(src_file, dst_file):
-    src_doc = read_file(src_file)
-
-    src_soup = BeautifulSoup(src_doc, 'html.parser')
-
-    sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
-
-    write_file(dst_file, str(sidebar.prettify()))
 
 
 def main():
