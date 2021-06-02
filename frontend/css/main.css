@@ -4,6 +4,8 @@
 }
 
 #menuPanel {
+    min-width: 300px;
+    width: 20%;
     border-right: solid 2px;
     border-color: var(--gray);
 }
