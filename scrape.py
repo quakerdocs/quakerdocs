@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 This script scrapes the HTML files created by sphinx-build that are stored in
-the HTML_SRC.
+the HTML_SRC and creates a dist directory containing all static resources.
 """
 
 from bs4 import BeautifulSoup
@@ -124,4 +124,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
