@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Check for plagiarism in a CodeGrade assignment &#8212; Sphinx test  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Divide submissions over graders" href="dividing-submissions.html" />
+    <link rel="prev" title="Set up Git uploads for a CodeGrade assignment" href="setting-up-git-uploads.html" />
+
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+
+  <div class="section" id="check-for-plagiarism-in-a-codegrade-assignment">
+<span id="checking-for-plagiarism"></span><h1>Check for plagiarism in a CodeGrade assignment<a class="headerlink" href="#check-for-plagiarism-in-a-codegrade-assignment" title="Permalink to this headline">¶</a></h1>
+<p>CodeGrade has integrated state of the art plagiarism software powered by JPlag
+to find possible plagiarism cases in CodeGrade assignments. This guide will walk
+you through setting up a plagiarism run.</p>
+<ol class="arabic">
+<li><p class="first">Go to the <strong>Assignment Management</strong> page for the assignment you want to do plagiarism detection on by clicking on the <a href="#id1"><span class="problematic" id="id2">:fa:`cog`</span></a> button.</p>
+</li>
+<li><p class="first">On the <strong>Assignment Management</strong> page, navigate to the <strong>Plagiarism</strong> tab. This is where plagiarism checks can be run and where previous plagiarism checks can be reviewed.</p>
+</li>
+<li><p class="first">Set up the options to apply to your assignment:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Language</strong>: Language of the code in the assignment.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please contact us if your required language is not present in this list.</p>
+</div>
+<ul class="simple">
+<li><strong>Suffixes to include:</strong> Comma separated list of suffixes of files to include in the check. Leave empty to use the default suffixes for the selected language.</li>
+<li><strong>Minimal similarity:</strong> The minimal average similarity to include in the results, the default is an average of 25%.</li>
+<li><strong>Old assignments:</strong> Optionally one or more previous CodeGrade assignments can be selected, so that submissions from these assignments are included in the plagiarism check.</li>
+<li><strong>Old submissions:</strong> Optionally an archive with assignments or codebase can be uploaded to be included in the plagiarism check.</li>
+<li><strong>Base code:</strong> Optionally an archive with code to be excluded in the plagiarism check can be uploaded to reduce false positives. Use this to upload e.g. a framework used by all students.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Click the <strong>Run</strong> button to start the plagiarism check. A new entry will be created above the option fields and will display the progress.</p>
+</li>
+<li><p class="first">When the plagiarism check finished, press the plagiarism run entry to display an overview of detected plagiarism cases.</p>
+</li>
+<li><p class="first">The following <strong>Plagiarism Overview</strong> page displays an overview of all plagiarism cases between students (or optionally between supplied old code). Click on any row to investigate the specific case.</p>
+</li>
+<li><p class="first">The <strong>Plagiarism Comparison</strong> shows two code views with the files that contain potential plagiarism, the actual individual plagiarism cases are highlighted with a colour corresponding to the colours in the top menu. Press these to compare manually.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click the <strong>Export</strong> button on the top right hand corner to export
+a plagiarism report. Plagiarism cases can be exported in Docx or LaTeX
+format, so that additions and further comments can be added before
+exporting as PDF.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Sphinx test</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="use-codegrade-as-a-student.html">How to use CodeGrade as a student</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autotest-best-practices.html">Best Practices for AutoTest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-autotest.html">Setting up AutoTest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enabling-continuous-feedback-for-an-assignment.html">Enabling Continuous Feedback for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-git-uploads.html">Set up Git uploads for a CodeGrade assignment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-codegrade-filesystem.html">Install the CodeGrade Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-codegrade-filesystem.html">Use the CodeGrade Filesystem to locally mount CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/lms.html">LMS Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/analytics-dashboard.html">Analytics Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/exam-mode.html">Exam mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/notifications.html">Notifications</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About CodeGrade</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="setting-up-git-uploads.html" title="previous chapter">Set up Git uploads for a CodeGrade assignment</a></li>
+      <li>Next: <a href="dividing-submissions.html" title="next chapter">Divide submissions over graders</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Lars.
+
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+
+      |
+      <a href="../_sources/guides/checking-for-plagiarism.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

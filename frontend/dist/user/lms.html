@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Docs
+   LMS Integration — CodeGrade  documentation
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="../css/general.css" rel="stylesheet" type="text/css"/>
+  <link href="../css/main.css" rel="stylesheet" type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <script src="../js/script.js">
+  </script>
+ </head>
+ <body>
+  <nav aria-label="main navigation" class="navbar" id="navbar" role="navigation">
+   <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+     <h1 class="title">
+      CodeGrade
+     </h1>
+    </a>
+    <a aria-expanded="false" aria-label="menu" class="navbar-burger" data-target="menuPanel" onclick="toggleFunction()" role="button">
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+     <span aria-hidden="true">
+     </span>
+    </a>
+    <button class="btn search" onclick="overlayOn()">
+     <i class="fa fa-search">
+      Search
+     </i>
+    </button>
+   </div>
+   <div id="overlay" onclick="overlayOff()">
+    <div class="search-box" onclick="event.stopPropagation()">
+     <div class="search-bar">
+      <i class="fa fa-search">
+      </i>
+      <input name="searchbar" placeholder="Search..." type="text"/>
+     </div>
+     <div class="search-results">
+     </div>
+    </div>
+   </div>
+   <div class="navbar-menu">
+    <div class="navbar-start">
+     <!-- <a class="navbar-item column is-4">
+                    <input class="input" type="text" placeholder="Search">
+                </a> -->
+     <div class="navbar-end">
+     </div>
+    </div>
+   </div>
+  </nav>
+  <section class="main-content columns is-fullheight">
+   <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a> -->
+   <aside class="column is-narrow is-2 is-fullheight section is-hidden-mobile" id="menuPanel">
+    <div class="sphinxsidebarwrapper">
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Guides
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/use-codegrade-as-a-student.html">
+        How to use CodeGrade as a student
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/getting-started-with-codegrade.html">
+        Getting started with CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/autotest-best-practices.html">
+        Best Practices for AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/creating-an-assignment.html">
+        Create a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/set-up-a-rubric-for-an-assignment.html">
+        Set up a rubric for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-autotest.html">
+        Setting up AutoTest
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/enabling-continuous-feedback-for-an-assignment.html">
+        Enabling Continuous Feedback for an assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/set-up-group-assignment.html">
+        Set up a CodeGrade group assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-hand-in-requirements.html">
+        Set up hand-in requirements for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setting-up-git-uploads.html">
+        Set up Git uploads for a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/checking-for-plagiarism.html">
+        Check for plagiarism in a CodeGrade assignment
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/dividing-submissions.html">
+        Divide submissions over graders
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">
+        Pass back grades to Canvas, Blackboard, Moodle or Brightspace
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/creating-managing-and-using-snippets.html">
+        Create, manage and use snippets
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/setup-password-for-codegrade-account.html">
+        Set up a password for my CodeGrade account
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/using-shortcuts.html">
+        Using shortcuts
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/cannot-find-feature-in-codegrade.html">
+        I cannot find a feature in CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/installing-codegrade-filesystem.html">
+        Install the CodeGrade Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../guides/use-codegrade-filesystem.html">
+        Use the CodeGrade Filesystem to locally mount CodeGrade
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       User Documentation
+      </span>
+     </p>
+     <ul class="current menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="overview.html">
+        Overview of CodeGrade
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="codeviewer.html">
+        Code Viewer
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="management.html">
+        Course and Assignment Management
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="plagiarism.html">
+        Plagiarism Detection
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="groups.html">
+        Groups
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="permissions.html">
+        Permissions
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="preferences.html">
+        Settings and Site Preferences
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference external" href="https://fs-docs.codegra.de">
+        Filesystem
+       </a>
+      </li>
+      <li class="toctree-l1 current">
+       <a class="current reference internal" href="#">
+        LMS Integration
+       </a>
+       <ul>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#blackboard">
+          Blackboard
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#brightspace">
+          Brightspace
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#canvas">
+          Canvas
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#moodle">
+          Moodle
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#sakai">
+          Sakai
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#other-lms">
+          Other LMS
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="#codegrade-lms-behaviour">
+          CodeGrade LMS Behaviour
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="analytics-dashboard.html">
+        Analytics Dashboard
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="exam-mode.html">
+        Exam mode
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="notifications.html">
+        Notifications
+       </a>
+      </li>
+     </ul>
+     <p class="caption menu-label">
+      <span class="caption-text">
+       About CodeGrade
+      </span>
+     </p>
+     <ul class="menu-list">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about/about.html">
+        About CodeGrade
+       </a>
+      </li>
+     </ul>
+     <div id="searchbox" role="search" style="display: none">
+      <h3 id="searchlabel">
+       Quick search
+      </h3>
+      <div class="searchformwrapper">
+       <form action="../search.html" class="search" method="get">
+        <input aria-labelledby="searchlabel" name="q" type="text"/>
+        <input type="submit" value="Go"/>
+       </form>
+      </div>
+     </div>
+     <script>
+      $('#searchbox').show(0);
+     </script>
+    </div>
+   </aside>
+   <div class="hide" id="mini-menu">
+    <div class="mini-menu-list">
+     <a>
+      something
+     </a>
+     <a>
+      another thing
+     </a>
+     <a>
+      mad thing
+     </a>
+    </div>
+   </div>
+   <div class="container hero is-fullheight">
+    <div class="content section" id="content">
+     <div class="bodywrapper">
+      <div class="body" role="main">
+       <section id="lms-integration">
+        <span id="lms-chapter">
+        </span>
+        <h1>
+         LMS Integration
+         <a class="headerlink" href="#lms-integration" title="Permalink to this headline">
+          ¶
+         </a>
+        </h1>
+        <p>
+         CodeGrade works together with learning management systems (LMS) with the
+         <em>
+          Learning Tools Interoperability
+         </em>
+         (LTI) standard. This chapter explains
+integrating CodeGrade into your LMS and CodeGrade’s behaviour when working
+together with your LMS.
+        </p>
+        <p>
+         For exact details on how to add CodeGrade as an external tool in your LMS, which
+should be done by the system administrator of the LMS, please
+         <span class="xref std std-ref">
+          contact us
+         </span>
+         .
+        </p>
+        <section id="blackboard">
+         <h2>
+          Blackboard
+          <a class="headerlink" href="#blackboard" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade integrates with the
+          <a class="reference external" href="https://www.blackboard.com/blackboard-learn/index.html">
+           Blackboard Learn
+          </a>
+          learning management
+system through LTI. New CodeGrade assignments can then be created from within
+Blackboard.
+         </p>
+         <p>
+          To create a CodeGrade assignment in Blackboard, go to a course’s
+          <em>
+           Content
+          </em>
+          page
+and select
+          <em>
+           CodeGrade
+          </em>
+          from the
+          <em>
+           Build Content
+          </em>
+          menu.
+         </p>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           For the new assignment, do
+           <strong>
+            not
+           </strong>
+           turn off the
+           <em>
+            Enable Evaluation
+           </em>
+           option, and make sure that
+           <em>
+            Points Possible
+           </em>
+           is set to a number greater
+than 0, otherwise grades will not appear in Blackboard’s grade center.
+          </p>
+          <p>
+           Also, do
+           <strong>
+            not
+           </strong>
+           set a deadline for the assignment in Blackboard.
+Blackboard will mark all submissions
+           <em>
+            late
+           </em>
+           . Instead, immediately after
+creation of the new assignment, visit the assignment in CodeGrade and
+set the deadline there.
+          </p>
+         </div>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           When CodeGrade is connected to Blackboard, all assignments should be
+graded on a scale from 0 to 10 in CodeGrade. When the maximum points
+that can be achieved should be something other than 10, the
+           <em>
+            Points
+Possible
+           </em>
+           option can be set in Blackboard for the assignment.
+Blackboard will then scale the grade it received from CodeGrade
+linearly to this value.
+          </p>
+         </div>
+        </section>
+        <section id="brightspace">
+         <h2>
+          Brightspace
+          <a class="headerlink" href="#brightspace" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade integrates with the
+          <a class="reference external" href="https://www.brightspace.com/">
+           Brightspace
+          </a>
+          Learning management system through LTI. New CodeGrade assignments can then
+be created from within Brightspace.
+         </p>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           Setting a deadline, or other visibility rules in Brightspace, are
+           <strong>
+            not
+           </strong>
+           synchronized with CodeGrade. You should set a deadline in CodeGrade after
+creating an assignment, as otherwise students will not be able to submit
+their work.
+          </p>
+         </div>
+        </section>
+        <section id="canvas">
+         <h2>
+          Canvas
+          <a class="headerlink" href="#canvas" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade works together with the popular open-source learning management system
+          <a class="reference external" href="https://www.canvaslms.com/">
+           Canvas
+          </a>
+          through LTI. By integrating CodeGrade as
+an external app in Canvas, CodeGrade assignments can be created.
+         </p>
+         <p>
+          It is now possible to create CodeGrade assignments in your Canvas course.
+Choose the
+          <em>
+           External Tool
+          </em>
+          option as
+          <em>
+           Submission Type
+          </em>
+          and select CodeGrade
+in the
+          <em>
+           Find
+          </em>
+          menu.
+         </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           We recommend grading assignments in CodeGrade’s stand-alone environment so
+more
+           <em>
+            screen-space
+           </em>
+           is used for grading. Your are automatically logged in
+to this environment with a linked CodeGrade account after opening CodeGrade
+through Canvas.
+          </p>
+         </div>
+        </section>
+        <section id="moodle">
+         <h2>
+          Moodle
+          <a class="headerlink" href="#moodle" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade integrates with the
+          <a class="reference external" href="https://moodle.org/">
+           Moodle
+          </a>
+          learning management
+system through LTI. New CodeGrade assignments can then be created from within
+Moodle.
+         </p>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           Setting a deadline, or other visibility rules in Moodle, do
+           <strong>
+            not
+           </strong>
+           sync to
+CodeGrade. You should set a deadline in CodeGrade after creating an
+assignment, as otherwise students will not be able to submit their work.
+          </p>
+         </div>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           When CodeGrade is connected to Moodle, all assignments should be
+graded on a scale from 0 to 10 in CodeGrade. Scaling, and maximum points can
+be set in Moodle.
+          </p>
+         </div>
+        </section>
+        <section id="sakai">
+         <h2>
+          Sakai
+          <a class="headerlink" href="#sakai" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade integrates with the
+          <a class="reference external" href="https://sakailms.org/">
+           Sakai
+          </a>
+          learning management
+system through LTI. New CodeGrade assignments can be created from within Sakai.
+         </p>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           Setting a deadline, or other visibility rules in Sakai, do
+           <strong>
+            not
+           </strong>
+           sync to
+CodeGrade. You should set a deadline in CodeGrade after creating an
+assignment, as otherwise students will not be able to submit their work.
+          </p>
+         </div>
+        </section>
+        <section id="other-lms">
+         <h2>
+          Other LMS
+          <a class="headerlink" href="#other-lms" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade is currently working on adding support for more learning management
+systems too. Please
+          <span class="xref std std-ref">
+           contact us
+          </span>
+          for more information
+about support of your learning management system.
+         </p>
+        </section>
+        <section id="codegrade-lms-behaviour">
+         <h2>
+          CodeGrade LMS Behaviour
+          <a class="headerlink" href="#codegrade-lms-behaviour" title="Permalink to this headline">
+           ¶
+          </a>
+         </h2>
+         <p>
+          CodeGrade works together with the learning management system through LTI to
+synchronise i.a. users, courses, assignments and grades. The following behaviour
+is specified:
+         </p>
+         <section id="creating-courses-or-assignments">
+          <span id="lms-create-course-or-assig">
+          </span>
+          <h3>
+           Creating Courses or Assignments
+           <a class="headerlink" href="#creating-courses-or-assignments" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           Course and assignment creation is done using your learning management
+system environment. A corresponding CodeGrade course will automatically be
+created When creating a CodeGrade assignment in your LMS. Management of your
+assignment is mainly done in CodeGrade. The assignment name and deadline,
+however, are managed in your LMS, and optionally the state (e.g.
+           <em>
+            published
+           </em>
+           or
+           <em>
+            unpublished
+           </em>
+           ) if your LMS supports it.
+          </p>
+          <div class="admonition note">
+           <p class="admonition-title">
+            Note
+           </p>
+           <p>
+            Assignment and course names do not have to be unique.
+           </p>
+          </div>
+          <div class="admonition note">
+           <p class="admonition-title">
+            Note
+           </p>
+           <p>
+            The LMS assignment states
+            <em>
+             unpublished
+            </em>
+            and
+            <em>
+             published
+            </em>
+            correspond with
+CodeGrade’s
+            <em>
+             hidden
+            </em>
+            and
+            <em>
+             open
+            </em>
+            states, respectively. CodeGrade’s
+            <em>
+             done
+            </em>
+            state does not correspond with any LMS state and does not automatically
+change with LMS assignment management.
+           </p>
+          </div>
+          <p>
+           Users are not added to the CodeGrade course right away, however only added to
+CodeGrade after opening the CodeGrade assignment in the LMS.
+Users’ roles are automatically saved from the LMS to CodeGrade when creating an
+assignment, however these can be changed inside CodeGrade later on.
+          </p>
+         </section>
+         <section id="grading">
+          <span id="lms-grading">
+          </span>
+          <h3>
+           Grading
+           <a class="headerlink" href="#grading" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           When grading in CodeGrade is done, grades can be
+           <em>
+            passed back
+           </em>
+           to the LMS by
+manually setting the assignment state to
+           <em>
+            done
+           </em>
+           in CodeGrade (see
+           <a class="reference internal" href="management.html#manage-assignment-state">
+            <span class="std std-ref">
+             Assignment States
+            </span>
+           </a>
+           ). Grades saved when the
+assignment state already is
+           <em>
+            done
+           </em>
+           are automatically passed back to the LMS.
+          </p>
+          <div class="admonition warning">
+           <p class="admonition-title">
+            Warning
+           </p>
+           <p>
+            Grades are
+            <strong>
+             not
+            </strong>
+            automatically passed back to the LMS but require the
+CodeGrade assignment state to be set to
+            <em>
+             done
+            </em>
+            .
+           </p>
+          </div>
+          <p>
+           Setting the CodeGrade assignment state back to
+           <em>
+            not done
+           </em>
+           will not automatically
+hide grades in your LMS, but only hide the grades in CodeGrade. Setting the
+assignment to muted in your LMS will also not hide the grades in CodeGrade if
+the assignment state is
+           <em>
+            done
+           </em>
+           . This is because of the fact that
+CodeGrade’s
+           <em>
+            done
+           </em>
+           state does not correspond with any LMS state and does not
+automatically change with LMS assignment management yet.
+          </p>
+         </section>
+         <section id="account-linking">
+          <span id="lms-account-linking">
+          </span>
+          <h3>
+           Account Linking
+           <a class="headerlink" href="#account-linking" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
+          <p>
+           Accounts in your LMS are automatically linked or synchronised to CodeGrade
+accounts. Opening a CodeGrade assignment in your LMS will automatically log you
+in to CodeGrade with a CodeGrade account that is linked to your LMS account.
+CodeGrade has specified behaviour for multiple cases:
+          </p>
+          <ul class="simple">
+           <li>
+            <p>
+             A new CodeGrade account will be created and linked to your LMS account if you
+open a CodeGrade assignment in your LMS and no existing CodeGrade account is
+linked yet.
+            </p>
+           </li>
+           <li>
+            <p>
+             Your current CodeGrade account will be linked to your LMS account if you are
+logged in to CodeGrade and open a CodeGrade assignment in your LMS and your
+current CodeGrade account is not yet linked.
+            </p>
+           </li>
+           <li>
+            <p>
+             You will automatically log in to the CodeGrade account linked to your LMS
+account if you open a CodeGrade assignment in your LMS and you are currently
+not logged in to CodeGrade.
+            </p>
+           </li>
+           <li>
+            <p>
+             You will switch CodeGrade accounts if you are currently logged in to
+a CodeGrade account but
+             <em>
+              another
+             </em>
+             CodeGrade account is linked to your LMS
+account while opening a CodeGrade assignment in your LMS.
+            </p>
+           </li>
+          </ul>
+         </section>
+        </section>
+       </section>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+ </body>
+</html>
