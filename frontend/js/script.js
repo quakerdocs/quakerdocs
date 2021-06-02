@@ -13,3 +13,13 @@ function inject(filename, src_element, dst_element) {
 // window.onload = function(e) {
 //     inject('./pages/checking-for-plagiarism.html', 'div.section', 'div#content')
 // }
+
+// Used to toggle the menu on small screens when clicking on the menu button
+function toggleFunction() {
+    var x = document.getElementById("mini-menu");
+    if (x.className.indexOf("hide") == -1) {
+        x.className = x.className.replace("", "hide");
+    } else {
+        x.className = x.className.replace("hide", "");
+    }
+}
