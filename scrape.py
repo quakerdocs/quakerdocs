@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 This script scrapes the HTML files created by sphinx-build that are stored in
 the HTML_SRC.
@@ -11,9 +12,9 @@ import copy
 
 # Root is parent folder of python folder.
 ROOT = os.getcwd().replace('python', '')
-HTML_SRC = ROOT + "/src_pages"
+HTML_SRC = ROOT + "/build/html"
 HTML_DST = ROOT + "/dist/"
-HTML_TEMPLATE = ROOT + "/html/template.html"
+HTML_TEMPLATE = ROOT + "/frontend/html/template.html"
 
 
 def get_html_src_files():
@@ -107,7 +108,7 @@ def main():
     copy_dir(HTML_SRC, HTML_DST)
     transfer_html_data(HTML_DST + 'index.html')
 
-    dirs = [d for d in os.listdir(HTML_DST) if os.path.isdir(os.path.join(HTML_DST, d))]
+    dirs = [d for d in os.listdir(HTML_DST) if os.path.isdir(os.path.join(HTML_DST, d)) and not d.startswith('_')]
     for d in dirs:
         d = os.path.join(HTML_DST, d)
         os.chdir(d)
@@ -117,8 +118,8 @@ def main():
             print("Scraping", src_file)
             transfer_html_data(src_file)
 
-    copy_dir(os.path.join(ROOT, 'css'), HTML_DST + 'css')
-    copy_dir(os.path.join(ROOT, 'js'), HTML_DST + 'js')
+    copy_dir(os.path.join(ROOT, 'frontend/css'), HTML_DST + 'css')
+    copy_dir(os.path.join(ROOT, 'frontend/js'), HTML_DST + 'js')
 
 
 if __name__ == "__main__":
