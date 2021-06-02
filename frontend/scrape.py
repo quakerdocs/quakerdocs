@@ -82,6 +82,11 @@ def scrape_and_merge(src_doc, template_doc):
         elif el.name == 'ul':
             el['class'] = el.get('class', []) + ['menu-list']
 
+    active_a = src_soup.select('a.current')
+    if active_a:
+        active_a = active_a[0]
+        active_a['class'] = active_a.get('class', []) + ['is-active']
+
     template_soup.html.select('aside#menuPanel')[0].append(sidebar)
 
     return str(template_soup.prettify())
