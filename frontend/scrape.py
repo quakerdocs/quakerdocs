@@ -12,7 +12,7 @@ import re
 ROOT = os.getcwd().replace('python', '')
 HTML_SRC = ROOT + "/src_pages"
 HTML_DST = ROOT + "/dist/"
-HTML_TEMPLATE = ROOT + "/html/template.html"
+HTML_TEMPLATE = ROOT + "/templates/template.html"
 
 
 def get_html_src_files():
@@ -101,8 +101,10 @@ def main():
     transfer_html_data(HTML_DST + 'index.html')
 
     dirs = [d for d in os.listdir(HTML_DST) if os.path.isdir(os.path.join(HTML_DST, d))]
+    print(dirs)
     for d in dirs:
         d = os.path.join(HTML_DST, d)
+        print(d)
         os.chdir(d)
         src_files = get_html_src_files()
 
@@ -112,9 +114,6 @@ def main():
 
     copy_dir(os.path.join(ROOT, 'css'), HTML_DST + 'css')
     copy_dir(os.path.join(ROOT, 'js'), HTML_DST + 'js')
-
-
-    # create_sidebar_file(src_file, "sidebar.html")
 
 
 if __name__ == "__main__":
