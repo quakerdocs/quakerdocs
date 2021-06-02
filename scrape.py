@@ -7,7 +7,6 @@ the HTML_SRC and creates a dist directory containing all static resources.
 from bs4 import BeautifulSoup
 import os
 import shutil
-import re
 import copy
 
 # Root is parent folder of python folder.
@@ -63,11 +62,14 @@ def scrape_and_merge(src_doc, template_doc):
     template_soup = BeautifulSoup(template_doc, 'html.parser')
 
     # Add the title of the src_doc to template_doc.
-    title = src_soup.find('title').contents[0]
-    template_soup.html.select('title')[0].append(title)
+    # If there is no title we are probably not interested in the file.
+    title = src_soup.find('title')
+    if not title:
+        return ''
+    template_soup.html.select('title')[0].append(title.contents[0])
     # template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
 
-    content = src_soup.select('div.bodywrapper')[0]
+    content = src_soup.select('div.body')[0]
     template_soup.html.select('div#content')[0].append(content)
 
     # Scrape and merge navigation sidebar
@@ -106,17 +108,18 @@ def main():
         os.mkdir(HTML_DST)
 
     copy_dir(HTML_SRC, HTML_DST)
-    transfer_html_data(HTML_DST + 'index.html')
 
-    dirs = [d for d in os.listdir(HTML_DST) if os.path.isdir(os.path.join(HTML_DST, d)) and not d.startswith('_')]
-    for d in dirs:
-        d = os.path.join(HTML_DST, d)
-        os.chdir(d)
-        src_files = get_html_src_files()
+    for root, dirs, files in os.walk(HTML_DST):
+        path = root.split(os.sep)
 
-        for src_file in src_files:
-            print("Scraping", src_file)
-            transfer_html_data(src_file)
+        if os.path.basename(root).startswith('_'):
+            continue
+
+        for src_file in files:
+            if src_file.endswith('.html'):
+                path = os.path.join(root, src_file)
+                print("Scraping", path)
+                transfer_html_data(path)
 
     copy_dir(os.path.join(ROOT, 'frontend/css'), HTML_DST + 'css')
     copy_dir(os.path.join(ROOT, 'frontend/js'), HTML_DST + 'js')
