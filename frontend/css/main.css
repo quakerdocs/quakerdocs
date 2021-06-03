@@ -1,15 +1,33 @@
 #navbar {
     border-bottom: solid 2px;
-    border-color: var(--gray);
+    border-color: #ddd;
 }
 
 #menuPanel {
     min-width: 300px;
     width: 20%;
-    border-right: solid 2px;
-    border-color: var(--gray);
+    border:none;
     height: 100vh;
     overflow-y: scroll;
+}
+
+#menuPanel::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#menuPanel::-webkit-scrollbar {
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+#menuPanel::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #555;
+}
+
+#menuPanel::-webkit-scrollbar-thumb:hover {
+    background: #3697e6;
 }
 
 #content {
@@ -91,4 +109,9 @@
 .result-content {
     padding: 0px 0px 0px 20px;
     color:grey;
+}
+
+.main-content {
+    width: 70%;
+    margin: auto;
 }
