@@ -87,7 +87,8 @@ class Main:
     def handle_rst(self, path):
         """Parse a rst file and output its contents."""
         src = os.path.join(self.source_path, path)
-        dest = os.path.join(self.dest_path, path[:-4] + '.html')
+        html_path = path[:-4] + '.html'
+        dest = os.path.join(self.dest_path, html_path)
 
         # Read the rst file.
         doctree = docutils.core.publish_doctree(open(src, 'r').read())
@@ -107,7 +108,7 @@ class Main:
 
         # Collect all the text
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
-        self.idx.parse_file(content, title, path)
+        self.idx.parse_file(content, title, html_path)
 
         # Export the doctree.
         with open(dest, 'wb') as f:
