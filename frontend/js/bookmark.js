@@ -21,7 +21,7 @@ function getCookie(cname) {
     for (let i = 0; i < clist.length; i++) {
         let name, val;
         [name, val] = clist[i].split('=');
-
+        console.log(name.trim(), cname.trim());
         if (name.trim() === cname.trim()) {
             return val;
         }
@@ -31,7 +31,7 @@ function getCookie(cname) {
 
 function deleteCookie(cname) {
     if (getCookie(cname) != null) {
-        document.cookie = `${cname}=; Max-Age=-99999999;`;
+        document.cookie = `${cname}=;Max-Age=-99999999;path=/;`
     }
 }
 
@@ -39,6 +39,7 @@ function deleteCookie(cname) {
         <<< BOOKMARK SECTION >>>
 */
 
+const BOOKMARK_TAG = "bm#";
 class Bookmark {
     constructor(page, title, paragraph="") {
         // The page URL.
@@ -55,7 +56,7 @@ class Bookmark {
 
 function getCurrentName() {
     // Could be changed later if each navigation item has bookmark button.
-    return ('bk#' + window.location.pathname).trim();
+    return (BOOKMARK_TAG + window.location.pathname).trim();
 }
 
 function setBookmark() {
@@ -78,7 +79,7 @@ function getBookmark(cname) {
 }
 
 function getAllBookmarks() {
-    let bookmarks = []
+    let bookmarks = [];
     let clist = getCookieList();
 
     console.log(clist);
@@ -87,7 +88,7 @@ function getAllBookmarks() {
         let name, val;
         [name, data] = clist[i].split('=');
 
-        if ((name.trim()).substring(0,3) === 'bk#') {
+        if ((name.trim()).substring(0,3) === BOOKMARK_TAG) {
             bookmarks.push(JSON.parse(data))
         }
     }
@@ -120,7 +121,7 @@ function renderBookmarkList() {
 
     for (let i = 0; i < bookmarks.length; i++) {
         let b = bookmarks[i]
-        content += `<div onclick="location.href='../${b.page}'" class="result"><h1 class="result-title"><strong>
+        content += `<div onclick="location.href='${b.page}'" class="result"><h1 class="result-title"><strong>
                     ${b.title}</strong></h1></div>`
     }
 
