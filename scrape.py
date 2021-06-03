@@ -70,7 +70,15 @@ def scrape_and_merge(src_doc, template_doc):
     # template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
 
     content = src_soup.select('div.body')[0]
+    headerlinks = content.select('a.headerlink')
+    for i in headerlinks:
+        bookmark = BeautifulSoup("<span class='material-icons'>bookmark_border</span>")
+        i.string = ''
+        i.insert(3, bookmark.html.span)
+
     template_soup.html.select('div#content')[0].append(content)
+
+
 
     # Scrape and merge navigation sidebar
     sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
