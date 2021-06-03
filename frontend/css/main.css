@@ -23,11 +23,11 @@
 
 #menuPanel::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: #3273dc;
+	background-color: #7a7a7a;
 }
 
 #menuPanel::-webkit-scrollbar-thumb:hover {
-    background: #3697e6;
+    background: #7a7a7a;
 }
 
 #content {
@@ -45,6 +45,7 @@
     background: white;
     position: absolute;
     padding-left: 20px;
+    padding-top: 30px;
     width: 100%;
     overflow: auto;
     z-index: 1;
