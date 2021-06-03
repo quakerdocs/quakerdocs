@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/script.js"></script>
+    <script src="/js/bookmark.js"></script>
 </head>
 
 <body>
@@ -24,6 +25,27 @@
                 <button class="button is-light" onclick="showSearchOverlay()">
                     <span class="material-icons md-22">search</span>
                     <span> Search</span>
+                </button>
+            </a>
+
+            <!-- Bookmark button for testing -->
+            <a class="navbar-item" href="#">
+                <button class="button is-light" onclick="setBookmark()">
+                    <span> Set Bookmark</span>
+                </button>
+            </a>
+
+            <!-- Bookmark button for testing -->
+            <a class="navbar-item" href="#">
+                <button class="button is-light" onclick="deleteBookmark()">
+                    <span> Delete Bookmark</span>
+                </button>
+            </a>
+
+            <!-- Bookmark button for testing -->
+            <a class="navbar-item" href="#">
+                <button class="button is-light" onclick="showBookmarkOverlay()">
+                    <span> Show Bookmarks</span>
                 </button>
             </a>
 
@@ -62,6 +84,23 @@
             </div>
 
             <div id="search-results" class="results max-height"></div>
+        </div>
+    </div>
+
+    <!-- Bookmark window for testing -->
+    <div id="bookmark-window" class="modal">
+        <div class="modal-background" onclick="hideBookmarkOverlay()"></div>
+        <div class="modal-content height panel">
+            <p class="panel-heading">
+                <span>Bookmarks</span>
+                <button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+            </p>
+
+            <p class="panel-tabs">
+                <a class="is-active">All</a>
+            </p>
+
+            <div id="bookmark-results" class="results max-height"></div>
         </div>
     </div>
 
