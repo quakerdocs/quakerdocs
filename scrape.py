@@ -118,7 +118,7 @@ def main():
         for src_file in files:
             if src_file.endswith('.html'):
                 path = os.path.join(root, src_file)
-                print("Scraping", path)
+                #print("Scraping", path)
                 transfer_html_data(path)
 
     copy_dir(os.path.join(ROOT, 'frontend/css'), HTML_DST + 'css')
