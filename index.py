@@ -15,7 +15,7 @@ class IndexGenerator:
         self.index = defaultdict(list)  # {"word": [(index, freq), ...]}
 
         keep_chars = string.ascii_lowercase + ' \n'
-        print(keep_chars)
+        # print(keep_chars)
         remove_chars = ''.join(c for c in map(chr, range(256)) if not c in keep_chars)
         self.translate = str.maketrans("", "", remove_chars)
 
@@ -39,7 +39,7 @@ class IndexGenerator:
         self.urltitles.append((url, title))
 
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
-            print(word, count)
+            # print(word, count)
             if count > 0:
                 self.index[word].append((i, count))
 

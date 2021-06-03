@@ -32,7 +32,6 @@ details on `the CodeGrade website <https://codegrade.com>`_.
    guides/dividing-submissions
    guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace
    guides/creating-managing-and-using-snippets
-   guides/setup-password-for-codegrade-account
    guides/using-shortcuts
    guides/cannot-find-feature-in-codegrade
    guides/installing-codegrade-filesystem
@@ -49,7 +48,6 @@ details on `the CodeGrade website <https://codegrade.com>`_.
    user/management.rst
    user/plagiarism.rst
    user/groups.rst
-   user/permissions.rst
    user/preferences.rst
    Filesystem <https://fs-docs.codegra.de>
    user/lms.rst

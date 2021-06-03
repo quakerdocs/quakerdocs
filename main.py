@@ -67,9 +67,9 @@ class Main:
                     os.mkdir(new_dir)
             for file in files:
                 path = os.path.join(self.relative_path(root), file)
-                print("==================== %s ====================" % file)
                 try:
                     if file.endswith('.rst'):
+                        print("==================== %s ====================" % path)
                         self.handle_rst(path)
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
@@ -83,10 +83,13 @@ class Main:
         """Parse a rst file and output its contents."""
         src = os.path.join(self.source_path, path)
         dest = os.path.join(self.dest_path, path[:-4] + '.html')
-        print(src, dest)
 
         # Read the rst file.
-        doctree = docutils.core.publish_doctree(open(src, 'r').read())
+        settings = {
+            'src_dir': self.source_path,
+            'dst_dir': self.dest_path
+        }
+        doctree = docutils.core.publish_doctree(open(src, 'r').read(), source_path=src, settings_overrides=settings)
 
         # Delete the nodes we want to skip.
         for node in doctree.traverse():
@@ -103,7 +106,7 @@ class Main:
 
         # Collect all the text
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
-        print(content)
+        # print(content)
         self.idx.parseFile(content, title, path)
 
         # Export the doctree.
