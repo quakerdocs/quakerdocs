@@ -21,7 +21,7 @@ function getCookie(cname) {
     for (let i = 0; i < clist.length; i++) {
         let name, val;
         [name, val] = clist[i].split('=');
-        console.log(name.trim(), cname.trim());
+
         if (name.trim() === cname.trim()) {
             return val;
         }
@@ -75,14 +75,24 @@ function deleteBookmark() {
 
 function getBookmark(cname) {
     let json_bookmark  = getCookie(cname);
-    return JSON.parse(json_bookmark);
+    if (json_bookmark != null) {
+        return JSON.parse(json_bookmark);
+    }
+    return null;
+
+}
+
+function getBookmarkBtnVal() {
+    let cname = getCurrentName();
+    if (getBookmark(cname) != null) {
+        return 1;
+    }
+    return 0;
 }
 
 function getAllBookmarks() {
     let bookmarks = [];
     let clist = getCookieList();
-
-    console.log(clist);
 
     for (let i = 0; i < clist.length; i++) {
         let name, val;
@@ -114,6 +124,19 @@ function hideBookmarkOverlay() {
     document.body.scroll = "yes";
 }
 
+function bookmarkClick() {
+    let bookmark_btn = document.getElementById("bookmark-btn");
+    if (bookmark_btn.value == 0) {
+        setBookmark();
+        bookmark_btn.value = 1;
+        bookmark_btn.innerHTML = "<span class='material-icons'>bookmark</span>";
+    } else {
+        deleteBookmark();
+        bookmark_btn.value = 0;
+        bookmark_btn.innerHTML = "<span class='material-icons'>bookmark_border</span>";
+    }
+}
+
 function renderBookmarkList() {
     let bookmarkResults = document.getElementById("bookmark-results");
     let bookmarks = getAllBookmarks();
@@ -121,9 +144,20 @@ function renderBookmarkList() {
 
     for (let i = 0; i < bookmarks.length; i++) {
         let b = bookmarks[i]
-        content += `<div onclick="location.href='${b.page}'" class="result"><h1 class="result-title"><strong>
-                    ${b.title}</strong></h1></div>`
+        content += `<div onclick="location.href='${b.page}'" class="result"><h1 class="result-title">
+                    ${b.title}</h1></div>`
     }
 
     bookmarkResults.innerHTML = `<ul>${content}</ul>`;
+}
+
+// Check if bookmark state for button on page load.
+window.onload = () => {
+    let bookmark_btn = document.getElementById("bookmark-btn");
+    bookmark_btn.value = getBookmarkBtnVal();
+    if (bookmark_btn.value == 0) {
+        bookmark_btn.innerHTML = "<span class='material-icons'>bookmark_border</span>";
+    } else {
+        bookmark_btn.innerHTML = "<span class='material-icons'>bookmark</span>";
+    }
 }
