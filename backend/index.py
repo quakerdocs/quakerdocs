@@ -1,28 +1,32 @@
-import os
-import json
-import doctest
-from collections import Counter, defaultdict
-from nltk.corpus import stopwords
 import re
+import nltk
+import json
 import string
+import doctest
+from nltk.corpus import stopwords
+from collections import Counter, defaultdict
+from nltk.stem.snowball import SnowballStemmer
 
-stopwords = set(stopwords.words('english'))
+
+try:
+    stopwords = set(stopwords.words('english'))
+except LookupError:
+    nltk.download('stopwords')
+    stopwords = set(stopwords.words('english'))
 
 
 class IndexGenerator:
     def __init__(self):
         self.urltitles = []  # [(url, title), ...]
         self.index = defaultdict(list)  # {"word": [(index, freq), ...]}
+        self.stemmer = SnowballStemmer(language="english").stem
 
-        keep_chars = string.ascii_lowercase + ' \n'
+        keep_chars = string.ascii_lowercase + string.digits + ' \n'
         print(keep_chars)
         remove_chars = ''.join(c for c in map(chr, range(256)) if not c in keep_chars)
         self.translate = str.maketrans("", "", remove_chars)
 
-    def getUrlTitles(self):
-        pass
-
-    def parseFile(self, content, title, url):
+    def parse_file(self, content, title, url):
         """
         Add a file to the index.
 
@@ -32,16 +36,26 @@ class IndexGenerator:
         """
         content = content.lower()
         content = content.translate(self.translate)
-        content = [word for word in content.split() if word not in stopwords]
+        content = [self.stemmer(word) for word in content.split() if word not in stopwords]
         word_counter = Counter(content)
 
         i = len(self.urltitles)
         self.urltitles.append((url, title))
 
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
-            print(word, count)
-            if count > 0:
-                self.index[word].append(i, count)
+            self.index[word].append((i, count))
+
+    def to_json(self):
+        """
+        Return a json string containging the index and a mapping from ids to
+        tuples of (url, title).
+        """
+        # Sort the reversed index.
+        for key, value in self.index.items():
+            self.index[key] = sorted(value, key=lambda x: -x[1])
+
+        # Output to json.
+        return json.dumps(self.urltitles), json.dumps(self.index)
 
 
 def test():
