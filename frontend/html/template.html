@@ -12,31 +12,33 @@
     <script src="/js/script.js"></script>
 </head>
 
-<body>
+<body class="has-navbar-fixed-top">
 
-    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <h1 class="title"></h1>
-            </a>
+    <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <h1 class="title"></h1>
+                </a>
 
-            <a class="navbar-item" href="#">
-                <button class="button is-light" onclick="showSearchOverlay()">
-                    <span class="material-icons md-22">search</span>
-                    <span> Search</span>
-                </button>
-            </a>
+                <a class="navbar-item" href="#">
+                    <button class="button is-light" onclick="showSearchOverlay()">
+                        <span class="material-icons md-22">search</span>
+                        <span> Search</span>
+                    </button>
+                </a>
 
-            <a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
+                <a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
 
-        <div class="navbar-menu">
-            <div class="navbar-start"></div>
-            <div class="navbar-end"></div>
+            <div class="navbar-menu">
+                <div class="navbar-start"></div>
+                <div class="navbar-end"></div>
+            </div>
         </div>
     </nav>
 
@@ -65,18 +67,17 @@
         </div>
     </div>
 
-    <section class="main-content columns is-fullheight">
+    <div class="container">
+        <section class="main-content columns is-centered is-fullheight">
+            <aside id="menuPanel" class="column is-narrow is-fullheight section is-hidden-touch"></aside>
+            <div id="mini-menu" class="hide">
+                <div class="mini-menu-list"></div>
+            </div>
+            <div class="column is-fullheight">
+                <div id="content" class="content section"></div>
+            </div>
+        </section>
+    </div>
 
-        <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-touch"></aside>
-
-        <div id="mini-menu" class="hide">
-            <div class="mini-menu-list"></div>
-        </div>
-
-        <div class="container hero is-fullheight">
-            <div id="content" class="content section"></div>
-        </div>
-
-    </section>
 </body>
 </html>
