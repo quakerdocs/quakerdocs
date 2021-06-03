@@ -14,6 +14,8 @@ function toggleFunction() {
 }
 
 function showSearchOverlay() {
+    /* Active the search bar overlay.
+     */
     document.getElementById("search").classList.add("is-active")
 
     // Prevent background from scrolling while search window is open.
@@ -24,6 +26,8 @@ function showSearchOverlay() {
 }
 
 function hideSearchOverlay() {
+    /* Hide the search bar overlay.
+     */
     document.getElementById("search").classList.remove("is-active")
 
     // Allow background to scroll again.
@@ -39,13 +43,16 @@ class Result {
         // The title of the page, for quick display.
         this.title = title;
 
-        // Optionally the paragraph title, to allow searching on paragraph level.
-        // This is a stretch goal, so it doesn't have to be supported right away.
+        // Optionally the paragraph title, to allow searching on paragraph
+        // level. This is a stretch goal, so it doesn't have to be supported
+        // right away.
         this.paragraph = paragraph;
     }
 };
 
 function activateSearch() {
+    /* Activate the search bar with an event listener.
+     */
     const searchInput = document.getElementById("searchbar");
     const resultsWrapper = document.getElementById("search-results")
 
@@ -108,8 +115,10 @@ function renderResults(searcher, resultsWrapper) {
         let text = "";
 
         id = r.title.replaceAll(' ', '-');
-        $('#result-list').append(`<div onclick="location.href='../${r.page}'" class="result" id="${id}"><h1 class="result-title"><strong>
-                                ${r.title}</strong></h1><p class="result-content"></p></div>`);
+        $('#result-list').append(`<div onclick="location.href='../${r.page}'"
+                                 class="result" id="${id}"><h1 class=
+                                 "result-title"><strong>${r.title}</strong>
+                                 </h1><p class="result-content"></p></div>`);
 
 
         // Send ajax request to get text from the page.
@@ -121,7 +130,7 @@ function renderResults(searcher, resultsWrapper) {
             success: function(data) {
                 var html_data = $(data);
 
-                // If no text is found, keep an empty string.
+                // If no text is found, don't show any page content.
                 try {
                     var p_text = $("#content p", html_data)[0].textContent;
                 } catch (error) {
@@ -129,7 +138,8 @@ function renderResults(searcher, resultsWrapper) {
                 }
 
                 id = this.title.replaceAll(' ', '-')
-                $("#" + id + " .result-content").text($.trim(p_text).substr(0, 200) + "...");
+                $("#" + id + " .result-content").text($.trim(p_text)
+                                                .substr(0, 200) + "...");
             }
         });
     }
