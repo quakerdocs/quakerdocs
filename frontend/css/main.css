@@ -111,6 +111,17 @@
     color:grey;
 }
 
+.menu-list li ul {
+    border-left: 2px solid #3273dc !important;
+}
+
+.menu-list a:hover {
+    color: #3273dc;
+}
+
+.menu-list a.is-active:hover {
+    color: white;
+}
 /* .main-content {
     width: 70%;
     margin: auto;
