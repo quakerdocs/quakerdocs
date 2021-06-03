@@ -80,6 +80,10 @@ def scrape_and_merge(src_doc, template_doc):
     sidebar.h3.decompose()
     sidebar.select('div.relations')[0].decompose()
 
+    searchbox = sidebar.select('div#searchbox')
+    if searchbox:
+        searchbox[0].decompose()
+
     for el in sidebar:
         if el.name == 'p':
             el['class'] = el.get('class', []) + ['menu-label']
