@@ -41,7 +41,7 @@ class IndexGenerator:
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             print(word, count)
             if count > 0:
-                self.index[word].append(i, count)
+                self.index[word].append((i, count))
 
 
 def test():

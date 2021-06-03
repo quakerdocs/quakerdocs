@@ -15,6 +15,10 @@ from docutils.parsers.rst.directives.misc import Class
 from docutils.parsers.rst.directives.misc import Include
 import docutils.writers
 
+import html5writer
+import custom_dirs
+import spdirs
+
 
 # https://stackoverflow.com/questions/38834378/path-to-a-directory-as-argparse-argument
 def dir_path(string):
@@ -29,7 +33,7 @@ class Main:
 
     def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
-        self.dest_path = dest_path.strip('/')
+        self.dest_path = dest_path
         self.builder = builder
 
     def relative_path(self, path):
@@ -39,11 +43,20 @@ class Main:
     def generate(self):
         """Read all the input files from the source directory, parse them,
         and output the results to the build directory."""
-        directives.register_directive('rst-class', Class)
-        directives.register_directive('include', Include)
 
+        # Check if destination path exists, otherwise create it.
         if not os.path.exists(self.dest_path):
+            print("Making output directory...")
             os.mkdir(self.dest_path)
+        self.dest_path = dir_path(self.dest_path)
+
+        # Set-up reStructuredText directives
+        spdirs.setup()
+        custom_dirs.setup()
+
+        # Load user configuration
+        # Check if file exists? Other cwd?
+        exec(open(os.path.join(args.source_path, 'conf.py')).read())
 
         self.idx = index.IndexGenerator()
 
@@ -62,6 +75,9 @@ class Main:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
+
+        print("The generated documents have been saved in %s" % self.dest_path)
+        return 0
 
     def handle_rst(self, path):
         """Parse a rst file and output its contents."""
@@ -93,7 +109,7 @@ class Main:
         # Export the doctree.
         with open(dest, 'wb') as f:
             f.write(docutils.core.publish_from_doctree(doctree, destination_path=dest,
-                                                       writer_name=self.builder))
+                                                       writer=html5writer.Writer()))
 
 
 if __name__ == "__main__":
@@ -103,5 +119,6 @@ if __name__ == "__main__":
     arg_parser.add_argument('-b', type=str, dest='builder', default="html", help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
+    print("Running SDG 0.0.1")
     main = Main(args.source_path, args.destination_path, args.builder)
-    main.generate()
+    exit(main.generate())
