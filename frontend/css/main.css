@@ -93,9 +93,8 @@
 }
 
 .result {
-    border: none;
     border: 1px solid #ddd;
-    text-align: center;
+    text-align: left;
 }
 
 .result:hover {
