@@ -13,7 +13,7 @@ p.admonition-title {
     background: #3273dc;
     padding: 6px 12px;
     margin: -12px -12px 12px;
-    border-radius: 6px;
+    border-radius: 6px 6px 0px 0px;
 }
 
 div.note {
