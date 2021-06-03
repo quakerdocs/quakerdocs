@@ -11,7 +11,7 @@ import copy
 
 # Root is parent folder of python folder.
 ROOT = os.getcwd().replace('python', '')
-HTML_SRC = ROOT + "/build/html"
+HTML_SRC = ROOT + "/build"
 HTML_DST = ROOT + "/dist/"
 HTML_TEMPLATE = ROOT + "/frontend/html/template.html"
 
@@ -67,9 +67,13 @@ def scrape_and_merge(src_doc, template_doc):
     if not title:
         return ''
     template_soup.html.select('title')[0].append(title.contents[0])
-    # template_soup.html.select('h1.title')[0].append(title.split('—')[1][1:])
 
-    content = src_soup.select('div.body')[0]
+    content = src_soup.select('main')
+    if len(content) == 0:
+        print("no main")
+        return "no main"
+    content = content[0]
+
     headerlinks = content.select('a.headerlink')
     for i in headerlinks:
         bookmark = BeautifulSoup("<span class='material-icons'>bookmark_border</span>")
@@ -78,33 +82,38 @@ def scrape_and_merge(src_doc, template_doc):
 
     template_soup.html.select('div#content')[0].append(content)
 
+    title = src_soup.select('.title')
+    if len(title) != 0:
+        title = title[0]
+        template_soup.html.select('h1.title')[0].append(title)
+    else:
+        template_soup.html.select('h1.title')[0].append("title")
 
-
+    ########################## OLD SIDEBAR CODE #########################
     # Scrape and merge navigation sidebar
-    sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
-    title = sidebar.h1.a.text
-    sidebar.h1.decompose()
-    template_soup.html.select('h1.title')[0].append(title)
-    sidebar.h3.decompose()
-    sidebar.select('div.relations')[0].decompose()
+    # sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
+    # title = sidebar.h1.a.text
+    # sidebar.h1.decompose()
+    # sidebar.h3.decompose()
+    # sidebar.select('div.relations')[0].decompose()
 
-    searchbox = sidebar.select('div#searchbox')
-    if searchbox:
-        searchbox[0].decompose()
+    # searchbox = sidebar.select('div#searchbox')
+    # if searchbox:
+    #     searchbox[0].decompose()
 
-    for el in sidebar:
-        if el.name == 'p':
-            el['class'] = el.get('class', []) + ['menu-label']
-        elif el.name == 'ul':
-            el['class'] = el.get('class', []) + ['menu-list']
+    # for el in sidebar:
+    #     if el.name == 'p':
+    #         el['class'] = el.get('class', []) + ['menu-label']
+    #     elif el.name == 'ul':
+    #         el['class'] = el.get('class', []) + ['menu-list']
+
+    # template_soup.html.select('aside#menuPanel')[0].append(copy.copy(sidebar))
+    # template_soup.html.select('div#mini-menu')[0].append(sidebar)
 
     active_a = src_soup.select('a.current')
     if active_a:
         active_a = active_a[0]
         active_a['class'] = active_a.get('class', []) + ['is-active']
-
-    template_soup.html.select('aside#menuPanel')[0].append(copy.copy(sidebar))
-    template_soup.html.select('div#mini-menu')[0].append(sidebar)
 
     return str(template_soup.prettify())
 
@@ -130,7 +139,7 @@ def main():
         for src_file in files:
             if src_file.endswith('.html'):
                 path = os.path.join(root, src_file)
-                #print("Scraping", path)
+                print("Scraping", path)
                 transfer_html_data(path)
 
     copy_dir(os.path.join(ROOT, 'frontend/css'), HTML_DST + 'css')
