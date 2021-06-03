@@ -8,6 +8,19 @@
     width: 20%;
     border-right: solid 2px;
     border-color: var(--gray);
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+#content {
+    height: 100vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+#content::-webkit-scrollbar {
+    display: none;
 }
 
 #mini-menu {
