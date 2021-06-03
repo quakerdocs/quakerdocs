@@ -78,8 +78,6 @@ def scrape_and_merge(src_doc, template_doc):
 
     template_soup.html.select('div#content')[0].append(content)
 
-
-
     # Scrape and merge navigation sidebar
     sidebar = src_soup.select('div.sphinxsidebarwrapper')[0]
     title = sidebar.h1.a.text
