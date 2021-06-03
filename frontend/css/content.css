@@ -1,6 +1,7 @@
 /* CSS for note, warning and tip boxes. */
 div.admonition {
     padding: 12px;
+    margin-top: 12px;
     line-height: 24px;
     margin-bottom: 24px;
     border-radius: 6px;
@@ -16,11 +17,11 @@ p.admonition-title {
     border-radius: 6px 6px 0px 0px;
 }
 
-div.note {
+div.note, div.attention, div.important {
     background-color: #add8e6;
 }
 
-div.warning {
+div.warning, div.caution, div.danger, div.error {
     background-color: #fafad2;
 }
 
@@ -28,7 +29,7 @@ div.warning p.admonition-title {
     background-color: #ebab34;
 }
 
-div.tip {
+div.tip, div.hint {
     background-color: #dbfaf4;
 }
 
