@@ -22,7 +22,6 @@ class IndexGenerator:
         self.stemmer = SnowballStemmer(language="english").stem
 
         keep_chars = string.ascii_lowercase + string.digits + ' \n'
-        print(keep_chars)
         remove_chars = ''.join(c for c in map(chr, range(256)) if not c in keep_chars)
         self.translate = str.maketrans("", "", remove_chars)
 
@@ -56,7 +55,6 @@ class IndexGenerator:
 
         # Output to json.
         return json.dumps(self.urltitles), json.dumps(self.index)
-
 
 def test():
     """
