@@ -102,32 +102,36 @@ function renderResults(searcher, resultsWrapper) {
      * (200 characters) of text contained in the article.
      */
     let content = '';
+    resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
+
     for (let r of searcher) {
         let text = "";
+
+        id = r.title.replaceAll(' ', '-');
+        $('#result-list').append(`<div onclick="location.href='../${r.page}'" class="result" id="${id}"><h1 class="result-title"><strong>
+                                ${r.title}</strong></h1><p class="result-content"></p></div>`);
+
 
         // Send ajax request to get text from the page.
         $.ajax({
             url: `../${r.page}`,
+            title: `${r.title}`,
             type: 'get',
             dataType: 'html',
-            async: false,
             success: function(data) {
                 var html_data = $(data);
 
                 // If no text is found, keep an empty string.
                 try {
-                    var p_text = $("#content p", html_data)[0].textContent
+                    var p_text = $("#content p", html_data)[0].textContent;
                 } catch (error) {
                     return;
                 }
 
-                text = $.trim(p_text).substr(0, 200) + "...";
+                id = this.title.replaceAll(' ', '-')
+                $("#" + id + " .result-content").text($.trim(p_text).substr(0, 200) + "...");
             }
         });
-
-        content += `<div onclick="location.href='../${r.page}'" class="result"><h1 class="result-title"><strong>
-                    ${r.title}</strong></h1><p class="result-content">${text}</p></div>`
     }
 
-    resultsWrapper.innerHTML = `<ul>${content}</ul>`;
 }
