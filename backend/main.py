@@ -5,20 +5,19 @@ Call this script to invoke the generation of a static document/website.
 
 import os
 import argparse
-import index
 from distutils.dir_util import copy_tree
-from docutils import core, io, nodes, readers
+from docutils import nodes
 import docutils.core
 import docutils.writers.html5_polyglot
-from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives
-from docutils.parsers.rst.directives.misc import Class
-from docutils.parsers.rst.directives.misc import Include
+import docutils.parsers.rst
 import docutils.writers
 
+import index
 import html5writer
 import custom_dirs
 import spdirs
+
+SKIP_TAGS = {'system_message', 'problematic'}
 
 
 # https://stackoverflow.com/questions/38834378/path-to-a-directory-as-argparse-argument
@@ -28,7 +27,6 @@ def dir_path(string):
     else:
         raise NotADirectoryError(string)
 
-SKIP_TAGS = {'system_message', 'problematic'}
 
 class Main:
 
@@ -69,7 +67,6 @@ class Main:
                     os.mkdir(new_dir)
             for file in files:
                 path = os.path.join(self.relative_path(root), file)
-                print("==================== %s ====================" % file)
                 try:
                     if file.endswith('.rst'):
                         self.handle_rst(path)
@@ -91,7 +88,14 @@ class Main:
         dest = os.path.join(self.dest_path, html_path)
 
         # Read the rst file.
-        doctree = docutils.core.publish_doctree(open(src, 'r').read())
+        settings = {
+            'src_dir': self.source_path,
+            'dst_dir': self.dest_path
+        }
+        doctree = docutils.core.publish_doctree(
+            open(src, 'r').read(),
+            source_path=src,
+            settings_overrides=settings)
 
         # Delete the nodes we want to skip.
         for node in doctree.traverse():
@@ -110,10 +114,13 @@ class Main:
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
         self.idx.parse_file(content, title, html_path)
 
-        # Export the doctree.
+        # Write the document to a file.
         with open(dest, 'wb') as f:
-            f.write(docutils.core.publish_from_doctree(doctree, destination_path=dest,
-                                                       writer=html5writer.Writer()))
+            output = docutils.core.publish_from_doctree(
+                doctree,
+                destination_path=dest,
+                writer=html5writer.Writer())
+            f.write(output)
 
     def write_index(self):
         """Write the search index file to the destination directory."""
