@@ -1,0 +1,128 @@
+#navbar {
+    border-bottom: solid 2px;
+    border-color: #ddd;
+}
+
+#menuPanel {
+    min-width: 300px;
+    width: 20%;
+    border:none;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+#menuPanel::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#menuPanel::-webkit-scrollbar {
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+#menuPanel::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #7a7a7a;
+}
+
+#menuPanel::-webkit-scrollbar-thumb:hover {
+    background: #7a7a7a;
+}
+
+#content {
+    height: 100vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+#content::-webkit-scrollbar {
+    display: none;
+}
+
+#mini-menu {
+    background: white;
+    position: absolute;
+    padding-left: 20px;
+    padding-top: 30px;
+    width: 100%;
+    overflow: auto;
+    z-index: 1;
+}
+
+.hide {
+    display: none;
+}
+
+.mini-menu-list {
+    background-position: 14px 12px;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    padding: 1px 20px 12px 45px;
+    border: none;
+    border: 1px solid #ddd;
+}
+
+.mini-menu-list a {
+    color: black;
+    padding: 12px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+.mini-menu-list a:hover {background-color: #ddd;}
+
+.panel {
+    background-color: white;
+}
+
+.results {
+    max-height: 80%;
+    overflow: auto;
+}
+
+.modal-content {
+    height: 80%;
+    max-height: 80%;
+    overflow: hidden;
+}
+
+.md-22 {
+    font-size: 22px !important;
+}
+
+.result {
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.result:hover {
+    background: #ddd;
+}
+
+.result-title {
+    text-align: center;
+    font-size: 20px;
+}
+
+.result-content {
+    padding: 0px 0px 0px 20px;
+    color:grey;
+}
+
+.menu-list li ul {
+    border-left: 2px solid #3273dc !important;
+}
+
+.menu-list a:hover {
+    color: #3273dc;
+}
+
+.menu-list a.is-active:hover {
+    color: white;
+}
+/* .main-content {
+    width: 70%;
+    margin: auto;
+} */
