@@ -1,57 +1,29 @@
-#navbar {
-    border-bottom: solid 2px;
-    border-color: #ddd;
-}
-
-#menuPanel {
-    min-width: 300px;
-    width: 20%;
-    border:none;
-    height: 100vh;
-    overflow-y: scroll;
-}
-
-#menuPanel::-webkit-scrollbar-track {
-	border-radius: 10px;
-	background-color: #F5F5F5;
-}
-
-#menuPanel::-webkit-scrollbar {
-	width: 5px;
-	background-color: #F5F5F5;
-}
-
-#menuPanel::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	background-color: #555;
-}
-
-#menuPanel::-webkit-scrollbar-thumb:hover {
-    background: #3697e6;
-}
-
-#content {
-    height: 100vh;
-    overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-#content::-webkit-scrollbar {
-    display: none;
-}
-
-#mini-menu {
-    background: white;
-    position: absolute;
-    padding-left: 20px;
-    min-width: 230px;
-    overflow: auto;
-    z-index: 1;
+body {
+    /* height: 100vh; */
+    padding-top: 58px;
 }
 
 .hide {
     display: none;
+}
+
+.menu {
+    position: sticky;
+    display: inline-block;
+    vertical-align: top;
+    max-height: 100vh;
+    overflow-y: auto;
+    top: 58px;
+    bottom: 0;
+}
+
+.content {
+    display: inline-block;
+}
+
+#mini-menu {
+    width: 100vw;
+    padding: 5%;
 }
 
 .mini-menu-list {
@@ -110,8 +82,3 @@
     padding: 0px 0px 0px 20px;
     color:grey;
 }
-
-/* .main-content {
-    width: 70%;
-    margin: auto;
-} */
