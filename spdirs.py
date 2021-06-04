@@ -24,7 +24,7 @@ class Only(Directive):
     final_argument_whitespace = True  # necessary?
 
     has_content = True
-    option_spec: Dict[str, Callable[[str], Any]] = {}
+    option_spec = {}
 
     def run(self):
         node = nodes.container()
@@ -59,51 +59,61 @@ class TocTree(Directive):
 
     def run(self):
         tocdata = {}
+        tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
         tocdata['caption'] = self.options.get('caption')
         tocdata['numbered'] = self.options.get('numbered', 0)
-
+        tocdata['reversed'] = 'reversed' in self.options
         wrappernode = nodes.compound(classes=['toctree-wrapper'])
 
-        ret = self.parse_content(tocdata)
-        items = list()
+        list_type = nodes.enumerated_list if tocdata['numbered'] else nodes.bullet_list
+        lst = list_type()
 
-        # TODO: Make this recursive!
-        for title, ref, children in ret:
-            lst_item = nodes.list_item('', nodes.paragraph('', '', nodes.reference('', title, refuri=ref)))
-            if len(children) > 0:
-                blst = nodes.bullet_list()
-                for c in children:
-                    blst += nodes.list_item('', nodes.paragraph('', '', nodes.reference('', c, refuri=ref)))
-                lst_item.append(blst)
-            items.append(lst_item)
-        if tocdata['numbered'] == 1:
-            lst = nodes.enumerated_list()
-        else:
-            lst = nodes.bullet_list()
+        self.parse_content(tocdata)
+        items = TocTree.parse_entries(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
+
         lst.extend(items)
-        wrappernode.extend([nodes.paragraph('', tocdata['caption'], classes=['caption']), lst])
+        wrappernode.extend([
+            nodes.paragraph('', tocdata['caption'], classes=['caption']),
+            lst
+        ])
         return [wrappernode]
 
+    def parse_node(node, ref):
+        entries = list()
+        for c in node.children:
+            if not isinstance(c, nodes.section):
+                continue
+
+            if len(c.children) > 0:
+                title = c.next_node(nodes.Titular)
+                if title:
+                    children = TocTree.parse_node(c, ref)
+                    anchor = c.attributes['ids'][0]  # Use id of the anchor, not of the section!
+                    entries.append((title.astext(), '%s#%s' % (ref, anchor), children))
+
+        return entries
+
+    # TODO: Integrate with search index?
     def parse_content(self, tocdata):
-        ret = []
         for entry in self.content:
-            explicit = explicit_title_re.match(entry)
             children = list()
-            if (explicit):
-                title, ref = explicit.group(1), explicit.group(2)
-                ref = os.path.join(self.state.document.current_source, entry + ".html")
+            src_dir = self.state.document.settings.src_dir
+            if entry.endswith('.rst'):
+                entry = entry[:-4]
+
+            explicit_link = explicit_title_re.match(entry)
+            if (explicit_link):
+                title, ref = explicit_link.group(1), explicit_link.group(2)
+                if not ref.startswith("https://") and not ref.startswith("http://"):
+                    ref = os.path.join(src_dir, ref + ".html")
             else:
-                src_dir = self.state.document.settings.src_dir
                 ref = os.path.join(entry + ".html")
-                src = os.path.join(src_dir, entry)
-                if not src.endswith('.rst'):
-                    src += '.rst'
+                src = os.path.join(src_dir, entry + ".rst")
 
                 if os.path.exists(src):
                     doctree = docutils.core.publish_doctree(open(src, 'r').read(), settings_overrides={'src_dir': src_dir})
                 else:
-                    title = 'Not found'
                     continue
 
                 # Find the page title.
@@ -111,20 +121,34 @@ class TocTree(Directive):
                     title = next(iter(doctree.traverse(nodes.title)))
                     title = title[0].astext()
                 except StopIteration:
-                    title = ''
+                    title = 'Not found'
 
-                # Find headers in document.
-                if tocdata['maxdepth'] > 1:
-                    for h in doctree.traverse(nodes.section):
-                        children.append(h[0].astext())
+                # Find section headers in document.
+                children = TocTree.parse_node(doctree, ref)
 
-            ret.append((title, ref, children))
+            tocdata['entries'].append((title, ref, children))
 
-        return ret
+        if tocdata['reversed']:
+            tocdata['entries'] = list(reversed(tocdata['entries']))
+
+    def parse_entries(entries, depth=999, list_type=nodes.bullet_list):
+        items = list()
+        for title, ref, children in entries:
+            lst_item = nodes.list_item('', nodes.paragraph('', '', nodes.reference('', title, refuri=ref)))
+            if len(children) > 0 and depth > 1:
+                # Do we want this? i.e. check plagiarism.html in ToC
+                # This is similar to Sphinx
+                if len(children) == 1 and len(children[0][2]) > 1:
+                    children = children[0][2]
+                blst = list_type()
+                blst.extend(TocTree.parse_entries(children, depth=depth-1))
+                lst_item.append(blst)
+            items.append(lst_item)
+        return items
 
 
 def setup():
     directives.register_directive('toctree', TocTree)
     directives.register_directive('only', Only)
     directives.register_directive('rst-class', Class)
-    directives.register_directive('include', Include)
+    directives.register_directive('include', Include)  # Does not work yet
