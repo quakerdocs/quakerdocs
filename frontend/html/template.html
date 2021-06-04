@@ -19,18 +19,19 @@
 
 <body>
 
-    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <h1 class="title"></h1>
-            </a>
+    <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <h1 class="title"></h1>
+                </a>
 
-            <a class="navbar-item" href="#">
-                <button class="button is-light" onclick="showSearchOverlay()">
-                    <span class="material-icons md-22">search</span>
-                    <span> Search</span>
-                </button>
-            </a>
+                <a class="navbar-item" href="#">
+                    <button class="button is-light" onclick="showSearchOverlay()">
+                        <span class="material-icons md-22">search</span>
+                        <span> Search</span>
+                    </button>
+                </a>
 
             <!-- Bookmark button for testing -->
             <a class="navbar-item is-hidden-mobile" href="#">
@@ -53,9 +54,10 @@
             </a>
         </div>
 
-        <div class="navbar-menu">
-            <div class="navbar-start"></div>
-            <div class="navbar-end"></div>
+            <div class="navbar-menu">
+                <div class="navbar-start"></div>
+                <div class="navbar-end"></div>
+            </div>
         </div>
     </nav>
 
@@ -97,18 +99,16 @@
         </div>
     </div>
 
-    <section class="main-content columns is-fullheight">
+    <div class="container">
+        <section class="main-content columns">
+            <aside id="menuPanel" class="menu column is-3 is-hidden-touch"></aside>
+            <div id="mini-menu" class="hide">
+                <div class="mini-menu-list"></div>
+            </div>
+            <div id="content" class="column content">
+            </div>
+        </section>
+    </div>
 
-        <aside id="menuPanel" class="column is-narrow is-2 is-fullheight section is-hidden-touch"></aside>
-
-        <div id="mini-menu" class="hide">
-            <!-- <div class="mini-menu-list"></div> -->
-        </div>
-
-        <div class="container hero is-fullheight">
-            <div id="content" class="content section"></div>
-        </div>
-
-    </section>
 </body>
 </html>
