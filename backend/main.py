@@ -119,6 +119,7 @@ class Main:
             output = docutils.core.publish_from_doctree(
                 doctree,
                 destination_path=dest,
+                settings_overrides={'toc': ('Test', '#', [])},
                 writer=html5writer.Writer())
             f.write(output)
 

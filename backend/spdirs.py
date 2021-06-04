@@ -43,6 +43,9 @@ def int_or_nothing(argument: str) -> int:
 
 
 class TocTree(Directive):
+    """
+    Directive for generating a Table of Contents
+    """
     has_content = True
 
     option_spec = {
@@ -58,33 +61,44 @@ class TocTree(Directive):
     }
 
     def run(self):
+        """
+        Code that is being run for the directive.
+        """
         tocdata = {}
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
         tocdata['caption'] = self.options.get('caption')
         tocdata['numbered'] = self.options.get('numbered', 0)
         tocdata['reversed'] = 'reversed' in self.options
-        wrappernode = nodes.compound(classes=['toctree-wrapper'])
 
+        wrappernode = nodes.compound(classes=['toctree-wrapper'])
         list_type = nodes.enumerated_list if tocdata['numbered'] else nodes.bullet_list
         lst = list_type()
 
+        # Parse ToC content.
         self.parse_content(tocdata)
         items = TocTree.parse_entries(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
 
+        # Add ToC to document.
         lst.extend(items)
-        wrappernode.extend([
-            nodes.paragraph('', tocdata['caption'], classes=['caption']),
-            lst
-        ])
+        if tocdata['caption'] is not None:
+            wrappernode += nodes.paragraph('', tocdata['caption'], classes=['caption'])
+        if len(lst) > 0:
+            wrappernode += lst
         return [wrappernode]
 
     def parse_node(node, ref):
+        """
+        Generate a tree-like structure for the sections in a given doctree.
+        """
         entries = list()
+
+        # Iterate over all section-nodes belonging to node.
         for c in node.children:
             if not isinstance(c, nodes.section):
                 continue
 
+            # Only continue if the current section contains a title.
             if len(c.children) > 0:
                 title = c.next_node(nodes.Titular)
                 if title:
@@ -96,12 +110,16 @@ class TocTree(Directive):
 
     # TODO: Integrate with search index?
     def parse_content(self, tocdata):
+        """
+        Fill the toctree data structure with entries.
+        """
         for entry in self.content:
             children = list()
             src_dir = self.state.document.settings.src_dir
             if entry.endswith('.rst'):
                 entry = entry[:-4]
 
+            # Check if current entry is in format 'Some Title <some_link>'.
             explicit_link = explicit_title_re.match(entry)
             if (explicit_link):
                 title, ref = explicit_link.group(1), explicit_link.group(2)
@@ -112,7 +130,10 @@ class TocTree(Directive):
                 src = os.path.join(src_dir, entry + ".rst")
 
                 if os.path.exists(src):
-                    doctree = docutils.core.publish_doctree(open(src, 'r').read(), settings_overrides={'src_dir': src_dir})
+                    doctree = docutils.core.publish_doctree(
+                        open(src, 'r').read(),
+                        source_path=src,
+                        settings_overrides={'src_dir': src[:-4]})
                 else:
                     continue
 
@@ -128,15 +149,21 @@ class TocTree(Directive):
 
             tocdata['entries'].append((title, ref, children))
 
+        # Reverse if required.
         if tocdata['reversed']:
             tocdata['entries'] = list(reversed(tocdata['entries']))
 
     def parse_entries(entries, depth=999, list_type=nodes.bullet_list):
+        """
+        Convert a given ToC-tree into a displayable structure for the document.
+        """
         items = list()
         for title, ref, children in entries:
             lst_item = nodes.list_item('', nodes.paragraph('', '', nodes.reference('', title, refuri=ref)))
+
+            # Parse children, but only if maxdepth is not yet reached.
             if len(children) > 0 and depth > 1:
-                # Do we want this? i.e. check plagiarism.html in ToC
+                # Do we want to collapse some entries? i.e. plagiarism.html
                 # This is similar to Sphinx
                 if len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
@@ -148,7 +175,10 @@ class TocTree(Directive):
 
 
 def setup():
-    directives.register_directive('toctree', TocTree)
+    """
+    Setup function for this 'extension'
+    """
     directives.register_directive('only', Only)
     directives.register_directive('rst-class', Class)
     directives.register_directive('include', Include)  # Does not work yet
+    directives.register_directive('toctree', TocTree)
