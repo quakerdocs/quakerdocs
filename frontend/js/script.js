@@ -94,3 +94,4 @@ function renderResults(searcher, resultsWrapper) {
     }
 
 }
+
