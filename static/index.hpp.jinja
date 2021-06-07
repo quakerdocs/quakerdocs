@@ -1,0 +1,48 @@
+#include <unordered_map>
+#include <vector>
+
+struct Entry {
+	short page_index;
+	short count;
+};
+
+class CString {
+public:
+	constexpr CString( const char* string ) : ptr(string) {}
+
+	bool operator==( const CString& other ) const {
+		return strcmp(ptr, other.ptr) == 0;
+	}
+	constexpr operator const char*() const { return ptr; }
+private:
+	const char* ptr;
+};
+
+namespace std {
+    template<>
+    class hash<CString> {
+    public:
+        constexpr size_t operator()( const CString& key ) const {
+            const char* str = key;
+            size_t hash = 5381;
+            while (char c = *str++)
+                hash = ((hash << 5) + hash) + (unsigned long) c;
+            return hash;
+        }
+    };
+}
+
+const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
+    "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
+{%- endfor %}{{ '}' }};
+
+std::unordered_map<CString, std::vector<Entry>> idx = {{ '{' }}
+{%- for key_array in index -%}
+    {% set key, array = key_array[0], key_array[1] %}
+    {{- '{' -}} "{{ key }}",{{- '{' -}}{% for idx_count in array -%}
+        {% set idx, count = idx_count[0], idx_count[1] %}
+        {{- '{' }} {{- idx }},{{ count -}} {{ '}' -}}{% if not loop.last %},{% endif %}
+    {%- endfor -%}{{- '}' -}}
+    {{ '}' }}{% if not loop.last %},{% endif %}
+{%- endfor -%}
+{{ '}' }};

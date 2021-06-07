@@ -11,6 +11,7 @@ import docutils.core
 import docutils.writers.html5_polyglot
 import docutils.parsers.rst
 import docutils.writers
+from jinja2 import Template
 
 import index
 import html5writer
@@ -56,7 +57,11 @@ class Main:
 
         # Load user configuration
         # Check if file exists? Other cwd?
-        exec(open(os.path.join(args.source_path, 'conf.py')).read())
+        conf = os.path.join(args.source_path, 'conf.py')
+        try:
+            exec(open(conf).read())
+        except FileNotFoundError:
+            print('No conf.py found!')
 
         self.idx = index.IndexGenerator()
 
@@ -138,6 +143,14 @@ class Main:
             f.write(f';\n\nvar search_index = ')
             f.write(idx_index)
             f.write(';\n')
+
+        # Get Jinja template
+        with open(os.path.join(self.static_path, 'index.hpp.jinja')) as f:
+            tmpl = Template(f.read())
+
+        # Render template
+        with open(os.path.join(path, 'search.hpp'), 'w') as f:
+            f.write(tmpl.render(urltitles=self.idx.urltitles, index=self.idx.index.items()))
 
     def copy_static_files(self):
         """Copy all the files from the static path to the destination path."""

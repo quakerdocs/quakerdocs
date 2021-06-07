@@ -1,0 +1,4 @@
+emsdk
+build
+*.emc
+*.emcpp

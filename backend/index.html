@@ -363,20 +363,39 @@ ul.auto-toc {
 <div class="fa fa-fontawesome document" id="the-codegrade-documentation">
 <h1 class="title">The CodeGrade Documentation</h1>
 
-<script type="text/javascript" src="../build/search/search_index_data.js" > </script>
-<script type="text/javascript" src="../static/search/wink-porter2-stemmer.js" > </script>
-<script type="text/javascript" src="../static/search/search_index.js" > </script>
+<!-- <script type="text/javascript" src="search/search_index_data.js" > </script> -->
+<!-- <script type="text/javascript" src="search/wink-porter2-stemmer.js" > </script> -->
+<script  type="text/javascript" src="/backend/wasm/build/search.js" > </script>
+<script type="text/javascript" src="/static/search/search_index.js" > </script>
+
+<input type="text" placeholder="query" id="input">
+<!-- <button onclick="testFunction()">Search!</button> -->
+
+<div id="output">
+</div>
+
 <script type="text/javascript">
-  let searcher = performSearch("create assignment course new test rubric LMS plagiarism");
-  var next;
-  while (!(next = searcher.next()).done) {
-    var result = next.value;
-    console.log(result.page, result.title);
-    // ...
-  }
+  const input = document.getElementById('input');
+  const output = document.getElementById('output');
+
+  function testFunction(e) {
+
+    let searcher = performSearch(e.target.value);
+    output.innerHTML = "";
+    let next;
+    while (!(next = searcher.next()).done) {
+      let result = next.value;
+      output.innerHTML += result + '<br><br>';
+    }
+}
+
+input.addEventListener('input', testFunction);
+input.addEventListener('propertychange', testFunction); // for IE8
 </script>
 
-test
+
+
+<br><br><br><br><br><br>
 <!-- CodeGra.de documentation master file, created by
   sphinx-quickstart on Thu Jun 29 15:43:19 2017.
   You can adapt this file completely to your liking, but it should at least

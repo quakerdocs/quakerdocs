@@ -64,7 +64,7 @@ table {
 }
 p:first-child { margin-top: 0; }
 /* (:last-child is new in CSS 3) */
-p:last-child  { margin-bottom: 0; }
+p:last-chixld  { margin-bottom: 0; }
 
 h1, h2, h3, h4, h5, h6,
 dl > dd {
