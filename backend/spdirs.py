@@ -42,6 +42,13 @@ def int_or_nothing(argument: str) -> int:
     return int(argument)
 
 
+class TocData(nodes.General, nodes.Element):
+    """
+    Container class for Toc data.
+    """
+    ...
+
+
 class TocTree(Directive):
     """
     Directive for generating a Table of Contents
@@ -64,7 +71,10 @@ class TocTree(Directive):
         """
         Code that is being run for the directive.
         """
-        tocdata = {}
+        tocdata = TocData()
+        tocdata['content'] = self.content
+        tocdata['src_dir'] = self.state.document.settings.src_dir
+
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
         tocdata['caption'] = self.options.get('caption')
@@ -72,12 +82,13 @@ class TocTree(Directive):
         tocdata['reversed'] = 'reversed' in self.options
 
         wrappernode = nodes.compound(classes=['toctree-wrapper'])
+        wrappernode.append(tocdata)
         list_type = nodes.enumerated_list if tocdata['numbered'] else nodes.bullet_list
         lst = list_type()
 
         # Parse ToC content.
-        self.parse_content(tocdata)
-        items = TocTree.parse_entries(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
+        TocTree.parse_content(tocdata)
+        items = TocTree.to_nodes(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
 
         # Add ToC to document.
         lst.extend(items)
@@ -109,13 +120,13 @@ class TocTree(Directive):
         return entries
 
     # TODO: Integrate with search index?
-    def parse_content(self, tocdata):
+    def parse_content(tocdata):
         """
         Fill the toctree data structure with entries.
         """
-        for entry in self.content:
+        for entry in tocdata['content']:
             children = list()
-            src_dir = self.state.document.settings.src_dir
+            src_dir = tocdata['src_dir']
             if entry.endswith('.rst'):
                 entry = entry[:-4]
 
@@ -153,7 +164,7 @@ class TocTree(Directive):
         if tocdata['reversed']:
             tocdata['entries'] = list(reversed(tocdata['entries']))
 
-    def parse_entries(entries, depth=999, list_type=nodes.bullet_list):
+    def to_nodes(entries, depth=999, list_type=nodes.bullet_list):
         """
         Convert a given ToC-tree into a displayable structure for the document.
         """
@@ -165,13 +176,44 @@ class TocTree(Directive):
             if len(children) > 0 and depth > 1:
                 # Do we want to collapse some entries? i.e. plagiarism.html
                 # This is similar to Sphinx
-                if len(children) == 1 and len(children[0][2]) > 1:
+                while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
                 blst = list_type()
-                blst.extend(TocTree.parse_entries(children, depth=depth-1))
+                blst.extend(TocTree.to_nodes(children, depth=depth-1, list_type=list_type))
                 lst_item.append(blst)
             items.append(lst_item)
         return items
+
+    def to_html(tocdata):
+        """
+        Parse the TocData data-structure to HTML.
+        """
+        ret = '<div><p class="caption">%s</p>' % tocdata['caption']
+        ret += TocTree.entries_to_html(tocdata['entries'], 1)
+        ret += '</div>'
+        return ret
+
+    def entries_to_html(entries, depth=999, list_type=nodes.bullet_list):
+        """
+        Parse the entries that need to be in the ToC to HTML format.
+        """
+        # TODO: Fix indentation
+        ret = "<ul>\n"
+        for title, ref, children in entries:
+            lst_item = '<li><a href=%s>%s</a>' % (ref, title)
+
+            # Parse children, but only if maxdepth is not yet reached.
+            if len(children) > 0 and depth > 1:
+                # Do we want to collapse some entries? i.e. plagiarism.html
+                # This is similar to Sphinx
+                while len(children) == 1 and len(children[0][2]) > 1:
+                    children = children[0][2]
+                blst = TocTree.entries_to_html(children, depth=depth-1, list_type=list_type)
+                lst_item += blst
+            lst_item += "</li>\n"
+            ret += lst_item
+        ret += "</ul>"
+        return ret
 
 
 def setup():

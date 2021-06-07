@@ -127,16 +127,12 @@ class Writer(docutils.writers._html_base.Writer):
 
 
 class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
-    @property
-    def navigation(self):
-        """
-        Create the navigation bar.
-        """
-        self.settings.toc  # should contain the ToC (supplied from main.py)
-        return '<p>Insert navigation (side)bar here...</p>'
+    def __init__(self, document):
+        super().__init__(document)
+        self.navigation = '<nav>%s</nav>' % document.settings.toc
 
-    def visit_toctree(self, node: nodes.Element):
+    def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
 
-    def depart_toctree(self, node: nodes.Element):
+    def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
