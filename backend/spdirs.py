@@ -202,11 +202,13 @@ class TocTree(Directive):
         ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
             lst_item = '<li><span class="level mb-0">\
-                <a href=%s>%s</a>\
-                <span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
-                    <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i>\
-                </span>\
-            </span>' % (ref, title)
+                <a href=%s>%s</a>' % (ref, title)
+
+            if len(children) > 0:
+                lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
+                    <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i>'
+
+            lst_item +=   '</span> </span>'
 
             # Parse children, but only if maxdepth is not yet reached.
             if len(children) > 0 and depth > 1:
