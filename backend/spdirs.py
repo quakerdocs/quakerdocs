@@ -188,19 +188,24 @@ class TocTree(Directive):
         """
         Parse the TocData data-structure to HTML.
         """
-        ret = '<div><p class="caption">%s</p>' % tocdata['caption']
-        ret += TocTree.entries_to_html(tocdata['entries'], 1)
+        ret = '<div><p class="caption menu-label">%s</p>' % tocdata['caption']
+        ret += TocTree.entries_to_html(tocdata['entries'], 999)
         ret += '</div>'
         return ret
 
-    def entries_to_html(entries, depth=999, list_type=nodes.bullet_list):
+    def entries_to_html(entries, depth=999):
         """
         Parse the entries that need to be in the ToC to HTML format.
         """
         # TODO: Fix indentation
-        ret = "<ul>\n"
+        ret = '<ul class="menu-list">\n'
         for title, ref, children in entries:
-            lst_item = '<li><a href=%s>%s</a>' % (ref, title)
+            lst_item = '<li><span class="level mb-0">\
+                <a href=%s>%s</a>\
+                <span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
+                    <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i>\
+                </span>\
+            </span>' % (ref, title)
 
             # Parse children, but only if maxdepth is not yet reached.
             if len(children) > 0 and depth > 1:
@@ -208,7 +213,7 @@ class TocTree(Directive):
                 # This is similar to Sphinx
                 while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
-                blst = TocTree.entries_to_html(children, depth=depth-1, list_type=list_type)
+                blst = TocTree.entries_to_html(children, depth=depth-1)
                 lst_item += blst
             lst_item += "</li>\n"
             ret += lst_item
