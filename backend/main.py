@@ -95,7 +95,7 @@ class Main:
         self.copy_static_files()
 
         # TEMP
-        temp_paths = ['css', 'js']
+        temp_paths = ['css', 'js', 'fonts']
         for path in temp_paths:
             copy_tree(os.path.join('frontend', path),
                       os.path.join(self.dest_path, path), update=1)

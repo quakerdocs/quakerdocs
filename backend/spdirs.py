@@ -193,14 +193,15 @@ class TocTree(Directive):
         ret += '</div>'
         return ret
 
-    def entries_to_html(entries, depth=999):
+    def entries_to_html(entries, depth=999, begin_depth=0):
         """
         Parse the entries that need to be in the ToC to HTML format.
         """
         # TODO: Fix indentation
-        ret = '<ul class="menu-list">\n'
+        add_class = '' if begin_depth == 0 else 'is-collapsed'
+        ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
-            lst_item = '<li><span class="level mb-0">\
+            lst_item = '<li"><span class="level mb-0">\
                 <a href=%s>%s</a>\
                 <span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
                     <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i>\
@@ -213,7 +214,7 @@ class TocTree(Directive):
                 # This is similar to Sphinx
                 while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
-                blst = TocTree.entries_to_html(children, depth=depth-1)
+                blst = TocTree.entries_to_html(children, depth=depth-1, begin_depth=begin_depth+1)
                 lst_item += blst
             lst_item += "</li>\n"
             ret += lst_item
