@@ -36,21 +36,26 @@ class Main:
         self.builder = builder
 
     def relative_path(self, path):
-        """Get the path of a source directory relative to the source file."""
+        """
+        Get the path of a source directory relative to the source file.
+        """
         return path[len(self.source_path)+1:]
 
     def read_conf(self):
+        """
+        Read conf.py from the source directory and save the configuration.
+        """
         conf_vars = {}
 
         # Check if file exists? Other cwd?
         exec(open(os.path.join(args.source_path, 'conf.py')).read(), {}, conf_vars)
         self.conf_vars = conf_vars
 
-        return conf_vars
-
     def generate(self):
-        """Read all the input files from the source directory, parse them,
-        and output the results to the build directory."""
+        """
+        Read all the input files from the source directory, parse them, and
+        output the results to the build directory.
+        """
 
         # Check if destination path exists, otherwise create it.
         if not os.path.exists(self.dest_path):
@@ -65,10 +70,11 @@ class Main:
         # Load user configuration
         self.read_conf()
 
-        self.idx = index.IndexGenerator()
-
         # Set-up Table of Contents data
         self.build_global_toc()
+
+        # Set-up index generator
+        self.idx = index.IndexGenerator()
 
         # Iterate over all files in the source directory
         for root, dirs, files in os.walk(self.source_path):
@@ -85,14 +91,22 @@ class Main:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
-
         self.write_index()
         self.copy_static_files()
+
+        # TEMP
+        temp_paths = ['css', 'js']
+        for path in temp_paths:
+            copy_tree(os.path.join('frontend', path),
+                      os.path.join(self.dest_path, path), update=1)
+
         print("The generated documents have been saved in %s" % self.dest_path)
         return 0
 
     def handle_rst(self, path):
-        """Parse a rst file and output its contents."""
+        """
+        Parse a rst file and output its contents.
+        """
         src = os.path.join(self.source_path, path)
         html_path = path[:-4] + '.html'
         dest = os.path.join(self.dest_path, html_path)
@@ -132,12 +146,15 @@ class Main:
                 writer=html5writer.Writer(),
                 settings_overrides={
                     'toc': self.toc_navigation,
-                    'src_dir': self.source_path
+                    'src_dir': self.source_path,
+                    'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest))
                 })
             f.write(output)
 
     def write_index(self):
-        """Write the search index file to the destination directory."""
+        """
+        Write the search index file to the destination directory.
+        """
         # Make sure the search directory exist.
         path = os.path.join(self.dest_path, 'search/')
         if not os.path.exists(path):
@@ -153,7 +170,9 @@ class Main:
             f.write(';\n')
 
     def build_global_toc(self):
-        """Read and save the ToC from master_doc"""
+        """
+        Read and save the ToC from master_doc.
+        """
         # Open the file containing the ToC's
         master_doc = self.conf_vars.get('master_doc', 'index.rst')
         src = os.path.join(self.source_path, master_doc)
@@ -168,9 +187,14 @@ class Main:
             self.toc_navigation += spdirs.TocTree.to_html(tt)
 
     def copy_static_files(self):
-        """Copy all the files from the static path to the destination path."""
+        """
+        Copy all the files from the static path to the destination path.
+        """
         for path in self.conf_vars['html_static_path']:
-            copy_tree(os.path.join(self.source_path, path), self.dest_path, update=1)
+            copy_tree(
+                os.path.join(self.source_path, path),
+                os.path.join(self.dest_path, path),
+                update=1)
 
 
 if __name__ == "__main__":

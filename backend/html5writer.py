@@ -11,7 +11,7 @@ class Writer(docutils.writers._html_base.Writer):
     supported = ('html', 'html5', 'html4', 'xhtml', 'xhtml10')
     """Formats this writer supports."""
 
-    default_stylesheets = ['minimal.css', 'plain.css']
+    default_stylesheets = []
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
     default_template = 'template.txt'
@@ -129,7 +129,8 @@ class Writer(docutils.writers._html_base.Writer):
 class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
     def __init__(self, document):
         super().__init__(document)
-        self.navigation = '<nav>%s</nav>' % document.settings.toc
+        self.head.append('<base href="%s">' % document.settings.rel_base)
+        self.navigation = document.settings.toc
 
     def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
