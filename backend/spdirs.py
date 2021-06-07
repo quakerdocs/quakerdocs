@@ -201,7 +201,7 @@ class TocTree(Directive):
         add_class = '' if begin_depth == 0 else 'is-collapsed'
         ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
-            lst_item = '<li"><span class="level mb-0">\
+            lst_item = '<li><span class="level mb-0">\
                 <a href=%s>%s</a>\
                 <span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
                     <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i>\

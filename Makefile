@@ -24,7 +24,7 @@ scrape:
 	python3 scrape.py
 
 backend:
-	python backend/main.py docs
+	python3 backend/main.py docs
 
 clean:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
