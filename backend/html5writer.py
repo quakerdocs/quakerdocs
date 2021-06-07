@@ -131,8 +131,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         super().__init__(document)
         self.navigation = '<nav>%s</nav>' % document.settings.toc
 
-    def visit_toctree(self, node: nodes.Element):
+    def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
 
-    def depart_toctree(self, node: nodes.Element):
+    def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode

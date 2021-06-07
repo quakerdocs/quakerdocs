@@ -42,6 +42,13 @@ def int_or_nothing(argument: str) -> int:
     return int(argument)
 
 
+class TocData(nodes.General, nodes.Element):
+    """
+    Container class for Toc data.
+    """
+    ...
+
+
 class TocTree(Directive):
     """
     Directive for generating a Table of Contents
@@ -64,7 +71,7 @@ class TocTree(Directive):
         """
         Code that is being run for the directive.
         """
-        tocdata = {}
+        tocdata = TocData()
         tocdata['content'] = self.content
         tocdata['src_dir'] = self.state.document.settings.src_dir
 
@@ -75,6 +82,7 @@ class TocTree(Directive):
         tocdata['reversed'] = 'reversed' in self.options
 
         wrappernode = nodes.compound(classes=['toctree-wrapper'])
+        wrappernode.append(tocdata)
         list_type = nodes.enumerated_list if tocdata['numbered'] else nodes.bullet_list
         lst = list_type()
 
@@ -176,11 +184,19 @@ class TocTree(Directive):
             items.append(lst_item)
         return items
 
-    def to_html(entries, depth=999, list_type=nodes.bullet_list):
+    def to_html(tocdata):
+        """
+        Parse the TocData data-structure to HTML.
+        """
+        ret = '<div><p class="caption">%s</p>' % tocdata['caption']
+        ret += TocTree.entries_to_html(tocdata['entries'], 1)
+        ret += '</div>'
+        return ret
+
+    def entries_to_html(entries, depth=999, list_type=nodes.bullet_list):
         """
         Parse the entries that need to be in the ToC to HTML format.
         """
-
         # TODO: Fix indentation
         ret = "<ul>\n"
         for title, ref, children in entries:
@@ -192,7 +208,7 @@ class TocTree(Directive):
                 # This is similar to Sphinx
                 while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
-                blst = TocTree.to_html(children, depth=depth-1, list_type=list_type)
+                blst = TocTree.entries_to_html(children, depth=depth-1, list_type=list_type)
                 lst_item += blst
             lst_item += "</li>\n"
             ret += lst_item

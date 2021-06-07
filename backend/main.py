@@ -68,26 +68,9 @@ class Main:
         self.idx = index.IndexGenerator()
 
         # Set-up Table of Contents data
-        # TODO: Copy from conf.py:master_doc (=index[.rst])
-        toc_content = list()
-        for root, dirs, files in os.walk(self.source_path):
-            for file in files:
-                if file.endswith('.rst'):
-                    toc_content.append(self.relative_path(os.path.join(root, file))[:-4])
+        self.build_global_toc()
 
-        # Build Toc
-        tocdata = {}
-        tocdata['content'] = toc_content
-        tocdata['src_dir'] = self.source_path
-
-        tocdata['entries'] = []
-        tocdata['maxdepth'] = 1
-        tocdata['caption'] = 'Test'
-        tocdata['numbered'] = False
-        tocdata['reversed'] = False
-        spdirs.TocTree.parse_content(tocdata)
-        self.toc_navigation = spdirs.TocTree.to_html(tocdata['entries'], 2)
-
+        # Iterate over all files in the source directory
         for root, dirs, files in os.walk(self.source_path):
             for dir in dirs:
                 new_dir = os.path.join(self.dest_path, self.relative_path(root), dir)
@@ -102,7 +85,6 @@ class Main:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
-
 
         self.write_index()
         self.copy_static_files()
@@ -169,6 +151,21 @@ class Main:
             f.write(f';\n\nvar search_index = ')
             f.write(idx_index)
             f.write(';\n')
+
+    def build_global_toc(self):
+        """Read and save the ToC from master_doc"""
+        # Open the file containing the ToC's
+        master_doc = self.conf_vars.get('master_doc', 'index.rst')
+        src = os.path.join(self.source_path, master_doc)
+        doctree = docutils.core.publish_doctree(
+            open(src, 'r').read(),
+            source_path=src,
+            settings_overrides={'src_dir': self.source_path})
+
+        # Iterate and join ToC's.
+        self.toc_navigation = ''
+        for tt in doctree.traverse(spdirs.TocData):
+            self.toc_navigation += spdirs.TocTree.to_html(tt)
 
     def copy_static_files(self):
         """Copy all the files from the static path to the destination path."""
