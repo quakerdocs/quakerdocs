@@ -3,11 +3,12 @@ function toggleFunction() {
     /* Used to toggle the menu on small screens when clicking on the menu
      * button.
      */
-    var x = document.getElementById("mini-menu");
-    if (x.className.indexOf("hide") == -1) {
-        x.className = x.className.replace("", "hide");
+    var menu = document.getElementById("menuPanel");
+
+    if (menu.classList.contains('is-hidden-touch')) {
+        menu.classList.replace('is-hidden-touch', 'is-full');
     } else {
-        x.className = x.className.replace("hide", "");
+        menu.classList.replace('is-full', 'is-hidden-touch');
     }
 }
 
