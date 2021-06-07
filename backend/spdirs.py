@@ -188,9 +188,8 @@ class TocTree(Directive):
         """
         Parse the TocData data-structure to HTML.
         """
-        ret = '<div><p class="caption menu-label">%s</p>' % tocdata['caption']
+        ret = '<p class="caption menu-label"><span class="caption-text">%s</span></p>' % tocdata['caption']
         ret += TocTree.entries_to_html(tocdata['entries'], 999)
-        ret += '</div>'
         return ret
 
     def entries_to_html(entries, depth=999, begin_depth=0):
@@ -205,10 +204,10 @@ class TocTree(Directive):
                 <a href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
-                lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
-                    <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i>'
+                lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right"> >\
+                    <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i></span>'
 
-            lst_item +=   '</span> </span>'
+            lst_item += '</span>'
 
             # Parse children, but only if maxdepth is not yet reached.
             if len(children) > 0 and depth > 1:
