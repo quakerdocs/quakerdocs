@@ -68,6 +68,7 @@ class Main:
         self.idx = index.IndexGenerator()
 
         # Set-up Table of Contents data
+        # TODO: Copy from conf.py:master_doc (=index[.rst])
         toc_content = list()
         for root, dirs, files in os.walk(self.source_path):
             for file in files:
@@ -85,7 +86,7 @@ class Main:
         tocdata['numbered'] = False
         tocdata['reversed'] = False
         spdirs.TocTree.parse_content(tocdata)
-        self.toc_navigation = html5writer.HTMLTranslator.toc_entries_to_html(tocdata['entries'])
+        self.toc_navigation = spdirs.TocTree.to_html(tocdata['entries'], 2)
 
         for root, dirs, files in os.walk(self.source_path):
             for dir in dirs:

@@ -80,7 +80,7 @@ class TocTree(Directive):
 
         # Parse ToC content.
         TocTree.parse_content(tocdata)
-        items = TocTree.parse_entries(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
+        items = TocTree.to_nodes(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
 
         # Add ToC to document.
         lst.extend(items)
@@ -156,7 +156,7 @@ class TocTree(Directive):
         if tocdata['reversed']:
             tocdata['entries'] = list(reversed(tocdata['entries']))
 
-    def parse_entries(entries, depth=999, list_type=nodes.bullet_list):
+    def to_nodes(entries, depth=999, list_type=nodes.bullet_list):
         """
         Convert a given ToC-tree into a displayable structure for the document.
         """
@@ -168,13 +168,36 @@ class TocTree(Directive):
             if len(children) > 0 and depth > 1:
                 # Do we want to collapse some entries? i.e. plagiarism.html
                 # This is similar to Sphinx
-                if len(children) == 1 and len(children[0][2]) > 1:
+                while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
                 blst = list_type()
-                blst.extend(TocTree.parse_entries(children, depth=depth-1, list_type=list_type))
+                blst.extend(TocTree.to_nodes(children, depth=depth-1, list_type=list_type))
                 lst_item.append(blst)
             items.append(lst_item)
         return items
+
+    def to_html(entries, depth=999, list_type=nodes.bullet_list):
+        """
+        Parse the entries that need to be in the ToC to HTML format.
+        """
+
+        # TODO: Fix indentation
+        ret = "<ul>\n"
+        for title, ref, children in entries:
+            lst_item = '<li><a href=%s>%s</a>' % (ref, title)
+
+            # Parse children, but only if maxdepth is not yet reached.
+            if len(children) > 0 and depth > 1:
+                # Do we want to collapse some entries? i.e. plagiarism.html
+                # This is similar to Sphinx
+                while len(children) == 1 and len(children[0][2]) > 1:
+                    children = children[0][2]
+                blst = TocTree.to_html(children, depth=depth-1, list_type=list_type)
+                lst_item += blst
+            lst_item += "</li>\n"
+            ret += lst_item
+        ret += "</ul>"
+        return ret
 
 
 def setup():
