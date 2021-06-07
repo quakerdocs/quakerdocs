@@ -30,15 +30,23 @@ def dir_path(string):
 
 class Main:
 
-    def __init__(self, source_path, dest_path, static_path, builder):
+    def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
         self.dest_path = dest_path
-        self.static_path = static_path
         self.builder = builder
 
     def relative_path(self, path):
         """Get the path of a source directory relative to the source file."""
         return path[len(self.source_path)+1:]
+
+    def read_conf(self):
+        conf_vars = {}
+
+        # Check if file exists? Other cwd?
+        exec(open(os.path.join(args.source_path, 'conf.py')).read(), {}, conf_vars)
+        self.conf_vars = conf_vars
+
+        return conf_vars
 
     def generate(self):
         """Read all the input files from the source directory, parse them,
@@ -55,10 +63,29 @@ class Main:
         custom_dirs.setup()
 
         # Load user configuration
-        # Check if file exists? Other cwd?
-        exec(open(os.path.join(args.source_path, 'conf.py')).read())
+        self.read_conf()
 
         self.idx = index.IndexGenerator()
+
+        # Set-up Table of Contents data
+        toc_content = list()
+        for root, dirs, files in os.walk(self.source_path):
+            for file in files:
+                if file.endswith('.rst'):
+                    toc_content.append(self.relative_path(os.path.join(root, file))[:-4])
+
+        # Build Toc
+        tocdata = {}
+        tocdata['content'] = toc_content
+        tocdata['src_dir'] = self.source_path
+
+        tocdata['entries'] = []
+        tocdata['maxdepth'] = 1
+        tocdata['caption'] = 'Test'
+        tocdata['numbered'] = False
+        tocdata['reversed'] = False
+        spdirs.TocTree.parse_content(tocdata)
+        self.toc_navigation = html5writer.HTMLTranslator.toc_entries_to_html(tocdata['entries'])
 
         for root, dirs, files in os.walk(self.source_path):
             for dir in dirs:
@@ -119,8 +146,11 @@ class Main:
             output = docutils.core.publish_from_doctree(
                 doctree,
                 destination_path=dest,
-                settings_overrides={'toc': ('Test', '#', [])},
-                writer=html5writer.Writer())
+                writer=html5writer.Writer(),
+                settings_overrides={
+                    'toc': self.toc_navigation,
+                    'src_dir': self.source_path
+                })
             f.write(output)
 
     def write_index(self):
@@ -141,17 +171,17 @@ class Main:
 
     def copy_static_files(self):
         """Copy all the files from the static path to the destination path."""
-        copy_tree(self.static_path, self.dest_path, update=1)
+        for path in self.conf_vars['html_static_path']:
+            copy_tree(os.path.join(self.source_path, path), self.dest_path, update=1)
 
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='SDG')
     arg_parser.add_argument('source_path', type=dir_path, help='The directory containing the RST files.')
     arg_parser.add_argument('-d', type=str, dest='destination_path', default='build', help='The directory to write the output.')
-    arg_parser.add_argument('-s', type=dir_path, dest='static_path', default='static', help='The directory to direclty copy from.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html", help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
     print("Running SDG 0.0.1")
-    main = Main(args.source_path, args.destination_path, args.static_path, args.builder)
+    main = Main(args.source_path, args.destination_path, args.builder)
     exit(main.generate())

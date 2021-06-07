@@ -65,6 +65,9 @@ class TocTree(Directive):
         Code that is being run for the directive.
         """
         tocdata = {}
+        tocdata['content'] = self.content
+        tocdata['src_dir'] = self.state.document.settings.src_dir
+
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
         tocdata['caption'] = self.options.get('caption')
@@ -76,7 +79,7 @@ class TocTree(Directive):
         lst = list_type()
 
         # Parse ToC content.
-        self.parse_content(tocdata)
+        TocTree.parse_content(tocdata)
         items = TocTree.parse_entries(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
 
         # Add ToC to document.
@@ -109,13 +112,13 @@ class TocTree(Directive):
         return entries
 
     # TODO: Integrate with search index?
-    def parse_content(self, tocdata):
+    def parse_content(tocdata):
         """
         Fill the toctree data structure with entries.
         """
-        for entry in self.content:
+        for entry in tocdata['content']:
             children = list()
-            src_dir = self.state.document.settings.src_dir
+            src_dir = tocdata['src_dir']
             if entry.endswith('.rst'):
                 entry = entry[:-4]
 
@@ -168,7 +171,7 @@ class TocTree(Directive):
                 if len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
                 blst = list_type()
-                blst.extend(TocTree.parse_entries(children, depth=depth-1))
+                blst.extend(TocTree.parse_entries(children, depth=depth-1, list_type=list_type))
                 lst_item.append(blst)
             items.append(lst_item)
         return items

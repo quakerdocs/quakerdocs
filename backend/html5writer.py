@@ -127,16 +127,30 @@ class Writer(docutils.writers._html_base.Writer):
 
 
 class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
-    @property
-    def navigation(self):
-        """
-        Create the navigation bar.
-        """
-        self.settings.toc  # should contain the ToC (supplied from main.py)
-        return '<p>Insert navigation (side)bar here...</p>'
+    def __init__(self, document):
+        super().__init__(document)
+        self.navigation = '<div id="navbar">%s</div>' % self.document.settings.toc
 
     def visit_toctree(self, node: nodes.Element):
         raise nodes.SkipNode
 
     def depart_toctree(self, node: nodes.Element):
         raise nodes.SkipNode
+
+    def toc_entries_to_html(entries, depth=999, list_type=nodes.bullet_list):
+        ret = "<ul>\n"
+        for title, ref, children in entries:
+            lst_item = '<li>%s' % title  # nodes.list_item('', nodes.paragraph('', '', nodes.reference('', title, refuri=ref)))
+
+            # Parse children, but only if maxdepth is not yet reached.
+            if len(children) > 0 and depth > 1:
+                # Do we want to collapse some entries? i.e. plagiarism.html
+                # This is similar to Sphinx
+                if len(children) == 1 and len(children[0][2]) > 1:
+                    children = children[0][2]
+                blst = HTMLTranslator.toc_entries_to_html(children, depth=depth-1, list_type=list_type)
+                lst_item += blst
+            lst_item += "</li>\n"
+            ret += lst_item
+        ret += "</ul>"
+        return ret
