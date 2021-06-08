@@ -14,7 +14,7 @@ class Writer(docutils.writers._html_base.Writer):
     default_stylesheets = []
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
-    default_template = 'template.txt'
+    default_template = '../static/template.txt'
     default_template_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), default_template)
 
