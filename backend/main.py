@@ -166,7 +166,7 @@ class Main:
         Write the search index file to the destination directory.
         """
         # Make sure the search directory exist.
-        path = os.path.join(self.dest_path, 'search/')
+        path = os.path.join(self.dest_path, 'js/')
         if not os.path.exists(path):
             os.mkdir(path)
 
