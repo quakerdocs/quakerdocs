@@ -29,6 +29,6 @@ function* performSearch(query) {
     while (result = getres()) {
         /* Split on new line, regex to work on all os'es. */
         let sep = result.split(/\r\n|\n\r|\n|\r/);
-        yield Result(sep[0], se[[1]]);
+        yield new Result(sep[0], sep[1]);
     }
 }

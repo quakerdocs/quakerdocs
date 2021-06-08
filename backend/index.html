@@ -385,7 +385,7 @@ ul.auto-toc {
     let next;
     while (!(next = searcher.next()).done) {
       let result = next.value;
-      output.innerHTML += result + '<br><br>';
+      output.innerHTML += result.title + '<br><br>';
     }
 }
 
