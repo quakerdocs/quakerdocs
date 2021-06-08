@@ -1,5 +1,5 @@
 
-function toggleFunction() {
+function toggleMenu() {
     /* Used to toggle the menu on small screens when clicking on the menu
      * button.
      */
@@ -13,11 +13,11 @@ function toggleFunction() {
 }
 
 function toggleExpand(element) {
-    /* Toggle the expansion of an element in the siddebar.
+    /* Toggle the expansion of an element in the sidebar.
      */
     var ul = element.parentElement.parentElement.getElementsByTagName("UL")[0];
     var i = element.firstChild.nextSibling;
-    console.log(i);
+
     if (ul.classList.contains('is-expanded')) {
         i.classList.replace('fa-angle-down', 'fa-angle-right');
         ul.classList.replace('is-expanded', 'is-collapsed');

@@ -1,7 +1,9 @@
 %(head_prefix)s
 %(head)s
 %(stylesheet)s
+
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
 <link rel="stylesheet" type="text/css" href="css/general.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -41,7 +43,7 @@
 			</button>
 		</a>
 
-		<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleFunction()">
+		<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
 			<span aria-hidden="true"></span>
@@ -93,8 +95,8 @@
 	</div>
 </div>
 <div class="container">
-	<section class="main-content columns">
-		<aside class="menu column is-3 is-hidden-touch" id="menuPanel">
+	<section class="main-content columns is-desktop">
+		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">
 			%(navigation)s
 		</aside>
 		<div id="content" class="column content">
