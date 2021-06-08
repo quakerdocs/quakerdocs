@@ -3,6 +3,7 @@ Main entrypoint of the program.
 Call this script to invoke the generation of a static document/website.
 """
 
+from sys import stderr
 import os
 import argparse
 from distutils.dir_util import copy_tree
@@ -29,6 +30,10 @@ def dir_path(string):
 
 
 class Main:
+    # Mapping builder name to (file extension, writer class)
+    supported_builders = {
+        'html': ('html', html5writer.Writer)
+    }
 
     def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
@@ -56,6 +61,11 @@ class Main:
         Read all the input files from the source directory, parse them, and
         output the results to the build directory.
         """
+        # Check if requested format is supported.
+        if self.builder not in Main.supported_builders:
+            print("Requested builder not supported!", file=stderr)
+            return 1
+        self.file_ext, self.builder_class = Main.supported_builders[self.builder]
 
         # Check if destination path exists, otherwise create it.
         if not os.path.exists(self.dest_path):
@@ -143,7 +153,7 @@ class Main:
             output = docutils.core.publish_from_doctree(
                 doctree,
                 destination_path=dest,
-                writer=html5writer.Writer(),
+                writer=self.builder_class(),
                 settings_overrides={
                     'toc': self.toc_navigation,
                     'src_dir': self.source_path,
