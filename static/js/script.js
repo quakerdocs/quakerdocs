@@ -110,4 +110,3 @@ function renderResults(searcher, resultsWrapper) {
     }
 
 }
-
