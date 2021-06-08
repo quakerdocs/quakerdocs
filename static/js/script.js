@@ -27,6 +27,7 @@ function toggleExpand(element) {
     }
 }
 
+let searchOpen = false;
 function showSearchOverlay() {
     /* Active the search bar overlay.
      */
@@ -39,6 +40,7 @@ function showSearchOverlay() {
     document.documentElement.style.overflow = 'hidden';
     document.body.scroll = "no";
 
+    searchOpen = true;
     activateSearch()
 }
 
@@ -50,6 +52,8 @@ function hideSearchOverlay() {
     // Allow background to scroll again.
     document.documentElement.style.overflow = 'scroll';
     document.body.scroll = "yes";
+
+    searchOpen = false;
 }
 
 function activateSearch() {

@@ -13,6 +13,7 @@
 <script src="js/search_index_data.js"></script>
 <script src="js/search_index.js"></script>
 <script src="js/script.js"></script>
+<script src="js/keylistener.js"></script>
 
 %(body_prefix)s
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
