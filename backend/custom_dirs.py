@@ -22,5 +22,31 @@ class DeprecationNote(Directive):
         return [nodes.tip('', nodes.paragraph('', '', *text))]
 
 
+class WarningDirective(Directive):
+    has_content = True
+
+    def run(self):
+        adm = nodes.admonition('',
+                               nodes.paragraph('', ' '.join(self.content)),
+                               classes=['warning'])
+        title = nodes.title('', 'Warning')
+        adm.insert(0, title)
+        return [adm]
+
+
+class ExampleDirective(Directive):
+    has_content = True
+
+    def run(self):
+        adm = nodes.admonition('',
+                               nodes.paragraph('', ' '.join(self.content)),
+                               classes=['example'])
+        title = nodes.title('', 'Example')
+        adm.insert(0, title)
+        return [adm]
+
+
 def setup():
     directives.register_directive('deprecation_note', DeprecationNote)
+    directives.register_directive('warning', WarningDirective)
+    directives.register_directive('example', ExampleDirective)

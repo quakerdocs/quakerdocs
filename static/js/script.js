@@ -1,13 +1,29 @@
 
-function toggleFunction() {
+function toggleMenu() {
     /* Used to toggle the menu on small screens when clicking on the menu
      * button.
      */
-    var x = document.getElementById("mini-menu");
-    if (x.className.indexOf("hide") == -1) {
-        x.className = x.className.replace("", "hide");
+    var menu = document.getElementById("menuPanel");
+
+    if (menu.classList.contains('is-hidden-touch')) {
+        menu.classList.replace('is-hidden-touch', 'is-full');
     } else {
-        x.className = x.className.replace("hide", "");
+        menu.classList.replace('is-full', 'is-hidden-touch');
+    }
+}
+
+function toggleExpand(element) {
+    /* Toggle the expansion of an element in the sidebar.
+     */
+    var ul = element.parentElement.parentElement.getElementsByTagName("UL")[0];
+    var i = element.firstChild.nextSibling;
+
+    if (ul.classList.contains('is-expanded')) {
+        i.classList.replace('fa-angle-down', 'fa-angle-right');
+        ul.classList.replace('is-expanded', 'is-collapsed');
+    } else {
+        i.classList.replace('fa-angle-right', 'fa-angle-down');
+        ul.classList.replace('is-collapsed', 'is-expanded');
     }
 }
 

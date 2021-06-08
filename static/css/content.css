@@ -41,6 +41,13 @@ section, div.compound {
     margin-bottom: 2em;
 }
 
+div.section {
+    padding-top: 1rem;
+    padding-right: 1.5rem;
+    padding-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
 .caption-text {
     font-weight: bold;
 }
