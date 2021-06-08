@@ -204,7 +204,7 @@ class TocTree(Directive):
                 <a href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
-                lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right"> >\
+                lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
                     <i class="fa arrow-icon fa-angle-right" aria-hidden="true"></i></span>'
 
             lst_item += '</span>'
