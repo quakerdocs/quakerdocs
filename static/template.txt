@@ -29,14 +29,6 @@
 				</button>
 			</a>
 
-		<!-- Bookmark button for testing -->
-		<a class="navbar-item is-hidden-mobile">
-			<button id="bookmark-btn" value=0 class="button is-light" onclick="bookmarkClick()">
-				<span class='material-icons'>bookmark_border</span>
-			</button>
-		</a>
-
-		<!-- Bookmark button for testing -->
 		<a class="navbar-item is-hidden-mobile">
 			<button class="button is-light" onclick="showBookmarkOverlay()">
 				<span>Bookmarks</span>
@@ -78,7 +70,7 @@
 	</div>
 </div>
 
-<!-- Bookmark window for testing -->
+<!-- Bookmark results window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
 	<div class="modal-content height panel">
