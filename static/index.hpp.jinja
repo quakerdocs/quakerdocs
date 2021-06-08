@@ -1,16 +1,21 @@
 #include <unordered_map>
 #include <vector>
 
+/* Entry object to store in the map. */
 struct Entry {
 	short page_index;
 	short count;
 };
 
+
+/* Wrapper class arount char *'s to compare the content of the strings. */
 class CString {
 public:
+    /* Construct the string. */
 	constexpr CString(const char* string) : ptr(string) {
     }
 
+    /* The comparison operation. */
 	bool operator==(const CString& other) const {
 		return strcmp(ptr, other.ptr) == 0;
 	}
@@ -23,6 +28,8 @@ private:
 	const char* ptr;
 };
 
+
+/* Create the hashmap to bind the strings to the entries. */
 namespace std {
     template<>
     class hash<CString> {
@@ -36,6 +43,7 @@ namespace std {
         }
     };
 }
+
 
 const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
     "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
