@@ -40,7 +40,7 @@ SOURCES := search.cpp \
 OBJECTS := $(SOURCES:.c=.emc)
 OBJECTS := $(OBJECTS:.cpp=.emcpp)
 
-CC := emcc -I"libstemmer/include" -Os -s WASM=1 -s EXPORTED_FUNCTIONS=_performSearch,_getSearch -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","allocate","intArrayFromString"]'
+CC := emcc -I"libstemmer/include" -Os -s WASM=1 -s EXPORTED_FUNCTIONS=_performSearch,_getSearch -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
 
 %.emc: %.c
 	@mkdir -p build

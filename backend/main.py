@@ -148,7 +148,7 @@ class Main:
         with open(os.path.join(self.static_path, 'index.hpp.jinja')) as f:
             tmpl = Template(f.read())
 
-        # Render template
+        # Write the search index to hpp.
         with open(os.path.join(path, 'search.hpp'), 'w') as f:
             f.write(tmpl.render(urltitles=self.idx.urltitles, index=self.idx.index.items()))
 

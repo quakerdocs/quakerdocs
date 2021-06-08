@@ -8,12 +8,17 @@ struct Entry {
 
 class CString {
 public:
-	constexpr CString( const char* string ) : ptr(string) {}
+	constexpr CString(const char* string) : ptr(string) {
 
-	bool operator==( const CString& other ) const {
+    }
+
+	bool operator==(const CString& other) const {
 		return strcmp(ptr, other.ptr) == 0;
 	}
-	constexpr operator const char*() const { return ptr; }
+
+    constexpr operator const char*() const {
+        return ptr;
+    }
 private:
 	const char* ptr;
 };
