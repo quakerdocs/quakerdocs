@@ -36,14 +36,26 @@ class WarningDirective(Directive):
 
 class ExampleDirective(Directive):
     has_content = True
+    optional_arguments = 100
 
     def run(self):
-        adm = nodes.admonition('',
-                               nodes.paragraph('', ' '.join(self.content)),
-                               classes=['example'])
-        title = nodes.title('', 'Example')
-        adm.insert(0, title)
-        return [adm]
+        wrapper = nodes.admonition('', classes=['example'])
+        title = "Example"
+        # Add title to example text if it is supplied.
+        if len(self.arguments) > 0:
+            title += ": " + ' '.join(self.arguments)
+
+        wrapper.append(nodes.paragraph('', title, classes=['example-title']))
+
+        # Content
+        content_wrapper = nodes.compound(classes=['example-content'])
+        wrapper.append(content_wrapper)
+
+        self.state.nested_parse(
+            self.content, self.content_offset, content_wrapper
+        )
+
+        return [wrapper]
 
 
 def setup():
