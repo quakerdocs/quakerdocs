@@ -138,6 +138,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
     def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
 
+    def visit_kbd_element(self, node: nodes.Element):
+        self.body.append('<kbd>')
+        self.body.append('+'.join(f'<kbd>{key}</kbd>' for key in node['keys']))
+
+    def depart_kbd_element(self, node: nodes.Element):
+        self.body.append('</kbd>')
+
     # visit_title() doesn't have to be overridden
 
     def depart_title(self, node: nodes.Element) -> None:
@@ -150,10 +157,14 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
     def add_bookmark_btn(self, node: nodes.Element):
         title = node.astext()
-        href = title.lower().replace(' ', '-')
-        id = 'bm-' + href
+        id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
         bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                        f'<span class="icon"><i class="fa fa-bookmark"></i></span></button>'
+                        f'<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
 
         self.body.append(bookmark_html)
+
+    # ! Needs to be improved !
+    def create_bookmark_id(self, node: nodes.Element):
+        sum_str = sum(bytearray(node.astext().encode()))
+        return "BM" + str(sum_str)

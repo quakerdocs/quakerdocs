@@ -39,9 +39,11 @@ function deleteCookie(cname) {
         <<< BOOKMARK SECTION >>>
 */
 
-const BOOKMARK_TAG = "bm#";
+const BOOKMARK_TAG = "BMCOOK_";
 class Bookmark {
-    constructor(page, title, paragraph="") {
+    constructor(id, page, title, paragraph="") {
+        this.id = id;
+
         // The page URL.
         this.page = page;
 
@@ -55,21 +57,21 @@ class Bookmark {
 };
 
 
-function getCurrentName() {
-    return (BOOKMARK_TAG + window.location.pathname).trim();
+function bookmarkCookieName(id) {
+    return (BOOKMARK_TAG + id).trim();
 }
 
 function setBookmark(id) {
-    let cname = getCurrentName() + id;
+    let cname = bookmarkCookieName(id);
     let bookmark_btn = document.getElementById(id);
-    let page_url = window.location.pathname + '#' + id.substring(3);
-    let bookmark = new Bookmark(page_url, bookmark_btn.title);
+    let page_url = window.location.pathname + '#' + id;
+    let bookmark = new Bookmark(id, page_url, bookmark_btn.title);
     setCookie(cname, JSON.stringify(bookmark));
 
 }
 
 function deleteBookmark(id) {
-    cname = getCurrentName() + id;
+    cname = bookmarkCookieName(id);
     deleteCookie(cname);
 }
 
@@ -83,7 +85,7 @@ function getBookmark(cname) {
 }
 
 function getBookmarkBtnVal(id) {
-    let cname = getCurrentName() + id;
+    let cname = bookmarkCookieName(id);
     if (getBookmark(cname) != null) {
         return 1;
     }
@@ -95,10 +97,10 @@ function getAllBookmarks() {
     let clist = getCookieList();
 
     for (let i = 0; i < clist.length; i++) {
-        let name, val;
+        let name, data;
         [name, data] = clist[i].split('=');
 
-        if ((name.trim()).substring(0,3) === BOOKMARK_TAG) {
+        if ((name.trim()).startsWith(BOOKMARK_TAG)) {
             bookmarks.push(JSON.parse(data))
         }
     }
@@ -122,10 +124,10 @@ function hideBookmarkOverlay() {
     // Allow background to scroll again.
     document.documentElement.style.overflow = 'scroll';
     document.body.scroll = "yes";
+    loadBookmarks();
 }
 
 function bookmarkClick(id) {
-    console.log(id)
     let bookmark_btn = document.getElementById(id);
     if (bookmark_btn.value == 0) {
         setBookmark(id);
@@ -138,6 +140,12 @@ function bookmarkClick(id) {
     }
 }
 
+function bookmarkTrashClick(id) {
+    deleteBookmark(id);
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    bookmark_panel.style.display = "none";
+}
+
 function renderBookmarkList() {
     let bookmarkResults = document.getElementById("bookmark-results");
     let bookmarks = getAllBookmarks();
@@ -145,11 +153,31 @@ function renderBookmarkList() {
 
     for (let i = 0; i < bookmarks.length; i++) {
         let b = bookmarks[i]
-        content += `<div onclick="hideBookmarkOverlay();location.href='${b.page}'" class="result"><h1 class="result-title">
-                    ${b.title}</h1></div>`
+        content += createBookmarkListEntry(b);
     }
 
-    bookmarkResults.innerHTML = `<ul>${content}</ul>`;
+    bookmarkResults.innerHTML = content;
+}
+
+function createBookmarkListEntry(b) {
+    let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
+                    <div class="tile is-11" onclick="location='${b.page}';hideBookmarkOverlay()">
+                        <div class="level">
+                            <div class=level-item>
+                                <span class="panel-icon">
+                                <i class="fa fa-book" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class=level-item>
+                                ${b.title}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tile is-1">
+                        <button class="bookmark-trash" onclick="bookmarkTrashClick('${b.id}')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
+                    </div>
+                </div>`;
+    return entry;
 }
 
 function setBookmarkBtn(id) {
@@ -163,10 +191,13 @@ function setBookmarkBtn(id) {
     }
 }
 
-// Check bookmark states for buttons on page load.
-window.onload = () => {
+function loadBookmarks() {
     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
     for (let i = 0; i < bookmark_btns.length; i++) {
-        setBookmarkBtn(bookmark_btns[i].id)
+        setBookmarkBtn(bookmark_btns[i].id);
     }
 }
+
+// Check bookmark states for buttons on page load.
+window.onload = loadBookmarks;
+

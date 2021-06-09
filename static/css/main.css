@@ -94,3 +94,23 @@ body {
 .bookmark-btn:hover {
     cursor: pointer;
 }
+
+.bookmark-btn:focus {
+    outline: none;
+}
+
+.bookmark-entry:hover {
+    cursor: pointer;
+    background: hsl(0, 0%, 96%);
+}
+
+.bookmark-trash {
+    border: none;
+    background: none;
+    border-color: none;
+}
+
+.bookmark-trash:hover {
+    cursor: pointer;
+    color: red;
+}
