@@ -1,0 +1,36 @@
+# Official language image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/python/tags/
+image: python:latest
+
+before_script:
+  - python -V  # Print out python version for debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  - pip install anybadge
+
+stages:
+  - Build
+  - Test
+
+create_badge_svg:
+  stage: Build
+  script:
+    - pip install anybadge
+    - commits=$(git rev-list --all --count)
+    - anybadge -l commits -v $commits -f commits.svg -c green
+  artifacts:
+    paths:
+      - ./commits.svg
+
+flake8:
+  stage: Test
+  script:
+    - flake8 backend/ --statistics --count
+
+pylint:
+  stage: Test
+  allow_failure: true
+  script:
+    - pylint ./backend/*.py --output-format=text
