@@ -5,17 +5,14 @@ All implementations of the directives have been inspired by:
 https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d34765e74edf3a3be3c62c/sphinx/directives/other.py
 """
 
-import re
 import os.path
-from typing import Any, Callable, Dict
-
 import docutils.core
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.misc import Class, Include
 
-explicit_title_re = re.compile(r'^(.+?)\s*(?<!\x00)<([^<]*?)>$', re.DOTALL)
+import util
 
 
 class Only(Directive):
@@ -131,9 +128,9 @@ class TocTree(Directive):
                 entry = entry[:-4]
 
             # Check if current entry is in format 'Some Title <some_link>'.
-            explicit_link = explicit_title_re.match(entry)
-            if (explicit_link):
-                title, ref = explicit_link.group(1), explicit_link.group(2)
+            explicit_link = util.link_explicit(entry)
+            if explicit_link is not None:
+                title, ref = explicit_link
                 if not ref.startswith("https://") and not ref.startswith("http://"):
                     ref = os.path.join(src_dir, ref + ".html")
             else:
