@@ -1,8 +1,9 @@
 
+/**
+ * Toggle (show / hide) the sidebar menu on small screens when the hamburger
+ * menu button has been clicked.
+ */
 function toggleMenu() {
-    /* Used to toggle the menu on small screens when clicking on the menu
-     * button.
-     */
     var menu = document.getElementById("menuPanel");
 
     if (menu.classList.contains('is-hidden-touch')) {
@@ -12,9 +13,11 @@ function toggleMenu() {
     }
 }
 
+/**
+ * Expand the element in the sidebar to show its children.
+ * @param {*} element The element to be expanded.
+ */
 function toggleExpand(element) {
-    /* Toggle the expansion of an element in the sidebar.
-     */
     var ul = element.parentElement.parentElement.getElementsByTagName("UL")[0];
     var i = element.firstChild.nextSibling;
 
@@ -27,9 +30,10 @@ function toggleExpand(element) {
     }
 }
 
+/**
+ * Active the overlay containing the search bar and search results.
+ */
 function showSearchOverlay() {
-    /* Active the search bar overlay.
-     */
     document.getElementById("search").classList.add("is-active")
     searchbar = document.getElementById("searchbar")
     searchbar.focus()
@@ -42,6 +46,9 @@ function showSearchOverlay() {
     activateSearch()
 }
 
+/**
+ * Hide the overlay containing the search bar and results.
+ */
 function hideSearchOverlay() {
     /* Hide the search bar overlay.
      */
@@ -52,8 +59,12 @@ function hideSearchOverlay() {
     document.body.scroll = "yes";
 }
 
+/**
+ * Add an keyboard event listener to activate a search function
+ * {@link performSearch} on every keystroke.
+ */
 function activateSearch() {
-    /* Activate the search bar with an event listener.
+    /* Activate the search bar with an keyboard event listener.
      */
     const searchInput = document.getElementById("searchbar");
     const resultsWrapper = document.getElementById("search-results")
@@ -72,15 +83,31 @@ function activateSearch() {
     }
 }
 
+/**
+ * Create a <div> element containing the necessary HTML code to display the
+ * data of the results.
+ * @param {*} url The url of the Result page.
+ * @param {*} title The title of the Result page.
+ * @param {*} content The content that should be displayed under the title.
+ * @returns An HTML element, the container of the result entry.
+ */
 function createResultElement(url, title, content) {
     var element = document.createElement('div');
-    element.innerHTML = `<a class="panel-block result is-flex-direction-column" href="${url}">
-        <h1 class="result-title"><strong>${title}</strong></h1>
-        <p class="result-content">${content}</p></a>`;
+    element.innerHTML = `<a class="panel-block result is-flex-direction-column"
+                         href="${url}"><h1 class="result-title"><strong>
+                         ${title}</strong></h1><p class="result-content">
+                         ${content}</p></a>`;
 
     return element;
 }
 
+/**
+ * Display the results acquired by the search function {@link performSearch}
+ * inside the HTML page alongside some text found in the appropriate pages.
+ * @param {*} searcher The generator which yields the search results.
+ * @param {*} resultsWrapper The html element in which the results are to be
+ *     placed.
+ */
 function renderResults(searcher, resultsWrapper) {
     resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
     var resultList = document.getElementById('result-list');
@@ -88,11 +115,15 @@ function renderResults(searcher, resultsWrapper) {
 
     for (let r of searcher) {
         var url = '../' + r.page;
+
+        // Retrieve the text out of the first <p> tag of the page.
+        // TODO: Display text containing the searched word(s).
         fetch(url)
             .then(res => res.text())
             .then(data => {
                 var html = parser.parseFromString(data, 'text/html');
-                var pTags = html.getElementById('content').getElementsByTagName('p');
+                var pTags = html.getElementById('content')
+                                .getElementsByTagName('p');
                 var text = '';
                 if (pTags) {
                     text = pTags[0].innerText.substring(0, 200);

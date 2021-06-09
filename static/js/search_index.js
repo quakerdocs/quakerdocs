@@ -1,5 +1,15 @@
 
+/**
+ * Class representing a result entry.
+ */
 class Result {
+    /**
+     * Create a new Result entry.
+     * @constructor
+     * @param {*} page The URL to the result page.
+     * @param {*} title The title of the result page.
+     * @param {*} paragraph The paragraph title (STRETCH GOAL)
+     */
     constructor(page, title, paragraph="") {
         // The page URL.
         this.page = page;
@@ -13,6 +23,12 @@ class Result {
     }
 };
 
+/**
+ * TODO: WTF DOES THIS DO
+ * @param {*} results
+ * @param {*} next
+ * @returns
+ */
 function intersect(results, next) {
     if (results.length === 0) {
         return next;
@@ -31,10 +47,15 @@ function intersect(results, next) {
     return comb;
 }
 
+/**
+ * Perform a search action and yield the results to the HTML page.
+ * @param {*} query The query the search should be performed on.
+ * @returns {null} Nothing if no results were found.
+ * @yields {Result} The next search result entry.
+ */
 function* performSearch(query) {
     var words = query.split(' ').map(stem);
-
-    // Use only the first word for now.
+    // console.log(words);
     var results = [];
 
     for (let word of words) {
