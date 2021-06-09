@@ -262,4 +262,3 @@ def setup():
     directives.register_directive('include', Include)  # Does not work yet
     directives.register_directive('toctree', TocTree)
     directives.register_directive('code-block', CodeBlock)
-
