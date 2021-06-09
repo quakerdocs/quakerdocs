@@ -51,10 +51,14 @@ class Main:
         """
         Read conf.py from the source directory and save the configuration.
         """
+        global_vars = {
+            '__file__': 'conf.py',
+            '__name__': '__main__'
+        }
         conf_vars = {}
 
         # Check if file exists? Other cwd?
-        exec(open('conf.py').read(), {}, conf_vars)
+        exec(open('conf.py').read(), global_vars, conf_vars)
         self.conf_vars = conf_vars
 
     def generate(self):
@@ -192,8 +196,8 @@ class Main:
         Read and save the ToC from master_doc.
         """
         # Open the file containing the ToC's
-        master_doc = self.conf_vars.get('master_doc', 'index.rst')
-        src = os.path.join(self.source_path, master_doc)
+        master_doc = self.conf_vars.get('master_doc', 'index')
+        src = os.path.join(self.source_path, master_doc) + '.rst'
         doctree = docutils.core.publish_doctree(
             open(src, 'r').read(),
             source_path=src,
