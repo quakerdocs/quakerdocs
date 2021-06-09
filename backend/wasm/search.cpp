@@ -31,8 +31,33 @@ private:
 };
 
 std::vector<Entry> searchWord(const char *word) {
-    Node *start = nodes[0];
+    const Node *current = nodes[0];
+    int progress = 0;
 
+    while (word[progress] == '\0') {
+        bool match = false;
+        for (child_s i = 0; i < current->child_count; i++) {
+            const Node *child = nodes + children[children + i];
+            const char *str = chars + child->chars;
+
+            if (str[0] == word[progress]) {
+                match = true;
+
+                // Check if the rest of the str matches,
+
+
+                if (match) {
+
+                }
+                else {
+                    return {};
+                }
+            }
+        }
+
+        if (!match)
+            return {};
+    }
 }
 
 

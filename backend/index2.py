@@ -57,10 +57,11 @@ class Trie:
                 current = new
                 break
 
+
         # If none of the children matched add the remainder as a child.
         new = Trie(word)
         current.children[word] = new
-        return word, new
+        return "", new
 
     def insert(self, word, page, count):
         if not word:
@@ -74,7 +75,6 @@ class Trie:
         # Continue until the end of the word.
         while word:
             word, current = self.scan_children(word, current)
-
 
         # If while loop exited it means that the current node is an end node.
         current.end = True
