@@ -16,7 +16,7 @@ def hello_trie():
 def root(hello_trie):
     r = Trie('')
     r.children['hello'] = hello_trie
-    return root
+    return r
 
 def test_trie(hello_trie):
     """Utterly trivial test for __init__"""
@@ -26,21 +26,19 @@ def test_trie(hello_trie):
     assert hello_trie.page_count == []
 
 
-@pytest.mark.skip
 def test_match():
     assert Trie.match('hello', 'help') == ('hel', 'lo', 'p')
 
 
-def test_insert_simple(hello_trie):
-    hello_trie.insert('goodbye', 1, 1)
+def test_insert_simple(root):
+    root.insert('goodbye', 1, 1)
 
-    assert hello_trie.char == ''
-    assert all_in(hello_trie.children, 'hello', 'goodbye')
+    assert root.char == ''
+    assert all_in(root.children, 'hello', 'goodbye')
 
 
-@pytest.mark.skip
-def test_insert_overlap(hello_trie):
-    hello_trie.insert('help', 1, 1)
+def test_insert_overlap(root):
+    root.insert('help', 1, 1)
 
-    assert hello_trie.char == 'hel'
-    assert all_in(hello_trie.children, 'lo', 'p')
+    assert 'hel' in root.children and len(root.children) == 1
+    assert all_in(root.children['hel'].children, 'lo', 'p')
