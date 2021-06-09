@@ -7,7 +7,6 @@
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="css/friendly.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
-<link rel="stylesheet" type="text/css" href="css/general.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="js/bookmark.js"></script>
 <script src="js/wink-porter2-stemmer.js"></script>

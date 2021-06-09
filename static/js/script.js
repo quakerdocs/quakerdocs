@@ -98,7 +98,7 @@ function renderResults(searcher, resultsWrapper) {
                     text = pTags[0].innerText.substring(0, 200);
                 }
                 text += ' ...';
-                resultEl = createResultElement(url, r.title, text);
+                resultEl = createResultElement('../' + r.page, r.title, text);
                 resultList.append(resultEl);
             })
             .catch(console.error);
