@@ -2,7 +2,7 @@
 %(head)s
 %(stylesheet)s
 
-<link rel="stylesheet" type="text/css" href="css/bulma.min-dark.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" type="text/css" href="css/bulma.min.css" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
@@ -24,13 +24,14 @@
 
 			<a class="navbar-item">
 				<button class="button is-light" onclick="showSearchOverlay()">
-					<span class="material-icons md-22">search</span>
+					<span class="icon"><i class="fa fa-search"></i></span>
 					<span> Search</span>
 				</button>
 			</a>
 
 		<a class="navbar-item is-hidden-mobile">
 			<button class="button is-light" onclick="showBookmarkOverlay()">
+				<span class="icon"><i class="fa fa-bookmark"></i></span>
 				<span>Bookmarks</span>
 			</button>
 		</a>
@@ -61,7 +62,7 @@
 			<p class="control has-icons-left">
 			<input id="searchbar" class="input is-link" type="text" placeholder="Search">
 			<span class="icon is-left">
-				<span class="material-icons">search</span>
+				<span class="icon"><i class="fa fa-search"></i></span>
 			</span>
 			</p>
 		</div>
