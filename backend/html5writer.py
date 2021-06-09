@@ -137,3 +137,23 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
     def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
+
+    # visit_title() doesn't have to be overridden
+
+    def depart_title(self, node: nodes.Element) -> None:
+        if len(self.context) > 0:
+            close_tag = self.context[-1]
+
+            if close_tag.startswith('</h'):
+                self.add_bookmark_btn(node)
+            super().depart_title(node)
+
+    def add_bookmark_btn(self, node: nodes.Element):
+        title = node.astext()
+        href = title.lower().replace(' ', '-')
+        id = 'bm-' + href
+        onclick = f"bookmarkClick('{id}')"
+        bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
+                        f'<span class="icon"><i class="fa fa-bookmark"></i></span></button>'
+
+        self.body.append(bookmark_html)

@@ -3,6 +3,7 @@ Main entrypoint of the program.
 Call this script to invoke the generation of a static document/website.
 """
 
+from sys import stderr
 import os
 import argparse
 from distutils.dir_util import copy_tree
@@ -16,6 +17,7 @@ import index
 import html5writer
 import custom_dirs
 import spdirs
+import sphinx_app
 
 SKIP_TAGS = {'system_message', 'problematic'}
 
@@ -29,6 +31,10 @@ def dir_path(string):
 
 
 class Main:
+    # Mapping builder name to (file extension, writer class)
+    supported_builders = {
+        'html': ('html', html5writer.Writer)
+    }
 
     def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
@@ -48,7 +54,7 @@ class Main:
         conf_vars = {}
 
         # Check if file exists? Other cwd?
-        exec(open(os.path.join(args.source_path, 'conf.py')).read(), {}, conf_vars)
+        exec(open('conf.py').read(), {}, conf_vars)
         self.conf_vars = conf_vars
 
     def generate(self):
@@ -56,6 +62,11 @@ class Main:
         Read all the input files from the source directory, parse them, and
         output the results to the build directory.
         """
+        # Check if requested format is supported.
+        if self.builder not in Main.supported_builders:
+            print("Requested builder not supported!", file=stderr)
+            return 1
+        self.file_ext, self.builder_class = Main.supported_builders[self.builder]
 
         # Check if destination path exists, otherwise create it.
         if not os.path.exists(self.dest_path):
@@ -67,8 +78,14 @@ class Main:
         spdirs.setup()
         custom_dirs.setup()
 
-        # Load user configuration
+        # Load user configuration and extensions
+        prev_cwd = os.getcwd()
+        os.chdir(self.source_path)
         self.read_conf()
+        sp_app = sphinx_app.SphinxApp()
+        for ext in self.conf_vars['extensions']:
+            sphinx_app.setup_extension(ext, sp_app)
+        os.chdir(prev_cwd)
 
         # Set-up Table of Contents data
         self.build_global_toc()
@@ -91,6 +108,7 @@ class Main:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
+
         self.write_index()
         self.copy_static_files()
 
@@ -143,7 +161,7 @@ class Main:
             output = docutils.core.publish_from_doctree(
                 doctree,
                 destination_path=dest,
-                writer=html5writer.Writer(),
+                writer=self.builder_class(),
                 settings_overrides={
                     'toc': self.toc_navigation,
                     'src_dir': self.source_path,
@@ -156,7 +174,7 @@ class Main:
         Write the search index file to the destination directory.
         """
         # Make sure the search directory exist.
-        path = os.path.join(self.dest_path, 'search/')
+        path = os.path.join(self.dest_path, 'js/')
         if not os.path.exists(path):
             os.mkdir(path)
 

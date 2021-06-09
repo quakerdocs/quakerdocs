@@ -82,5 +82,15 @@ body {
 }
 
 .arrow-icon {
-    font-size: 25px;
+    font-size: 24px;
+}
+
+.bookmark-btn {
+    font-size: 20px;
+    border: none;
+    background: none;
+}
+
+.bookmark-btn:hover {
+    cursor: pointer;
 }

@@ -2,12 +2,13 @@
 %(head)s
 %(stylesheet)s
 
-<link rel="stylesheet" type="text/css" href="css/bulma.min.css">
+<link rel="stylesheet" type="text/css" href="css/bulma.min-dark.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" type="text/css" href="css/bulma.min.css" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/friendly.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
 <link rel="stylesheet" type="text/css" href="css/general.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="js/bookmark.js"></script>
 <script src="js/wink-porter2-stemmer.js"></script>
 <script src="js/search_index_data.js"></script>
@@ -25,21 +26,14 @@
 
 			<a class="navbar-item">
 				<button class="button is-light" onclick="showSearchOverlay()">
-					<span class="material-icons md-22">search</span>
+					<span class="icon"><i class="fa fa-search"></i></span>
 					<span> Search</span>
 				</button>
 			</a>
 
-		<!-- Bookmark button for testing -->
-		<a class="navbar-item is-hidden-mobile">
-			<button id="bookmark-btn" value=0 class="button is-light" onclick="bookmarkClick()">
-				<span class='material-icons'>bookmark_border</span>
-			</button>
-		</a>
-
-		<!-- Bookmark button for testing -->
 		<a class="navbar-item is-hidden-mobile">
 			<button class="button is-light" onclick="showBookmarkOverlay()">
+				<span class="icon"><i class="fa fa-bookmark"></i></span>
 				<span>Bookmarks</span>
 			</button>
 		</a>
@@ -70,7 +64,7 @@
 			<p class="control has-icons-left">
 			<input id="searchbar" class="input is-link" type="text" placeholder="Search">
 			<span class="icon is-left">
-				<span class="material-icons">search</span>
+				<span class="icon"><i class="fa fa-search"></i></span>
 			</span>
 			</p>
 		</div>
@@ -79,7 +73,7 @@
 	</div>
 </div>
 
-<!-- Bookmark window for testing -->
+<!-- Bookmark results window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
 	<div class="modal-content height panel">

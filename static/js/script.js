@@ -76,41 +76,35 @@ function activateSearch() {
     }
 }
 
+function createResultElement(url, title, content) {
+    var element = document.createElement('div');
+    element.innerHTML = `<a class="panel-block result is-flex-direction-column" href="${url}">
+        <h1 class="result-title"><strong>${title}</strong></h1>
+        <p class="result-content">${content}</p></a>`;
+
+    return element;
+}
+
 function renderResults(searcher, resultsWrapper) {
-    /* Render the title of the search results aswell as a little bit
-     * (200 characters) of text contained in the article.
-     */
-    let content = '';
     resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
+    var resultList = document.getElementById('result-list');
+    var parser = new DOMParser();
 
     for (let r of searcher) {
-        id = r.title.replace(/ /g, "-");
-        resultEl = `<div id="${id}"><a class="panel-block result is-flex-direction-column" href="../${r.page}">
-                    <h1 class="result-title"><strong>${r.title}</strong></h1>
-                    <p class="result-content"></p></a></div>`
-
-        $('#result-list').append(resultEl);
-
-        // Send ajax request to get text from the page.
-        $.ajax({
-            url: `../${r.page}`,
-            title: `${r.title}`,
-            type: 'get',
-            dataType: 'html',
-            success: function(data) {
-                var html_data = $(data);
-
-                // If no text is found, don't show any page content.
-                try {
-                    var p_text = $("#content p", html_data)[0].textContent;
-                } catch (error) {
-                    return;
+        var url = '../' + r.page;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                var html = parser.parseFromString(data, 'text/html');
+                var pTags = html.getElementById('content').getElementsByTagName('p');
+                var text = '';
+                if (pTags) {
+                    text = pTags[0].innerText.substring(0, 200);
                 }
-
-                id = this.title.replace(/ /g, "-");
-                $("#" + id + " .result-content").text($.trim(p_text).substr(0, 200) + "...");
-            }
-        });
+                text += ' ...';
+                resultEl = createResultElement(url, r.title, text);
+                resultList.append(resultEl);
+            })
+            .catch(console.error);
     }
-
 }
