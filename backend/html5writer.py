@@ -138,6 +138,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
     def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
 
+    def visit_kbd_element(self, node: nodes.Element):
+        self.body.append('<kbd>')
+        self.body.append('+'.join(f'<kbd>{key}</kbd>' for key in node['keys']))
+
+    def depart_kbd_element(self, node: nodes.Element):
+        self.body.append('</kbd>')
+
     # visit_title() doesn't have to be overridden
 
     def depart_title(self, node: nodes.Element) -> None:
