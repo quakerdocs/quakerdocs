@@ -130,11 +130,11 @@ function bookmarkClick(id) {
     if (bookmark_btn.value == 0) {
         setBookmark(id);
         bookmark_btn.value = 1;
-        bookmark_btn.innerHTML = '<span class="icon"><i class="fa fa-bookmark-o"></i></span>';
+        bookmark_btn.innerHTML = '<span class="icon"><i class="fa fa-bookmark"></i></span>';
     } else {
         deleteBookmark(id);
         bookmark_btn.value = 0;
-        bookmark_btn.innerHTML = '<span class="icon"><i class="fa fa-bookmark"></i></span>';
+        bookmark_btn.innerHTML = '<span class="icon"><i class="fa fa-bookmark-o"></i></span>';
     }
 }
 
