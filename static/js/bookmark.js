@@ -145,13 +145,23 @@ function renderBookmarkList() {
 
     for (let i = 0; i < bookmarks.length; i++) {
         let b = bookmarks[i]
-        content += `<div onclick="hideBookmarkOverlay();location.href='${b.page}'" class="result"><h1 class="result-title">
-                    ${b.title}</h1></div>`
+        content += createBookmarkListEntry(b);
     }
 
-    bookmarkResults.innerHTML = `<ul>${content}</ul>`;
+    bookmarkResults.innerHTML = content;
 }
 
+function createBookmarkListEntry(b) {
+    let entry = `<a class="panel-block" href="${b.page}">
+                    <span class="panel-icon">
+                    <i class="fas fa-book" aria-hidden="true"></i>
+                    </span>
+                    ${b.title}
+                </a>`;
+     // `<a class="panel-blo<div onclick="hideBookmarkOverlay();location.href='${b.page}'" class="result"><h1 class="result-title">
+                    // ${b.title}</h1></div>`
+    return entry;
+}
 function setBookmarkBtn(id) {
     let bookmark_btn = document.getElementById(id);
     bookmark_btn.value = getBookmarkBtnVal(id);
