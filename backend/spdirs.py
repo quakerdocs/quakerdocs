@@ -11,6 +11,9 @@ from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.misc import Class, Include
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
 
 import util
 
@@ -220,6 +223,36 @@ class TocTree(Directive):
         return ret
 
 
+class CodeBlock(Directive):
+    option_spec = {
+        'name' : directives.unchanged,
+        'linenos': directives.flag,
+        'lineno-start': int,
+        'caption': directives.unchanged_required
+    }
+
+    has_content = True
+    optional_arguments = 100
+    required_arguments = 1
+
+    def run(self):
+        language = self.arguments[0]
+        lexer = get_lexer_by_name(language, stripall=True)
+        linenos='linenos' in self.options
+        linenostart = self.options.get('lineno-start', 1)
+        caption = self.options.get('caption', '')
+
+        formatter = HtmlFormatter(linenos = linenos, linenostart = linenostart)
+        text = "\n".join(self.content)
+        code = highlight(text, lexer, formatter)
+
+        wrappernode = nodes.compound(classes=[f"highlight {language}"])
+        wrappernode.append(nodes.raw('', code, format="html"))
+        wrappernode.append(nodes.paragraph('', caption))
+
+        return [wrappernode]
+
+
 def setup():
     """
     Setup function for this 'extension'
@@ -228,3 +261,5 @@ def setup():
     directives.register_directive('rst-class', Class)
     directives.register_directive('include', Include)  # Does not work yet
     directives.register_directive('toctree', TocTree)
+    directives.register_directive('code-block', CodeBlock)
+
