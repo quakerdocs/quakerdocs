@@ -17,6 +17,7 @@ import index
 import html5writer
 import custom_dirs
 import spdirs
+import sphinx_app
 
 SKIP_TAGS = {'system_message', 'problematic'}
 
@@ -53,7 +54,7 @@ class Main:
         conf_vars = {}
 
         # Check if file exists? Other cwd?
-        exec(open(os.path.join(args.source_path, 'conf.py')).read(), {}, conf_vars)
+        exec(open('conf.py').read(), {}, conf_vars)
         self.conf_vars = conf_vars
 
     def generate(self):
@@ -77,8 +78,14 @@ class Main:
         spdirs.setup()
         custom_dirs.setup()
 
-        # Load user configuration
+        # Load user configuration and extensions
+        prev_cwd = os.getcwd()
+        os.chdir(self.source_path)
         self.read_conf()
+        sp_app = sphinx_app.SphinxApp()
+        for ext in self.conf_vars['extensions']:
+            sphinx_app.setup_extension(ext, sp_app)
+        os.chdir(prev_cwd)
 
         # Set-up Table of Contents data
         self.build_global_toc()
@@ -101,6 +108,7 @@ class Main:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
+
         self.write_index()
         self.copy_static_files()
 
