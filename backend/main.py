@@ -13,7 +13,7 @@ import docutils.parsers.rst
 import docutils.writers
 from jinja2 import Template
 
-import index
+import index2
 import html5writer
 import custom_dirs
 import spdirs
@@ -63,7 +63,7 @@ class Main:
         except FileNotFoundError:
             print('No conf.py found!')
 
-        self.idx = index.IndexGenerator()
+        self.idx = index2.IndexGenerator()
 
         for root, dirs, files in os.walk(self.source_path):
             for dir in dirs:
@@ -135,22 +135,23 @@ class Main:
         if not os.path.exists(path):
             os.mkdir(path)
 
-        # Write the search index file.
-        with open(os.path.join(path, 'search_index_data.js'), 'w') as f:
-            idx_urltitles, idx_index = self.idx.to_json()
-            f.write(f'var search_urltitles = ')
-            f.write(idx_urltitles)
-            f.write(f';\n\nvar search_index = ')
-            f.write(idx_index)
-            f.write(';\n')
+        # # Write the search index file.
+        # with open(os.path.join(path, 'search_index_data.js'), 'w') as f:
+        #     idx_urltitles, idx_index = self.idx.to_json()
+        #     f.write(f'var search_urltitles = ')
+        #     f.write(idx_urltitles)
+        #     f.write(f';\n\nvar search_index = ')
+        #     f.write(idx_index)
+        #     f.write(';\n')
 
         # Get Jinja template
+        data = self.idx.to_binary()
         with open(os.path.join(self.static_path, 'index.hpp.jinja')) as f:
             tmpl = Template(f.read())
 
-        # Write the search index to hpp.
-        with open(os.path.join(path, 'search.hpp'), 'w') as f:
-            f.write(tmpl.render(urltitles=self.idx.urltitles, index=self.idx.index.items()))
+            # Write the search index to hpp.
+            with open(os.path.join(path, 'search.hpp'), 'w') as f:
+                f.write(tmpl.render(urltitles=self.idx.urltitles, **data))
 
     def copy_static_files(self):
         """Copy all the files from the static path to the destination path."""

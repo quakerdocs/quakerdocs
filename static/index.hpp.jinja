@@ -1,61 +1,44 @@
 #include <unordered_map>
 #include <vector>
 
-/* Entry object to store in the map. */
-struct Entry {
-	short page_index;
-	short count;
+/* Child and page sizes. */
+typedef int child_s;
+typedef int page_s;
+
+/* Int as pointers. */
+typedef int char_p;
+typedef int child_p;
+typedef int page_p;
+
+/* A node of the Radix tree. */
+struct Node {
+    char_p chars;
+    child_p children;
+    page_p pages;
+    /* The number of children. */
+    child_s child_count;
+    /* The number of pages. Is zero when this node is not an end. */
+    page_s page_count;
 };
 
-
-/* Wrapper class arount char *'s to compare the content of the strings. */
-class CString {
-public:
-    /* Construct the string. */
-	constexpr CString(const char* string) : ptr(string) {
-    }
-
-    /* The comparison operation. */
-	bool operator==(const CString& other) const {
-		return strcmp(ptr, other.ptr) == 0;
-	}
-
-	constexpr operator const char*() const {
-        return ptr;
-    }
-
-private:
-	const char* ptr;
+/* Struct storing the data associated with a page. */
+public Page {
+    short page_index;
+    short count;
 };
-
-
-/* Create the hashmap to bind the strings to the entries. */
-namespace std {
-    template<>
-    class hash<CString> {
-    public:
-        constexpr size_t operator()( const CString& key ) const {
-            const char* str = key;
-            size_t hash = 5381;
-            while (char c = *str++)
-                hash = ((hash << 5) + hash) + (unsigned long) c;
-            return hash;
-        }
-    };
-}
-
 
 const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
     "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
 {%- endfor %}{{ '}' }};
 
-std::unordered_map<CString, std::vector<Entry>> idx = {{ '{' }}
-{%- for key_array in index -%}
-    {% set key, array = key_array[0], key_array[1] %}
-    {{- '{' -}} "{{ key }}",{{- '{' -}}{% for idx_count in array -%}
-        {% set idx, count = idx_count[0], idx_count[1] %}
-        {{- '{' }} {{- idx }},{{ count -}} {{ '}' -}}{% if not loop.last %},{% endif %}
-    {%- endfor -%}{{- '}' -}}
-    {{ '}' }}{% if not loop.last %},{% endif %}
-{%- endfor -%}
-{{ '}' }};
+const char node_data[] = {{ '{' }}{{ node_arr }}{{ '}' }};
+
+const char children_data[] = {{ '{' }}{{ children_arr }}{{ '}' }};
+
+const char page_data[] = {{ '{' }}{{ page_arr }}{{ '}' }};
+
+const char chars[] = "{{char_arr}}";
+
+const Node *nodes = (Node *) node_data;
+const child_p *children = (child_p *) node_data;
+const Page *pages = (Page *) page_data;

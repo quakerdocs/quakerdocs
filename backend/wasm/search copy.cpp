@@ -30,13 +30,6 @@ private:
     sb_stemmer *stemmer;
 };
 
-std::vector<Entry> searchWord(const char *word) {
-    Node *start = nodes[0];
-
-}
-
-
-
 /* Find the intersection between two vectors. */
 std::vector<Entry> intersect(const std::vector<Entry>& current, const std::vector<Entry>& next) {
     std::vector<Entry> intersection;
@@ -55,9 +48,12 @@ std::vector<Entry> intersect(const std::vector<Entry>& current, const std::vecto
     return intersection;
 }
 
+// TODO main?
 static std::vector<Entry> result;
 static size_t result_index;
 
+static char *prev_search;
+static Node *prev_node;
 
 extern "C" {
 
@@ -67,6 +63,21 @@ extern "C" {
         /* Clear the previous search. */
         result.clear();
         result_index = 0;
+
+        Node *current;
+
+        size_t len = strlen(input)-1;
+
+        char *tmp = strcpy(input[len]);
+        input[len] = "\0"
+
+        if (strcmp(prev_search, input) == 0) {
+            current = prev_node;
+            input = tmp;
+        }
+        else {
+            input[len] = tmp;
+        }
 
         /* Get the first word. */
         const char *word = strtok(input, " ");

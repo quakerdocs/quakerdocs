@@ -13,10 +13,17 @@ class Result {
     }
 };
 
+/* Keep track if the webassambly module has completed loading. */
+var wasmLoaded = false;
+Module['onRuntimeInitialized'] = function() {
+    wasmLoaded = true;
+}
 
 /* Function to use the wasm module to perform the search and return any
    results. */
 function* performSearch(query) {
+    if (!wasmLoaded)
+        return;
 
     /* Get the functions from the wasm module. */
     var search = Module.cwrap('performSearch', null, ['string']);
@@ -28,7 +35,7 @@ function* performSearch(query) {
     /* Return the results as they are asked. */
     while (result = getres()) {
         /* Split on new line, regex to work on all os'es. */
-        let sep = result.split(/\r\n|\n\r|\n|\r/);
-        yield new Result(sep[0], sep[1]);
+        let sep = result.split("\n");
+        yield new Result(sep[0], sep[1], sep[2]);
     }
 }
