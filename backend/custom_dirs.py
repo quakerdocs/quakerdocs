@@ -23,7 +23,8 @@ class DeprecationNote(Directive):
             nodes.reference('', 'here', refuri=path),
             nodes.Text(' to go to this page on the Help Center!')
         ])
-        return [nodes.tip('', nodes.paragraph('', '', *text))]
+        # return [nodes.tip('', nodes.paragraph('', '', *text))]
+        return []
 
 
 class WarningDirective(Directive):
