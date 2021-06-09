@@ -124,7 +124,7 @@ function hideBookmarkOverlay() {
     // Allow background to scroll again.
     document.documentElement.style.overflow = 'scroll';
     document.body.scroll = "yes";
-    // loadBookmarks();
+    loadBookmarks();
 }
 
 function bookmarkClick(id) {
@@ -142,10 +142,9 @@ function bookmarkClick(id) {
 }
 
 function bookmarkTrashClick(id) {
-    console.log(id);
     deleteBookmark(id);
-    hideBookmarkOverlay()
-    showBookmarkOverlay();
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    bookmark_panel.style.display = "none";
 }
 
 function renderBookmarkList() {
@@ -162,7 +161,7 @@ function renderBookmarkList() {
 }
 
 function createBookmarkListEntry(b) {
-    let entry = `<div class="panel-block bookmark-entry">
+    let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
                     <div class="tile is-11" onclick="location='${b.page}';hideBookmarkOverlay()">
                         <div class="level">
                             <div class=level-item>
@@ -176,16 +175,10 @@ function createBookmarkListEntry(b) {
                         </div>
                     </div>
                     <div class="tile is-1">
-                        <button class="bookmark-trash" onclick="bookmarkTrashClick('${b.id}')"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i> </button>
+                        <button class="bookmark-trash" onclick="bookmarkTrashClick('${b.id}')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
                     </div>
                 </div>`;
     return entry;
-//     `<a class="panel-block" href="${b.page}" onclick="hideBookmarkOverlay()">
-//                     <span class="panel-icon">
-//                     <i class="fa fa-book" aria-hidden="true"></i>
-//                     </span>
-//                     ${b.title}
-//                 </a>`;
 }
 
 function setBookmarkBtn(id) {
@@ -199,19 +192,21 @@ function setBookmarkBtn(id) {
     }
 }
 
-// function loadBookmarks() {
-//     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
-//     for (let i = 0; i < bookmark_btns.length; i++) {
-//         setBookmarkBtn(bookmark_btns[i].id);
-//     }
-// }
-
-// Check bookmark states for buttons on page load.
-window.onload = () => {
+function loadBookmarks() {
     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
     for (let i = 0; i < bookmark_btns.length; i++) {
-        setBookmarkBtn(bookmark_btns[i].id)
+        setBookmarkBtn(bookmark_btns[i].id);
     }
-
 }
+
+// Check bookmark states for buttons on page load.
+window.onload = loadBookmarks;
+
+// () => {
+//     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
+//     for (let i = 0; i < bookmark_btns.length; i++) {
+//         setBookmarkBtn(bookmark_btns[i].id)
+//     }
+
+// }
 
