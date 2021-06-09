@@ -39,7 +39,7 @@ function deleteCookie(cname) {
         <<< BOOKMARK SECTION >>>
 */
 
-const BOOKMARK_TAG = "bm#";
+const BOOKMARK_TAG = "BMCOOK_";
 class Bookmark {
     constructor(id, page, title, paragraph="") {
         this.id = id;
@@ -64,7 +64,7 @@ function bookmarkCookieName(id) {
 function setBookmark(id) {
     let cname = bookmarkCookieName(id);
     let bookmark_btn = document.getElementById(id);
-    let page_url = window.location.pathname + '#' + id.substring(3);
+    let page_url = window.location.pathname + '#' + id;
     let bookmark = new Bookmark(id, page_url, bookmark_btn.title);
     setCookie(cname, JSON.stringify(bookmark));
 
@@ -100,7 +100,7 @@ function getAllBookmarks() {
         let name, data;
         [name, data] = clist[i].split('=');
 
-        if ((name.trim()).substring(0,3) === BOOKMARK_TAG) {
+        if ((name.trim()).startsWith(BOOKMARK_TAG)) {
             bookmarks.push(JSON.parse(data))
         }
     }
@@ -128,7 +128,6 @@ function hideBookmarkOverlay() {
 }
 
 function bookmarkClick(id) {
-    console.log(id)
     let bookmark_btn = document.getElementById(id);
     if (bookmark_btn.value == 0) {
         setBookmark(id);
@@ -201,12 +200,4 @@ function loadBookmarks() {
 
 // Check bookmark states for buttons on page load.
 window.onload = loadBookmarks;
-
-// () => {
-//     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
-//     for (let i = 0; i < bookmark_btns.length; i++) {
-//         setBookmarkBtn(bookmark_btns[i].id)
-//     }
-
-// }
 
