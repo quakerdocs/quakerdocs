@@ -3522,6 +3522,17 @@
   .media + .media {
     border-top: 1px solid rgba(54, 54, 54, 0.5);
   }
+  .menu {
+    background-color: #272727;
+    position: sticky;
+    display: inline-block;
+    vertical-align: top;
+    max-height: 100vh;
+    overflow-y: auto;
+    top: 58px;
+    bottom: 0;
+    padding: 24px;
+  }
   .menu-list a {
     color: #b5b5b5;
   }
