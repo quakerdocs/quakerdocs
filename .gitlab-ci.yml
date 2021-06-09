@@ -13,6 +13,7 @@ before_script:
 stages:
   - Build
   - Test
+  - Deploy
 
 create_badge_svg:
   stage: Build
@@ -34,3 +35,12 @@ pylint:
   allow_failure: true
   script:
     - pylint ./backend/*.py --output-format=text
+
+pages:
+  stage: Deploy
+  before_script:
+    - apt-get install -y lftp
+  script:
+    - make html
+    - lftp -e "open $FTP_HOST; user $FTP_USERNAME FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose build/ /subdomains/doctor/; bye"
+    - make clean
