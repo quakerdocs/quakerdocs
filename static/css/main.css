@@ -7,7 +7,6 @@ body {
 }
 
 .menu {
-    background: white;
     position: sticky;
     display: inline-block;
     vertical-align: top;
