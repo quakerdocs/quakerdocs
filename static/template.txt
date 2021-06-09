@@ -80,10 +80,6 @@
 			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
 		</p>
 
-		<p class="panel-tabs">
-			<a class="is-active">All</a>
-		</p>
-
 		<div id="bookmark-results" class="results max-height"></div>
 	</div>
 </div>
