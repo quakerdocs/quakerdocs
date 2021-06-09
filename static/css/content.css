@@ -65,3 +65,17 @@ div.section {
 .caption-text {
     font-weight: bold;
 }
+
+kbd {
+    background: white;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: lightgrey;
+    padding: 2px;
+    font-size: 0.9em;
+}
+
+kbd > kbd {
+    padding: 2px;
+}
