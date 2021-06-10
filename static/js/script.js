@@ -114,11 +114,16 @@ function highlightSearchQuery(query, text) {
     }
 
     var target = text.slice(index, index + query.length);
-    var displayText = text.slice(Math.abs(index - 50), index) +
-                      highlighter + target + "</span>" +
-                      text.slice(index + query.length, index + 100);
+    var textBefore = text.slice(Math.abs(index - 50), index);
+    var textAfter = text.slice(index + query.length, index + 100);
+    var displayText = textBefore + highlighter + target + "</span>" + textAfter;
+    var endIndex = displayText.lastIndexOf(' ');
+    var startIndex = 0;
+    if (textBefore) {
+        startIndex = displayText.indexOf(' ');
+    }
 
-    return displayText.slice(displayText.indexOf(' '), displayText.lastIndexOf(' ')) + ' ...';
+    return displayText.slice(startIndex, endIndex) + ' ...';
 }
 
 /**
@@ -136,7 +141,7 @@ function renderResults(query, searcher, resultsWrapper) {
     var i = 0;
     for (let r of searcher) {
         // Limit number of search results for now.
-        if (i++ > 10) {
+        if (i++ > 8) {
             break;
         }
 
