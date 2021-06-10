@@ -245,6 +245,15 @@ function renderBookmarkList() {
  * @returns {string} The HTML code for the bookmark entry.
  */
 function createBookmarkListEntry(b) {
+    let max_words = 12;
+    let title = b.title;
+    let title_words = title.split(' ');
+
+    /* Cut off title if it is too long. */
+    if (title_words.length > max_words) {
+        title = title_words.slice(0,max_words).join(' ') + "...";
+    }
+
     let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
                     <div class="tile is-11" onclick="location='${b.page}'; \
                     hideBookmarkOverlay()">
@@ -255,7 +264,7 @@ function createBookmarkListEntry(b) {
                                 </span>
                             </div>
                             <div class=level-item>
-                                ${b.title}
+                                ${title}
                             </div>
                         </div>
                     </div>
@@ -290,6 +299,7 @@ function setBookmarkBtn(id) {
  * Load the values of the bookmark buttons when the page had just loaded.
  */
 function loadBookmarks() {
+    console.log(document.cookie);
     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
     for (let i = 0; i < bookmark_btns.length; i++) {
         setBookmarkBtn(bookmark_btns[i].id);
