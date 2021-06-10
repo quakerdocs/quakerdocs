@@ -71,6 +71,15 @@ class Main:
         else:
             self.conf_vars['source_suffix'] = ['.rst']
 
+        if 'exclude_patterns' not in self.conf_vars:
+            self.conf_vars['exclude_patterns'] = []
+        if 'html_static_path' not in self.conf_vars:
+            self.conf_vars['html_static_path'] = []
+
+        # Exclude static files, as they should not be processed.
+        self.conf_vars['exclude_patterns'] += \
+            self.conf_vars.get('html_static_path', [])
+
     def generate(self):
         """
         Read all the input files from the source directory, parse them, and
@@ -181,7 +190,8 @@ class Main:
                     'toc': self.toc_navigation,
                     'src_dir': self.source_path,
                     'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
-                    'handlers': self.sp_app.get_handlers()
+                    'handlers': self.sp_app.get_handlers(),
+                    'favicon': self.conf_vars.get('html_favicon', None)
                 })
             f.write(output)
 
@@ -248,7 +258,7 @@ class Main:
         for path in self.conf_vars['html_static_path']:
             copy_tree(
                 os.path.join(self.source_path, path),
-                os.path.join(self.dest_path, path),
+                os.path.join(self.dest_path, '_static'),
                 update=1)
 
 

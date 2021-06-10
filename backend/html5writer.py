@@ -130,6 +130,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
     def __init__(self, document):
         super().__init__(document)
         self.head.append('<base href="%s">' % document.settings.rel_base)
+        if document.settings.favicon is not None:
+            self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
         self.navigation = document.settings.toc
 
     def visit_TocData(self, node: nodes.Element):
