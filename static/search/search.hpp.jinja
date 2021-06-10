@@ -31,14 +31,14 @@ const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
     "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
 {%- endfor %}{{ '}' }};
 
-const char node_data[] = {{ '{' }}{{ node_arr }}{{ '}' }};
+const unsigned char node_data[] = {{ '{' }}{{ node_arr }}{{ '}' }};
 
-const char children_data[] = {{ '{' }}{{ children_arr }}{{ '}' }};
+const unsigned char children_data[] = {{ '{' }}{{ children_arr }}{{ '}' }};
 
-const char page_data[] = {{ '{' }}{{ page_arr }}{{ '}' }};
+const unsigned char page_data[] = {{ '{' }}{{ page_arr }}{{ '}' }};
 
-const char chars[] = "{{char_arr}}";
+const char chars[] = {{char_arr}};
 
 const Node *nodes = (Node *) node_data;
-const child_p *children = (child_p *) node_data;
+const child_p *children = (child_p *) children_data;
 const Page *pages = (Page *) page_data;

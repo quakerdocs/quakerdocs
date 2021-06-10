@@ -37,31 +37,35 @@ SOURCES := search.cpp \
 	libstemmer/runtime/utilities.c \
 	libstemmer/libstemmer/libstemmer_utf8.c
 
-OBJECTS := $(SOURCES:.c=.emc)
-OBJECTS := $(OBJECTS:.cpp=.emcpp)
+OBJS := $(SOURCES:.c=.o)
+OBJS := $(OBJS:.cpp=.opp)
 
-CC := emcc -I"libstemmer/include" -Os -s WASM=1 -s EXPORTED_FUNCTIONS=_performSearch,_getSearch -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
+EM_OBJS := $(SOURCES:.c=.e)
+EM_OBJS := $(EM_OBJS:.cpp=.epp)
 
-%.emc: %.c
+CC_ARGS := -I"libstemmer/include"
+CC := gcc $(CC_ARGS)
+EM_CC := emcc -Os $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
+
+%.e: %.c
+	$(EM_CC) -c -o $@ $<
+%.epp: %.cpp
+	$(EM_CC) -std=c++17 -c -o $@ $<
+emscripten: emsdk $(EM_OBJS)
 	@mkdir -p build
-	@source ./emsdk/emsdk_env.sh; \
-	echo "Compiling $<"; \
-	$(CC) -c $< -o $@
-	@echo "Done!"
+	$(EM_CC) $(EM_OBJS) -o build/search.js
 
-%.emcpp: %.cpp
+%.o: %.c
+	$(CC) -c -o $@ $<
+%.opp: %.cpp
+	$(CC) -std=c++17 -c -o $@ $<
+local: $(OBJS)
 	@mkdir -p build
-	@source ./emsdk/emsdk_env.sh; \
-	echo "Compiling $<"; \
-	$(CC) -c $< -o $@
-	@echo "Done!"
-
-main: $(OBJECTS) emsdk
-	$(CC) $(OBJECTS) -o build/search.js
+	$(CC) -lstdc++ $(OBJS) -o build/search.out
 
 clean:
 	rm -rf build
-	rm -rf $(OBJECTS)
+	rm -rf $(OBJS) $(EM_OBJS)
 
 
 emsdk:

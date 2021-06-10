@@ -146,7 +146,7 @@ class Main:
 
         # Get Jinja template
         data = self.idx.to_binary()
-        with open(os.path.join(self.static_path, 'index.hpp.jinja')) as f:
+        with open(os.path.join(self.static_path, 'search/search.hpp.jinja')) as f:
             tmpl = Template(f.read())
 
             # Write the search index to hpp.

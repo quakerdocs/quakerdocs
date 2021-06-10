@@ -42,21 +42,22 @@ class Trie:
 
             # Not exact but still partial match.
             if match:
-                # Create a new node for the partial match and add.
+                # Create a new node for the partial match.
                 new = Trie(match)
+
+                # Update the char of the child and move it the new node.
+                child.char = c_rem
+                new.children[c_rem] = child
+                current.children.pop(c_word)
                 current.children[match] = new
 
-                # Update the char of the child.
-                child.char = c_rem
-
-                # Move the current child to the new node.
-                new.children = {c_rem: child}
-                del current.children[c_word]
-
                 # Continue after the partial match.
-                current = new
-                break
-
+                if word:
+                    # Create the remaining word object below.
+                    current = new
+                    break
+                else: # The word fits in the new node.
+                    return "", new
 
         # If none of the children matched add the remainder as a child.
         new = Trie(word)
@@ -85,24 +86,10 @@ class Trie:
     def match(n_word, s_word):
         for i, (n_char, s_char) in enumerate(zip(n_word, s_word)):
             if n_char != s_char:
+                i -= 1
                 break
+        i += 1
         return n_word[:i], n_word[i:], s_word[i:]
-
-    # def optimise(self):
-    #     """Turn this Trie into a Radix Trie"""
-    #     stack = [self]
-    #     while stack:
-    #         node = stack.pop()
-
-    #         while len(node.children) == 1:
-    #             child = node.children[0]
-
-    #             node.children = child.children
-    #             node.char += child.char
-    #             node.end = child.end
-    #             node.page_count = child.page_count
-
-    #         stack.extend(node.children.values())
 
     def to_binary(self):
         """Translate the Trie to a binary format"""
@@ -118,30 +105,33 @@ class Trie:
 
             # Sort the children alphabetically based on the key.
             node.sorted_children = []
-            for key, child in sorted(node.children.items(), key=lambda c: c[0]):
+            for key, child in node.children.items(): #sorted(node.children.items(), key=lambda c: c[0]):
                 child.key = key
                 node.sorted_children.append(child)
 
             # Update the stack and the counts.
-            stack.extend(reversed(node.children.values()))
+            stack.extend(reversed(node.sorted_children))
             children_count += len(node.children)
             pages_count += len(node.page_count)
             char_count += len(node.char) + 1
 
         # Convert the radix trie to byte data.
         node_arr, children_arr, page_arr, char_arr = [], [], [], []
+        char_len = 0
 
         # Add each node to the binary arrays.
         for node in nodes:
-            node_arr += struct.pack('IIIII', len(char_arr),
-                                    len(node.children), len(children_arr),
-                                    len(node.page_count),
-                                    len(page_arr))
+            node_arr += struct.pack('IIIII', char_len,
+                                    len(children_arr) // 4,
+                                    len(page_arr) // 4,
+                                    len(node.children),
+                                    len(node.page_count))
             children_i = [child.i for child in node.sorted_children]
             children_arr += struct.pack('I' * len(children_i), *children_i)
             pages = [i for p in node.page_count for i in p]
             page_arr += struct.pack('H' * len(pages), *pages)
-            char_arr += list(node.char) + ['\\0']
+            char_arr += ['"'] + list(node.char) + ['\\0"']
+            char_len += len(node.char) + 1
 
         # Convert the data to C arrays.
         return {
@@ -150,19 +140,6 @@ class Trie:
             'page_arr': ','.join(map(str, page_arr)),
             'char_arr': ''.join(char_arr)
         }
-
-        # Write the nodes to binary
-
-        #
-        # struct Node {
-        #     int chars;       // (pointer)
-        #     int child_count;
-        #     int children;    // (pointer)
-        #     int page_count
-        #     int pages;       // (pointer)
-        #     bool end;
-        # };
-        #
 
 
 class IndexGenerator:
@@ -173,6 +150,8 @@ class IndexGenerator:
 
         # keep_chars = string.ascii_lowercase + string.digits + '\\s'
         self.remover = re.compile('[^\\w\\s]')
+
+        self.wordset = set()
 
     def parse_file(self, content, title, url):
         """
@@ -195,6 +174,7 @@ class IndexGenerator:
 
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, count)
+            self.wordset.add(word)
 
 
     def to_json(self):
@@ -206,7 +186,39 @@ class IndexGenerator:
         return json.dumps(self.urltitles), json.dumps(self.trie)
 
     def to_binary(self):
-        return self.trie.to_binary()
+        # print(self.trie.children)
+
+        # current = self.trie
+        # while word:
+        #     word, current = self.scan_children(word, current)
+
+        # # If while loop exited it means that the current node is an end node.
+        # current.end = True
+        # current.page_count.append((page, count))
+
+        stack = [self.trie]
+
+        def doPrint(node, pre):
+            total = 0
+            if node.end:
+                total += 1
+                print(pre + node.char)
+            for child in node.children.values():
+                total += doPrint(child, pre + node.char)
+            return total
+
+        print(self.wordset)
+        print("wordcount: ", doPrint(self.trie, ""))
+        print('count', len(self.wordset))
+        # while stack:
+        #     node = stack.pop()
+        #     print(node.char)
+        #     stack.extend(node.children.values())
+
+        binar = self.trie.to_binary()
+
+
+        return binar
 
 # if __name__ == "__main__":
     # doctest.testmod(verbose=True)
