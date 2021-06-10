@@ -166,11 +166,14 @@ function getAllBookmarks() {
     return bookmarks;
 }
 
+let bookmarkOpen = false;
 /**
  * Show the overlay with the enabled bookmarks on it.
  */
 function showBookmarkOverlay() {
     document.getElementById("bookmark-window").classList.add("is-active");
+
+    bookmarkOpen = true;
 
     // Prevent background from scrolling while search window is open.
     document.documentElement.style.overflow = 'hidden';
@@ -184,6 +187,8 @@ function showBookmarkOverlay() {
  */
 function hideBookmarkOverlay() {
     document.getElementById("bookmark-window").classList.remove("is-active");
+
+    bookmarkOpen = false;
 
     // Allow background to scroll again.
     document.documentElement.style.overflow = 'scroll';

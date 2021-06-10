@@ -7,9 +7,13 @@ document.addEventListener('keydown', (event) => {
         hideSearchOverlay();
     }
 
-    // If the user presses 'B', toggle the bookmarks.
+    // If the user presses 'B', toggle the bookmark overlay.
     if (code == 'KeyB') {
-        bookmarkClick();
+        if (bookmarkOpen) {
+            hideBookmarkOverlay();
+        } else {
+            showBookmarkOverlay();
+        }
     }
 
 }, false);

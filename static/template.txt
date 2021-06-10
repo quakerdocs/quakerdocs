@@ -17,11 +17,8 @@
 <script src="js/search_index_data.js"></script>
 <script src="js/search_index.js"></script>
 <script src="js/script.js"></script>
-<<<<<<< HEAD
 <script src="js/keylistener.js"></script>
-=======
 <script src="js/back_to_top.js"></script>
->>>>>>> dc11b69a851380218767d388a22ca1acf88709f7
 
 %(body_prefix)s
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
