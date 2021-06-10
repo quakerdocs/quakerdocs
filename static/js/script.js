@@ -30,6 +30,8 @@ function toggleExpand(element) {
     }
 }
 
+let searchOpen = false;
+
 /**
  * Active the overlay containing the search bar and search results.
  */
