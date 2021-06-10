@@ -5,7 +5,9 @@ Call this script to invoke the generation of a static document/website.
 
 from sys import stderr
 import os
+import fnmatch
 import argparse
+
 from distutils.dir_util import copy_tree
 from docutils import nodes
 import docutils.core
@@ -51,11 +53,34 @@ class Main:
         """
         Read conf.py from the source directory and save the configuration.
         """
+        global_vars = {
+            '__file__': 'conf.py',
+            '__name__': '__main__'
+        }
         conf_vars = {}
 
         # Check if file exists? Other cwd?
-        exec(open('conf.py').read(), {}, conf_vars)
+        exec(open('conf.py').read(), global_vars, conf_vars)
         self.conf_vars = conf_vars
+
+        # Fix some things
+        if 'source_suffix' in self.conf_vars:
+            suffix = self.conf_vars['source_suffix']
+            if isinstance(suffix, str):
+                self.conf_vars['source_suffix'] = [suffix]
+        else:
+            self.conf_vars['source_suffix'] = ['.rst']
+
+        if 'exclude_patterns' not in self.conf_vars:
+            self.conf_vars['exclude_patterns'] = []
+        if 'html_static_path' not in self.conf_vars:
+            self.conf_vars['html_static_path'] = []
+
+        # Exclude static files, as they should not be processed.
+        self.conf_vars['exclude_patterns'] += \
+            self.conf_vars.get('html_static_path', [])
+        self.conf_vars['exclude_patterns'] += \
+            self.conf_vars.get('templates_path', [])
 
     def generate(self):
         """
@@ -82,9 +107,9 @@ class Main:
         prev_cwd = os.getcwd()
         os.chdir(self.source_path)
         self.read_conf()
-        sp_app = sphinx_app.SphinxApp()
+        self.sp_app = sphinx_app.SphinxApp()
         for ext in self.conf_vars['extensions']:
-            sphinx_app.setup_extension(ext, sp_app)
+            sphinx_app.setup_extension(ext, self.sp_app)
         os.chdir(prev_cwd)
 
         # Set-up Table of Contents data
@@ -102,7 +127,8 @@ class Main:
             for file in files:
                 path = os.path.join(self.relative_path(root), file)
                 try:
-                    if file.endswith('.rst'):
+                    if any(file.endswith(suffix) for suffix in self.conf_vars['source_suffix']) \
+                       and self.is_not_excluded(path):
                         self.handle_rst(path)
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
@@ -129,13 +155,19 @@ class Main:
         html_path = path[:-4] + '.html'
         dest = os.path.join(self.dest_path, html_path)
 
+        # Add epilog and prolog to source file.
+        file_contents = '%s\n%s\n%s' % (
+            self.conf_vars.get('rst_prolog', ''),
+            open(src, 'r').read(),
+            self.conf_vars.get('rst_epilog', ''))
+
         # Read the rst file.
         settings = {
             'src_dir': self.source_path,
             'dst_dir': self.dest_path
         }
         doctree = docutils.core.publish_doctree(
-            open(src, 'r').read(),
+            file_contents,
             source_path=src,
             settings_overrides=settings)
 
@@ -165,9 +197,21 @@ class Main:
                 settings_overrides={
                     'toc': self.toc_navigation,
                     'src_dir': self.source_path,
-                    'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest))
+                    'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
+                    'handlers': self.sp_app.get_handlers(),
+                    'favicon': self.conf_vars.get('html_favicon', None)
                 })
             f.write(output)
+
+    def is_not_excluded(self, path):
+        """
+        Check whether the supplied filename is not supposed to be excluded.
+        """
+        exclude_pats = self.conf_vars['exclude_patterns']
+        if any(fnmatch.fnmatch(path, pattern) for pattern in exclude_pats):
+            return False
+
+        return True
 
     def write_index(self):
         """
@@ -191,16 +235,27 @@ class Main:
         """
         Read and save the ToC from master_doc.
         """
+        self.toc_navigation = ''
+
         # Open the file containing the ToC's
-        master_doc = self.conf_vars.get('master_doc', 'index.rst')
-        src = os.path.join(self.source_path, master_doc)
+        master_doc = self.conf_vars.get('master_doc', 'index')
+        src = None
+        for suffix in self.conf_vars['source_suffix']:
+            source_name = os.path.join(self.source_path, master_doc)
+            if os.path.exists(source_name + suffix):
+                src = source_name + suffix
+                break
+
+        if src is None:
+            print("Invalid master_doc file specified in conf.py!", file=stderr)
+            return
+
         doctree = docutils.core.publish_doctree(
             open(src, 'r').read(),
             source_path=src,
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        self.toc_navigation = ''
         for tt in doctree.traverse(spdirs.TocData):
             self.toc_navigation += spdirs.TocTree.to_html(tt)
 
@@ -211,7 +266,7 @@ class Main:
         for path in self.conf_vars['html_static_path']:
             copy_tree(
                 os.path.join(self.source_path, path),
-                os.path.join(self.dest_path, path),
+                os.path.join(self.dest_path, '_static'),
                 update=1)
 
 

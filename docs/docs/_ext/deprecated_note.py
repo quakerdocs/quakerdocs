@@ -3,7 +3,6 @@ import html
 import json
 
 from docutils import io, nodes, utils
-from sphinx.locale import _
 from docutils.nodes import Element, Admonition
 from docutils.parsers.rst import (
     Directive, states, directives, convert_directive_function
