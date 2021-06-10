@@ -28,19 +28,19 @@
 				</button>
 			</a>
 
-		<a class="navbar-item is-hidden-mobile">
-			<button class="button is-light" onclick="showBookmarkOverlay()">
-				<span class="icon"><i class="fa fa-bookmark"></i></span>
-				<span>Bookmarks</span>
-			</button>
-		</a>
+			<a class="navbar-item is-hidden-mobile">
+				<button class="button is-light" onclick="showBookmarkOverlay()">
+					<span class="icon"><i class="fa fa-bookmark"></i></span>
+					<span>Bookmarks</span>
+				</button>
+			</a>
 
-		<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
-			<span aria-hidden="true"></span>
-			<span aria-hidden="true"></span>
-			<span aria-hidden="true"></span>
-		</a>
-	</div>
+			<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
 
 		<div class="navbar-menu">
 			<div class="navbar-start"></div>
@@ -82,6 +82,7 @@
 		<div id="bookmark-results" class="results max-height"></div>
 	</div>
 </div>
+
 <div class="container">
 	<section class="main-content columns is-desktop">
 		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">
@@ -91,7 +92,7 @@
 			%(body_pre_docinfo)s
 			%(docinfo)s
 			%(body)s
-			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"> </button>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
 				%(footer)s

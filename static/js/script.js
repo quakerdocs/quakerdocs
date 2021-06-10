@@ -75,7 +75,7 @@ function activateSearch() {
             let input = searchInput.value;
             if (input.length) {
                 let searcher = performSearch(input);
-                renderResults(searcher, resultsWrapper);
+                renderResults(input, searcher, resultsWrapper);
             } else {
                 resultsWrapper.innerHTML = '';
             }
@@ -101,6 +101,21 @@ function createResultElement(url, title, content) {
     return element;
 }
 
+function highlightSearchQuery(query, text) {
+    var highlighter = '<span class="has-background-primary-light has-text-primary">';
+    var index = text.search(new RegExp(query, "i"));
+    if (index < 0) {
+        return "";
+    }
+
+    var target = text.slice(index, index + query.length);
+    var displayText = text.slice(Math.abs(index - 50), index) +
+                      highlighter + target + "</span>" +
+                      text.slice(index + query.length, index + 100);
+
+    return displayText.slice(displayText.indexOf(' '), displayText.lastIndexOf(' ')) + ' ...';
+}
+
 /**
  * Display the results acquired by the search function {@link performSearch}
  * inside the HTML page alongside some text found in the appropriate pages.
@@ -108,32 +123,29 @@ function createResultElement(url, title, content) {
  * @param {*} resultsWrapper The html element in which the results are to be
  *     placed.
  */
-function renderResults(searcher, resultsWrapper) {
+function renderResults(query, searcher, resultsWrapper) {
     resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
     var resultList = document.getElementById('result-list');
     var parser = new DOMParser();
 
+    var i = 0;
     for (let r of searcher) {
-        var url = '../' + r.page;
+        // Limit number of search results for now.
+        if (i++ > 10) {
+            break;
+        }
 
-        // Retrieve the text out of the first <p> tag of the page.
-        // TODO: Display text containing the searched word(s).
-        // fetch(url)
-        //     .then(res => res.text())
-        //     .then(data => {
-        //         var html = parser.parseFromString(data, 'text/html');
-        //         var pTags = html.getElementById('content')
-        //                         .getElementsByTagName('p');
-        //         var text = '';
-        //         if (pTags) {
-        //             text = pTags[0].innerText.substring(0, 200);
-        //         }
-        //         text += ' ...';
-        //         resultEl = createResultElement('../' + r.page, r.title, text);
-        //         resultList.append(resultEl);
-        //     })
-        //     .catch(console.error);
-        resultEl = createResultElement('../' + r.page, r.title, "");
-        resultList.append(resultEl);
+        // Display text containing the searched word(s).
+        // TODO: improve / speed up.
+        fetch('../' + r.page)
+            .then(res => res.text())
+            .then(data => {
+                var html = parser.parseFromString(data, 'text/html');
+                var text = html.getElementById('content').innerText;
+                var displayText = highlightSearchQuery(query, text);
+                resultEl = createResultElement('../' + r.page, r.title, displayText);
+                resultList.append(resultEl);
+            })
+            .catch(console.error);
     }
 }
