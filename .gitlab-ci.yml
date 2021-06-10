@@ -44,3 +44,6 @@ pages:
     - make html
     - lftp -e "open $FTP_HOST; user $FTP_USERNAME FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose build/ /subdomains/doctor/; bye"
     - make clean
+  only:
+    refs:
+      - master
