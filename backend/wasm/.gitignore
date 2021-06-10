@@ -1,0 +1,5 @@
+emsdk
+build
+*.emc
+*.emcpp
+search.hpp

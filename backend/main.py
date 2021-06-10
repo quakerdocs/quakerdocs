@@ -136,7 +136,7 @@ class Main:
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
 
-        self.write_index()
+        self.idx.build(os.path.join(self.dest_path, 'js'))
         self.copy_static_files()
 
         # TEMP
@@ -230,24 +230,6 @@ class Main:
             return False
 
         return True
-
-    def write_index(self):
-        """
-        Write the search index file to the destination directory.
-        """
-        # Make sure the search directory exist.
-        path = os.path.join(self.dest_path, 'js/')
-        if not os.path.exists(path):
-            os.mkdir(path)
-
-        # Write the search index file.
-        with open(os.path.join(path, 'search_index_data.js'), 'w') as f:
-            idx_urltitles, idx_index = self.idx.to_json()
-            f.write('var search_urltitles = ')
-            f.write(idx_urltitles)
-            f.write(';\n\nvar search_index = ')
-            f.write(idx_index)
-            f.write(';\n')
 
     def build_global_toc(self):
         """
