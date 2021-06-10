@@ -5,7 +5,9 @@ Call this script to invoke the generation of a static document/website.
 
 from sys import stderr
 import os
+import fnmatch
 import argparse
+
 from distutils.dir_util import copy_tree
 from docutils import nodes
 import docutils.core
@@ -106,7 +108,7 @@ class Main:
             for file in files:
                 path = os.path.join(self.relative_path(root), file)
                 try:
-                    if file.endswith('.rst'):
+                    if file.endswith('.rst') and self.is_not_excluded(path):
                         self.handle_rst(path)
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
@@ -173,6 +175,16 @@ class Main:
                     'handlers': self.sp_app.get_handlers()
                 })
             f.write(output)
+
+    def is_not_excluded(self, path):
+        """
+        Check whether the supplied filename is not supposed to be excluded.
+        """
+        exclude_pats = self.conf_vars['exclude_patterns']
+        if any(fnmatch.fnmatch(path, pattern) for pattern in exclude_pats):
+            return False
+
+        return True
 
     def write_index(self):
         """
