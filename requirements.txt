@@ -1,2 +1,2 @@
-nltk==3.6.2
 docutils==0.17.1
+nltk==3.6.2

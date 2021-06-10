@@ -6,7 +6,6 @@
 """
 
 import os
-from sphinx import addnodes
 from docutils.nodes import strong, emphasis, reference, Text
 from docutils.parsers.rst.roles import set_classes
 from docutils.parsers.rst import Directive

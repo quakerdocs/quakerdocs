@@ -9,8 +9,10 @@ import os.path
 import docutils.core
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import directives, roles
+from docutils.parsers.rst.roles import set_classes
 from docutils.parsers.rst.directives.misc import Class, Include
+
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
@@ -225,7 +227,7 @@ class TocTree(Directive):
 
 class CodeBlock(Directive):
     option_spec = {
-        'name' : directives.unchanged,
+        'name': directives.unchanged,
         'linenos': directives.flag,
         'lineno-start': int,
         'caption': directives.unchanged_required
@@ -238,11 +240,11 @@ class CodeBlock(Directive):
     def run(self):
         language = self.arguments[0]
         lexer = get_lexer_by_name(language, stripall=True)
-        linenos='linenos' in self.options
+        linenos = 'linenos' in self.options
         linenostart = self.options.get('lineno-start', 1)
         caption = self.options.get('caption', '')
 
-        formatter = HtmlFormatter(linenos = linenos, linenostart = linenostart)
+        formatter = HtmlFormatter(linenos=linenos, linenostart=linenostart)
         text = "\n".join(self.content)
         code = highlight(text, lexer, formatter)
 
@@ -251,6 +253,40 @@ class CodeBlock(Directive):
         wrappernode.append(nodes.paragraph('', caption))
 
         return [wrappernode]
+
+
+def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    """
+    Role for creating hyperlink to other documents.
+    """
+    explicit_link = util.link_explicit(text)
+    if explicit_link is None:
+        msg = inliner.reporter.error(
+            'Link %s in invalid format; '
+            'must be "Some Title <some_link_label>"' % text, line=lineno)
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+
+    # TODO: Fix link path, use search index?
+    title, ref = explicit_link
+    set_classes(options)
+    node = nodes.reference(rawtext, title, refuri=ref, **options)
+    return [node], []
+
+
+class kbd_element(nodes.General, nodes.Element):
+    """Empty node for rendering keyboard inputs"""
+    ...
+
+
+def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    """
+    Role for displaying keyboard inputs.
+    """
+    set_classes(options)
+    node = kbd_element()
+    node['keys'] = text.split('+')
+    return [node], []
 
 
 def setup():
@@ -263,3 +299,5 @@ def setup():
     directives.register_directive('toctree', TocTree)
     directives.register_directive('code-block', CodeBlock)
 
+    roles.register_canonical_role('ref', ref_role)
+    roles.register_canonical_role('kbd', kbd_role)

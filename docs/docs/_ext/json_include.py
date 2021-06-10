@@ -3,7 +3,6 @@ import html
 import json
 
 from docutils import io, nodes, utils
-from sphinx.locale import _
 from docutils.nodes import Element, Admonition
 from docutils.parsers.rst import (
     Directive, states, directives, convert_directive_function
@@ -31,14 +30,17 @@ class IncludeJSON(Directive):
         )
         source_dir = os.path.dirname(os.path.abspath(source))
         path = directives.path(self.arguments[0])
+
         if path.startswith('<') and path.endswith('>'):
             path = os.path.join(self.standard_include_path, path[1:-1])
         path = os.path.normpath(os.path.join(source_dir, path))
         path = utils.relative_path(None, path)
         path = nodes.reprunicode(path)
+
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding
         )
+
         e_handler = self.state.document.settings.input_encoding_error_handler
         try:
             self.state.document.settings.record_dependencies.add(path)
@@ -55,6 +57,7 @@ class IncludeJSON(Directive):
             raise self.severe(
                 'Problems with "%s" directive path:\n%s.' % (self.name, error)
             )
+
         path = self.options.get('path')
         try:
             data = json.loads(include_file.read())

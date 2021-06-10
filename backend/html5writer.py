@@ -131,12 +131,20 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         super().__init__(document)
         self.head.append('<base href="%s">' % document.settings.rel_base)
         self.navigation = document.settings.toc
+        self.bookmark_index = 0
 
     def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
 
     def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
+
+    def visit_kbd_element(self, node: nodes.Element):
+        self.body.append('<kbd>')
+        self.body.append('+'.join(f'<kbd>{key}</kbd>' for key in node['keys']))
+
+    def depart_kbd_element(self, node: nodes.Element):
+        self.body.append('</kbd>')
 
     # visit_title() doesn't have to be overridden
 
@@ -150,10 +158,15 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
     def add_bookmark_btn(self, node: nodes.Element):
         title = node.astext()
-        href = title.lower().replace(' ', '-')
-        id = 'bm-' + href
+        id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
         bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                        f'<span class="icon"><i class="fa fa-bookmark"></i></span></button>'
-
+                         '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
         self.body.append(bookmark_html)
+
+    # ! Needs to be improved !
+    def create_bookmark_id(self, node: nodes.Element):
+        comb_str = node.astext() + str(self.bookmark_index)
+        hash_str = str(hash(comb_str))
+        self.bookmark_index += 1
+        return "BM" + hash_str
