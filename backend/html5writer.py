@@ -131,6 +131,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         super().__init__(document)
         self.head.append('<base href="%s">' % document.settings.rel_base)
         self.navigation = document.settings.toc
+        self.bookmark_index = 0
 
     def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
@@ -166,5 +167,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
     # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):
-        sum_str = sum(bytearray(node.astext().encode()))
-        return "BM" + str(sum_str)
+        comb_str = node.astext() + str(self.bookmark_index)
+        hash_str = str(hash(comb_str))
+        self.bookmark_index += 1
+        return "BM" + hash_str
