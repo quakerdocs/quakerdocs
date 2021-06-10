@@ -1,6 +1,5 @@
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keyup', (event) => {
     var code = event.code;
-
 
     // If user presses Escape and the search bar is open, close the search bar.
     if (code == 'Escape') {
@@ -25,5 +24,4 @@ document.addEventListener('keydown', (event) => {
             showBookmarkOverlay()
         }
     }
-
 }, false);
