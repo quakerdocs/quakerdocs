@@ -186,7 +186,7 @@ class Trie:
             node_arr += struct.pack(
                 char_p.id + child_p.id + page_p.id + child_s.id + page_s.id,
                 char_len, len(children_arr) // child_p.bytes,
-                len(page_arr) // page_p.bytes,
+                len(page_arr) // page_p.bytes // 2,
                 len(node.children), len(node.pages))
 
             # Add the children.
@@ -225,9 +225,8 @@ class IndexGenerator:
         self.trie = Trie("") # root of the prefix trie
 
         self.stemmer = SnowballStemmer(language="english").stem
-        self.remover = re.compile('[^\\w\\s]|_')
-
-        self.wordset = set()
+        self.remover = re.compile('[^\\w\\s\\n]')
+        # self.spacer = re.compile('[\._]')
 
     def parse_file(self, content, title, url):
         """
@@ -239,7 +238,7 @@ class IndexGenerator:
         """
 
         # Change to lowercase, separate _ and only keep letters/numbers.
-        content = content.lower()
+        content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
         # Remove stopwords.
@@ -255,7 +254,6 @@ class IndexGenerator:
         # Create the trie.
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, count)
-            self.wordset.add(word)
 
     def to_json(self):
         """
@@ -285,7 +283,6 @@ class IndexGenerator:
                 f.write(template.render(urltitles=self.urltitles, **data))
 
         # Make the .wasm file
-        # TODO
         working_dir = os.getcwd()
         os.chdir(path)
         os.system('make')

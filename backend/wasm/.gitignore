@@ -1,5 +1,3 @@
 emsdk
-build
-*.emc
-*.emcpp
+.pytest_cache
 search.hpp

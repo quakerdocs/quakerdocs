@@ -92,6 +92,7 @@ class Main:
         if self.builder not in Main.supported_builders:
             print("Requested builder not supported!", file=stderr)
             return 1
+
         self.file_ext, self.builder_class = Main.supported_builders[self.builder]
 
         # Check if destination path exists, otherwise create it.

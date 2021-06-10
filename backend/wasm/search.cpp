@@ -5,6 +5,8 @@
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
 #else
+#include <iostream>
+#include <cstring>
 #define EMSCRIPTEN_KEEPALIVE
 #endif
 
@@ -68,11 +70,14 @@ std::map<short,short> searchWord(const char *word) {
         for (child_s i = 0; i < node->child_count; i++)
             stack.push_back(nodes + children[node->children + i]);
 
+        const char *str = chars + node->chars;
+
         /* Add the pages to the list. */
         for (page_s i = 0; i < node->page_count; i++) {
             const Page *page = pages + (node->pages + i);
             page_map.try_emplace(page->page_index, 0).first->second += page->count;
         }
+
     }
 
     return page_map;
@@ -173,13 +178,15 @@ extern "C" {
         std::map<short,short> page_map = searchWord(words[0]);
 
         /* Combine the map with the remaining words. */
-        for (int i = 1, l = words.size(); i < l && !page_map.empty(); ++i)
+        for (int i = 1, l = words.size(); i < l && !page_map.empty(); ++i) {
             intersectMap(page_map, searchWord(words[i]));
+        }
 
         /* Add the final page map contents to the results vector. */
         result.reserve(page_map.size());
-        for (std::pair<const short,short>& page : page_map)
+        for (std::pair<const short,short>& page : page_map) {
             result.push_back(Page{page.first, page.second});
+        }
 
         /* Sort the found entries by the count/priority. */
         auto compare = [](const Page a, const Page b) {
@@ -213,10 +220,10 @@ int main(int n, char **input) {
         query += " ";
     }
 
-    std::cout << "Searching query:" << query << std::endl;
+    std::cout << "Searching query: " << query << std::endl;
     performSearch(&query[0]);
 
-    // Print the results.
+    /* Print the results. */
     const char *result;
     while ((result = getSearch())) {
         std::cout << result << std::endl;
