@@ -133,6 +133,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         if document.settings.favicon is not None:
             self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
         self.navigation = document.settings.toc
+        self.bookmark_index = 0
 
     def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
@@ -162,11 +163,12 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
         bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                        f'<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
-
+                        '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
         self.body.append(bookmark_html)
 
     # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):
-        sum_str = sum(bytearray(node.astext().encode()))
-        return "BM" + str(sum_str)
+        comb_str = node.astext() + str(self.bookmark_index)
+        hash_str = str(hash(comb_str))
+        self.bookmark_index += 1
+        return "BM" + hash_str

@@ -1,2 +1,10 @@
-nltk==3.6.2
+beautifulsoup4==4.9.3
+bs4==0.0.1
+click==8.0.1
 docutils==0.17.1
+joblib==1.0.1
+nltk==3.6.2
+Pygments==2.9.0
+regex==2021.4.4
+soupsieve==2.2.1
+tqdm==4.61.0

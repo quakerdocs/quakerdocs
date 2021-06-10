@@ -4,7 +4,7 @@ Implement directives used in the CodeGrade reStructuredText.
 
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives, roles
+from docutils.parsers.rst import directives
 
 
 class ExampleDirective(Directive):

@@ -3,6 +3,7 @@ Main entrypoint of the program.
 Call this script to invoke the generation of a static document/website.
 """
 
+from bs4 import BeautifulSoup
 from sys import stderr
 import os
 import fnmatch
@@ -188,6 +189,22 @@ class Main:
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
         self.idx.parse_file(content, title, html_path)
 
+        # Expand the menu entry of the current open page.
+        page_toc = self.toc_navigation
+        soup = BeautifulSoup(page_toc, 'html.parser')
+        a = soup.find('a', href=html_path)
+        if a is not None:
+            parents = a.find_parents('li')
+            childrenUL = parents[0].find_all('ul')
+            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
+
+            if childrenUL is not None and childrenARROW is not None:
+                for child in childrenUL:
+                    child['class'] = "menu-list is-expanded"
+
+                for child in childrenARROW:
+                    child['class'] = 'fa arrow-icon fa-angle-down'
+
         # Write the document to a file.
         with open(dest, 'wb') as f:
             output = docutils.core.publish_from_doctree(
@@ -195,7 +212,7 @@ class Main:
                 destination_path=dest,
                 writer=self.builder_class(),
                 settings_overrides={
-                    'toc': self.toc_navigation,
+                    'toc': str(soup.prettify()),
                     'src_dir': self.source_path,
                     'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
                     'handlers': self.sp_app.get_handlers(),
@@ -225,9 +242,9 @@ class Main:
         # Write the search index file.
         with open(os.path.join(path, 'search_index_data.js'), 'w') as f:
             idx_urltitles, idx_index = self.idx.to_json()
-            f.write(f'var search_urltitles = ')
+            f.write('var search_urltitles = ')
             f.write(idx_urltitles)
-            f.write(f';\n\nvar search_index = ')
+            f.write(';\n\nvar search_index = ')
             f.write(idx_index)
             f.write(';\n')
 
@@ -273,7 +290,8 @@ class Main:
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='SDG')
     arg_parser.add_argument('source_path', type=dir_path, help='The directory containing the RST files.')
-    arg_parser.add_argument('-d', type=str, dest='destination_path', default='build', help='The directory to write the output.')
+    arg_parser.add_argument('-d', type=str, dest='destination_path', default='build', help='The directory to write '
+                                                                                           'the output.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html", help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
