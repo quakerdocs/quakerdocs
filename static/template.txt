@@ -11,6 +11,7 @@
 <script src="js/search_data.js"></script>
 <script src="js/search.js"></script>
 <script src="js/script.js"></script>
+<script src="js/keylistener.js"></script>
 <script src="js/back_to_top.js"></script>
 
 %(body_prefix)s
