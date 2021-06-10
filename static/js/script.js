@@ -7,9 +7,9 @@ function toggleMenu() {
     var menu = document.getElementById("menuPanel");
 
     if (menu.classList.contains('is-hidden-touch')) {
-        menu.classList.replace('is-hidden-touch', 'is-full');
+        menu.classList.replace('is-hidden-touch', 'is-full-touch');
     } else {
-        menu.classList.replace('is-full', 'is-hidden-touch');
+        menu.classList.replace('is-full-touch', 'is-hidden-touch');
     }
 }
 
