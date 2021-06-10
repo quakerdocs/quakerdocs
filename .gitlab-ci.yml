@@ -7,7 +7,7 @@ before_script:
   - pip install virtualenv
   - virtualenv venv
   - source venv/bin/activate
-  - pip install -r requirements.txt
+  - pip install -r tests/requirements.txt
   - pip install anybadge
 
 stages:
@@ -44,3 +44,6 @@ pages:
     - make html
     - lftp -e "open $FTP_HOST; user $FTP_USERNAME FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose build/ /subdomains/doctor/; bye"
     - make clean
+  only:
+    refs:
+      - master
