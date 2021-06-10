@@ -227,7 +227,7 @@ class TocTree(Directive):
 
 class CodeBlock(Directive):
     option_spec = {
-        'name' : directives.unchanged,
+        'name': directives.unchanged,
         'linenos': directives.flag,
         'lineno-start': int,
         'caption': directives.unchanged_required
@@ -240,11 +240,11 @@ class CodeBlock(Directive):
     def run(self):
         language = self.arguments[0]
         lexer = get_lexer_by_name(language, stripall=True)
-        linenos='linenos' in self.options
+        linenos = 'linenos' in self.options
         linenostart = self.options.get('lineno-start', 1)
         caption = self.options.get('caption', '')
 
-        formatter = HtmlFormatter(linenos = linenos, linenostart = linenostart)
+        formatter = HtmlFormatter(linenos=linenos, linenostart=linenostart)
         text = "\n".join(self.content)
         code = highlight(text, lexer, formatter)
 

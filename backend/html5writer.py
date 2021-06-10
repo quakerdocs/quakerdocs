@@ -162,7 +162,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         onclick = f"bookmarkClick('{id}')"
         bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
                          '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
-
         self.body.append(bookmark_html)
 
     # ! Needs to be improved !
