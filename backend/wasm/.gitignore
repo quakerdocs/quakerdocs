@@ -2,4 +2,4 @@ emsdk
 build
 *.emc
 *.emcpp
-search.hp
+search.hpp

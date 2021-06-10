@@ -1,4 +1,4 @@
-=== AUTOMATICALLY GENERATED FILE ===
+/*=== AUTOMATICALLY GENERATED FILE ===*/
 
 /* Child and page sizes. */
 typedef unsigned char child_s;

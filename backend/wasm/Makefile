@@ -1,23 +1,21 @@
-
-
-
-# SOURCES := libstemmer/libstemmer/libstemmer_utf8.c libstemmer/src_c/stem_UTF_8_english.c search.cpp
-
 SOURCES := search.cpp
-OBJS := $(SOURCES:.cpp=.o)
-EM_OBJS := $(SOURCES:.cpp=.em)
+HEADERS := search.hpp
+BUILD := build
 
-CC_ARGS := -I"libstemmer/include" -flto -Os
+OBJS := $(patsubst %.cpp, ${BUILD}/%.o, $(SOURCES))
+EM_OBJS := $(patsubst %.cpp, ${BUILD}/%.em, $(SOURCES))
+
+CC_ARGS := -I"libstemmer/include" -Os #-flto
 CC := gcc $(CC_ARGS)
 EM_CC := emcc $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
 
-%.em: %.cpp
+$(BUILD)/%.em: %.cpp $(HEADERS)
 	$(EM_CC) -std=c++17 -c -o $@ $<
 emscripten: emsdk $(EM_OBJS)
 	@mkdir -p build
-	$(EM_CC) $(EM_OBJS) -o build/search.js
+	$(EM_CC) $(EM_OBJS) -o build/search_data.js
 
-%.o: %.cpp
+$(BUILD)/%.o: %.cpp $(HEADERS)
 	$(CC) -std=c++17 -c -o $@ $<
 local: $(OBJS)
 	@mkdir -p build

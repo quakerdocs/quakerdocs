@@ -4,6 +4,7 @@ import re
 import nltk
 import json
 import struct
+import shutil
 from jinja2 import Template
 from collections import Counter
 from nltk.corpus import stopwords
@@ -280,11 +281,20 @@ class IndexGenerator:
 
             # Write the search index to hpp.
             with open(os.path.join(path, 'search.hpp'), 'w') as f:
-                f.write('=== AUTOMATICALLY GENERATED FILE ===\n\n')
+                f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
                 f.write(template.render(urltitles=self.urltitles, **data))
 
         # Make the .wasm file
         # TODO
+        working_dir = os.getcwd()
+        os.chdir(path)
+        os.system('make')
+        os.chdir(working_dir)
 
-        # Copy the .wasm and .js file.
-        # TODO
+        if not os.path.exists(dest_path):
+            os.mkdir(dest_path)
+
+        shutil.copyfile(os.path.join(path, 'build', 'search_data.js'),
+                        os.path.join(dest_path, 'search_data.js'))
+        shutil.copyfile(os.path.join(path, 'build', 'search_data.wasm'),
+                        os.path.join(dest_path, 'search_data.wasm'))
