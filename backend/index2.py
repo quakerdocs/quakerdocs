@@ -4,6 +4,7 @@ import re
 import nltk
 import json
 import struct
+import math
 from collections import Counter
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
@@ -14,6 +15,23 @@ except LookupError:
     nltk.download('stopwords')
     stopwords = set(stopwords.words('english'))
 
+class CPrimitive():
+    """TODO"""
+    def __init__(self, size):
+        """TODO"""
+        self.actual_bytes = math.ceil(math.log2(size) / 8)
+
+        if self.actual_bytes == 1:
+            self.id, self.type, self.bytes = 'B', 'unsigned char', 1
+        elif self.actual_bytes == 2:
+            self.id, self.type, self.bytes = 'H', 'unsigned short', 2
+        elif self.actual_bytes <= 4:
+            self.id, self.type, self.bytes = 'I', 'unsigned int', 4
+        elif self.actual_bytes <= 8:
+            self.id, self.type, self.bytes = 'Q', 'unsigned long long', 8
+        else:
+            raise ValueError('Too much data in the search index.')
+
 
 class Trie:
     """
@@ -23,7 +41,7 @@ class Trie:
         char (string): The string connecting the node to its parent.
         end  (bool): Signifies wether node is an endpoint.
         children (dict): A dictionary connecting chars to child nodes.
-        page_count ([(int, int)]): A list of page indexes and word counts.
+        pages ([(int, int)]): A list of page indexes and word counts.
     """
 
     def __init__(self, char):
@@ -44,7 +62,7 @@ class Trie:
         self.children = {}
 
         # The pages where this word is found.
-        self.page_count = []
+        self.pages = []
 
     def insert_helper(self, word, current):
         """
@@ -58,10 +76,10 @@ class Trie:
         # Loop over the children of the current node.
         for c_word, child in current.children.items():
             # Find how well the current node matches the word.
-            match, rem, word = self.match(c_word, word)
+            match, remainder, word = self.match(c_word, word)
 
             # Exact match to start of word.
-            if not rem:
+            if not remainder:
                 # Move a layer deeper.
                 return word, child
 
@@ -71,8 +89,8 @@ class Trie:
                 new = Trie(match)
 
                 # Update the char of the child and move it the new node.
-                child.char = c_rem
-                new.children[c_rem] = child
+                child.char = remainder
+                new.children[remainder] = child
                 current.children.pop(c_word)
                 current.children[match] = new
 
@@ -110,7 +128,7 @@ class Trie:
 
         # If while loop exited it means that the current node is an end node.
         current.end = True
-        current.page_count.append((page, count))
+        current.pages.append((page, count))
 
     @staticmethod
     def match(n_word, s_word):
@@ -126,37 +144,36 @@ class Trie:
         for i, (n_char, s_char) in enumerate(zip(n_word, s_word)):
             # Stop on first difference.
             if n_char != s_char:
-                i -= 1
                 break
-
-        i += 1
+        else:
+            i += 1
 
         # Return matching part and both remainders.
         return n_word[:i], n_word[i:], s_word[i:]
 
     def to_binary(self):
         """Translate the Trie to a binary format"""
-        nodes = []
-        char_count, children_count, pages_count = 0, 0, 0
-
         # Put all the nodes in a list.
-        stack = [self]
+        nodes, stack = [], [self]
+        char_count, children_count, page_count = 0, 0, 0
+        max_children, max_pages = 0, 0
         while stack:
             node = stack.pop()
             node.i = len(nodes)
             nodes.append(node)
-
-            # Sort the children alphabetically based on the key.
-            node.sorted_children = []
-            for key, child in node.children.items(): #sorted(node.children.items(), key=lambda c: c[0]):
-                child.key = key
-                node.sorted_children.append(child)
-
-            # Update the stack and the counts.
-            stack.extend(reversed(node.sorted_children))
             children_count += len(node.children)
-            pages_count += len(node.page_count)
+            page_count += len(node.pages)
             char_count += len(node.char) + 1
+            max_children = max(max_children, len(node.children))
+            max_pages = max(max_pages, len(node.pages))
+            stack.extend(reversed(node.children.values()))
+
+        node_p = CPrimitive(len(nodes))
+        child_s = CPrimitive(max_children)
+        page_s = CPrimitive(max_pages)
+        child_p = CPrimitive(children_count)
+        page_p = CPrimitive(page_count)
+        char_p = CPrimitive(char_count)
 
         # Convert the radix trie to byte data.
         node_arr, children_arr, page_arr, char_arr = [], [], [], []
@@ -164,15 +181,21 @@ class Trie:
 
         # Add each node to the binary arrays.
         for node in nodes:
-            node_arr += struct.pack('IIIII', char_len,
-                                    len(children_arr) // 4,
-                                    len(page_arr) // 4,
-                                    len(node.children),
-                                    len(node.page_count))
-            children_i = [child.i for child in node.sorted_children]
-            children_arr += struct.pack('I' * len(children_i), *children_i)
-            pages = [i for p in node.page_count for i in p]
-            page_arr += struct.pack('H' * len(pages), *pages)
+            node_arr += struct.pack(
+                char_p.id + child_p.id + page_p.id + child_s.id + page_s.id,
+                char_len, len(children_arr) // child_p.bytes,
+                len(page_arr) // page_p.bytes,
+                len(node.children), len(node.pages))
+
+            # Add the children.
+            children_i = [child.i for child in node.children.values()]
+            children_arr += struct.pack(node_p.id * len(children_i), *children_i)
+
+            # Add the pages.
+            pages = [i for p in node.pages for i in p]
+            page_arr += struct.pack('H' * len(pages), *pages) # TODO.
+
+            # Add the characters.
             char_arr += ['"'] + list(node.char) + ['\\0"']
             char_len += len(node.char) + 1
 
@@ -181,7 +204,9 @@ class Trie:
             'node_arr': ','.join(map(str, node_arr)),
             'children_arr': ','.join(map(str, children_arr)),
             'page_arr': ','.join(map(str, page_arr)),
-            'char_arr': ''.join(char_arr)
+            'char_arr': ''.join(char_arr),
+            'node_p': node_p, 'child_s': child_s, 'page_s': page_s,
+            'child_p': child_p, 'page_p': page_p, 'char_p': char_p
         }
 
 class IndexGenerator:
@@ -198,7 +223,7 @@ class IndexGenerator:
         self.trie = Trie("")  # root of the prefix trie
 
         self.stemmer = SnowballStemmer(language="english").stem
-        self.remover = re.compile('[^\\w\\s]')
+        self.remover = re.compile('[^\\w\\s]|_')
 
         self.wordset = set()
 
@@ -212,14 +237,13 @@ class IndexGenerator:
         """
 
         # Change to lowercase, separate _ and only keep letters/numbers.
-        content = content.lower().replace('_', '')
+        content = content.lower()
         content = self.remover.sub('', content)
 
         # Remove stopwords.
-        content = [self.stemmer(word)
-                   for word in content.split() if word not in stopwords]
+        content = [word for word in content.split() if word not in stopwords]
 
-        # Count occurences of words in page.
+        # Count occurrences of words in page.
         word_counter = Counter(content)
 
         # Get the index of the current page and update the list.
@@ -248,7 +272,7 @@ class IndexGenerator:
 
         # # If while loop exited it means that the current node is an end node.
         # current.end = True
-        # current.page_count.append((page, count))
+        # current.pages.append((page, count))
 
         stack = [self.trie]
 

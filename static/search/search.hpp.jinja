@@ -1,14 +1,11 @@
-#include <unordered_map>
-#include <vector>
-
 /* Child and page sizes. */
-typedef int child_s;
-typedef int page_s;
+typedef {{ child_s.type }} child_s;
+typedef {{ page_s.type }} page_s;
 
 /* Int as pointers. */
-typedef int char_p;
-typedef int child_p;
-typedef int page_p;
+typedef {{ char_p.type }} char_p;
+typedef {{ child_p.type }} child_p;
+typedef {{ page_p.type }} page_p;
 
 /* A node of the Radix tree. */
 struct Node {
