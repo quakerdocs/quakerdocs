@@ -4,7 +4,7 @@ Implement directives used in the CodeGrade reStructuredText.
 
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives, roles
+from docutils.parsers.rst import directives
 
 
 class DeprecationNote(Directive):
@@ -15,7 +15,11 @@ class DeprecationNote(Directive):
         path = 'https://help.codegrade.com' + self.arguments[0]  # Not os.path.join()!
         text = []
         text.extend([
-            nodes.Text('CodeGrade has a Help Center, with better guides, more videos and updated documentation. The documentation and guides on this website are deprecated and will not be updated in the future. Please click '),
+            nodes.Text('CodeGrade has a Help Center, with better guides, '
+                       'more videos and updated documentation. The '
+                       'documentation and guides on this website are '
+                       'deprecated and will not be updated in the future. '
+                       'Please click '),
             nodes.reference('', 'here', refuri=path),
             nodes.Text(' to go to this page on the Help Center!')
         ])

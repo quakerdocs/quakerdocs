@@ -161,12 +161,12 @@ class Main:
         page_toc = self.toc_navigation
         soup = BeautifulSoup(page_toc, 'html.parser')
         a = soup.find('a', href=html_path)
-        if a != None:
+        if a is not None:
             parents = a.find_parents('li')
             childrenUL = parents[0].find_all('ul')
             childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
 
-            if childrenUL != None and childrenARROW != None:
+            if childrenUL is not None and childrenARROW is not None:
                 for child in childrenUL:
                     child['class'] = "menu-list is-expanded"
 
@@ -198,9 +198,9 @@ class Main:
         # Write the search index file.
         with open(os.path.join(path, 'search_index_data.js'), 'w') as f:
             idx_urltitles, idx_index = self.idx.to_json()
-            f.write(f'var search_urltitles = ')
+            f.write('var search_urltitles = ')
             f.write(idx_urltitles)
-            f.write(f';\n\nvar search_index = ')
+            f.write(';\n\nvar search_index = ')
             f.write(idx_index)
             f.write(';\n')
 
@@ -235,7 +235,8 @@ class Main:
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='SDG')
     arg_parser.add_argument('source_path', type=dir_path, help='The directory containing the RST files.')
-    arg_parser.add_argument('-d', type=str, dest='destination_path', default='build', help='The directory to write the output.')
+    arg_parser.add_argument('-d', type=str, dest='destination_path', default='build', help='The directory to write '
+                                                                                           'the output.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html", help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
