@@ -1,12 +1,14 @@
+# TODO maybe change page, count to data for easier expansion.
+import os
 import re
 import nltk
 import json
-import string
-import doctest
+import struct
+from jinja2 import Template
+from collections import Counter
 from nltk.corpus import stopwords
-from collections import Counter, defaultdict
 from nltk.stem.snowball import SnowballStemmer
-
+import math
 
 try:
     stopwords = set(stopwords.words('english'))
@@ -14,17 +16,217 @@ except LookupError:
     nltk.download('stopwords')
     stopwords = set(stopwords.words('english'))
 
+class CPrimitive():
+    """TODO"""
+    def __init__(self, size):
+        """TODO"""
+        self.actual_bytes = math.ceil(math.log2(size) / 8)
+
+        if self.actual_bytes == 1:
+            self.id, self.type, self.bytes = 'B', 'unsigned char', 1
+        elif self.actual_bytes == 2:
+            self.id, self.type, self.bytes = 'H', 'unsigned short', 2
+        elif self.actual_bytes <= 4:
+            self.id, self.type, self.bytes = 'I', 'unsigned int', 4
+        elif self.actual_bytes <= 8:
+            self.id, self.type, self.bytes = 'Q', 'unsigned long long', 8
+        else:
+            raise ValueError('Too much data in the search index.')
+
+
+class Trie:
+    """
+    A class to represent a Radix tree/trie
+
+    Attributes:
+        char (string): The string connecting the node to its parent.
+        end  (bool): Signifies wether node is an endpoint.
+        children (dict): A dictionary connecting chars to child nodes.
+        pages ([(int, int)]): A list of page indexes and word counts.
+    """
+
+    def __init__(self, char):
+        """
+        Constructor for the Trie class.
+
+        Parameters:
+            char (string): The string connecting the node to its parent.
+        """
+
+        # Current character.
+        self.char = char
+
+        # Wether at end of word or not.
+        self.end = False
+
+        # Dict of children.
+        self.children = {}
+
+        # The pages where this word is found.
+        self.pages = []
+
+    def insert_helper(self, word, current):
+        """
+        A helper method used to insert a fragment of a word into the trie.
+
+        Parameters:
+            word (string): The remainder of the word to insert a fragment of.
+            current (Trie): The node of the trie from which to start searching.
+        """
+
+        # Loop over the children of the current node.
+        for c_word, child in current.children.items():
+            # Find how well the current node matches the word.
+            match, remainder, word = self.match(c_word, word)
+
+            # Exact match to start of word.
+            if not remainder:
+                # Move a layer deeper.
+                return word, child
+
+            # Not exact but still partial match.
+            if match:
+                # Create a new node for the partial match.
+                new = Trie(match)
+
+                # Update the char of the child and move it the new node.
+                child.char = remainder
+                new.children[remainder] = child
+                current.children.pop(c_word)
+                current.children[match] = new
+
+                # Continue after the partial match.
+                if word:
+                    # Create the remaining word object below.
+                    current = new
+                    break
+                else: # The word fits in the new node.
+                    return "", new
+
+        # If none of the children matched add the remainder as a child.
+        new = Trie(word)
+        current.children[word] = new
+        return "", new
+
+    def insert(self, word, page, count):
+        """
+        Insert method to insert a new word into the trie.
+
+        Parameters:
+            word (string): The word to be inserted.
+            page (int): The index of the page the word is in.
+            count (int): The number of times the word is found.
+        """
+        if not word:
+            return
+
+        # Start at the root.
+        current = self
+
+        # Continue until the end of the word.
+        while word:
+            word, current = self.insert_helper(word, current)
+
+        # If while loop exited it means that the current node is an end node.
+        current.end = True
+        current.pages.append((page, count))
+
+    @staticmethod
+    def match(n_word, s_word):
+        """
+        Method to match a part of a word to a part in the node.
+
+        Parameters:
+            n_word (string): The word fragment inside the node.
+            s_word (string): The fragment of the word being searched.
+        """
+
+        # Loop over both words.
+        for i, (n_char, s_char) in enumerate(zip(n_word, s_word)):
+            # Stop on first difference.
+            if n_char != s_char:
+                break
+        else:
+            i += 1
+
+        # Return matching part and both remainders.
+        return n_word[:i], n_word[i:], s_word[i:]
+
+    def to_binary(self):
+        """Translate the Trie to a binary format"""
+        # Put all the nodes in a list.
+        nodes, stack = [], [self]
+        char_count, children_count, page_count = 0, 0, 0
+        max_children, max_pages = 0, 0
+        while stack:
+            node = stack.pop()
+            node.i = len(nodes)
+            nodes.append(node)
+            children_count += len(node.children)
+            page_count += len(node.pages)
+            char_count += len(node.char) + 1
+            max_children = max(max_children, len(node.children))
+            max_pages = max(max_pages, len(node.pages))
+            stack.extend(reversed(node.children.values()))
+
+        node_p = CPrimitive(len(nodes))
+        child_s = CPrimitive(max_children)
+        page_s = CPrimitive(max_pages)
+        child_p = CPrimitive(children_count)
+        page_p = CPrimitive(page_count)
+        char_p = CPrimitive(char_count)
+
+        # Convert the radix trie to byte data.
+        node_arr, children_arr, page_arr, char_arr = [], [], [], []
+        char_len = 0
+
+        # Add each node to the binary arrays.
+        for node in nodes:
+            node_arr += struct.pack(
+                char_p.id + child_p.id + page_p.id + child_s.id + page_s.id,
+                char_len, len(children_arr) // child_p.bytes,
+                len(page_arr) // page_p.bytes,
+                len(node.children), len(node.pages))
+
+            # Add the children.
+            children_i = [child.i for child in node.children.values()]
+            children_arr += struct.pack(node_p.id * len(children_i), *children_i)
+
+            # Add the pages.
+            pages = [i for p in node.pages for i in p]
+            page_arr += struct.pack('H' * len(pages), *pages) # TODO.
+
+            # Add the characters.
+            char_arr += ['"'] + list(node.char) + ['\\0"']
+            char_len += len(node.char) + 1
+
+        # Convert the data to C arrays.
+        return {
+            'node_arr': ','.join(map(str, node_arr)),
+            'children_arr': ','.join(map(str, children_arr)),
+            'page_arr': ','.join(map(str, page_arr)),
+            'char_arr': ''.join(char_arr),
+            'node_p': node_p, 'child_s': child_s, 'page_s': page_s,
+            'child_p': child_p, 'page_p': page_p, 'char_p': char_p
+        }
 
 class IndexGenerator:
-    def __init__(self):
-        self.urltitles = []  # [(url, title), ...]
-        self.index = defaultdict(list)  # {"word": [(index, freq), ...]}
-        self.stemmer = SnowballStemmer(language="english").stem
+    """
+    A class to generate the indexing/trie used for searching as well as the
+    translation of page indices to page info.
+    """
 
-        keep_chars = string.ascii_lowercase + string.digits + ' \n'
-        remove_chars = ''.join(c for c in map(
-            chr, range(256)) if not c in keep_chars)
-        self.translate = str.maketrans("", "", remove_chars)
+    def __init__(self):
+        """
+        Constructor for the IndexGenerator class.
+        """
+        self.urltitles = []  # [(url, title), ...]
+        self.trie = Trie("") # root of the prefix trie
+
+        self.stemmer = SnowballStemmer(language="english").stem
+        self.remover = re.compile('[^\\w\\s]|_')
+
+        self.wordset = set()
 
     def parse_file(self, content, title, url):
         """
@@ -34,44 +236,55 @@ class IndexGenerator:
         :param str title: The title of the document
         :param str url: The url of the page
         """
+
+        # Change to lowercase, separate _ and only keep letters/numbers.
         content = content.lower()
-        content = content.translate(self.translate)
-        content = [self.stemmer(word)
-                   for word in content.split() if word not in stopwords]
+        content = self.remover.sub('', content)
+
+        # Remove stopwords.
+        content = [word for word in content.split() if word not in stopwords]
+
+        # Count occurrences of words in page.
         word_counter = Counter(content)
 
+        # Get the index of the current page and update the list.
         i = len(self.urltitles)
         self.urltitles.append((url, title))
 
+        # Create the trie.
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
-            self.index[word].append((i, count))
-
-    def sort(self):
-        """Sort the reversed index"""
-        for key, value in self.index.items():
-            self.index[key] = sorted(value, key=lambda x: -x[1])
+            self.trie.insert(word, i, count)
+            self.wordset.add(word)
 
     def to_json(self):
         """
         Return a json string containing the index and a mapping from ids to
         tuples of (url, title).
         """
-        self.sort()
-        return json.dumps(self.urltitles), json.dumps(self.index)
+        self.optimise()
+        return json.dumps(self.urltitles), json.dumps(self.trie)
 
+    def build(self, dest_path):
+        """
+        Write the search index file to the destination directory.
+        """
+        path = os.path.join('backend', 'wasm')
 
-def test():
-    """
-    Currently just a demonstration of doctest
+        if not os.path.exists(path):
+            raise FileNotFoundError('Wasm source files are not found.')
 
-    >>> test()
-    True
-    >>> test()
-    False
-    """
-    return True
+        # Generate the search.hpp
+        data = self.trie.to_binary()
+        with open(os.path.join(path, 'search.hpp.jinja')) as f:
+            template = Template(f.read())
 
+            # Write the search index to hpp.
+            with open(os.path.join(path, 'search.hpp'), 'w') as f:
+                f.write('=== AUTOMATICALLY GENERATED FILE ===\n\n')
+                f.write(template.render(urltitles=self.urltitles, **data))
 
-if __name__ == "__main__":
-    doctest.testmod(verbose=True)
-    test()
+        # Make the .wasm file
+        # TODO
+
+        # Copy the .wasm and .js file.
+        # TODO

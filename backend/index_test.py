@@ -1,5 +1,5 @@
 import pytest
-from index2 import Trie, CPrimitive
+from index import Trie, CPrimitive
 
 
 def all_in(container, *items):
@@ -95,3 +95,8 @@ def test_insert_chain():
                                                  (1e12, 'Q')])
 def test_CPrimitive(size, expected_id):
     assert CPrimitive(size).id == expected_id
+
+
+def test_CPrimitive_too_large():
+    with pytest.raises(ValueError) as e_info:
+        CPrimitive(1e50)

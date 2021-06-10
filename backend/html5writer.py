@@ -11,10 +11,10 @@ class Writer(docutils.writers._html_base.Writer):
     supported = ('html', 'html5', 'html4', 'xhtml', 'xhtml10')
     """Formats this writer supports."""
 
-    default_stylesheets = ['minimal.css', 'plain.css']
+    default_stylesheets = []
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
-    default_template = 'template.txt'
+    default_template = '../static/template.txt'
     default_template_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), default_template)
 
@@ -127,16 +127,46 @@ class Writer(docutils.writers._html_base.Writer):
 
 
 class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
-    @property
-    def navigation(self):
-        """
-        Create the navigation bar.
-        """
-        self.settings.toc  # should contain the ToC (supplied from main.py)
-        return '<p>Insert navigation (side)bar here...</p>'
+    def __init__(self, document):
+        super().__init__(document)
+        self.head.append('<base href="%s">' % document.settings.rel_base)
+        self.navigation = document.settings.toc
+        self.bookmark_index = 0
 
-    def visit_toctree(self, node: nodes.Element):
+    def visit_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
 
-    def depart_toctree(self, node: nodes.Element):
+    def depart_TocData(self, node: nodes.Element):
         raise nodes.SkipNode
+
+    def visit_kbd_element(self, node: nodes.Element):
+        self.body.append('<kbd>')
+        self.body.append('+'.join(f'<kbd>{key}</kbd>' for key in node['keys']))
+
+    def depart_kbd_element(self, node: nodes.Element):
+        self.body.append('</kbd>')
+
+    # visit_title() doesn't have to be overridden
+
+    def depart_title(self, node: nodes.Element) -> None:
+        if len(self.context) > 0:
+            close_tag = self.context[-1]
+
+            if close_tag.startswith('</h'):
+                self.add_bookmark_btn(node)
+            super().depart_title(node)
+
+    def add_bookmark_btn(self, node: nodes.Element):
+        title = node.astext()
+        id = self.create_bookmark_id(node)
+        onclick = f"bookmarkClick('{id}')"
+        bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
+                         '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
+        self.body.append(bookmark_html)
+
+    # ! Needs to be improved !
+    def create_bookmark_id(self, node: nodes.Element):
+        comb_str = node.astext() + str(self.bookmark_index)
+        hash_str = str(hash(comb_str))
+        self.bookmark_index += 1
+        return "BM" + hash_str

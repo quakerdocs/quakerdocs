@@ -8,11 +8,10 @@
 #define EMSCRIPTEN_KEEPALIVE
 #endif
 
-#include "index.hpp"
+#include "search.hpp"
 
 static std::vector<Page> result;
 static size_t result_index;
-
 
 /* Find a node which matches with the word, or null if no match can be found. */
 const Node *findNode(const char *word) {

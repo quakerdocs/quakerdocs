@@ -15,11 +15,16 @@ class DeprecationNote(Directive):
         path = 'https://help.codegrade.com' + self.arguments[0]  # Not os.path.join()!
         text = []
         text.extend([
-            nodes.Text('CodeGrade has a Help Center, with better guides, more videos and updated documentation. The documentation and guides on this website are deprecated and will not be updated in the future. Please click '),
+            nodes.Text('CodeGrade has a Help Center, with better guides, '
+                       'more videos and updated documentation. The '
+                       'documentation and guides on this website are '
+                       'deprecated and will not be updated in the future. '
+                       'Please click '),
             nodes.reference('', 'here', refuri=path),
             nodes.Text(' to go to this page on the Help Center!')
         ])
-        return [nodes.tip('', nodes.paragraph('', '', *text))]
+        # return [nodes.tip('', nodes.paragraph('', '', *text))]
+        return []
 
 
 class WarningDirective(Directive):
@@ -36,14 +41,26 @@ class WarningDirective(Directive):
 
 class ExampleDirective(Directive):
     has_content = True
+    optional_arguments = 100
 
     def run(self):
-        adm = nodes.admonition('',
-                               nodes.paragraph('', ' '.join(self.content)),
-                               classes=['example'])
-        title = nodes.title('', 'Example')
-        adm.insert(0, title)
-        return [adm]
+        wrapper = nodes.admonition('', classes=['example'])
+        title = "Example"
+        # Add title to example text if it is supplied.
+        if len(self.arguments) > 0:
+            title += ": " + ' '.join(self.arguments)
+
+        wrapper.append(nodes.paragraph('', title, classes=['example-title']))
+
+        # Content
+        content_wrapper = nodes.compound(classes=['example-content'])
+        wrapper.append(content_wrapper)
+
+        self.state.nested_parse(
+            self.content, self.content_offset, content_wrapper
+        )
+
+        return [wrapper]
 
 
 def setup():

@@ -1,5 +1,7 @@
 build*/
 .vscode
-__pycache__
 dist
-.pytest_cache
+.pytest_cache/
+__pycache__/
+venv/
+.coverage
