@@ -91,7 +91,7 @@
 			%(body_pre_docinfo)s
 			%(docinfo)s
 			%(body)s
-			<button onclick="topFunction()" id="myBtn" class="fa arrow-icon fa-angle-up" title="Go to top"> </button>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"> </button>
 			<hr>
 			<footer class="footer-doc">
 				%(footer)s
