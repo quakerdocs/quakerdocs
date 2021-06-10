@@ -7,7 +7,7 @@ EM_OBJS := $(patsubst %.cpp, ${BUILD}/%.em, $(SOURCES))
 
 CC_ARGS := -Os #-flto
 CC := gcc $(CC_ARGS)
-EM_CC := emcc $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
+EM_CC := source emsdk/emsdk_env.sh &>/dev/null; emcc $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
 
 $(BUILD)/%.em: %.cpp $(HEADERS)
 	$(EM_CC) -std=c++17 -c -o $@ $<
