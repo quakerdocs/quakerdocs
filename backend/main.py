@@ -216,7 +216,8 @@ class Main:
                     'src_dir': self.source_path,
                     'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
                     'handlers': self.sp_app.get_handlers(),
-                    'favicon': self.conf_vars.get('html_favicon', None)
+                    'favicon': self.conf_vars.get('html_favicon', None),
+                    'copyright': self.conf_vars.get('copyright', '')
                 })
             f.write(output)
 
