@@ -4,7 +4,7 @@ Functionality to emulate a Sphinx app for using extensions
 
 import optparse
 from importlib import import_module
-from docutils import nodes
+# from docutils import nodes
 from docutils.parsers.rst import directives, roles
 
 

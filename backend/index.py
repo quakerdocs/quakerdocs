@@ -17,6 +17,7 @@ except LookupError:
     nltk.download('stopwords')
     stopwords = set(stopwords.words('english'))
 
+
 class CPrimitive():
     """TODO"""
     def __init__(self, size):
@@ -101,7 +102,7 @@ class Trie:
                     # Create the remaining word object below.
                     current = new
                     break
-                else: # The word fits in the new node.
+                else:  # The word fits in the new node.
                     return "", new
 
         # If none of the children matched add the remainder as a child.
@@ -195,7 +196,7 @@ class Trie:
 
             # Add the pages.
             pages = [i for p in node.pages for i in p]
-            page_arr += struct.pack('H' * len(pages), *pages) # TODO.
+            page_arr += struct.pack('H' * len(pages), *pages)  # TODO.
 
             # Add the characters.
             char_arr += ['"'] + list(node.char) + ['\\0"']
@@ -211,6 +212,7 @@ class Trie:
             'child_p': child_p, 'page_p': page_p, 'char_p': char_p
         }
 
+
 class IndexGenerator:
     """
     A class to generate the indexing/trie used for searching as well as the
@@ -222,7 +224,7 @@ class IndexGenerator:
         Constructor for the IndexGenerator class.
         """
         self.urltitles = []  # [(url, title), ...]
-        self.trie = Trie("") # root of the prefix trie
+        self.trie = Trie("")  # root of the prefix trie
 
         self.stemmer = SnowballStemmer(language="english").stem
         self.remover = re.compile('[^\\w\\s\\n]')

@@ -28,7 +28,7 @@ create_badge_svg:
 flake8:
   stage: Test
   script:
-    - flake8 backend/ --statistics --count --max-line-length=120
+    - flake8 backend/*.py --statistics --count --max-line-length=120
 
 pylint:
   stage: Test

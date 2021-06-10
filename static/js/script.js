@@ -133,7 +133,7 @@ function renderResults(searcher, resultsWrapper) {
         //         resultList.append(resultEl);
         //     })
             // .catch(console.error);
-        resultEl = createResultElement('../' + r.page, r.title, "Tip");
+        resultEl = createResultElement('../' + r.page, r.title);
         resultList.append(resultEl);
     }
 }
