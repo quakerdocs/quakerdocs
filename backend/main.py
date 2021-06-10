@@ -79,6 +79,8 @@ class Main:
         # Exclude static files, as they should not be processed.
         self.conf_vars['exclude_patterns'] += \
             self.conf_vars.get('html_static_path', [])
+        self.conf_vars['exclude_patterns'] += \
+            self.conf_vars.get('templates_path', [])
 
     def generate(self):
         """
@@ -153,13 +155,19 @@ class Main:
         html_path = path[:-4] + '.html'
         dest = os.path.join(self.dest_path, html_path)
 
+        # Add epilog and prolog to source file.
+        file_contents = '%s\n%s\n%s' % (
+            self.conf_vars.get('rst_prolog', ''),
+            open(src, 'r').read(),
+            self.conf_vars.get('rst_epilog', ''))
+
         # Read the rst file.
         settings = {
             'src_dir': self.source_path,
             'dst_dir': self.dest_path
         }
         doctree = docutils.core.publish_doctree(
-            open(src, 'r').read(),
+            file_contents,
             source_path=src,
             settings_overrides=settings)
 
