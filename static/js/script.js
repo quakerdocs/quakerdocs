@@ -123,20 +123,22 @@ function renderResults(searcher, resultsWrapper) {
 
         // Retrieve the text out of the first <p> tag of the page.
         // TODO: Display text containing the searched word(s).
-        fetch(url)
-            .then(res => res.text())
-            .then(data => {
-                var html = parser.parseFromString(data, 'text/html');
-                var pTags = html.getElementById('content')
-                                .getElementsByTagName('p');
-                var text = '';
-                if (pTags) {
-                    text = pTags[0].innerText.substring(0, 200);
-                }
-                text += ' ...';
-                resultEl = createResultElement('../' + r.page, r.title, text);
-                resultList.append(resultEl);
-            })
-            .catch(console.error);
+        // fetch(url)
+        //     .then(res => res.text())
+        //     .then(data => {
+        //         var html = parser.parseFromString(data, 'text/html');
+        //         var pTags = html.getElementById('content')
+        //                         .getElementsByTagName('p');
+        //         var text = '';
+        //         if (pTags) {
+        //             text = pTags[0].innerText.substring(0, 200);
+        //         }
+        //         text += ' ...';
+        //         resultEl = createResultElement('../' + r.page, r.title, text);
+        //         resultList.append(resultEl);
+        //     })
+        //     .catch(console.error);
+        resultEl = createResultElement('../' + r.page, r.title, "");
+        resultList.append(resultEl);
     }
 }

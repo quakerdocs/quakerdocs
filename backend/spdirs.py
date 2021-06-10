@@ -234,19 +234,21 @@ class CodeBlock(Directive):
     }
 
     has_content = True
-    optional_arguments = 100
-    required_arguments = 1
+    optional_arguments = 1
 
     def run(self):
-        language = self.arguments[0]
-        lexer = get_lexer_by_name(language, stripall=True)
+        language = self.arguments[0] if len(self.arguments) > 0 else None
         linenos = 'linenos' in self.options
         linenostart = self.options.get('lineno-start', 1)
         caption = self.options.get('caption', '')
+        code = "\n".join(self.content)
 
         formatter = HtmlFormatter(linenos=linenos, linenostart=linenostart)
-        text = "\n".join(self.content)
-        code = highlight(text, lexer, formatter)
+        if language is not None:
+            lexer = get_lexer_by_name(language, stripall=True)
+            code = highlight(code, lexer, formatter)
+        else:
+            code = '<div class="highlight"><pre>%s</pre></div>' % code
 
         wrappernode = nodes.compound(classes=[f"highlight {language}"])
         wrappernode.append(nodes.raw('', code, format="html"))

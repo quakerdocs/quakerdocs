@@ -130,7 +130,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
     def __init__(self, document):
         super().__init__(document)
         self.head.append('<base href="%s">' % document.settings.rel_base)
+        if document.settings.favicon is not None:
+            self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
         self.navigation = document.settings.toc
+        self.footer.append(
+            '<p>&copy %s.</p>\
+            <p>Generated with &hearts; by <a href="docr.nl">DOC\'R</a> </p>'
+            % document.settings.copyright)
         self.bookmark_index = 0
 
     def visit_TocData(self, node: nodes.Element):
@@ -161,7 +167,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
         bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                         '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
+                        '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
         self.body.append(bookmark_html)
 
     # ! Needs to be improved !
