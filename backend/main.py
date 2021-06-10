@@ -63,6 +63,14 @@ class Main:
         exec(open('conf.py').read(), global_vars, conf_vars)
         self.conf_vars = conf_vars
 
+        # Fix some things
+        if 'source_suffix' in self.conf_vars:
+            suffix = self.conf_vars['source_suffix']
+            if isinstance(suffix, str):
+                self.conf_vars['source_suffix'] = [suffix]
+        else:
+            self.conf_vars['source_suffix'] = ['.rst']
+
     def generate(self):
         """
         Read all the input files from the source directory, parse them, and
@@ -108,7 +116,8 @@ class Main:
             for file in files:
                 path = os.path.join(self.relative_path(root), file)
                 try:
-                    if file.endswith('.rst') and self.is_not_excluded(path):
+                    if any(file.endswith(suffix) for suffix in self.conf_vars['source_suffix']) \
+                       and self.is_not_excluded(path):
                         self.handle_rst(path)
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
@@ -208,16 +217,27 @@ class Main:
         """
         Read and save the ToC from master_doc.
         """
+        self.toc_navigation = ''
+
         # Open the file containing the ToC's
         master_doc = self.conf_vars.get('master_doc', 'index')
-        src = os.path.join(self.source_path, master_doc) + '.rst'
+        src = None
+        for suffix in self.conf_vars['source_suffix']:
+            source_name = os.path.join(self.source_path, master_doc)
+            if os.path.exists(source_name + suffix):
+                src = source_name + suffix
+                break
+
+        if src is None:
+            print("Invalid master_doc file specified in conf.py!", file=stderr)
+            return
+
         doctree = docutils.core.publish_doctree(
             open(src, 'r').read(),
             source_path=src,
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        self.toc_navigation = ''
         for tt in doctree.traverse(spdirs.TocData):
             self.toc_navigation += spdirs.TocTree.to_html(tt)
 
