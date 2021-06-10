@@ -5,7 +5,7 @@ BUILD := build
 OBJS := $(patsubst %.cpp, ${BUILD}/%.o, $(SOURCES))
 EM_OBJS := $(patsubst %.cpp, ${BUILD}/%.em, $(SOURCES))
 
-CC_ARGS := -I"libstemmer/include" -Os #-flto
+CC_ARGS := -Os #-flto
 CC := gcc $(CC_ARGS)
 EM_CC := emcc $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
 
