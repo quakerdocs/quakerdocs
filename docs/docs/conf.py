@@ -43,7 +43,7 @@ extensions = [
     'sphinx_fontawesome',
     # 'example',
     'json_include',
-    # 'deprecated_note',
+    'deprecated_note',
 ]
 
 # Don't show internal routes in the documenation

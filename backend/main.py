@@ -86,9 +86,9 @@ class Main:
         prev_cwd = os.getcwd()
         os.chdir(self.source_path)
         self.read_conf()
-        sp_app = sphinx_app.SphinxApp()
+        self.sp_app = sphinx_app.SphinxApp()
         for ext in self.conf_vars['extensions']:
-            sphinx_app.setup_extension(ext, sp_app)
+            sphinx_app.setup_extension(ext, self.sp_app)
         os.chdir(prev_cwd)
 
         # Set-up Table of Contents data
@@ -169,7 +169,8 @@ class Main:
                 settings_overrides={
                     'toc': self.toc_navigation,
                     'src_dir': self.source_path,
-                    'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest))
+                    'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
+                    'handlers': self.sp_app.get_handlers()
                 })
             f.write(output)
 
