@@ -10,12 +10,14 @@ CC := gcc $(CC_ARGS)
 EM_CC := emsdk/upstream/emscripten/emcc $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
 
 $(BUILD)/%.em: %.cpp $(HEADERS)
+	@mkdir -p build
 	$(EM_CC) -std=c++17 -c -o $@ $<
 emscripten: emsdk $(EM_OBJS)
 	@mkdir -p build
 	$(EM_CC) $(EM_OBJS) -o build/search_data.js
 
 $(BUILD)/%.o: %.cpp $(HEADERS)
+	@mkdir -p build
 	$(CC) -std=c++17 -c -o $@ $<
 local: $(OBJS)
 	@mkdir -p build
