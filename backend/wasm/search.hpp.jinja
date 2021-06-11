@@ -7,6 +7,10 @@ typedef {{ char_p.type }} char_p;
 typedef {{ child_p.type }} child_p;
 typedef {{ page_p.type }} page_p;
 
+/* Page index type and page count type. */
+typedef {{ page_i.type }} page_i;
+typedef {{ page_c.type }} page_c;
+
 /* A node of the Radix tree. */
 struct Node {
     char_p chars;
@@ -20,8 +24,8 @@ struct Node {
 
 /* Struct storing the data associated with a page. */
 struct Page {
-    short page_index;
-    short count;
+    page_i index;
+    page_c count;
 };
 
 const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}

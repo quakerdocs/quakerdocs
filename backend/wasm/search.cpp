@@ -12,6 +12,8 @@
 
 #include "search.hpp"
 
+using PageMap = std::map<page_i,page_c>;
+
 static std::vector<Page> result;
 static size_t result_index;
 
@@ -52,13 +54,13 @@ const Node *findNode(const char *word) {
 }
 
 /* TODO */
-std::map<short,short> searchWord(const char *word) {
+PageMap searchWord(const char *word) {
     /* Check if a matching node exists. */
     const Node *node = findNode(word);
     if (node == nullptr)
         return {};
 
-    std::map<short,short> page_map;
+    PageMap page_map;
 
     /* The most closely matching node has been found. Now combine all of its pages. */
     std::vector<const Node*> stack = {node};
@@ -75,7 +77,7 @@ std::map<short,short> searchWord(const char *word) {
         /* Add the pages to the list. */
         for (page_s i = 0; i < node->page_count; i++) {
             const Page *page = pages + (node->pages + i);
-            page_map.try_emplace(page->page_index, 0).first->second += page->count;
+            page_map.try_emplace(page->index, 0).first->second += page->count;
         }
 
     }
@@ -84,7 +86,7 @@ std::map<short,short> searchWord(const char *word) {
 }
 
 /* TODO */
-void intersectMap(std::map<short,short>& map, const std::map<short,short>& new_map) {
+void intersectMap(PageMap& map, const PageMap& new_map) {
     /* Check if each page exists in the other map. */
     for (auto it = map.begin(); it != map.end();) {
         auto other_it = new_map.find(it->first);
@@ -175,7 +177,7 @@ extern "C" {
             return;
 
         /* Create the initial page map with the first word. */
-        std::map<short,short> page_map = searchWord(words[0]);
+        PageMap page_map = searchWord(words[0]);
 
         /* Combine the map with the remaining words. */
         for (int i = 1, l = words.size(); i < l && !page_map.empty(); ++i) {
@@ -184,7 +186,7 @@ extern "C" {
 
         /* Add the final page map contents to the results vector. */
         result.reserve(page_map.size());
-        for (std::pair<const short,short>& page : page_map) {
+        for (std::pair<const page_i,page_c>& page : page_map) {
             result.push_back(Page{page.first, page.second});
         }
 
@@ -207,7 +209,7 @@ extern "C" {
         result_index++;
 
         /* Translate the index to the page info and return. */
-        return urltitles[found.page_index];
+        return urltitles[found.index];
     }
 }
 

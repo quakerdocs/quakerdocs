@@ -159,6 +159,8 @@ class Trie:
         nodes, stack = [], [self]
         char_count, children_count, page_count = 0, 0, 0
         max_children, max_pages = 0, 0
+        page_index_max, page_count_max = 0, 0
+
         while stack:
             node = stack.pop()
             node.i = len(nodes)
@@ -170,12 +172,18 @@ class Trie:
             max_pages = max(max_pages, len(node.pages))
             stack.extend(reversed(node.children.values()))
 
+            for index, count in node.pages:
+                page_index_max = max(page_index_max, index)
+                page_count_max = max(page_count_max, count)
+
         node_p = CPrimitive(len(nodes))
         child_s = CPrimitive(max_children)
         page_s = CPrimitive(max_pages)
         child_p = CPrimitive(children_count)
         page_p = CPrimitive(page_count)
         char_p = CPrimitive(char_count)
+        page_i = CPrimitive(page_index_max)
+        page_c = CPrimitive(page_count_max)
 
         # Convert the radix trie to byte data.
         node_arr, children_arr, page_arr, char_arr = [], [], [], []
@@ -186,7 +194,7 @@ class Trie:
             node_arr += struct.pack(
                 char_p.id + child_p.id + page_p.id + child_s.id + page_s.id,
                 char_len, len(children_arr) // child_p.bytes,
-                len(page_arr) // page_p.bytes // 2,
+                len(page_arr) // (page_i.bytes + page_c.bytes),
                 len(node.children), len(node.pages))
 
             # Add the children.
@@ -194,8 +202,8 @@ class Trie:
             children_arr += struct.pack(node_p.id * len(children_i), *children_i)
 
             # Add the pages.
-            pages = [i for p in node.pages for i in p]
-            page_arr += struct.pack('H' * len(pages), *pages) # TODO.
+            for page in node.pages:
+                page_arr += struct.pack(page_i.id + page_c.id, *page)
 
             # Add the characters.
             char_arr += ['"'] + list(node.char) + ['\\0"']
@@ -208,7 +216,8 @@ class Trie:
             'page_arr': ','.join(map(str, page_arr)),
             'char_arr': ''.join(char_arr),
             'node_p': node_p, 'child_s': child_s, 'page_s': page_s,
-            'child_p': child_p, 'page_p': page_p, 'char_p': char_p
+            'child_p': child_p, 'page_p': page_p, 'char_p': char_p,
+            'page_i': page_i, 'page_c': page_c
         }
 
 class IndexGenerator:
