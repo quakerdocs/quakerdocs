@@ -17,10 +17,27 @@ except LookupError:
     nltk.download('stopwords')
     stopwords = set(stopwords.words('english'))
 
+
 class CPrimitive():
-    """TODO"""
-    def __init__(self, size):
-        """TODO"""
+    """
+    A class to the minimum required primitive data type which can hold an
+    integer. This can then be used in C/C++ and with the struct library.
+
+    Attributes:
+        actual_bytes (int): The strictly needed bytes for the given size.
+        id  (string): The struct library type identifier.
+        type (string): The C primitive typename.
+        bytes (int): The byte size of the chosen primitive.
+    """
+
+    def __init__(self, size: int):
+        """
+        Choose the minimum required data type based on the size.
+
+        Parameters:
+            size (int): An integer containing the maximum value the primitive
+            should be able to hold.
+        """
         self.actual_bytes = math.ceil(math.log2(size) / 8)
 
         if self.actual_bytes == 1:
@@ -101,7 +118,7 @@ class Trie:
                     # Create the remaining word object below.
                     current = new
                     break
-                else: # The word fits in the new node.
+                else:  # The word fits in the new node.
                     return "", new
 
         # If none of the children matched add the remainder as a child.
@@ -220,6 +237,7 @@ class Trie:
             'page_i': page_i, 'page_c': page_c
         }
 
+
 class IndexGenerator:
     """
     A class to generate the indexing/trie used for searching as well as the
@@ -231,7 +249,7 @@ class IndexGenerator:
         Constructor for the IndexGenerator class.
         """
         self.urltitles = []  # [(url, title), ...]
-        self.trie = Trie("") # root of the prefix trie
+        self.trie = Trie("")  # root of the prefix trie
 
         self.stemmer = SnowballStemmer(language="english").stem
         self.remover = re.compile('[^\\w\\s\\n]')

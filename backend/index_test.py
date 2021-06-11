@@ -23,7 +23,7 @@ def hello_root(hello_trie):
 def test_trie(hello_trie):
     """Utterly trivial test for __init__"""
     assert hello_trie.char == 'hello'
-    assert hello_trie.end == True
+    assert hello_trie.end is True
     assert hello_trie.children == {}
     assert hello_trie.pages == []
 
@@ -90,13 +90,13 @@ def test_insert_chain():
 
 
 @pytest.mark.parametrize('size, expected_id', [(200, 'B'),
-                                                 (500, 'H'),
-                                                 (100000, 'I'),
-                                                 (1e12, 'Q')])
+                                               (500, 'H'),
+                                               (100000, 'I'),
+                                               (1e12, 'Q')])
 def test_CPrimitive(size, expected_id):
     assert CPrimitive(size).id == expected_id
 
 
 def test_CPrimitive_too_large():
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         CPrimitive(1e50)

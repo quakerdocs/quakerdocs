@@ -136,7 +136,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.footer.append(
             '<p>&copy %s.</p>\
             <p>Generated with &hearts; by <a href="docr.nl">DOC\'R</a> </p>'
-                % document.settings.copyright)
+            % document.settings.copyright)
         self.bookmark_index = 0
 
     def visit_TocData(self, node: nodes.Element):
