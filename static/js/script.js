@@ -1,20 +1,23 @@
 
+/**
+ * Toggle (show / hide) the sidebar menu on small screens when the hamburger
+ * menu button has been clicked.
+ */
 function toggleMenu() {
-    /* Used to toggle the menu on small screens when clicking on the menu
-     * button.
-     */
     var menu = document.getElementById("menuPanel");
 
     if (menu.classList.contains('is-hidden-touch')) {
-        menu.classList.replace('is-hidden-touch', 'is-full');
+        menu.classList.replace('is-hidden-touch', 'is-full-touch');
     } else {
-        menu.classList.replace('is-full', 'is-hidden-touch');
+        menu.classList.replace('is-full-touch', 'is-hidden-touch');
     }
 }
 
+/**
+ * Expand the element in the sidebar to show its children.
+ * @param {*} element The element to be expanded.
+ */
 function toggleExpand(element) {
-    /* Toggle the expansion of an element in the sidebar.
-     */
     var ul = element.parentElement.parentElement.getElementsByTagName("UL")[0];
     var i = element.firstChild.nextSibling;
 
@@ -27,9 +30,12 @@ function toggleExpand(element) {
     }
 }
 
+let searchOpen = false;
+
+/**
+ * Active the overlay containing the search bar and search results.
+ */
 function showSearchOverlay() {
-    /* Active the search bar overlay.
-     */
     document.getElementById("search").classList.add("is-active")
     searchbar = document.getElementById("searchbar")
     searchbar.focus()
@@ -39,9 +45,13 @@ function showSearchOverlay() {
     document.documentElement.style.overflow = 'hidden';
     document.body.scroll = "no";
 
+    searchOpen = true;
     activateSearch()
 }
 
+/**
+ * Hide the overlay containing the search bar and results.
+ */
 function hideSearchOverlay() {
     /* Hide the search bar overlay.
      */
@@ -50,10 +60,16 @@ function hideSearchOverlay() {
     // Allow background to scroll again.
     document.documentElement.style.overflow = 'scroll';
     document.body.scroll = "yes";
+
+    searchOpen = false;
 }
 
+/**
+ * Add an keyboard event listener to activate a search function
+ * {@link performSearch} on every keystroke.
+ */
 function activateSearch() {
-    /* Activate the search bar with an event listener.
+    /* Activate the search bar with an keyboard event listener.
      */
     const searchInput = document.getElementById("searchbar");
     const resultsWrapper = document.getElementById("search-results")
@@ -64,7 +80,7 @@ function activateSearch() {
             let input = searchInput.value;
             if (input.length) {
                 let searcher = performSearch(input);
-                renderResults(searcher, resultsWrapper);
+                renderResults(input, searcher, resultsWrapper);
             } else {
                 resultsWrapper.innerHTML = '';
             }
@@ -72,41 +88,76 @@ function activateSearch() {
     }
 }
 
-function renderResults(searcher, resultsWrapper) {
-    /* Render the title of the search results aswell as a little bit
-     * (200 characters) of text contained in the article.
-     */
-    let content = '';
-    resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
+/**
+ * Create a <div> element containing the necessary HTML code to display the
+ * data of the results.
+ * @param {*} url The url of the Result page.
+ * @param {*} title The title of the Result page.
+ * @param {*} content The content that should be displayed under the title.
+ * @returns An HTML element, the container of the result entry.
+ */
+function createResultElement(url, title, content) {
+    var element = document.createElement('div');
+    element.innerHTML = `<a class="panel-block result is-flex-direction-column"
+                         href="${url}"><h1 class="result-title"><strong>
+                         ${title}</strong></h1><p class="result-content">
+                         ${content}</p></a>`;
 
-    for (let r of searcher) {
-        id = r.title.replace(/ /g, "-");
-        resultEl = `<div id="${id}"><a class="panel-block result is-flex-direction-column" href="../${r.page}">
-                    <h1 class="result-title"><strong>${r.title}</strong></h1>
-                    <p class="result-content"></p></a></div>`
+    return element;
+}
 
-        $('#result-list').append(resultEl);
-
-        // Send ajax request to get text from the page.
-        $.ajax({
-            url: `../${r.page}`,
-            title: `${r.title}`,
-            type: 'get',
-            dataType: 'html',
-            success: function(data) {
-                var html_data = $(data);
-
-                // If no text is found, don't show any page content.
-                try {
-                    var p_text = $("#content p", html_data)[0].textContent;
-                } catch (error) {
-                    return;
-                }
-
-                id = this.title.replace(/ /g, "-");
-                $("#" + id + " .result-content").text($.trim(p_text).substr(0, 200) + "...");
-            }
-        });
+function highlightSearchQuery(query, text) {
+    var highlighter = '<span class="has-background-primary-light has-text-primary">';
+    var index = text.search(new RegExp(query, "i"));
+    if (index < 0) {
+        return "";
     }
 
+    var target = text.slice(index, index + query.length);
+    var textBefore = text.slice(Math.abs(index - 50), index);
+    var textAfter = text.slice(index + query.length, index + 100);
+    var displayText = textBefore + highlighter + target + "</span>" + textAfter;
+    var endIndex = displayText.lastIndexOf(' ');
+    var startIndex = 0;
+    if (textBefore) {
+        startIndex = displayText.indexOf(' ');
+    }
+
+    return displayText.slice(startIndex, endIndex) + ' ...';
 }
+
+/**
+ * Display the results acquired by the search function {@link performSearch}
+ * inside the HTML page alongside some text found in the appropriate pages.
+ * @param {*} searcher The generator which yields the search results.
+ * @param {*} resultsWrapper The html element in which the results are to be
+ *     placed.
+ */
+function renderResults(query, searcher, resultsWrapper) {
+    resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
+    var resultList = document.getElementById('result-list');
+    var parser = new DOMParser();
+
+    var i = 0;
+    for (let r of searcher) {
+        // Limit number of search results for now.
+        if (i++ > 8) {
+            break;
+        }
+
+        // Display text containing the searched word(s).
+        // TODO: improve / speed up.
+        fetch('../' + r.page)
+            .then(res => res.text())
+            .then(data => {
+                var html = parser.parseFromString(data, 'text/html');
+                var text = html.getElementById('content').innerText;
+                var displayText = highlightSearchQuery(query, text);
+                resultEl = createResultElement('../' + r.page, r.title, displayText);
+                resultList.append(resultEl);
+            })
+            .catch(console.error);
+    }
+}
+
+window.onload(expandSidebar())

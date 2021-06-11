@@ -1,9 +1,7 @@
 import html
 
 from docutils import nodes
-from sphinx.locale import _
 from docutils.nodes import Element, Admonition
-from sphinx.util.docutils import SphinxDirective
 from docutils.parsers.rst.roles import set_classes
 from docutils.parsers.rst.directives.admonitions import BaseAdmonition
 

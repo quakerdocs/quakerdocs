@@ -5,17 +5,19 @@ All implementations of the directives have been inspired by:
 https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d34765e74edf3a3be3c62c/sphinx/directives/other.py
 """
 
-import re
 import os.path
-from typing import Any, Callable, Dict
-
 import docutils.core
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import directives, roles
+from docutils.parsers.rst.roles import set_classes
 from docutils.parsers.rst.directives.misc import Class, Include
 
-explicit_title_re = re.compile(r'^(.+?)\s*(?<!\x00)<([^<]*?)>$', re.DOTALL)
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
+
+import util
 
 
 class Only(Directive):
@@ -131,9 +133,9 @@ class TocTree(Directive):
                 entry = entry[:-4]
 
             # Check if current entry is in format 'Some Title <some_link>'.
-            explicit_link = explicit_title_re.match(entry)
-            if (explicit_link):
-                title, ref = explicit_link.group(1), explicit_link.group(2)
+            explicit_link = util.link_explicit(entry)
+            if explicit_link is not None:
+                title, ref = explicit_link
                 if not ref.startswith("https://") and not ref.startswith("http://"):
                     ref = os.path.join(src_dir, ref + ".html")
             else:
@@ -223,6 +225,72 @@ class TocTree(Directive):
         return ret
 
 
+class CodeBlock(Directive):
+    option_spec = {
+        'name': directives.unchanged,
+        'linenos': directives.flag,
+        'lineno-start': int,
+        'caption': directives.unchanged_required
+    }
+
+    has_content = True
+    optional_arguments = 1
+
+    def run(self):
+        language = self.arguments[0] if len(self.arguments) > 0 else None
+        linenos = 'linenos' in self.options
+        linenostart = self.options.get('lineno-start', 1)
+        caption = self.options.get('caption', '')
+        code = "\n".join(self.content)
+
+        formatter = HtmlFormatter(linenos=linenos, linenostart=linenostart)
+        if language is not None:
+            lexer = get_lexer_by_name(language, stripall=True)
+            code = highlight(code, lexer, formatter)
+        else:
+            code = '<div class="highlight"><pre>%s</pre></div>' % code
+
+        wrappernode = nodes.compound(classes=[f"highlight {language}"])
+        wrappernode.append(nodes.raw('', code, format="html"))
+        wrappernode.append(nodes.paragraph('', caption))
+
+        return [wrappernode]
+
+
+def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    """
+    Role for creating hyperlink to other documents.
+    """
+    explicit_link = util.link_explicit(text)
+    if explicit_link is None:
+        msg = inliner.reporter.error(
+            'Link %s in invalid format; '
+            'must be "Some Title <some_link_label>"' % text, line=lineno)
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+
+    # TODO: Fix link path, use search index?
+    title, ref = explicit_link
+    set_classes(options)
+    node = nodes.reference(rawtext, title, refuri=ref, **options)
+    return [node], []
+
+
+class kbd_element(nodes.General, nodes.Element):
+    """Empty node for rendering keyboard inputs"""
+    ...
+
+
+def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    """
+    Role for displaying keyboard inputs.
+    """
+    set_classes(options)
+    node = kbd_element()
+    node['keys'] = text.split('+')
+    return [node], []
+
+
 def setup():
     """
     Setup function for this 'extension'
@@ -231,3 +299,7 @@ def setup():
     directives.register_directive('rst-class', Class)
     directives.register_directive('include', Include)  # Does not work yet
     directives.register_directive('toctree', TocTree)
+    directives.register_directive('code-block', CodeBlock)
+
+    roles.register_canonical_role('ref', ref_role)
+    roles.register_canonical_role('kbd', kbd_role)

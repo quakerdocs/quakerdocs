@@ -7,7 +7,6 @@ body {
 }
 
 .menu {
-    background: white;
     position: sticky;
     display: inline-block;
     vertical-align: top;
@@ -82,5 +81,44 @@ body {
 }
 
 .arrow-icon {
-    font-size: 25px;
+    font-size: 24px;
+}
+
+.bookmark-btn {
+    font-size: 20px;
+    border: none;
+    background: none;
+}
+
+.bookmark-btn:hover {
+    cursor: pointer;
+}
+
+.bookmark-btn:focus {
+    outline: none;
+}
+
+.bookmark-entry:hover {
+    cursor: pointer;
+    background: hsl(0, 0%, 96%);
+}
+
+.bookmark-trash {
+    border: none;
+    background: none;
+    border-color: none;
+}
+
+.bookmark-trash:hover {
+    cursor: pointer;
+    color: red;
+}
+
+#backTopBtn {
+    display: none;
+    position: fixed;
+    right: 60px;
+    bottom: 20px;
+    padding: 15px 15px;
+    font-size: 18px;
 }
