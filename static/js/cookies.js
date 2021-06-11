@@ -9,7 +9,7 @@ function setCookie(cname, cvalue) {
     let date = new Date();
     date.setFullYear(2999);
 
-    document.cookie = `${cname}=${cvalue};expires=${date};path=${path}`;
+    document.cookie = `${cname}=${cvalue};expires=${date};path=${path};SameSite=Lax;Secure`;
 }
 
 /**
@@ -47,6 +47,6 @@ function getCookie(cname) {
  */
 function deleteCookie(cname) {
     if (getCookie(cname) != null) {
-        document.cookie = `${cname}=;Max-Age=-99999999;path=/;`;
+        setCookie(cname, "");
     }
 }
