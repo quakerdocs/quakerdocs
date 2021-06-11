@@ -44,7 +44,7 @@ def int_or_nothing(argument: str) -> int:
     return int(argument)
 
 
-class TocData(nodes.General, nodes.Element):
+class toc_data(nodes.General, nodes.Element):
     """
     Container class for Toc data.
     """
@@ -64,7 +64,7 @@ class TocTree(Directive):
         'glob': directives.flag,
         'hidden': directives.flag,
         'includehidden': directives.flag,
-        'numbered': int_or_nothing,
+        'numbered': directives.flag,
         'titlesonly': directives.flag,
         'reversed': directives.flag,
     }
@@ -73,14 +73,14 @@ class TocTree(Directive):
         """
         Code that is being run for the directive.
         """
-        tocdata = TocData()
+        tocdata = toc_data()
         tocdata['content'] = self.content
         tocdata['src_dir'] = self.state.document.settings.src_dir
 
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
         tocdata['caption'] = self.options.get('caption')
-        tocdata['numbered'] = self.options.get('numbered', 0)
+        tocdata['numbered'] = 'numbered' in self.options
         tocdata['reversed'] = 'reversed' in self.options
 
         wrappernode = nodes.compound(classes=['toctree-wrapper'])

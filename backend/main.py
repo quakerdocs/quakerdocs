@@ -3,7 +3,6 @@ Main entrypoint of the program.
 Call this script to invoke the generation of a static document/website.
 """
 
-from bs4 import BeautifulSoup
 from sys import stderr
 import os
 import fnmatch
@@ -190,22 +189,6 @@ class Main:
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
         self.idx.parse_file(content, title, html_path)
 
-        # Expand the menu entry of the current open page.
-        page_toc = self.toc_navigation
-        soup = BeautifulSoup(page_toc, 'html.parser')
-        a = soup.find('a', href=html_path)
-        if a is not None:
-            parents = a.find_parents('li')
-            childrenUL = parents[0].find_all('ul')
-            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
-
-            if childrenUL is not None and childrenARROW is not None:
-                for child in childrenUL:
-                    child['class'] = "menu-list is-expanded"
-
-                for child in childrenARROW:
-                    child['class'] = 'fa arrow-icon fa-angle-down'
-
         # Write the document to a file.
         with open(dest, 'wb') as f:
             output = docutils.core.publish_from_doctree(
@@ -213,8 +196,9 @@ class Main:
                 destination_path=dest,
                 writer=self.builder_class(),
                 settings_overrides={
-                    'toc': str(soup.prettify()),
+                    'toc': self.toc_navigation,
                     'src_dir': self.source_path,
+                    'html_path': html_path,
                     'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
                     'handlers': self.sp_app.get_handlers(),
                     'favicon': self.conf_vars.get('html_favicon', None),
@@ -236,7 +220,7 @@ class Main:
         """
         Read and save the ToC from master_doc.
         """
-        self.toc_navigation = ''
+        self.toc_navigation = list()
 
         # Open the file containing the ToC's
         master_doc = self.conf_vars.get('master_doc', 'index')
@@ -257,8 +241,8 @@ class Main:
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        for tt in doctree.traverse(spdirs.TocData):
-            self.toc_navigation += spdirs.TocTree.to_html(tt)
+        for tt in doctree.traverse(spdirs.toc_data):
+            self.toc_navigation.append(tt)
 
     def copy_static_files(self):
         """
