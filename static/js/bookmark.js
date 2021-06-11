@@ -1,67 +1,6 @@
-/*
-        <<< COOKIE SECTION >>>
-        If you're looking for bookmark functions, see bookmark section below.
-*/
-
-/**
- * Create a new cookie with name=cname and value=cvalue, set to expire in\
- * the year 2999.
- * @param {string} cname The name of the new cookie.
- * @param {*} cvalue The value of the cookie.
- */
-function setCookie(cname, cvalue) {
-    let path = "/";
-    let date = new Date();
-    date.setFullYear(2999);
-
-    document.cookie = `${cname}=${cvalue};expires=${date};path=${path}`;
-}
-
-/**
- * Retrieve all cookies from the website.
- * @returns {Array} Array of all cookies.
- */
-function getCookieList() {
-    let cookies = decodeURIComponent(document.cookie);
-    let clist = cookies.split(';');
-    return clist;
-}
-
-/**
- * Get the value of the cookie with name=cname.
- * @param {string} cname The name of the to be retrieved cookie.
- * @returns {*} The value of the cookie or null if the cookie wasn't found.
- */
-function getCookie(cname) {
-    let clist = getCookieList();
-    for (let i = 0; i < clist.length; i++) {
-        let name, val;
-        [name, val] = clist[i].split('=');
-
-        if (name.trim() === cname.trim()) {
-            return val;
-        }
-    }
-
-    return null;
-}
-
-/**
- * Delete the cookie with name=cname.
- * @param {string} cname The name of the to be deleted cookie.
- */
-function deleteCookie(cname) {
-    if (getCookie(cname) != null) {
-        document.cookie = `${cname}=;Max-Age=-99999999;path=/;`;
-    }
-}
-
-/*
-        <<< BOOKMARK SECTION >>>
-
-*/
 
 const BOOKMARK_TAG = "BMCOOK_";
+
 /**
  * Class representing the necessary bookmark data.
  */
@@ -126,9 +65,9 @@ function deleteBookmark(id) {
  * @returns {*} The data contained in the bookmark cookie.
  */
 function getBookmark(cname) {
-    let json_bookmark  = getCookie(cname);
-    if (json_bookmark != null) {
-        return JSON.parse(json_bookmark);
+    let cookie  = getCookie(cname);
+    if (cookie) {
+        return JSON.parse(cookie);
     }
     return null;
 }
@@ -159,7 +98,9 @@ function getAllBookmarks() {
         [name, data] = clist[i].split('=');
 
         if ((name.trim()).startsWith(BOOKMARK_TAG)) {
-            bookmarks.push(JSON.parse(data));
+            if (data) {
+                bookmarks.push(JSON.parse(data));
+            }
         }
     }
 
@@ -313,4 +254,3 @@ function loadBookmarks() {
 
 // Check bookmark states for buttons on page load.
 window.onload = loadBookmarks;
-

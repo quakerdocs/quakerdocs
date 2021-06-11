@@ -7,12 +7,12 @@
 <link rel="stylesheet" type="text/css" href="css/friendly.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<script src="js/bookmark.js"></script>
 <script src="js/search_data.js"></script>
 <script src="js/search.js"></script>
 <script src="js/script.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/bookmark.js"></script>
 <script src="js/keylistener.js"></script>
-<script src="js/back_to_top.js"></script>
 
 %(body_prefix)s
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -50,6 +50,7 @@
 	</div>
 </nav>
 
+<!--Search window-->
 <div id="search" class="modal">
 	<div class="modal-background" onclick="hideSearchOverlay()"></div>
 	<div class="modal-content height panel">
@@ -60,10 +61,10 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-			<input id="searchbar" class="input is-link" type="text" placeholder="Search">
-			<span class="icon is-left">
-				<span class="icon"><i class="fa fa-search"></i></span>
-			</span>
+				<input id="searchbar" class="input is-link" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
 			</p>
 		</div>
 
@@ -71,7 +72,7 @@
 	</div>
 </div>
 
-<!-- Bookmark results window-->
+<!--Bookmarks window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
 	<div class="modal-content height panel">
@@ -84,6 +85,7 @@
 	</div>
 </div>
 
+<!--Main content-->
 <div class="container">
 	<section class="main-content columns is-desktop">
 		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">

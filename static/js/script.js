@@ -65,99 +65,36 @@ function hideSearchOverlay() {
 }
 
 /**
- * Add an keyboard event listener to activate a search function
- * {@link performSearch} on every keystroke.
+ * Show or hide the back to top button based on scrolling position.
  */
-function activateSearch() {
-    /* Activate the search bar with an keyboard event listener.
-     */
-    const searchInput = document.getElementById("searchbar");
-    const resultsWrapper = document.getElementById("search-results")
-
-    if (searchInput) {
-        // Update search results when a key is pressed.
-        searchInput.addEventListener('keyup', () => {
-            let input = searchInput.value;
-            if (input.length) {
-                let searcher = performSearch(input);
-                renderResults(input, searcher, resultsWrapper);
-            } else {
-                resultsWrapper.innerHTML = '';
-            }
-        })
+function toggleBackToTopButton() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("backTopBtn").style.display = "block";
+    } else {
+        document.getElementById("backTopBtn").style.display = "none";
     }
 }
 
 /**
- * Create a <div> element containing the necessary HTML code to display the
- * data of the results.
- * @param {*} url The url of the Result page.
- * @param {*} title The title of the Result page.
- * @param {*} content The content that should be displayed under the title.
- * @returns An HTML element, the container of the result entry.
+ * Scroll back to the top of the page.
  */
-function createResultElement(url, title, content) {
-    var element = document.createElement('div');
-    element.innerHTML = `<a class="panel-block result is-flex-direction-column"
-                         href="${url}"><h1 class="result-title"><strong>
-                         ${title}</strong></h1><p class="result-content">
-                         ${content}</p></a>`;
-
-    return element;
-}
-
-function highlightSearchQuery(query, text) {
-    var highlighter = '<span class="has-background-primary-light has-text-primary">';
-    var index = text.search(new RegExp(query, "i"));
-    if (index < 0) {
-        return "";
-    }
-
-    var target = text.slice(index, index + query.length);
-    var textBefore = text.slice(Math.abs(index - 50), index);
-    var textAfter = text.slice(index + query.length, index + 100);
-    var displayText = textBefore + highlighter + target + "</span>" + textAfter;
-    var endIndex = displayText.lastIndexOf(' ');
-    var startIndex = 0;
-    if (textBefore) {
-        startIndex = displayText.indexOf(' ');
-    }
-
-    return displayText.slice(startIndex, endIndex) + ' ...';
+function backToTop() {
+    document.body.scrollTo({top: 0, behavior: 'smooth'}); // For Safari
+    document.documentElement.scrollTo({top: 0, behavior: 'smooth'}); // For Chrome, Firefox, IE and Opera
 }
 
 /**
- * Display the results acquired by the search function {@link performSearch}
- * inside the HTML page alongside some text found in the appropriate pages.
- * @param {*} searcher The generator which yields the search results.
- * @param {*} resultsWrapper The html element in which the results are to be
- *     placed.
+ * Expand the corresponding navigation menu entry in the sidebar.
  */
-function renderResults(query, searcher, resultsWrapper) {
-    resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
-    var resultList = document.getElementById('result-list');
-    var parser = new DOMParser();
-
-    var i = 0;
-    for (let r of searcher) {
-        // Limit number of search results for now.
-        if (i++ > 8) {
-            break;
-        }
-
-        // Display text containing the searched word(s).
-        // TODO: improve / speed up.
-        fetch('../' + r.page)
-            .then(res => res.text())
-            .then(data => {
-                var html = parser.parseFromString(data, 'text/html');
-                var text = html.getElementById('content').innerText;
-                var displayText = highlightSearchQuery(query, text);
-                resultEl = createResultElement('../' + r.page, r.title, displayText);
-                resultList.append(resultEl);
-            })
-            .catch(console.error);
-    }
+function expandSidebar() {
+    // TODO
+    return;
 }
 
-window.onload(expandSidebar())
+window.onscroll = function() {
+    toggleBackToTopButton();
+};
+
+window.onload = function() {
+    expandSidebar();
+};
