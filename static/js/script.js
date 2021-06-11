@@ -98,3 +98,25 @@ window.onscroll = function() {
 window.onload = function() {
     expandSidebar();
 };
+
+function searchBookmarks() {
+    var input, filter, list, items, item, title, i, txtValue;
+    input = document.getElementById("bookmark-searchbar");
+    filter = input.value.toUpperCase();
+    list = document.getElementById("bookmark-results");
+    items = list.getElementsByClassName("panel-block bookmark-entry");
+
+    for (i = 0; i < items.length; i++) {
+        item = items[i].getElementsByTagName("div");
+        console.log(item);
+        title = item[3]
+        txtValue = title.innerText;
+        console.log(txtValue);
+
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+}
