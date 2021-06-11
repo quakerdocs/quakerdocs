@@ -159,3 +159,5 @@ function renderResults(query, searcher, resultsWrapper) {
             .catch(console.error);
     }
 }
+
+window.onload(expandSidebar())
