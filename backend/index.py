@@ -1,20 +1,39 @@
-# TODO maybe change page, count to data for easier expansion.
+""" Module to generate a radix prefix trie and a list of page info.
+
+This module implements a radix prefix trie class that only contains methods
+to add new words to the trie or to store the contents of the trie in a binary
+representation. A class is also implemented to find the minimum sized data type
+that is able to store a given integer using the struct library. Lastly there
+is also a class that can parse a block of text and create a hpp file containing
+the resulting trie and page infos.
+
+Notes
+-----
+When this module is loaded it checks wheter or not the english stopwords are
+available on the machine and downloads them if they are not available.
+
+Attributes
+----------
+stopwords : set
+    A set of stopwords used in the english language and should be removed.
+
+"""
+
+
 import os
 import re
-import nltk
-import json
+import math
 import struct
 import shutil
 from jinja2 import Template
 from collections import Counter
 from nltk.corpus import stopwords
-from nltk.stem.snowball import SnowballStemmer
-import math
 
 try:
     stopwords = set(stopwords.words('english'))
 except LookupError:
-    nltk.download('stopwords')
+    from nltk import download
+    download('stopwords')
     stopwords = set(stopwords.words('english'))
 
 
@@ -23,20 +42,27 @@ class CPrimitive():
     A class to the minimum required primitive data type which can hold an
     integer. This can then be used in C/C++ and with the struct library.
 
-    Attributes:
-        actual_bytes (int): The strictly needed bytes for the given size.
-        id  (string): The struct library type identifier.
-        type (string): The C primitive typename.
-        bytes (int): The byte size of the chosen primitive.
+    Attributes
+    ----------
+    actual_bytes : int
+        The strictly needed bytes for the given size.
+    id  : str
+        The struct library type identifier.
+    type : str
+        The C primitive typename.
+    bytes : int
+        The byte size of the chosen primitive.
+
     """
 
     def __init__(self, size: int):
-        """
-        Choose the minimum required data type based on the size.
+        """Choose the minimum required data type based on the size.
 
-        Parameters:
-            size (int): An integer containing the maximum value the primitive
-            should be able to hold.
+        Parameters
+        ----------
+        size : int
+            The maximum value the primitive should be able to hold.
+
         """
         self.actual_bytes = math.ceil(math.log2(size) / 8)
 
@@ -53,22 +79,29 @@ class CPrimitive():
 
 
 class Trie:
+    """A class to represent a Radix tree/trie.
+
+    Attributes
+    ----------
+    char : str
+        The string connecting the node to its parent.
+    end : bool
+        Signifies wether node is an endpoint.
+    children : dict
+        A dictionary connecting chars to child nodes.
+    pages : [(int, int)]
+        A list of page indexes and word counts.
+
     """
-    A class to represent a Radix tree/trie
 
-    Attributes:
-        char (string): The string connecting the node to its parent.
-        end  (bool): Signifies wether node is an endpoint.
-        children (dict): A dictionary connecting chars to child nodes.
-        pages ([(int, int)]): A list of page indexes and word counts.
-    """
+    def __init__(self, char : str):
+        """Constructor for the Trie class.
 
-    def __init__(self, char):
-        """
-        Constructor for the Trie class.
+        Parameters
+        ----------
+        char : str
+            The string connecting the node to its parent.
 
-        Parameters:
-            char (string): The string connecting the node to its parent.
         """
 
         # Current character.
@@ -83,13 +116,23 @@ class Trie:
         # The pages where this word is found.
         self.pages = []
 
-    def insert_helper(self, word, current):
-        """
-        A helper method used to insert a fragment of a word into the trie.
+    def insert_helper(self, word : str, current):
+        """A helper method used to insert a fragment of a word into the trie.
 
-        Parameters:
-            word (string): The remainder of the word to insert a fragment of.
-            current (Trie): The node of the trie from which to start searching.
+        Parameters
+        ----------
+        word : str
+            The remainder of the word to insert a fragment of.
+        current : Trie
+            The node of the trie from which to start searching.
+
+        Returns
+        -------
+        str
+            The remaining part of the word, can be empty.
+        Trie
+            The last node where a string was inserted.
+
         """
 
         # Loop over the children of the current node.
@@ -118,22 +161,26 @@ class Trie:
                     # Create the remaining word object below.
                     current = new
                     break
-                else:  # The word fits in the new node.
-                    return "", new
+                # The word fits in the new node.
+                return "", new
 
         # If none of the children matched add the remainder as a child.
         new = Trie(word)
         current.children[word] = new
         return "", new
 
-    def insert(self, word, page, count):
-        """
-        Insert method to insert a new word into the trie.
+    def insert(self, word : str, page : int, count : int):
+        """Insert method to insert a new word into the trie.
 
-        Parameters:
-            word (string): The word to be inserted.
-            page (int): The index of the page the word is in.
-            count (int): The number of times the word is found.
+        Parameters
+        ----------
+        word : str
+            The word to be inserted.
+        page : int
+            The index of the page the word is in.
+        count : int
+            The number of times the word is found.
+
         """
         if not word:
             return
@@ -150,13 +197,25 @@ class Trie:
         current.pages.append((page, count))
 
     @staticmethod
-    def match(n_word, s_word):
-        """
-        Method to match a part of a word to a part in the node.
+    def match(n_word : str, s_word : str):
+        """Method to match a part of a word to a part in the node.
 
-        Parameters:
-            n_word (string): The word fragment inside the node.
-            s_word (string): The fragment of the word being searched.
+        Parameters
+        ----------
+        n_word : str
+            The word fragment inside the node.
+        s_word : str
+            The fragment of the word being searched.
+
+        Returns
+        -------
+        str
+            The matching part of the words.
+        str
+            The remaining part of n_word.
+        str
+            The remaining part of s_word.
+
         """
 
         # Loop over both words.
@@ -171,7 +230,14 @@ class Trie:
         return n_word[:i], n_word[i:], s_word[i:]
 
     def to_binary(self):
-        """Translate the Trie to a binary format"""
+        """Translate the Trie to a binary format
+
+        Returns
+        -------
+        Dict
+            The binary representations of trie.
+
+        """
         # Put all the nodes in a list.
         nodes, stack = [], [self]
         char_count, children_count, page_count = 0, 0, 0
@@ -242,26 +308,37 @@ class IndexGenerator:
     """
     A class to generate the indexing/trie used for searching as well as the
     translation of page indices to page info.
+
+    Attributes
+    ----------
+    urltitles : [(str, str)]
+        A list of urls and titles of the pages.
+    trie : Trie
+        A radix trie to store the words.
+    remover
+        Regex to match only letters and numbers.
+
     """
 
     def __init__(self):
-        """
-        Constructor for the IndexGenerator class.
-        """
+        """Constructor for the IndexGenerator class."""
+
         self.urltitles = []  # [(url, title), ...]
         self.trie = Trie("")  # root of the prefix trie
-
-        self.stemmer = SnowballStemmer(language="english").stem
         self.remover = re.compile('[^\\w\\s\\n]')
-        # self.spacer = re.compile('[\._]')
 
-    def parse_file(self, content, title, url):
-        """
-        Add a file to the index.
+    def parse_file(self, content : list, title : str, url : str):
+        """Add a file to the index.
 
-        :param list content: A list of lowercase words from the file
-        :param str title: The title of the document
-        :param str url: The url of the page
+        Parameters
+        ----------
+        content : list
+            A list of words from the file.
+        title : str
+            The title of the document.
+        url : str
+            The url of the page.
+
         """
 
         # Change to lowercase, separate _ and only keep letters/numbers.
@@ -282,17 +359,14 @@ class IndexGenerator:
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, count)
 
-    def to_json(self):
-        """
-        Return a json string containing the index and a mapping from ids to
-        tuples of (url, title).
-        """
-        self.optimise()
-        return json.dumps(self.urltitles), json.dumps(self.trie)
+    def build(self, dest_path : str):
+        """Write the search index file to the destination directory.
 
-    def build(self, dest_path):
-        """
-        Write the search index file to the destination directory.
+        Parameters
+        ----------
+        dest_path : str
+            Where to put the output.
+
         """
         path = os.path.join('backend', 'wasm')
 
