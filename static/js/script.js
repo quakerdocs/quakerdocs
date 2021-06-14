@@ -42,7 +42,7 @@ function showSearchOverlay() {
     searchbar.select()
 
     // Prevent background from scrolling while search window is open.
-    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.overflowY = 'hidden';
     document.body.scroll = "no";
 
     searchOpen = true;
@@ -58,7 +58,7 @@ function hideSearchOverlay() {
     document.getElementById("search").classList.remove("is-active")
 
     // Allow background to scroll again.
-    document.documentElement.style.overflow = 'scroll';
+    document.documentElement.style.overflowY = 'scroll';
     document.body.scroll = "yes";
 
     searchOpen = false;
