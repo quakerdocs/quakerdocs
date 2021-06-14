@@ -6,7 +6,7 @@
 The CodeGrade Documentation
 ======================================
 
-.. iframe:: www.youtube.com/embed/x6ZRNZxNbbw?autoplay=1&mute=1
+.. iframe:: https://www.youtube.com/embed/x6ZRNZxNbbw?autoplay=1&mute=1
 .. deprecation_note:: /
 
 Not using CodeGrade yet at your institution? Find more information and contact
