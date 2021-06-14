@@ -18,6 +18,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 import util
+import application
 
 
 class Only(Directive):
@@ -269,9 +270,9 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
 
-    # TODO: Fix link path, use search index?
     title, ref = explicit_link
     set_classes(options)
+    ref = '%s#%s' % (application.id_map.get(ref, ''), ref)
     node = nodes.reference(rawtext, title, refuri=ref, **options)
     return [node], []
 

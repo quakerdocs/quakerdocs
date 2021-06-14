@@ -1,5 +1,5 @@
 """
-Functionality to emulate a Sphinx app for using extensions
+Functionality related to the application.
 """
 
 import optparse
@@ -7,8 +7,13 @@ from importlib import import_module
 # from docutils import nodes
 from docutils.parsers.rst import directives, roles
 
+id_map = {}
+
 
 class SphinxApp:
+    """
+    Class to emulate a Sphinx app for using extensions.
+    """
     def __init__(self):
         # Ignore for now
         self.config = optparse.Values()
