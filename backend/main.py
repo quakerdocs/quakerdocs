@@ -230,7 +230,12 @@ class Main:
                     'handlers': self.sp_app.get_handlers(),
                     'favicon': self.conf_vars.get('html_favicon', None),
                     'logo': self.conf_vars.get('html_logo', None),
-                    'copyright': self.conf_vars.get('copyright', '')
+                    'copyright': self.conf_vars.get('copyright', ''),
+                    'template': os.path.join(
+                        self.source_path,
+                        self.conf_vars.get('templates_path', '../static'),
+                        'template.txt'
+                    )
                 })
             f.write(output)
 

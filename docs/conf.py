@@ -77,6 +77,7 @@ exclude_patterns = [
 ]
 
 # -- Options for HTML output ----------------------------------------------
+templates_path = '../static'  # TODO: Should be a list of directories!
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
