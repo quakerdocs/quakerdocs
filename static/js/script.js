@@ -16,21 +16,19 @@ function toggleMenu() {
 /**
  * Expand the element in the sidebar to show its children.
  * @param {Object} element The element to be expanded.
- * @param {Boolean} forceExpand
+ * @param {Boolean} onlyExpand If true, the element will not collapse if it
+ *     is expanded, but only expand if it is collapsed.
  */
-function toggleExpand(element, forceExpand=false) {
-    console.log(element);
+function toggleExpand(element, onlyExpand=false) {
     if (element.children.length < 2) {
         return;
     }
 
     var ul = element.parentElement.getElementsByTagName("UL")[0];
     var i = element.children[1].firstChild.nextSibling;
-    if (ul.classList.contains('is-expanded')) {
-        if (!forceExpand) {
+    if (ul.classList.contains('is-expanded') && !onlyExpand) {
             i.classList.replace('fa-angle-down', 'fa-angle-right');
             ul.classList.replace('is-expanded', 'is-collapsed');
-        }
     } else {
         i.classList.replace('fa-angle-right', 'fa-angle-down');
         ul.classList.replace('is-collapsed', 'is-expanded');
@@ -108,7 +106,6 @@ function expandSidebar(url) {
  * @param {*} element The element whose parents should be expanded.
  */
 function expandULParents(element) {
-    console.log(typeof element)
     while (element) {
         if (element.tagName == "UL" &&
             (element.classList.contains("is-collapsed") ||
