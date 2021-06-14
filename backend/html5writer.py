@@ -126,7 +126,7 @@ class Writer(docutils.writers._html_base.Writer):
         'body_pre_docinfo', 'docinfo', 'body', 'body_suffix',
         'title', 'subtitle', 'header', 'footer', 'meta', 'fragment',
         'html_prolog', 'html_head', 'html_title', 'html_subtitle',
-        'html_body', 'navigation')
+        'html_body', 'navigation', 'logo')
 
     def __init__(self):
         """
@@ -158,6 +158,11 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.navigation = ''
         for toc in document.settings.toc:
             self.navigation += spdirs.TocTree.to_html(toc)
+
+        # Add logo to pages.
+        self.logo = ''
+        if document.settings.logo is not None:
+            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
 
         # Expand the menu entry of the current open page.
         soup = BeautifulSoup(self.navigation, 'html.parser')
