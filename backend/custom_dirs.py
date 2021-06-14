@@ -5,6 +5,7 @@ Implement directives used in the CodeGrade reStructuredText.
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from urllib.parse import urlparse
 
 
 class ExampleDirective(Directive):
@@ -32,11 +33,14 @@ class ExampleDirective(Directive):
 
 class iframe_node(nodes.General, nodes.Element):
     """
-    Container class for IFrameDirective
+    Container class for IFrameDirective.
     """
     ...
 
 class IFrameDirective(Directive):
+    """
+    Directive for HTML iframes.
+    """
     option_spec = {
         'width': int,
         'height': int
@@ -60,8 +64,8 @@ class IFrameDirective(Directive):
                 height = width * xy_ratio
 
             node['url'] = url
-            node['width'] = width
-            node['height'] = height
+            node['width'] = int(width)
+            node['height'] = int(height)
 
         return [node]
 

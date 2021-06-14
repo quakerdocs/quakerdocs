@@ -225,7 +225,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         width = node['width']
         height = node['height']
 
-        code = f'<iframe src="{url}" width={width} height={height}></iframe>'
+        code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
         self.body.append(code)
 
     def depart_title(self, node: nodes.Element) -> None:
