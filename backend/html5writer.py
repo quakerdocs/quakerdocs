@@ -159,22 +159,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         for toc in document.settings.toc:
             self.navigation += spdirs.TocTree.to_html(toc)
 
-        # Expand the menu entry of the current open page.
-        soup = BeautifulSoup(self.navigation, 'html.parser')
-        a = soup.find('a', href=document.settings.html_path)
-        if a is not None:
-            parents = a.find_parents('li')
-            childrenUL = parents[0].find_all('ul')
-            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
-
-            if childrenUL is not None and childrenARROW is not None:
-                for child in childrenUL:
-                    child['class'] = "menu-list is-expanded"
-
-                for child in childrenARROW:
-                    child['class'] = 'fa arrow-icon fa-angle-down'
-        self.navigation = str(soup.prettify())
-
         # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
