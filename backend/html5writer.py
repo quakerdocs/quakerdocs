@@ -152,7 +152,14 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
     def depart_kbd_element(self, node: nodes.Element):
         self.body.append('</kbd>')
 
-    # visit_title() doesn't have to be overridden
+    def visit_section(self, node: nodes.Element) -> None:
+        """
+        Adds a span before the section with the same id as the section.
+        """
+        if node['ids']:
+            section_id = node['ids'][0]
+            self.body.append(f'<span class="anchor" id="{section_id}"></span>')
+        super().visit_section(node)
 
     def depart_title(self, node: nodes.Element) -> None:
         if len(self.context) > 0:

@@ -22,8 +22,16 @@
 
 .content {
     display: inline-block;
-    padding: 2%;
+    padding: 20px;
 }
+
+.anchor {
+    position: relative;
+    display: block;
+    height: 6vh;
+    margin-top: -6vh;
+    visibility: hidden;
+  }
 
 .panel {
     background-color: white;
