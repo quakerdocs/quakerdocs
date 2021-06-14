@@ -184,7 +184,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.footer.append(
             '<p>&copy %s.</p>\
             <p>Generated with &hearts; by <a href\
-                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
+                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
             % document.settings.copyright)
 
     def visit_toc_data(self, node: nodes.Element):

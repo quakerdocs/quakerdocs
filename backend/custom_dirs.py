@@ -5,7 +5,6 @@ Implement directives used in the CodeGrade reStructuredText.
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
-from urllib.parse import urlparse
 
 
 class ExampleDirective(Directive):
