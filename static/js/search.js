@@ -103,12 +103,13 @@ function highlightSearchQuery(query, text) {
     }
 
     var target = text.slice(index, index + query.length);
-    var textBefore = text.slice(Math.abs(index - 50), index);
+    var textBefore = text.slice(Math.max(index - 50, 0), index);
     var textAfter = text.slice(index + query.length, index + 100);
     var displayText = textBefore + highlighter + target + "</span>" + textAfter;
     var endIndex = displayText.lastIndexOf(' ');
     var startIndex = 0;
-    if (textBefore) {
+
+    if (textBefore.trim() && textBefore.indexOf(' ') >= 0) {
         startIndex = displayText.indexOf(' ');
     }
 
