@@ -290,7 +290,7 @@ class Trie:
         Returns
         -------
         Dict
-            The binary representations of the trie.
+            The binary representations of the radix trie.
 
         """
         # Put all the nodes in a list.

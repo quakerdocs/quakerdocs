@@ -2,19 +2,26 @@ from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 
+# The metadata fields and their default values.
 default_fields = {'priority': 1.0,
                   'ignore': False}
 
+# The values which are interpreted as false.
 false_values = {'false', 'f', '0', 'no', 'n'}
+
 
 class metadata(nodes.Inline, nodes.Element):
     def __init__(self, fields):
+        """Create nodes to contain the metadata."""
         nodes.Element.__init__(self)
         for key, value in fields.items():
             setattr(self, key, value)
 
 
 class MetadataDirective(Directive):
+    """Get the metadata from the files.
+    """
+
     has_content = True
 
     def run(self):
@@ -23,31 +30,35 @@ class MetadataDirective(Directive):
         for line in self.content:
             var = line.replace(' ', '').split('=')
             if len(var) != 2:
-                print(f'Warning: invalid metadata: {line}') # TODO: print file name
+                # TODO: print file name
+                print(f'Warning: invalid metadata: {line}')
                 continue
 
-            # Check if the metadata field exists.
             name, value = var
 
-            # Parse the value.
+            # Parse the value and update the field.
             try:
                 if type(fields[name]) == bool:
                     fields[name] = value.lower() not in false_values
                 else:
                     fields[name] = type(fields[name])(value)
             except ValueError or KeyError:
+                # TODO: print filename.
                 print(f'Warning: invalid metadata: {line}')
 
         return [metadata(fields)]
 
 
 def get_metadata(doctree):
-    """ TODO """
+    """Get the metadata of a parsed doctree, or create the default metadata
+    if it does not exist.
+    """
     try:
         return next(iter(doctree.traverse(lambda n: isinstance(n, metadata))))
     except StopIteration:
         return metadata(default_fields)
 
-
 def setup():
+    """Add the metadata directives.
+    """
     directives.register_directive('metadata', MetadataDirective)
