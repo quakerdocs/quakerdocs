@@ -25,9 +25,12 @@ import re
 import math
 import struct
 import shutil
+from collections import deque
+from types import SimpleNamespace
 from jinja2 import Template
 from collections import Counter
 from nltk.corpus import stopwords
+from typing import Tuple
 
 try:
     stopwords = set(stopwords.words('english'))
@@ -37,45 +40,40 @@ except LookupError:
     stopwords = set(stopwords.words('english'))
 
 
-class CPrimitive():
-    """
-    A class to the minimum required primitive data type which can hold an
-    integer. This can then be used in C/C++ and with the struct library.
+def get_primitive(size: int) -> SimpleNamespace:
+    """Choose the minimum required data type based on the size.
 
-    Attributes
+    Parameters
     ----------
-    actual_bytes : int
-        The strictly needed bytes for the given size.
-    id  : str
-        The struct library type identifier.
-    type : str
-        The C primitive typename.
-    bytes : int
-        The byte size of the chosen primitive.
+    size : int
+        The maximum value the primitive should be able to hold.
+
+    Raises
+    ------
+    ValueError
+        When there is too much data in the index.
+
+    Returns
+    -------
+    SimpleNamespace
+        An object containing the id, type and number of bytes.
 
     """
+    prim = SimpleNamespace()
+    prim.actual_bytes = math.ceil(math.log2(size) / 8)
 
-    def __init__(self, size: int):
-        """Choose the minimum required data type based on the size.
+    if prim.actual_bytes == 1:
+        prim.id, prim.type, prim.bytes = 'B', 'unsigned char', 1
+    elif prim.actual_bytes == 2:
+        prim.id, prim.type, prim.bytes = 'H', 'unsigned short', 2
+    elif prim.actual_bytes <= 4:
+        prim.id, prim.type, prim.bytes = 'I', 'unsigned int', 4
+    elif prim.actual_bytes <= 8:
+        prim.id, prim.type, prim.bytes = 'Q', 'unsigned long long', 8
+    else:
+        raise ValueError('Too much data in the search index.')
 
-        Parameters
-        ----------
-        size : int
-            The maximum value the primitive should be able to hold.
-
-        """
-        self.actual_bytes = math.ceil(math.log2(size) / 8)
-
-        if self.actual_bytes == 1:
-            self.id, self.type, self.bytes = 'B', 'unsigned char', 1
-        elif self.actual_bytes == 2:
-            self.id, self.type, self.bytes = 'H', 'unsigned short', 2
-        elif self.actual_bytes <= 4:
-            self.id, self.type, self.bytes = 'I', 'unsigned int', 4
-        elif self.actual_bytes <= 8:
-            self.id, self.type, self.bytes = 'Q', 'unsigned long long', 8
-        else:
-            raise ValueError('Too much data in the search index.')
+    return prim
 
 
 class Trie:
@@ -94,7 +92,7 @@ class Trie:
 
     """
 
-    def __init__(self, char : str):
+    def __init__(self, char: str):
         """Constructor for the Trie class.
 
         Parameters
@@ -116,7 +114,7 @@ class Trie:
         # The pages where this word is found.
         self.pages = []
 
-    def insert_helper(self, word : str, current):
+    def insert_helper(self, word: str, current: "Trie") -> Tuple[str, "Trie"]:
         """A helper method used to insert a fragment of a word into the trie.
 
         Parameters
@@ -169,7 +167,7 @@ class Trie:
         current.children[word] = new
         return "", new
 
-    def insert(self, word : str, page : int, count : int):
+    def insert(self, word: str, page: int, count: int):
         """Insert method to insert a new word into the trie.
 
         Parameters
@@ -197,7 +195,7 @@ class Trie:
         current.pages.append((page, count))
 
     @staticmethod
-    def match(n_word : str, s_word : str):
+    def match(n_word: str, s_word: str):
         """Method to match a part of a word to a part in the node.
 
         Parameters
@@ -229,79 +227,104 @@ class Trie:
         # Return matching part and both remainders.
         return n_word[:i], n_word[i:], s_word[i:]
 
+    def flatten_data(self) -> SimpleNamespace:
+        """ Convert the trie to an object containing arrays instead of a tree.
+
+        Returns
+        -------
+        SimpleNamespace
+            An object containging the data from the trie as separate arrays.
+
+        """
+        # Flatten the node trie into a list.
+        data = SimpleNamespace()
+        nodes = []
+
+        data.page_p, data.char_p = 0, 0
+        data.child_s, data.page_s = 0, 0
+        data.page_i, data.page_c = 0, 0
+
+        # Iterate over all the nodes.
+        queue = deque([[self]])
+        while queue:
+            # Get the node and continue iterating over the children.
+            node = queue[0].pop()
+            if not queue[0]:
+                queue.popleft()
+
+            # Convert the children dictionary to a list, and traverse it later.
+            node.children_list = list(node.children.values())
+            if node.children_list:
+                queue.append(list(reversed(node.children_list)))
+
+            # Append the node to the node list.
+            node.i = len(nodes)
+            nodes.append(node)
+
+            # Count the number of children, pages and characters.
+            data.page_p += len(node.pages)
+            data.char_p += len(node.char) + 1  # + 1 for '\0'.
+
+            # Get the highest number of children / pages.
+            data.child_s = max(data.child_s, len(node.children))
+            data.page_s = max(data.page_s, len(node.pages))
+
+            # Get the highest page index / page count in a node.
+            for index, count in node.pages:
+                data.page_i = max(data.page_i, index)
+                data.page_c = max(data.page_c, count)
+
+        # Get the minimum primitive data type for each of the values.
+        for key, val in data.__dict__.items():
+            setattr(data, key, get_primitive(val))
+
+        # Get the smallest size primitives which can store the found values.
+        data.nodes = nodes
+        data.node_p = get_primitive(len(nodes))
+
+        return data
+
     def to_binary(self):
         """Translate the Trie to a binary format
 
         Returns
         -------
         Dict
-            The binary representations of trie.
+            The binary representations of the trie.
 
         """
         # Put all the nodes in a list.
-        nodes, stack = [], [self]
-        char_count, children_count, page_count = 0, 0, 0
-        max_children, max_pages = 0, 0
-        page_index_max, page_count_max = 0, 0
-
-        while stack:
-            node = stack.pop()
-            node.i = len(nodes)
-            nodes.append(node)
-            children_count += len(node.children)
-            page_count += len(node.pages)
-            char_count += len(node.char) + 1
-            max_children = max(max_children, len(node.children))
-            max_pages = max(max_pages, len(node.pages))
-            stack.extend(reversed(node.children.values()))
-
-            for index, count in node.pages:
-                page_index_max = max(page_index_max, index)
-                page_count_max = max(page_count_max, count)
-
-        node_p = CPrimitive(len(nodes))
-        child_s = CPrimitive(max_children)
-        page_s = CPrimitive(max_pages)
-        child_p = CPrimitive(children_count)
-        page_p = CPrimitive(page_count)
-        char_p = CPrimitive(char_count)
-        page_i = CPrimitive(page_index_max)
-        page_c = CPrimitive(page_count_max)
+        t = self.flatten_data()
 
         # Convert the radix trie to byte data.
-        node_arr, children_arr, page_arr, char_arr = [], [], [], []
+        node_arr, page_arr, char_arr = [], [], []
         char_len = 0
 
         # Add each node to the binary arrays.
-        for node in nodes:
+        for node in t.nodes:
+            # Add the node data.
             node_arr += struct.pack(
-                char_p.id + child_p.id + page_p.id + child_s.id + page_s.id,
-                char_len, len(children_arr) // child_p.bytes,
-                len(page_arr) // (page_i.bytes + page_c.bytes),
-                len(node.children), len(node.pages))
-
-            # Add the children.
-            children_i = [child.i for child in node.children.values()]
-            children_arr += struct.pack(node_p.id * len(children_i), *children_i)
+                t.char_p.id + t.node_p.id + t.page_p.id + t.child_s.id + t.page_s.id,
+                char_len,
+                node.children_list[0].i if node.children else 0,
+                len(page_arr) // (t.page_i.bytes + t.page_c.bytes),
+                len(node.children),
+                len(node.pages))
 
             # Add the pages.
             for page in node.pages:
-                page_arr += struct.pack(page_i.id + page_c.id, *page)
+                page_arr += struct.pack(t.page_i.id + t.page_c.id, *page)
 
             # Add the characters.
             char_arr += ['"'] + list(node.char) + ['\\0"']
             char_len += len(node.char) + 1
 
         # Convert the data to C arrays.
-        return {
-            'node_arr': ','.join(map(str, node_arr)),
-            'children_arr': ','.join(map(str, children_arr)),
-            'page_arr': ','.join(map(str, page_arr)),
-            'char_arr': ''.join(char_arr),
-            'node_p': node_p, 'child_s': child_s, 'page_s': page_s,
-            'child_p': child_p, 'page_p': page_p, 'char_p': char_p,
-            'page_i': page_i, 'page_c': page_c
-        }
+        t.node_arr = ','.join(map(str, node_arr))
+        t.page_arr = ','.join(map(str, page_arr))
+        t.char_arr = ''.join(char_arr)
+
+        return t
 
 
 class IndexGenerator:
@@ -327,7 +350,8 @@ class IndexGenerator:
         self.trie = Trie("")  # root of the prefix trie
         self.remover = re.compile('[^\\w\\s\\n]')
 
-    def parse_file(self, content : list, title : str, url : str):
+    def parse_file(self, content: list, title: str, url: str, prior: int = 0,
+                   weight: float = 0.5):
         """Add a file to the index.
 
         Parameters
@@ -357,9 +381,10 @@ class IndexGenerator:
 
         # Create the trie.
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
-            self.trie.insert(word, i, count)
+            priority = int(count * (1 - weight) + weight * prior)
+            self.trie.insert(word, i, priority)
 
-    def build(self, dest_path : str):
+    def build(self, dest_path: str):
         """Write the search index file to the destination directory.
 
         Parameters
@@ -381,7 +406,7 @@ class IndexGenerator:
             # Write the search index to hpp.
             with open(os.path.join(path, 'search.hpp'), 'w') as f:
                 f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
-                f.write(template.render(urltitles=self.urltitles, **data))
+                f.write(template.render(urltitles=self.urltitles, **data.__dict__))
 
         # Make the .wasm file
         working_dir = os.getcwd()

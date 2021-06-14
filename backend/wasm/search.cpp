@@ -25,7 +25,7 @@ const Node *findNode(const char *word) {
     while (word[progress]) {
         bool match = false;
         for (child_s i = 0; i < current->child_count; i++) {
-            const Node *child = nodes + children[current->children + i];
+            const Node *child = nodes + current->children + i;
             const char *str = chars + child->chars;
 
             /* We have a match if the first character is the same. */
@@ -70,7 +70,7 @@ PageMap searchWord(const char *word) {
 
         /* Push the nodes children on the stack. */
         for (child_s i = 0; i < node->child_count; i++)
-            stack.push_back(nodes + children[node->children + i]);
+            stack.push_back(nodes + node->children + i);
 
         const char *str = chars + node->chars;
 
