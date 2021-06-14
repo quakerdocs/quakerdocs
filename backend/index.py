@@ -350,8 +350,8 @@ class IndexGenerator:
         self.trie = Trie("")  # root of the prefix trie
         self.remover = re.compile('[^\\w\\s\\n]')
 
-    def parse_file(self, content: list, title: str, url: str, prior: int = 0,
-                   weight: float = 0.5):
+    def add_file(self, content: list, title: str, url: str,
+                 priority: float = 1.0):
         """Add a file to the index.
 
         Parameters
@@ -381,8 +381,7 @@ class IndexGenerator:
 
         # Create the trie.
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
-            priority = int(count * (1 - weight) + weight * prior)
-            self.trie.insert(word, i, priority)
+            self.trie.insert(word, i, int(count * priority))
 
     def build(self, dest_path: str):
         """Write the search index file to the destination directory.

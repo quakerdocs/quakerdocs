@@ -186,6 +186,18 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
             % document.settings.copyright)
 
+    def visit_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
+
+    def depart_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
+
     def visit_toc_data(self, node: nodes.Element):
         """
         Skip rendering of Table of Contents data-element.

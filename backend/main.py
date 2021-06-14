@@ -19,9 +19,9 @@ import application
 import index
 import html5writer
 
+import directives.metadata
 import directives.sphinx
 import directives.custom
-import directives.metadata
 
 
 SKIP_TAGS = {'system_message', 'problematic'}
@@ -62,8 +62,10 @@ class Main:
         }
         conf_vars = {}
 
+        # TODO maybe don't use exec?
         # Check if file exists? Other cwd?
-        exec(open('conf.py').read(), global_vars, conf_vars)
+        with open('conf.py') as f:
+            exec(f.read(), global_vars, conf_vars)
         self.conf_vars = conf_vars
 
         # Fix some things
@@ -104,6 +106,7 @@ class Main:
         self.dest_path = dir_path(self.dest_path)
 
         # Set-up reStructuredText directives
+        directives.metadata.setup()
         directives.sphinx.setup()
         directives.custom.setup()
 
@@ -202,6 +205,11 @@ class Main:
             source_path=src,
             settings_overrides=settings)
 
+        # Get the page metadata.
+        metadata = directives.metadata.get_metadata(doctree)
+        if metadata.ignore:
+            return
+
         # Delete the nodes we want to skip.
         for node in doctree.traverse():
             for i, child in reversed(list(enumerate(node.children))):
@@ -217,7 +225,7 @@ class Main:
 
         # Collect all the text
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
-        self.idx.parse_file(content, title, html_path)
+        self.idx.add_file(content, title, html_path, metadata.priority)
 
         # Write the document to a file.
         with open(dest, 'wb') as f:

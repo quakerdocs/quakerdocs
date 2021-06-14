@@ -4,10 +4,8 @@ Changelog
 .. deprecation_note:: /changelog
 
 .. metadata::
-   {
-      priority = 0
-      ignore = false
-   }
+   priority = 0.0
+   ignore = false
 
 
 Version *Next*
