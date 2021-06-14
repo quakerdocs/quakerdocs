@@ -245,7 +245,6 @@ function setBookmarkBtn(id) {
  * Load the values of the bookmark buttons when the page had just loaded.
  */
 function loadBookmarks() {
-    console.log(document.cookie);
     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
     for (let i = 0; i < bookmark_btns.length; i++) {
         setBookmarkBtn(bookmark_btns[i].id);

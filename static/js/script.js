@@ -86,8 +86,10 @@ function backToTop() {
 /**
  * Expand the corresponding navigation menu entry in the sidebar.
  */
-function expandSidebar() {
-    // TODO
+function expandSidebar(url) {
+    console.log(url);
+    ul = document.querySelectorAll('a[href="' + url + '"]');
+    console.log(ul);
     return;
 }
 
@@ -96,7 +98,7 @@ window.onscroll = function() {
 };
 
 window.onload = function() {
-    expandSidebar();
+    expandSidebar(window.location.pathname);
 };
 
 /* The search function for the bookmarks searchbar */
