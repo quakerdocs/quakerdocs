@@ -31,11 +31,13 @@ class ExampleDirective(Directive):
 
         return [wrapper]
 
+
 class iframe_node(nodes.General, nodes.Element):
     """
     Container class for IFrameDirective.
     """
     ...
+
 
 class IFrameDirective(Directive):
     """
@@ -58,7 +60,7 @@ class IFrameDirective(Directive):
             if self.options:
                 width = self.options[0]
                 height = self.options[1] if len(self.options) > 1 else \
-                         width * xy_ratio
+                    width * xy_ratio
             else:
                 width = 500
                 height = width * xy_ratio

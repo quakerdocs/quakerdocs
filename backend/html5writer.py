@@ -183,7 +183,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
+            <p>Generated with &hearts; by <a href\
+                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
             % document.settings.copyright)
 
     def visit_toc_data(self, node: nodes.Element):
@@ -228,16 +229,14 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
         self.body.append(code)
 
-    def depart_title(self, node: nodes.Element) -> None:
+    def visit_section(self, node: nodes.Element) -> None:
         """
-        Append bookmark button to title element.
+        Adds a span before the section with the same id as the section.
         """
-        if len(self.context) > 0:
-            close_tag = self.context[-1]
-
-            if close_tag.startswith('</h'):
-                self.add_bookmark_btn(node)
-            super().depart_title(node)
+        if node['ids']:
+            section_id = node['ids'][0]
+            self.body.append(f'<span class="anchor" id="{section_id}"></span>')
+        super().visit_section(node)
 
     def depart_title(self, node: nodes.Element) -> None:
         """
