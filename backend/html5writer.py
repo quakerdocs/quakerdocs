@@ -183,7 +183,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
+            <p>Generated with &hearts; by <a href\
+                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
             % document.settings.copyright)
 
     def visit_metadata(self, node: nodes.Element):
@@ -222,6 +223,32 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         End of rendering keystroke element.
         """
         self.body.append('</kbd>')
+
+    def visit_iframe_node(self, node: nodes.Element) -> None:
+        """
+        Do nothing on visit.
+        """
+        pass
+
+    def depart_iframe_node(self, node: nodes.Element) -> None:
+        """
+        Add iframe HTML with correct attributes.
+        """
+        url = node['url']
+        width = node['width']
+        height = node['height']
+
+        code = f'<iframe src="{url}" width={width} height={height}></iframe>'
+        self.body.append(code)
+
+    def visit_section(self, node: nodes.Element) -> None:
+        """
+        Adds a span before the section with the same id as the section.
+        """
+        if node['ids']:
+            section_id = node['ids'][0]
+            self.body.append(f'<span class="anchor" id="{section_id}"></span>')
+        super().visit_section(node)
 
     def depart_title(self, node: nodes.Element) -> None:
         """
