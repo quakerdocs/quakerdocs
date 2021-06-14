@@ -142,7 +142,7 @@ class Main:
         for path, content in source_files:
             self.write_rst(path, content)
 
-        self.idx.build(os.path.join(self.dest_path, 'js'))
+        # self.idx.build(os.path.join(self.dest_path, 'js'))
         self.copy_static_files()
 
         # TEMP
