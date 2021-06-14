@@ -21,6 +21,7 @@ import html5writer
 
 import directives.sphinx
 import directives.custom
+import directives.metadata
 
 
 SKIP_TAGS = {'system_message', 'problematic'}
