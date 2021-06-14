@@ -5,10 +5,17 @@ Class to extend the functionality of the default HTML5 writer of docutils.
 import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
+from bs4 import BeautifulSoup
+
+import directives.sphinx
 
 
 class Writer(docutils.writers._html_base.Writer):
-    supported = ('html', 'html5', 'html4', 'xhtml', 'xhtml10')
+    """
+    Writer class for HTML5 documents.
+    This class is modified from docutils.writers.html5_polyglot.Writer
+    """
+    supported = ('html', 'html5')
     """Formats this writer supports."""
 
     default_stylesheets = []
@@ -97,9 +104,9 @@ class Writer(docutils.writers._html_base.Writer):
           {'default': ''}),
          ('Math output format (one of "MathML", "HTML", "MathJax", '
           'or "LaTeX") and option(s). '
-          'Default: "HTML math.css"',
+          'Default: "HTML ../static/css/math.css"',
           ['--math-output'],
-          {'default': 'HTML math.css'}),
+          {'default': 'HTML ../static/css/math.css'}),
          ('Prepend an XML declaration. (Thwarts HTML5 conformance.) '
           'Default: False',
           ['--xml-declaration'],
@@ -119,42 +126,95 @@ class Writer(docutils.writers._html_base.Writer):
         'body_pre_docinfo', 'docinfo', 'body', 'body_suffix',
         'title', 'subtitle', 'header', 'footer', 'meta', 'fragment',
         'html_prolog', 'html_head', 'html_title', 'html_subtitle',
-        'html_body', 'navigation')
+        'html_body', 'navigation', 'logo')
 
     def __init__(self):
+        """
+        Initialize Writer class.
+        """
         self.parts = {}
         self.translator_class = HTMLTranslator
 
 
 class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
+    """
+    Class used for translating internal docutils-nodes to HTML.
+    """
     def __init__(self, document):
+        """
+        Initialize the HTML translator
+        """
         super().__init__(document)
+        self.bookmark_index = 0
+
+        # Set base path for every document.
         self.head.append('<base href="%s">' % document.settings.rel_base)
+
+        # Add favicon to pages.
         if document.settings.favicon is not None:
             self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
-        self.navigation = document.settings.toc
+
+        # Build navigation bar.
+        self.navigation = ''
+        for toc in document.settings.toc:
+            self.navigation += directives.sphinx.TocTree.to_html(toc)
+
+        # Add logo to pages.
+        self.logo = ''
+        if document.settings.logo is not None:
+            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
+
+        # Expand the menu entry of the current open page.
+        soup = BeautifulSoup(self.navigation, 'html.parser')
+        a = soup.find('a', href=document.settings.html_path)
+        if a is not None:
+            parents = a.find_parents('li')
+            childrenUL = parents[0].find_all('ul')
+            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
+
+            if childrenUL is not None and childrenARROW is not None:
+                for child in childrenUL:
+                    child['class'] = "menu-list is-expanded"
+
+                for child in childrenARROW:
+                    child['class'] = 'fa arrow-icon fa-angle-down'
+        self.navigation = str(soup.prettify())
+
+        # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
             <p>Generated with &hearts; by <a href="docr.nl">DOC\'R</a> </p>'
             % document.settings.copyright)
-        self.bookmark_index = 0
 
-    def visit_TocData(self, node: nodes.Element):
+    def visit_toc_data(self, node: nodes.Element):
+        """
+        Skip rendering of Table of Contents data-element.
+        """
         raise nodes.SkipNode
 
-    def depart_TocData(self, node: nodes.Element):
+    def depart_toc_data(self, node: nodes.Element):
+        """
+        Skip rendering of Table of Contents data-element.
+        """
         raise nodes.SkipNode
 
     def visit_kbd_element(self, node: nodes.Element):
+        """
+        Begin rendering of keystroke element.
+        """
         self.body.append('<kbd>')
         self.body.append('+'.join(f'<kbd>{key}</kbd>' for key in node['keys']))
 
     def depart_kbd_element(self, node: nodes.Element):
+        """
+        End of rendering keystroke element.
+        """
         self.body.append('</kbd>')
 
-    # visit_title() doesn't have to be overridden
-
     def depart_title(self, node: nodes.Element) -> None:
+        """
+        Append bookmark button to title element.
+        """
         if len(self.context) > 0:
             close_tag = self.context[-1]
 
@@ -163,6 +223,9 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             super().depart_title(node)
 
     def add_bookmark_btn(self, node: nodes.Element):
+        """
+        Add bookmark button for node to the document body.
+        """
         title = node.astext()
         id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
@@ -172,6 +235,9 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
     # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):
+        """
+        Assign a unique identifier to the bookmark.
+        """
         comb_str = node.astext() + str(self.bookmark_index)
         hash_str = str(hash(comb_str))
         self.bookmark_index += 1

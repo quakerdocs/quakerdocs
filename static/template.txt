@@ -7,30 +7,30 @@
 <link rel="stylesheet" type="text/css" href="css/friendly.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<script src="js/bookmark.js"></script>
 <script src="js/search_data.js"></script>
 <script src="js/search.js"></script>
 <script src="js/script.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/bookmark.js"></script>
 <script src="js/keylistener.js"></script>
-<script src="js/back_to_top.js"></script>
 
 %(body_prefix)s
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
 	<div class="container">
 		<div class="navbar-brand">
 			<a class="navbar-item" href="/">
-				<h1 class="title">CodeGrade</h1>
+				%(logo)s
 			</a>
 
 			<a class="navbar-item">
-				<button class="button is-light" onclick="showSearchOverlay()">
+				<button class="button is-primary is-inverted" onclick="showSearchOverlay()">
 					<span class="icon"><i class="fa fa-search"></i></span>
 					<span> Search</span>
 				</button>
 			</a>
 
 			<a class="navbar-item is-hidden-mobile">
-				<button class="button is-light" onclick="showBookmarkOverlay()">
+				<button class="button is-primary is-inverted" onclick="showBookmarkOverlay()">
 					<span class="icon"><i class="fa fa-bookmark"></i></span>
 					<span>Bookmarks</span>
 				</button>
@@ -50,9 +50,10 @@
 	</div>
 </nav>
 
+<!--Search window-->
 <div id="search" class="modal">
 	<div class="modal-background" onclick="hideSearchOverlay()"></div>
-	<div class="modal-content height panel">
+	<div class="modal-content height panel is-primary">
 		<p class="panel-heading">
 			<span>Search</span>
 			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -60,10 +61,10 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-			<input id="searchbar" class="input is-link" type="text" placeholder="Search">
-			<span class="icon is-left">
-				<span class="icon"><i class="fa fa-search"></i></span>
-			</span>
+				<input id="searchbar" class="input is-primary" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
 			</p>
 		</div>
 
@@ -71,19 +72,29 @@
 	</div>
 </div>
 
-<!-- Bookmark results window-->
+<!--Bookmarks window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
-	<div class="modal-content height panel">
+	<div class="modal-content height panel is-primary">
 		<p class="panel-heading">
 			<span>Bookmarks</span>
 			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
 		</p>
 
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="bookmark-searchbar" class="input is-primary" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
 		<div id="bookmark-results" class="results max-height"></div>
 	</div>
 </div>
 
+<!--Main content-->
 <div class="container">
 	<section class="main-content columns is-desktop">
 		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">
@@ -93,7 +104,7 @@
 			%(body_pre_docinfo)s
 			%(docinfo)s
 			%(body)s
-			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-primary is-outlined fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
 				%(footer)s

@@ -18,6 +18,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 import util
+import application
 
 
 class Only(Directive):
@@ -44,7 +45,7 @@ def int_or_nothing(argument: str) -> int:
     return int(argument)
 
 
-class TocData(nodes.General, nodes.Element):
+class toc_data(nodes.General, nodes.Element):
     """
     Container class for Toc data.
     """
@@ -64,7 +65,7 @@ class TocTree(Directive):
         'glob': directives.flag,
         'hidden': directives.flag,
         'includehidden': directives.flag,
-        'numbered': int_or_nothing,
+        'numbered': directives.flag,
         'titlesonly': directives.flag,
         'reversed': directives.flag,
     }
@@ -73,14 +74,14 @@ class TocTree(Directive):
         """
         Code that is being run for the directive.
         """
-        tocdata = TocData()
+        tocdata = toc_data()
         tocdata['content'] = self.content
         tocdata['src_dir'] = self.state.document.settings.src_dir
 
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
         tocdata['caption'] = self.options.get('caption')
-        tocdata['numbered'] = self.options.get('numbered', 0)
+        tocdata['numbered'] = 'numbered' in self.options
         tocdata['reversed'] = 'reversed' in self.options
 
         wrappernode = nodes.compound(classes=['toctree-wrapper'])
@@ -203,7 +204,7 @@ class TocTree(Directive):
         ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
             lst_item = '<li><span class="level mb-0">\
-                <a href=%s>%s</a>' % (ref, title)
+                <a class="fill-menu" href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
                 lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
@@ -269,9 +270,9 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
 
-    # TODO: Fix link path, use search index?
     title, ref = explicit_link
     set_classes(options)
+    ref = '%s#%s' % (application.id_map.get(ref, ''), ref)
     node = nodes.reference(rawtext, title, refuri=ref, **options)
     return [node], []
 
