@@ -85,10 +85,10 @@ function activateSearch() {
  * @param {*} content The content that should be displayed under the title.
  * @returns An HTML element, the container of the result entry.
  */
-function createResultElement(url, title, content) {
+function createResultElement(href, title, content) {
     var element = document.createElement('div');
     element.innerHTML = `<a class="panel-block result is-flex-direction-column"
-                         href="${url}"><h1 class="result-title"><strong>
+                         href="${href}"><h1 class="result-title"><strong>
                          ${title}</strong></h1><p class="result-content">
                          ${content}</p></a>`;
 
@@ -141,9 +141,19 @@ function renderResults(query, searcher, resultsWrapper) {
             .then(res => res.text())
             .then(data => {
                 var html = parser.parseFromString(data, 'text/html');
-                var text = html.getElementById('content').innerText;
+                var href = '../' + r.page;
+                var text = html.getElementById('content').innerText;;
+
+                for (const section of html.querySelectorAll("section")) {
+                    if (section.textContent.includes(query) && section.id) {
+                        href += "#" + section.id;
+                        text = section.innerText;
+                        break;
+                    }
+                }
+
                 var displayText = highlightSearchQuery(query, text);
-                resultEl = createResultElement('../' + r.page, r.title, displayText);
+                resultEl = createResultElement(href, r.title, displayText);
                 resultList.append(resultEl);
             })
             .catch(console.error);
