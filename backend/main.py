@@ -18,8 +18,9 @@ import docutils.writers
 
 import index
 import html5writer
-import custom_dirs
-import spdirs
+import directives.sphinx
+import directives.custom
+
 import sphinx_app
 
 SKIP_TAGS = {'system_message', 'problematic'}
@@ -102,8 +103,8 @@ class Main:
         self.dest_path = dir_path(self.dest_path)
 
         # Set-up reStructuredText directives
-        spdirs.setup()
-        custom_dirs.setup()
+        directives.sphinx.setup()
+        directives.custom.setup()
 
         # Load user configuration and extensions
         prev_cwd = os.getcwd()
@@ -257,8 +258,8 @@ class Main:
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        for tt in doctree.traverse(spdirs.TocData):
-            self.toc_navigation += spdirs.TocTree.to_html(tt)
+        for tt in doctree.traverse(directives.sphinx.TocData):
+            self.toc_navigation += directives.sphinx.TocTree.to_html(tt)
 
     def copy_static_files(self):
         """
