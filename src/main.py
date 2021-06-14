@@ -110,7 +110,7 @@ class Main:
         directives.metadata.setup()
         directives.sphinx.setup()
         directives.custom.setup()
-        # directives.raw.setup()
+        directives.raw.setup()
 
         # Load user configuration and extensions
         prev_cwd = os.getcwd()
