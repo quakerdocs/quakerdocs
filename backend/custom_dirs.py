@@ -30,6 +30,42 @@ class ExampleDirective(Directive):
 
         return [wrapper]
 
+class iframe_node(nodes.General, nodes.Element):
+    """
+    Container class for IFrameDirective
+    """
+    ...
+
+class IFrameDirective(Directive):
+    option_spec = {
+        'width': int,
+        'height': int
+    }
+
+    required_arguments = 1
+    optional_arguments = 2
+
+    def run(self):
+        if self.arguments:
+            url = self.arguments[0]
+            node = iframe_node()
+            xy_ratio = 3/5
+
+            if self.options:
+                width = self.options[0]
+                height = self.options[1] if len(self.options) > 1 else \
+                         width * xy_ratio
+            else:
+                width = 500
+                height = width * xy_ratio
+
+            node['url'] = url
+            node['width'] = width
+            node['height'] = height
+
+        return [node]
+
 
 def setup():
     directives.register_directive('example', ExampleDirective)
+    directives.register_directive('iframe', IFrameDirective)

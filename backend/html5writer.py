@@ -211,6 +211,34 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         self.body.append('</kbd>')
 
+    def visit_iframe_node(self, node: nodes.Element) -> None:
+        """
+        Do nothing on visit.
+        """
+        pass
+
+    def depart_iframe_node(self, node: nodes.Element) -> None:
+        """
+        Add iframe HTML with correct attributes.
+        """
+        url = node['url']
+        width = node['width']
+        height = node['height']
+
+        code = f'<iframe src="{url}" width={width} height={height}></iframe>'
+        self.body.append(code)
+
+    def depart_title(self, node: nodes.Element) -> None:
+        """
+        Append bookmark button to title element.
+        """
+        if len(self.context) > 0:
+            close_tag = self.context[-1]
+
+            if close_tag.startswith('</h'):
+                self.add_bookmark_btn(node)
+            super().depart_title(node)
+
     def depart_title(self, node: nodes.Element) -> None:
         """
         Append bookmark button to title element.
