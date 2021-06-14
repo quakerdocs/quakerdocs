@@ -19,18 +19,19 @@
 	<div class="container">
 		<div class="navbar-brand">
 			<a class="navbar-item" href="/">
-				<h1 class="title">CodeGrade</h1>
+				<img src="https://uploads-ssl.webflow.com/5e83abdce8b19d90ac8ad20e/5e83ac584bfbfa67a679177f_codegrade-color.svg"
+				 width="180" alt="CodeGrade logo">
 			</a>
 
 			<a class="navbar-item">
-				<button class="button is-light" onclick="showSearchOverlay()">
+				<button class="button is-primary is-inverted" onclick="showSearchOverlay()">
 					<span class="icon"><i class="fa fa-search"></i></span>
 					<span> Search</span>
 				</button>
 			</a>
 
 			<a class="navbar-item is-hidden-mobile">
-				<button class="button is-light" onclick="showBookmarkOverlay()">
+				<button class="button is-primary is-inverted" onclick="showBookmarkOverlay()">
 					<span class="icon"><i class="fa fa-bookmark"></i></span>
 					<span>Bookmarks</span>
 				</button>
@@ -53,7 +54,7 @@
 <!--Search window-->
 <div id="search" class="modal">
 	<div class="modal-background" onclick="hideSearchOverlay()"></div>
-	<div class="modal-content height panel">
+	<div class="modal-content height panel is-primary">
 		<p class="panel-heading">
 			<span>Search</span>
 			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -61,7 +62,7 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-				<input id="searchbar" class="input is-link" type="text" placeholder="Search">
+				<input id="searchbar" class="input is-primary" type="text" placeholder="Search">
 				<span class="icon is-left">
 					<span class="icon"><i class="fa fa-search"></i></span>
 				</span>
@@ -75,11 +76,20 @@
 <!--Bookmarks window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
-	<div class="modal-content height panel">
+	<div class="modal-content height panel is-primary">
 		<p class="panel-heading">
 			<span>Bookmarks</span>
 			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
 		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="bookmark-searchbar" class="input is-primary" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
 
 		<div id="bookmark-results" class="results max-height"></div>
 	</div>
@@ -95,7 +105,7 @@
 			%(body_pre_docinfo)s
 			%(docinfo)s
 			%(body)s
-			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-primary is-outlined fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
 				%(footer)s

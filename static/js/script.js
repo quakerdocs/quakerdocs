@@ -98,3 +98,29 @@ window.onscroll = function() {
 window.onload = function() {
     expandSidebar();
 };
+
+/* The search function for the bookmarks searchbar */
+function searchBookmarks() {
+    var input, filter, list, items, item, title, i, txtValue;
+    input = document.getElementById("bookmark-searchbar");
+    filter = input.value.toUpperCase();
+    /* The results are stored in list and each entry in items.*/
+    list = document.getElementById("bookmark-results");
+    items = list.getElementsByClassName("panel-block bookmark-entry");
+
+    /* Each bookmark title is collected here and indexed.*/
+    for (i = 0; i < items.length; i++) {
+        item = items[i].getElementsByTagName("div");
+        title = item[3]
+        txtValue = title.innerText;
+
+        /* If a title has no index then dont display  bookmark,
+         * this way you only see needed results.
+         */
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+}

@@ -122,3 +122,7 @@ body {
     padding: 15px 15px;
     font-size: 18px;
 }
+
+.fill-menu {
+    width: 100%;
+}

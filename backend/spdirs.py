@@ -203,7 +203,7 @@ class TocTree(Directive):
         ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
             lst_item = '<li><span class="level mb-0">\
-                <a href=%s>%s</a>' % (ref, title)
+                <a class="fill-menu" href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
                 lst_item += '<span onclick="toggleExpand(this)" class="is-clickable icon is-small level-right">\
