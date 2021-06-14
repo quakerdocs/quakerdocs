@@ -228,16 +228,14 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         code = f'<iframe src="{url}" width={width} height={height}></iframe>'
         self.body.append(code)
 
-    def depart_title(self, node: nodes.Element) -> None:
+    def visit_section(self, node: nodes.Element) -> None:
         """
-        Append bookmark button to title element.
+        Adds a span before the section with the same id as the section.
         """
-        if len(self.context) > 0:
-            close_tag = self.context[-1]
-
-            if close_tag.startswith('</h'):
-                self.add_bookmark_btn(node)
-            super().depart_title(node)
+        if node['ids']:
+            section_id = node['ids'][0]
+            self.body.append(f'<span class="anchor" id="{section_id}"></span>')
+        super().visit_section(node)
 
     def depart_title(self, node: nodes.Element) -> None:
         """
