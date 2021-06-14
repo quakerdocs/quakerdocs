@@ -162,7 +162,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add logo to pages.
         self.logo = ''
         if document.settings.logo is not None:
-            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
+            self.logo = '<img src="%s" alt="Logo">' % document.settings.logo
 
         # Expand the menu entry of the current open page.
         soup = BeautifulSoup(self.navigation, 'html.parser')
