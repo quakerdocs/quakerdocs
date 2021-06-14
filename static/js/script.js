@@ -98,6 +98,7 @@ window.onscroll = function() {
 };
 
 window.onload = function() {
+    expandSidebar("hRef");
     expandSidebar(window.location.pathname);
 };
 
