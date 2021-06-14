@@ -5,7 +5,6 @@ Class to extend the functionality of the default HTML5 writer of docutils.
 import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
-from bs4 import BeautifulSoup
 
 import spdirs
 
