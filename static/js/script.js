@@ -87,7 +87,7 @@ function backToTop() {
  * Expand the corresponding navigation menu entry in the sidebar.
  */
 function expandSidebar() {
-    // TODO
+
     return;
 }
 
