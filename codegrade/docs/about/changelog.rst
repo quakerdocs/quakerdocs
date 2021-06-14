@@ -7,7 +7,6 @@ Changelog
    priority = 0.0
    ignore = false
 
-
 Version *Next*
 --------------
 

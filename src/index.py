@@ -392,7 +392,7 @@ class IndexGenerator:
             Where to put the output.
 
         """
-        path = os.path.join('backend', 'wasm')
+        path = os.path.join('src', 'wasm')
 
         if not os.path.exists(path):
             raise FileNotFoundError('Wasm source files are not found.')

@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
-BUILDFILE	  = backend/main.py
+BUILDFILE	  = src/main.py
 SOURCEDIR     = codegrade/docs
 BUILDDIR      = build
 

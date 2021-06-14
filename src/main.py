@@ -22,6 +22,7 @@ import html5writer
 import directives.metadata
 import directives.sphinx
 import directives.custom
+import directives.raw
 
 
 SKIP_TAGS = {'system_message', 'problematic'}
@@ -109,6 +110,7 @@ class Main:
         directives.metadata.setup()
         directives.sphinx.setup()
         directives.custom.setup()
+        # directives.raw.setup()
 
         # Load user configuration and extensions
         prev_cwd = os.getcwd()
