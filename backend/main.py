@@ -23,6 +23,7 @@ import spdirs
 
 SKIP_TAGS = {'system_message', 'problematic'}
 
+
 # https://stackoverflow.com/questions/38834378/path-to-a-directory-as-argparse-argument
 def dir_path(string):
     if os.path.isdir(string):
