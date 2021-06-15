@@ -272,12 +272,19 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
                         '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
         self.body.append(bookmark_html)
 
-    # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):
         """
         Assign a unique identifier to the bookmark.
         """
-        comb_str = node.astext() + str(self.bookmark_index)
-        hash_str = str(hash(comb_str))
-        self.bookmark_index += 1
-        return "BM" + hash_str
+        try:
+            id_str = "BM_" + str(node.parent['ids'][0])
+            return id_str
+        except:
+            print('Cannot make bookmark ID, because parent ID can not be found.')
+            raise
+
+
+        # comb_str = node.astext() + str(self.bookmark_index)
+        # hash_str = str(hash(comb_str))
+        # self.bookmark_index += 1
+        # return "BM" + hash_str
