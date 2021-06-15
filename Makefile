@@ -11,7 +11,7 @@ BUILDDIR      = build
 help:
 	python3 $(BUILDFILE) --help
 
-.PHONY: help Makefile backend
+.PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.
