@@ -13,111 +13,87 @@ import spdirs
 class Writer(docutils.writers._html_base.Writer):
     """
     Writer class for HTML5 documents.
-    This class is modified from docutils.writers.html5_polyglot.Writer
+    This class is modified from docutils.writers.html5_polyglot.Writer (Jun 2021)
     """
-    supported = ('html', 'html5')
-    """Formats this writer supports."""
-
     default_stylesheets = []
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
-    default_template = '../static/template.txt'
+    default_template = '../quaker_theme/template.txt'
     default_template_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), default_template)
 
     settings_spec = (
-        'HTML-Specific Options',
+        'Quaker HTML Options',
         None,
-        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
-          % default_template_path,
-          ['--template'],
-          {'default': default_template_path, 'metavar': '<file>'}),
-         ('Comma separated list of stylesheet URLs. '
-          'Overrides previous --stylesheet and --stylesheet-path settings.',
-          ['--stylesheet'],
-          {'metavar': '<URL[,URL,...]>', 'overrides': 'stylesheet_path'}),
-         ('Comma separated list of stylesheet paths. '
-          'Relative paths are expanded if a matching file is found in '
-          'the --stylesheet-dirs. With --link-stylesheet, '
-          'the path is rewritten relative to the output HTML file. '
-          'Default: "%s"' % ','.join(default_stylesheets),
-          ['--stylesheet-path'],
-          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
-           'default': default_stylesheets}),
-         ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
-          'files must be accessible during processing. This is the default.',
-          ['--embed-stylesheet'],
-          {'default': 1, 'action': 'store_true'}),
-         ('Link to the stylesheet(s) in the output HTML file. '
-          'Default: embed stylesheets.',
-          ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
-         ('Comma-separated list of directories where stylesheets are found. '
-          'Used by --stylesheet-path when expanding relative path arguments. '
-          'Default: "%s"' % default_stylesheet_dirs,
-          ['--stylesheet-dirs'],
-          {'metavar': '<dir[,dir,...]>',
-           'default': default_stylesheet_dirs}),
-         ('Specify the initial header level.  Default is 2 for "<h2>".  '
-          'Does not affect document title & subtitle (see --no-doc-title).',
-          ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
-           'metavar': '<level>'}),
-         ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "brackets".',
-          ['--footnote-references'],
-          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
-           'metavar': '<format>',
-           'overrides': 'trim_footnote_reference_space'}),
-         ('Format for block quote attributions: one of "dash" (em-dash '
-          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
-          ['--attribution'],
-          {'choices': ['dash', 'parentheses', 'parens', 'none'],
-           'default': 'dash', 'metavar': '<format>'}),
-         ('Remove extra vertical whitespace between items of "simple" bullet '
-          'lists and enumerated lists.  Default: enabled.',
-          ['--compact-lists'],
-          {'default': True, 'action': 'store_true'}),
-         ('Disable compact simple bullet and enumerated lists.',
-          ['--no-compact-lists'],
-          {'dest': 'compact_lists', 'action': 'store_false'}),
-         ('Remove extra vertical whitespace between items of simple field '
-          'lists.  Default: enabled.',
-          ['--compact-field-lists'],
-          {'default': True, 'action': 'store_true'}),
-         ('Disable compact simple field lists.',
-          ['--no-compact-field-lists'],
-          {'dest': 'compact_field_lists', 'action': 'store_false'}),
-         ('Embed images in the output HTML file, if the image '
-          'files are accessible during processing.',
-          ['--embed-images'],
-          {'default': 0, 'action': 'store_true'}),
-         ('Link to images in the output HTML file. '
-          'This is the default.',
-          ['--link-images'],
-          {'dest': 'embed_images', 'action': 'store_false'}),
-         ('Added to standard table classes. '
-          'Defined styles: borderless, booktabs, '
-          'align-left, align-center, align-right, colwidths-auto. '
-          'Default: ""',
-          ['--table-style'],
-          {'default': ''}),
-         ('Math output format (one of "MathML", "HTML", "MathJax", '
-          'or "LaTeX") and option(s). '
-          'Default: "HTML ../static/css/math.css"',
-          ['--math-output'],
-          {'default': 'HTML ../static/css/math.css'}),
-         ('Prepend an XML declaration. (Thwarts HTML5 conformance.) '
-          'Default: False',
-          ['--xml-declaration'],
-          {'default': False, 'action': 'store_true'}),
-         ('Omit the XML declaration.',
-          ['--no-xml-declaration'],
-          {'dest': 'xml_declaration', 'action': 'store_false'}),
-         ('Obfuscate email addresses to confuse harvesters while still '
-          'keeping email links usable with standards-compliant browsers.',
-          ['--cloak-email-addresses'],
-          {'action': 'store_true'}),))
+        (
+            ('Comma separated list of stylesheet URLs. '
+             'Overrides previous --stylesheet and --stylesheet-path settings.',
+             ['--stylesheet'],
+             {'metavar': '<URL[,URL,...]>', 'overrides': 'stylesheet_path'}),
+            ('Comma separated list of stylesheet paths.',
+             ['--stylesheet-path'],
+             {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+              'default': default_stylesheets}),
+            ('Embed the stylesheet(s) in the output HTML file.',
+             ['--embed-stylesheet'],
+             {'default': 1, 'action': 'store_true'}),
+            ('Link to the stylesheet(s) in the output HTML file.',
+             ['--link-stylesheet'],
+             {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+            ('Comma-separated list of directories where stylesheets are found.',
+             ['--stylesheet-dirs'],
+             {'metavar': '<dir[,dir,...]>',
+              'default': default_stylesheet_dirs}),
+            ('Specify the initial header level.',
+             ['--initial-header-level'],
+             {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+              'metavar': '<level>'}),
+            ('Format for footnote references',
+             ['--footnote-references'],
+             {'choices': ['superscript', 'brackets'], 'default': 'brackets',
+              'metavar': '<format>',
+              'overrides': 'trim_footnote_reference_space'}),
+            ('Format for block quote attributions',
+             ['--attribution'],
+             {'choices': ['dash', 'parentheses', 'parens', 'none'],
+              'default': 'dash', 'metavar': '<format>'}),
+            ('Remove extra vertical whitespace between items of bullet '
+             'lists and enumerated lists.',
+             ['--compact-lists'],
+             {'default': True, 'action': 'store_true'}),
+            ('Disable compact simple bullet and enumerated lists.',
+             ['--no-compact-lists'],
+             {'dest': 'compact_lists', 'action': 'store_false'}),
+            ('Remove extra vertical whitespace between items of simple field '
+             'lists.',
+             ['--compact-field-lists'],
+             {'default': True, 'action': 'store_true'}),
+            ('Disable compact simple field lists.',
+             ['--no-compact-field-lists'],
+             {'dest': 'compact_field_lists', 'action': 'store_false'}),
+            ('Embed images in the output HTML file, if the image '
+             'files are accessible during processing.',
+             ['--embed-images'],
+             {'default': 0, 'action': 'store_true'}),
+            ('Link to images in the output HTML file.',
+             ['--link-images'],
+             {'dest': 'embed_images', 'action': 'store_false'}),
+            ('Added to standard table classes. '
+             'Defined styles: borderless, booktabs, '
+             'align-left, align-center, align-right, colwidths-auto.',
+             ['--table-style'],
+             {'default': ''}),
+            ('Math output format (one of "MathML", "HTML", "MathJax", '
+             'or "LaTeX") and option(s).',
+             ['--math-output'],
+             {'default': 'HTML ../quaker_theme/static/css/math.css'}),
+            ('Prepend an XML declaration.',
+             ['--xml-declaration'],
+             {'default': False, 'action': 'store_true'}),
+            ('Obfuscate email addresses to confuse harvesters.',
+             ['--cloak-email-addresses'],
+             {'default': False, 'action': 'store_true'}),
+        ))
 
     config_section = 'html5 writer'
 
