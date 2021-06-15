@@ -22,13 +22,19 @@ class Theme:
         inherit_name = config.get('theme', 'inherit', fallback=None)
         if inherit_name is not None:
             self.inherit = Theme(inherit_name)
-        self.stylesheet = config.get('theme', 'stylesheet')
+        self.stylesheet = config.get('theme', 'stylesheet', fallback=None)
 
     def get_template(self):
         """
         Return the path to the template for the pages.
         """
         return os.path.join(self.theme_path, 'template.txt')
+
+    def get_style(self):
+        """
+        Return the path to the stylesheet for this theme.
+        """
+        return self.stylesheet
 
     def copy_files(self, dest_path):
         """
