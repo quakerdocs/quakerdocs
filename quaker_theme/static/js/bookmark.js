@@ -45,7 +45,9 @@ function bookmarkCookieName(id) {
 function setBookmark(id) {
     let cname = bookmarkCookieName(id);
     let bookmark_btn = document.getElementById(id);
-    let page_url = window.location.pathname + '#' + id;
+
+    /* substring(3), because id starts with BM_ */
+    let page_url = window.location.pathname + '#' + id.substring(3);
     let bookmark = new Bookmark(id, page_url, bookmark_btn.title);
     setCookie(cname, JSON.stringify(bookmark));
 }
@@ -245,7 +247,6 @@ function setBookmarkBtn(id) {
  * Load the values of the bookmark buttons when the page had just loaded.
  */
 function loadBookmarks() {
-    console.log(document.cookie);
     let bookmark_btns = document.getElementsByClassName('bookmark-btn');
     for (let i = 0; i < bookmark_btns.length; i++) {
         setBookmarkBtn(bookmark_btns[i].id);

@@ -194,7 +194,10 @@ intersphinx_mapping = {
 }
 
 html_favicon = '_static/_images/favicon.ico'
-html_logo = '_static/_images/logo.svg'
+html_logo = '_static/_images/logo.png'
 html_theme_options = {
     'logo_only': True,
 }
+
+# Change the html_style to oen of the packages given in static/css
+html_style = 'css/bulma.min.css'

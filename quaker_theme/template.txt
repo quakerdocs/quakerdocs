@@ -2,7 +2,6 @@
 %(head)s
 %(stylesheet)s
 
-<!--<link rel="stylesheet" type="text/css" href="_static/css/bulma.min.css">-->
 <link rel="stylesheet" type="text/css" href="_static/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
 <link rel="stylesheet" type="text/css" href="_static/css/content.css">
@@ -23,14 +22,14 @@
 			</a>
 
 			<a class="navbar-item">
-				<button class="button is-primary is-inverted" onclick="showSearchOverlay()">
+				<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
 					<span class="icon"><i class="fa fa-search"></i></span>
-					<span> Search</span>
+					<span>Search</span>
 				</button>
 			</a>
 
 			<a class="navbar-item is-hidden-mobile">
-				<button class="button is-primary is-inverted" onclick="showBookmarkOverlay()">
+				<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
 					<span class="icon"><i class="fa fa-bookmark"></i></span>
 					<span>Bookmarks</span>
 				</button>
@@ -53,7 +52,7 @@
 <!--Search window-->
 <div id="search" class="modal">
 	<div class="modal-background" onclick="hideSearchOverlay()"></div>
-	<div class="modal-content height panel is-primary">
+	<div class="modal-content height panel">
 		<p class="panel-heading">
 			<span>Search</span>
 			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -61,7 +60,7 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-				<input id="searchbar" class="input is-primary" type="text" placeholder="Search">
+				<input id="searchbar" class="input" type="text" placeholder="Search">
 				<span class="icon is-left">
 					<span class="icon"><i class="fa fa-search"></i></span>
 				</span>
@@ -75,7 +74,7 @@
 <!--Bookmarks window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
-	<div class="modal-content height panel is-primary">
+	<div class="modal-content height panel">
 		<p class="panel-heading">
 			<span>Bookmarks</span>
 			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -83,7 +82,7 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-				<input id="bookmark-searchbar" class="input is-primary" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<input id="bookmark-searchbar" class="input" onkeyup="searchBookmarks()" type="text" placeholder="Search">
 				<span class="icon is-left">
 					<span class="icon"><i class="fa fa-search"></i></span>
 				</span>
@@ -104,7 +103,7 @@
 			%(body_pre_docinfo)s
 			%(docinfo)s
 			%(body)s
-			<button onclick="backToTop()" id="backTopBtn" class="button is-primary is-outlined fa arrow-icon fa-angle-up" title="Go to top"></button>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
 				%(footer)s

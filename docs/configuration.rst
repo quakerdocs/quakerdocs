@@ -1,43 +1,135 @@
-Getting Started with Quaker Docs
+Configure with Quaker Docs
 ================================
 
-Quaker Docs is very easy to use, and you do not need a lot to get started!
-To get started, you only need a configuration file written in Python called 'conf.py', and one or more files containing your documentation called ‘<your_file_name>.rst’.
-An example can be downloaded from `here <www.google.com>`_ .
+QuakerDocs supports configuring your own documentation build with a
+configuration file. This file is named ``conf.py`` and is found in the /docs
+directory.
 
-Installation
-------------
+Extensions
+----------------
+Add extension module names here, as strings. Quaker will look for your
+extensions in your system path. To add a new folder containing extensions to
+your path, you can use python. For example:
 
-First of all clone the git repository:
+.. code-block:: python
 
-.. code-block:: bash
+   sys.path.insert(0, os.path.abspath('./my_extensions'))
+   extensions = ['extension1', 'extension2']
 
-    git clone ssh://git@gitlab-fnwi.uva.nl:1337/lreddering/pse-documentation-generator.git
 
-When all the files have been cloned, run 'pip install -r requirements.txt' to install all the required dependencies for Quaker Docs to work.
-When this is done, just run 'make install' to install quaker to your system.
+Templates
+----------------
+Add any paths that contain templates here, relative to this directory.
 
-Usage
------
+.. code-block:: python
 
-To use QuakerDocs to turn your reStructuredText files into a static webpage you need the follow these steps:
+   templates_path = ['my_templates']
 
-1. Open the directory containing your 'conf.py' in the terminal.
 
-   .. code-block:: bash
+Source suffix
+----------------
+The suffix(es) of source filenames.
+You can specify multiple suffix as a list of string:
 
-      cd path/to/my/project
+.. code-block:: python
 
-2. To convert your documentation files into a static webpage, run the following command.
+   source_suffix = ['.rst', '.md']
 
-   .. code-block:: bash
 
-      quaker . -d build
+Master document
+----------------
+The master toctree document. This is the document that Quaker will use to
+generate the table of contents that is shown in the sidebar. It will parse
+the master document and retrieve all table of contents on that page.
+You can specify the master document of your documentation webpage:
 
-3. (Change into the build directory, and start a webserver)
+.. code-block:: python
 
-   .. code-block:: bash
+   master_doc = 'index'
 
-       python3 -m http.server
 
-4. To visit the generated documentation page visit localhost:8000 in your web browser.
+Information about your project
+-------------------------------
+General information about the project.
+
+.. code-block:: python
+
+   project = 'My Project'
+   copyright = '2021, My Team'
+   author = 'My Name'
+
+
+Version
+--------
+The version info for the project you're documenting, used in various other
+places throughout the built documents.
+
+.. code-block:: python
+
+   # The short X.Y version.
+   version = '0.1'
+   # The full version, including alpha/beta/rc tags.
+   release = version
+
+
+Exclude patterns
+-----------------
+List of patterns, relative to source directory, that match files and
+directories to ignore when looking for source files.
+This patterns also affects ``html_static_path``.
+
+.. code-block:: python
+
+   exclude_patterns = ['build/*']
+
+
+Options for HTML
+------------------------
+
+HTML theme path
+~~~~~~~~~~~~~~~~
+
+Specify the path to the directory containing custom template files.
+
+.. code-block:: python
+
+   templates_path = 'my_templates'
+
+HTML theme
+~~~~~~~~~~~~
+
+The theme to use for HTML pages.
+
+.. code-block:: python
+
+   html_theme = 'quakerdocs'
+
+HTML static path
+~~~~~~~~~~~~~~~~~
+
+Add any paths that contain custom static files (such as style sheets) here,
+relative to this directory. They are copied to the _static directory in the
+build directory after the builtin static files, so a file named "default.css"
+will overwrite the builtin "default.css".
+
+.. code-block:: python
+
+   html_static_path = ['_static']
+
+HTML favicon
+~~~~~~~~~~~~~~
+
+Add the path and filename of the favicon you want to use for the webpage.
+
+.. code-block:: python
+
+   html_favicon = '_static/_images/favicon.ico'
+
+HTML logo
+~~~~~~~~~~
+
+Add the path and filename of the logo you want to use for the webpage.
+
+.. code-block:: python
+
+   html_logo = '_static/_images/logo.png'

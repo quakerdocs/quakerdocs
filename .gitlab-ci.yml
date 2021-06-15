@@ -28,13 +28,13 @@ create_badge_svg:
 flake8:
   stage: Test
   script:
-    - flake8 backend/*.py --statistics --count --max-line-length=120
+    - flake8 ./src/ --statistics --count
 
 pylint:
   stage: Test
   allow_failure: true
   script:
-    - pylint ./backend/*.py --output-format=text
+    - pylint ./src/ --output-format=text
 
 pages:
   stage: Deploy
@@ -48,7 +48,7 @@ pages:
     - touch /root/.ssh/known_hosts                    # Create known_hosts files
     - chmod 600 /root/.ssh/known_hosts                # Set permissions
     - ssh-keyscan -H $FTP_HOST >> /root/.ssh/known_hosts  # Add server to known_hosts, "set sftp:auto-confirm" does not work
-    - lftp -e "open sftp://$FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose build/ /subdomains/doctor/; bye"
+    - lftp -e "open sftp://$FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose build/ /www/; bye"
     - make clean
   only:
     refs:
