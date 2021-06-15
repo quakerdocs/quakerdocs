@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/friendly.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/popover.css">
 <script src="js/search_data.js"></script>
 <script src="js/search.js"></script>
 <script src="js/script.js"></script>
@@ -22,19 +23,30 @@
 				%(logo)s
 			</a>
 
-			<a class="navbar-item">
-				<button class="button is-primary is-inverted" onclick="showSearchOverlay()">
-					<span class="icon"><i class="fa fa-search"></i></span>
-					<span> Search</span>
-				</button>
-			</a>
+			<div id="search-wrapper">
+				<a class="popover-trigger navbar-item">
+					<button class="popover-trigger-search button is-primary is-inverted" onclick="showSearchOverlay()">
+						<span class="icon"><i class="fa fa-search"></i></span>
+						<span> Search</span>
+					</button>
+				</a>
+				<div id="popover" class="is-hidden-mobile">
+					<p>Search <b>(S)</b> </p>
+				</div>
+			</div>
 
-			<a class="navbar-item is-hidden-mobile">
-				<button class="button is-primary is-inverted" onclick="showBookmarkOverlay()">
-					<span class="icon"><i class="fa fa-bookmark"></i></span>
-					<span>Bookmarks</span>
-				</button>
-			</a>
+			<div id="bookmarkwrapper" class="is-hidden-mobile">
+				<a class="popover-trigger navbar-item">
+					<button class="button is-primary is-inverted" onclick="showBookmarkOverlay()">
+						<span class="icon"><i class="fa fa-bookmark"></i></span>
+						<span>Bookmarks</span>
+					</button>
+				</a>
+				<div id="popover">
+					<p>Bookmarks <b>(B)</b> </p>
+					<!--<span class="icon><i class="fa fa></i></span>-->
+				</div>
+			</div>
 
 			<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
 				<span aria-hidden="true"></span>

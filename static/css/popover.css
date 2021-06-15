@@ -1,0 +1,25 @@
+#popover {
+    visibility: hidden;
+    position: absolute;
+    background-color: #bfbfbf;
+    margin-left: 1%;
+    padding: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    width: auto;
+    text-align: center;
+}
+
+#popover:before {
+    position: absolute;
+    content: "";
+    right: calc(50% - 10px);
+    top: -8px;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #bfbfbf transparent;
+}
+
+.popover-trigger:hover ~ #popover {
+    visibility: visible;
+}
