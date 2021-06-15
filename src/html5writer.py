@@ -5,7 +5,6 @@ Class to extend the functionality of the default HTML5 writer of docutils.
 import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
-from bs4 import BeautifulSoup
 
 import directives.sphinx
 
@@ -163,22 +162,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.logo = ''
         if document.settings.logo is not None:
             self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
-
-        # Expand the menu entry of the current open page.
-        soup = BeautifulSoup(self.navigation, 'html.parser')
-        a = soup.find('a', href=document.settings.html_path)
-        if a is not None:
-            parents = a.find_parents('li')
-            childrenUL = parents[0].find_all('ul')
-            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
-
-            if childrenUL is not None and childrenARROW is not None:
-                for child in childrenUL:
-                    child['class'] = "menu-list is-expanded"
-
-                for child in childrenARROW:
-                    child['class'] = 'fa arrow-icon fa-angle-down'
-        self.navigation = str(soup.prettify())
 
         # Add copyright notice to footer.
         self.footer.append(

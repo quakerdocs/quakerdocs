@@ -15,15 +15,20 @@ function toggleMenu() {
 
 /**
  * Expand the element in the sidebar to show its children.
- * @param {*} element The element to be expanded.
+ * @param {Object} element The element to be expanded.
+ * @param {Boolean} onlyExpand If true, the element will not collapse if it
+ *     is expanded, but only expand if it is collapsed.
  */
-function toggleExpand(element) {
-    var ul = element.parentElement.parentElement.getElementsByTagName("UL")[0];
-    var i = element.firstChild.nextSibling;
+function toggleExpand(element, onlyExpand=false) {
+    if (element.children.length < 2) {
+        return;
+    }
 
-    if (ul.classList.contains('is-expanded')) {
-        i.classList.replace('fa-angle-down', 'fa-angle-right');
-        ul.classList.replace('is-expanded', 'is-collapsed');
+    var ul = element.parentElement.getElementsByTagName("UL")[0];
+    var i = element.children[1].firstChild.nextSibling;
+    if (ul.classList.contains('is-expanded') && !onlyExpand) {
+            i.classList.replace('fa-angle-down', 'fa-angle-right');
+            ul.classList.replace('is-expanded', 'is-collapsed');
     } else {
         i.classList.replace('fa-angle-right', 'fa-angle-down');
         ul.classList.replace('is-collapsed', 'is-expanded');
@@ -84,22 +89,36 @@ function backToTop() {
 }
 
 /**
- * Expand the corresponding navigation menu entry in the sidebar.
+ * Expands the sidebar entry of the associated url and it's parents.
+ * @param {string} url The url that is associated with the to be expanded
+ *     button.
  */
-function expandSidebar() {
+function expandSidebar(url) {
+    a = document.querySelector('a[href="' + url + '"]');
 
-    return;
+    toggleExpand(a.parentElement, forceExpand=true);
+    expandULParents(a);
 }
 
-window.onscroll = function() {
-    toggleBackToTopButton();
-};
+/**
+ * Expand all the parents of the given element that can be expanded in the
+ * sidebar.
+ * @param {*} element The element whose parents should be expanded.
+ */
+function expandULParents(element) {
+    while (element) {
+        if (element.tagName == "UL" &&
+            (element.classList.contains("is-collapsed") ||
+             element.classList.contains("is-expanded"))) {
+            toggleExpand(element.previousSibling, forceExpand=true);
+        }
+        element = element.parentNode;
+    }
+}
 
-window.onload = function() {
-    expandSidebar();
-};
-
-/* The search function for the bookmarks searchbar */
+/**
+ * The search function for the bookmarks searchbar
+ */
 function searchBookmarks() {
     var input, filter, list, items, item, title, i, txtValue;
     input = document.getElementById("bookmark-searchbar");
@@ -124,3 +143,25 @@ function searchBookmarks() {
         }
     }
 }
+
+window.onscroll = function() {
+    toggleBackToTopButton();
+};
+
+/**
+ * When all the content is loaded, call {@link expandSidebar} to expand the
+ * current page in the sidebar. Also set the scroll level of the sidebar to be
+ * equal to the recorded number.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    expandSidebar(document.location.href.split("/").splice(3).join('/'));
+
+    let sidebar = document.getElementById("menuPanel");
+    sidebar.scrollTo(0, localStorage.getItem('sidebarScrollPos') || 0)
+
+    // Record the current scroll level of the sidebar into a localStorage
+    // entry.
+    sidebar.onscroll = function() {
+        localStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
+    }
+}, false);
