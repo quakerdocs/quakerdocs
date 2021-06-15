@@ -145,7 +145,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         Initialize the HTML translator
         """
         super().__init__(document)
-        self.bookmark_index = 0
 
         # Set base path for every document.
         self.head.append('<base href="%s">' % document.settings.rel_base)
@@ -279,12 +278,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         try:
             id_str = "BM_" + str(node.parent['ids'][0])
             return id_str
-        except:
-            print('Cannot make bookmark ID, because parent ID can not be found.')
+        except (KeyError, IndexError):
+            print('Cannot make bookmark ID, because parent ID can not be established.')
             raise
-
-
-        # comb_str = node.astext() + str(self.bookmark_index)
-        # hash_str = str(hash(comb_str))
-        # self.bookmark_index += 1
-        # return "BM" + hash_str
