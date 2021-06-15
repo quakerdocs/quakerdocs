@@ -60,5 +60,5 @@ class Theme:
 
         if os.path.exists(os.path.join(self.theme_path, 'static')):
             copy_tree(os.path.join(self.theme_path, 'static'),
-                    os.path.join(dest_path, '_static'),
-                    update=1)
+                      os.path.join(dest_path, '_static'),
+                      update=1)
