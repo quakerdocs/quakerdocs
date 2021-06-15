@@ -269,5 +269,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             id_str = "BM_" + str(node.parent['ids'][0])
             return id_str
         except (KeyError, IndexError):
-            print('Cannot make bookmark ID, because parent ID can not be established.')
+            print('Cannot make bookmark ID, because parent ID can '
+                  'not be established.')
             raise
