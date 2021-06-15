@@ -198,3 +198,6 @@ html_logo = '_static/_images/logo.svg'
 html_theme_options = {
     'logo_only': True,
 }
+
+# Change the html_style to oen of the packages given in static/css
+html_style = 'css/bulma.min.css'
