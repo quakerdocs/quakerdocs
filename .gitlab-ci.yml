@@ -36,24 +36,6 @@ pylint:
   script:
     - pylint ./src/*.py --output-format=text
 
-devpages:
-  stage: Deploy
-  before_script:
-    - pip install -r requirements.txt
-    - apt-get update -qq && apt-get install -y -qq lftp
-  script:
-    - make html
-    - mkdir /root/.ssh                                # Create .ssh directory
-    - chmod 700 /root/.ssh                            # Set permissions
-    - touch /root/.ssh/known_hosts                    # Create known_hosts files
-    - chmod 600 /root/.ssh/known_hosts                # Set permissions
-    - ssh-keyscan -H $FTP_HOST >> /root/.ssh/known_hosts  # Add server to known_hosts, "set sftp:auto-confirm" does not work
-    - lftp -e "open sftp://$FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; mirror -X .* -X .*/ --reverse --verbose build/ /subdomains/dev/; bye"
-    - make clean
-  only:
-    refs:
-      - development
-
 pages:
   stage: Deploy
   before_script:
