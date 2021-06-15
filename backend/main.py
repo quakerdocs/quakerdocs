@@ -162,7 +162,7 @@ class Main:
         for path, content in source_files:
             self.write_rst(path, content)
 
-        self.idx.build(os.path.join(self.dest_path, 'js'))
+        # self.idx.build(os.path.join(self.dest_path, 'js'))
 
         # Copy files from the theme to build directory
         self.theme.copy_files(self.dest_path)
