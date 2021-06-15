@@ -25,7 +25,7 @@ function toggleExpand(element, onlyExpand=false) {
     }
 
     var ul = element.parentElement.getElementsByTagName("UL")[0];
-    var i = element.children[1].firstChild.nextSibling;
+    var i = element.children[1].firstChild;
     if (ul.classList.contains('is-expanded') && !onlyExpand) {
             i.classList.replace('fa-angle-down', 'fa-angle-right');
             ul.classList.replace('is-expanded', 'is-collapsed');
