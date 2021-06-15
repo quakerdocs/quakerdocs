@@ -11,19 +11,31 @@ class Theme:
     """
     Class for theme reading.
     """
-    def __init__(self, theme_path):
+    def __init__(self, theme_name, theme_path):
         """
         Get all data related to a class.
         """
-        # TODO: Location of themes?
-        self.theme_path = theme_path
+        # Get the paths to places where themes could be.
+        dirs = theme_path if theme_path is not None else [
+            os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+        ]
+
+        for dir in dirs:
+            path = os.path.join(dir, theme_name)
+            if os.path.exists(path) and os.path.isdir(path):
+                self.theme_path = path
+                break
+        if self.theme_path is None:
+            print("Failed to find specified theme %s!" % theme_name, file=stderr)
+            return None
+
         config = ConfigParser()
-        config.read(os.path.join(theme_path, 'theme.conf'))
+        config.read(os.path.join(self.theme_path, 'theme.conf'))
 
         self.inherit = None
         inherit_name = config.get('theme', 'inherit', fallback=None)
         if inherit_name is not None:
-            self.inherit = Theme(inherit_name)
+            self.inherit = Theme(inherit_name, theme_path)
         self.stylesheet = config.get('theme', 'stylesheet', fallback=None)
 
     def get_file(self, filename):

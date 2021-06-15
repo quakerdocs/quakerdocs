@@ -83,8 +83,8 @@ templates_path = '../static'  # TODO: Should be a list of directories!
 # a list of builtin themes.
 
 html_theme_path = ['.']
-html_theme = 'quaker_dark'
-# html_style = 'css/bulma.min.css'
+html_theme = 'quaker_theme'
+# html_style = 'css/bulma.min-classy.css'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

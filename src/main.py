@@ -103,19 +103,8 @@ class Main:
         os.chdir(prev_cwd)
 
         # Get path to theme
-        self.theme = None
-        theme_name = self.conf_vars.get('html_theme', 'quaker_theme')
-        dirs = self.conf_vars.get('html_theme_path', [
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
-        ])
-        for dir in dirs:
-            path = os.path.join(dir, theme_name)
-            if os.path.exists(path) and os.path.isdir(path):
-                self.theme = theme.Theme(path)
-                break
-        if self.theme is None:
-            print("Failed to find specified theme %s!" % theme_name, file=stderr)
-            exit()
+        self.theme = theme.Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
+                                 self.conf_vars.get('html_theme_path'))
 
     def generate(self):
         """
