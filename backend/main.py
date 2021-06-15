@@ -16,10 +16,11 @@ import docutils.parsers.rst
 import docutils.writers
 
 import application
+import custom_dirs
 import index
 import html5writer
-import custom_dirs
 import spdirs
+import theme
 
 SKIP_TAGS = {'system_message', 'problematic'}
 
@@ -71,6 +72,10 @@ class Main:
         else:
             self.conf_vars['source_suffix'] = ['.rst']
 
+        if 'html_theme_path' in self.conf_vars:
+            for i, path in enumerate(self.conf_vars['html_theme_path']):
+                self.conf_vars['html_theme_path'][i] = os.path.abspath(path)
+
         if 'exclude_patterns' not in self.conf_vars:
             self.conf_vars['exclude_patterns'] = []
         if 'html_static_path' not in self.conf_vars:
@@ -113,13 +118,28 @@ class Main:
             application.setup_extension(ext, self.sp_app)
         os.chdir(prev_cwd)
 
+        # Get path to theme
+        self.theme = None
+        theme_name = self.conf_vars.get('html_theme', 'quaker_theme')
+        dirs = self.conf_vars.get('html_theme_path', [
+            os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+        ])
+        for dir in dirs:
+            path = os.path.join(dir, theme_name)
+            if os.path.exists(path) and os.path.isdir(path):
+                self.theme = theme.Theme(path)
+                break
+        if self.theme is None:
+            print("Failed to find specified theme %s!" % theme_name, file=stderr)
+            return 1
+
         # Set-up Table of Contents data
         self.build_global_toc()
 
         # Set-up index generator
         self.idx = index.IndexGenerator()
 
-        # Iterate over files in source directory and save in [(path, content)]
+        # Read files in source directory and save in [(path, content)]
         source_files = list()
         for root, dirs, files in os.walk(self.source_path):
             for dir in dirs:
@@ -143,13 +163,10 @@ class Main:
             self.write_rst(path, content)
 
         self.idx.build(os.path.join(self.dest_path, 'js'))
-        self.copy_static_files()
 
-        # TEMP
-        temp_paths = ['css', 'js', 'fonts']
-        for path in temp_paths:
-            copy_tree(os.path.join('static', path),
-                      os.path.join(self.dest_path, path), update=1)
+        # Copy files from the theme to build directory
+        self.theme.copy_files(self.dest_path)
+        self.copy_static_files()
 
         print("The generated documents have been saved in %s" % self.dest_path)
         return 0
@@ -224,12 +241,15 @@ class Main:
                 writer=self.builder_class(),
                 settings_overrides={
                     'toc': self.toc_navigation,
+                    'template': self.theme.get_file('template.txt'),
+                    'stylesheet': os.path.join('_static', self.conf_vars.get('html_style', self.theme.get_style())),
                     'src_dir': self.source_path,
                     'html_path': html_path,
                     'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
+                    'logo': self.conf_vars.get('html_logo', None),
+                    'embed_stylesheet': False,
                     'handlers': self.sp_app.get_handlers(),
                     'favicon': self.conf_vars.get('html_favicon', None),
-                    'logo': self.conf_vars.get('html_logo', None),
                     'copyright': self.conf_vars.get('copyright', '')
                 })
             f.write(output)
