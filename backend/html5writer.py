@@ -126,7 +126,7 @@ class Writer(docutils.writers._html_base.Writer):
         'body_pre_docinfo', 'docinfo', 'body', 'body_suffix',
         'title', 'subtitle', 'header', 'footer', 'meta', 'fragment',
         'html_prolog', 'html_head', 'html_title', 'html_subtitle',
-        'html_body', 'navigation', 'logo')
+        'html_body', 'navigation', 'logo', 'html_style')
 
     def __init__(self):
         """
@@ -150,6 +150,11 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Set base path for every document.
         self.head.append('<base href="%s">' % document.settings.rel_base)
 
+        # Add stylesheet to pages.
+        self.html_style = ''
+        if document.settings.html_style is not None:
+            self.html_style = '<link rel="stylesheet" type="text/css" href="%s">' % document.settings.html_style
+
         # Add favicon to pages.
         if document.settings.favicon is not None:
             self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
@@ -162,7 +167,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add logo to pages.
         self.logo = ''
         if document.settings.logo is not None:
-            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
+            self.logo = '<img src="%s" alt="Logo">' % document.settings.logo
 
         # Expand the menu entry of the current open page.
         soup = BeautifulSoup(self.navigation, 'html.parser')
@@ -183,7 +188,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
+            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/\
+            lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
             % document.settings.copyright)
 
     def visit_toc_data(self, node: nodes.Element):

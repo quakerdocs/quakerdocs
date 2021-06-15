@@ -230,7 +230,8 @@ class Main:
                     'handlers': self.sp_app.get_handlers(),
                     'favicon': self.conf_vars.get('html_favicon', None),
                     'logo': self.conf_vars.get('html_logo', None),
-                    'copyright': self.conf_vars.get('copyright', '')
+                    'copyright': self.conf_vars.get('copyright', ''),
+                    'html_style': self.conf_vars.get('html_style', None)
                 })
             f.write(output)
 
