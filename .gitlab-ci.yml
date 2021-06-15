@@ -28,13 +28,13 @@ create_badge_svg:
 flake8:
   stage: Test
   script:
-    - flake8 backend/*.py --statistics --count --max-line-length=120
+    - flake8 src/*.py --statistics --count --max-line-length=120
 
 pylint:
   stage: Test
   allow_failure: true
   script:
-    - pylint ./backend/*.py --output-format=text
+    - pylint ./src/*.py --output-format=text
 
 pages:
   stage: Deploy

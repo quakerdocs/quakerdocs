@@ -6,7 +6,7 @@ import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
 
-import spdirs
+import directives.sphinx
 
 
 class Writer(docutils.writers._html_base.Writer):
@@ -125,7 +125,7 @@ class Writer(docutils.writers._html_base.Writer):
         'body_pre_docinfo', 'docinfo', 'body', 'body_suffix',
         'title', 'subtitle', 'header', 'footer', 'meta', 'fragment',
         'html_prolog', 'html_head', 'html_title', 'html_subtitle',
-        'html_body', 'navigation')
+        'html_body', 'navigation', 'logo')
 
     def __init__(self):
         """
@@ -156,13 +156,31 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Build navigation bar.
         self.navigation = ''
         for toc in document.settings.toc:
-            self.navigation += spdirs.TocTree.to_html(toc)
+            self.navigation += directives.sphinx.TocTree.to_html(toc)
+
+        # Add logo to pages.
+        self.logo = ''
+        if document.settings.logo is not None:
+            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
 
         # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href="docr.nl">DOC\'R</a> </p>'
+            <p>Generated with &hearts; by <a href\
+                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
             % document.settings.copyright)
+
+    def visit_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
+
+    def depart_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
 
     def visit_toc_data(self, node: nodes.Element):
         """
@@ -188,6 +206,32 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         End of rendering keystroke element.
         """
         self.body.append('</kbd>')
+
+    def visit_iframe_node(self, node: nodes.Element) -> None:
+        """
+        Do nothing on visit.
+        """
+        pass
+
+    def depart_iframe_node(self, node: nodes.Element) -> None:
+        """
+        Add iframe HTML with correct attributes.
+        """
+        url = node['url']
+        width = node['width']
+        height = node['height']
+
+        code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
+        self.body.append(code)
+
+    def visit_section(self, node: nodes.Element) -> None:
+        """
+        Adds a span before the section with the same id as the section.
+        """
+        if node['ids']:
+            section_id = node['ids'][0]
+            self.body.append(f'<span class="anchor" id="{section_id}"></span>')
+        super().visit_section(node)
 
     def depart_title(self, node: nodes.Element) -> None:
         """

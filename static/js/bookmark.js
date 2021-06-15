@@ -117,7 +117,7 @@ function showBookmarkOverlay() {
     bookmarkOpen = true;
 
     // Prevent background from scrolling while search window is open.
-    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.overflowY = 'hidden';
     document.body.scroll = "no";
 
     renderBookmarkList();
@@ -132,7 +132,7 @@ function hideBookmarkOverlay() {
     bookmarkOpen = false;
 
     // Allow background to scroll again.
-    document.documentElement.style.overflow = 'scroll';
+    document.documentElement.style.overflowY = 'scroll';
     document.body.scroll = "yes";
 
     loadBookmarks();

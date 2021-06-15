@@ -15,11 +15,15 @@ import docutils.writers.html5_polyglot
 import docutils.parsers.rst
 import docutils.writers
 
+import application
 import index
 import html5writer
-import custom_dirs
-import spdirs
-import sphinx_app
+
+import directives.metadata
+import directives.sphinx
+import directives.custom
+import directives.raw
+
 
 SKIP_TAGS = {'system_message', 'problematic'}
 
@@ -59,8 +63,10 @@ class Main:
         }
         conf_vars = {}
 
+        # TODO maybe don't use exec?
         # Check if file exists? Other cwd?
-        exec(open('conf.py').read(), global_vars, conf_vars)
+        with open('conf.py') as f:
+            exec(f.read(), global_vars, conf_vars)
         self.conf_vars = conf_vars
 
         # Fix some things
@@ -101,16 +107,18 @@ class Main:
         self.dest_path = dir_path(self.dest_path)
 
         # Set-up reStructuredText directives
-        spdirs.setup()
-        custom_dirs.setup()
+        directives.metadata.setup()
+        directives.sphinx.setup()
+        directives.custom.setup()
+        directives.raw.setup()
 
         # Load user configuration and extensions
         prev_cwd = os.getcwd()
         os.chdir(self.source_path)
         self.read_conf()
-        self.sp_app = sphinx_app.SphinxApp()
+        self.sp_app = application.SphinxApp()
         for ext in self.conf_vars['extensions']:
-            sphinx_app.setup_extension(ext, self.sp_app)
+            application.setup_extension(ext, self.sp_app)
         os.chdir(prev_cwd)
 
         # Set-up Table of Contents data
@@ -119,7 +127,8 @@ class Main:
         # Set-up index generator
         self.idx = index.IndexGenerator()
 
-        # Iterate over all files in the source directory
+        # Iterate over files in source directory and save in [(path, content)]
+        source_files = list()
         for root, dirs, files in os.walk(self.source_path):
             for dir in dirs:
                 new_dir = os.path.join(self.dest_path, self.relative_path(root), dir)
@@ -130,11 +139,16 @@ class Main:
                 try:
                     if any(file.endswith(suffix) for suffix in self.conf_vars['source_suffix']) \
                        and self.is_not_excluded(path):
-                        self.handle_rst(path)
+                        content = self.parse_rst(path)
+                        source_files.append((path, content))
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
+
+        # Iterate over files and write to files.
+        for path, content in source_files:
+            self.write_rst(path, content)
 
         self.idx.build(os.path.join(self.dest_path, 'js'))
         self.copy_static_files()
@@ -148,9 +162,30 @@ class Main:
         print("The generated documents have been saved in %s" % self.dest_path)
         return 0
 
-    def handle_rst(self, path):
+    def parse_rst(self, path):
         """
-        Parse a rst file and output its contents.
+        Parse a rst file.
+        """
+        src = os.path.join(self.source_path, path)
+        html_path = path[:-4] + '.html'
+        content = open(src).read()
+
+        doctree = docutils.core.publish_doctree(
+            content,
+            source_path=src,
+            settings_overrides={
+                'src_dir': self.source_path,
+                'dst_dir': self.dest_path
+            }
+        )
+        for id in doctree.ids:
+            application.id_map.update({id: html_path})
+
+        return content
+
+    def write_rst(self, path, content):
+        """
+        Parse a rst file and write its contents to a file.
         """
         src = os.path.join(self.source_path, path)
         html_path = path[:-4] + '.html'
@@ -159,7 +194,7 @@ class Main:
         # Add epilog and prolog to source file.
         file_contents = '%s\n%s\n%s' % (
             self.conf_vars.get('rst_prolog', ''),
-            open(src, 'r').read(),
+            content,
             self.conf_vars.get('rst_epilog', ''))
 
         # Read the rst file.
@@ -171,6 +206,11 @@ class Main:
             file_contents,
             source_path=src,
             settings_overrides=settings)
+
+        # Get the page metadata.
+        metadata = directives.metadata.get_metadata(doctree)
+        if metadata.ignore:
+            return
 
         # Delete the nodes we want to skip.
         for node in doctree.traverse():
@@ -187,7 +227,7 @@ class Main:
 
         # Collect all the text
         content = ' '.join(n.astext() for n in doctree.traverse(lambda n: isinstance(n, nodes.Text)))
-        self.idx.parse_file(content, title, html_path)
+        self.idx.add_file(content, title, html_path, metadata.priority)
 
         # Write the document to a file.
         with open(dest, 'wb') as f:
@@ -202,6 +242,7 @@ class Main:
                     'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
                     'handlers': self.sp_app.get_handlers(),
                     'favicon': self.conf_vars.get('html_favicon', None),
+                    'logo': self.conf_vars.get('html_logo', None),
                     'copyright': self.conf_vars.get('copyright', '')
                 })
             f.write(output)
@@ -241,7 +282,7 @@ class Main:
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        for tt in doctree.traverse(spdirs.toc_data):
+        for tt in doctree.traverse(directives.sphinx.toc_data):
             self.toc_navigation.append(tt)
 
     def copy_static_files(self):
