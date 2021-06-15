@@ -2,7 +2,8 @@
 Implement directives used by Sphinx
 
 All implementations of the directives have been inspired by:
-https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d34765e74edf3a3be3c62c/sphinx/directives/other.py
+https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d3
+4765e74edf3a3be3c62c/sphinx/directives/other.py
 """
 
 import os.path
@@ -32,8 +33,11 @@ class Only(Directive):
     def run(self):
         node = nodes.container()
 
-        if self.arguments[0] == 'html' or (self.arguments[0][:4] == 'not ' and self.arguments[0][4:] != 'html'):  # FIX
-            self.state.nested_parse(self.content, self.content_offset, node, match_titles=True)
+        if (self.arguments[0] == 'html'
+            or (self.arguments[0][:4] == 'not '
+                and self.arguments[0][4:] != 'html')):  # FIX
+            self.state.nested_parse(self.content, self.content_offset, node,
+                                    match_titles=True)
             return [*node]
 
         return []
@@ -86,17 +90,20 @@ class TocTree(Directive):
 
         wrappernode = nodes.compound(classes=['toctree-wrapper'])
         wrappernode.append(tocdata)
-        list_type = nodes.enumerated_list if tocdata['numbered'] else nodes.bullet_list
+        list_type = (nodes.enumerated_list if tocdata['numbered']
+                     else nodes.bullet_list)
         lst = list_type()
 
         # Parse ToC content.
         TocTree.parse_content(tocdata)
-        items = TocTree.to_nodes(tocdata['entries'], tocdata['maxdepth'], list_type=list_type)
+        items = TocTree.to_nodes(tocdata['entries'], tocdata['maxdepth'],
+                                 list_type=list_type)
 
         # Add ToC to document.
         lst.extend(items)
         if tocdata['caption'] is not None:
-            wrappernode += nodes.paragraph('', tocdata['caption'], classes=['caption'])
+            wrappernode += nodes.paragraph('', tocdata['caption'],
+                                           classes=['caption'])
         if len(lst) > 0:
             wrappernode += lst
         return [wrappernode]
@@ -117,8 +124,10 @@ class TocTree(Directive):
                 title = c.next_node(nodes.Titular)
                 if title:
                     children = TocTree.parse_node(c, ref)
-                    anchor = c.attributes['ids'][0]  # Use id of the anchor, not of the section!
-                    entries.append((title.astext(), '%s#%s' % (ref, anchor), children))
+                    # Use id of the anchor, not of the section!
+                    anchor = c.attributes['ids'][0]
+                    entries.append((title.astext(), '%s#%s'
+                                    % (ref, anchor), children))
 
         return entries
 
@@ -137,19 +146,21 @@ class TocTree(Directive):
             explicit_link = util.link_explicit(entry)
             if explicit_link is not None:
                 title, ref = explicit_link
-                if not ref.startswith("https://") and not ref.startswith("http://"):
+                if (not ref.startswith("https://")
+                        and not ref.startswith("http://")):
                     ref = os.path.join(src_dir, ref + ".html")
             else:
                 ref = os.path.join(entry + ".html")
                 src = os.path.join(src_dir, entry + ".rst")
 
-                if os.path.exists(src):
-                    doctree = docutils.core.publish_doctree(
-                        open(src, 'r').read(),
-                        source_path=src,
-                        settings_overrides={'src_dir': src[:-4]})
-                else:
+                if not os.path.exists(src):
                     continue
+
+                doctree = docutils.core.publish_doctree(
+                    open(src, 'r').read(),
+                    source_path=src,
+                    settings_overrides={'src_dir': src[:-4]}
+                )
 
                 # Find the page title.
                 try:
@@ -173,7 +184,8 @@ class TocTree(Directive):
         """
         items = list()
         for title, ref, children in entries:
-            lst_item = nodes.list_item('', nodes.paragraph('', '', nodes.reference('', title, refuri=ref)))
+            lst_item = nodes.list_item('', nodes.paragraph('', '',
+                                       nodes.reference('', title, refuri=ref)))
 
             # Parse children, but only if maxdepth is not yet reached.
             if len(children) > 0 and depth > 1:
@@ -182,7 +194,8 @@ class TocTree(Directive):
                 while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
                 blst = list_type()
-                blst.extend(TocTree.to_nodes(children, depth=depth-1, list_type=list_type))
+                blst.extend(TocTree.to_nodes(children, depth=depth-1,
+                                             list_type=list_type))
                 lst_item.append(blst)
             items.append(lst_item)
         return items
@@ -191,7 +204,8 @@ class TocTree(Directive):
         """
         Parse the TocData data-structure to HTML.
         """
-        ret = '<p class="caption menu-label"><span class="caption-text">%s</span></p>' % tocdata['caption']
+        ret = ('<p class="caption menu-label"><span class="caption-text">'
+               '%s</span></p>' % tocdata['caption'])
         ret += TocTree.entries_to_html(tocdata['entries'], 999)
         return ret
 
@@ -211,10 +225,10 @@ class TocTree(Directive):
             lst_item += 'href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
-                lst_item += '<span onclick="toggleExpand(this.parentNode)"\
-                             class="is-clickable icon is-small level-right">\
-                             <i class="fa arrow-icon fa-angle-right"\
-                             aria-hidden="true"></i></span>'
+                lst_item += ('<span onclick="toggleExpand(this.parentNode)"'
+                             'class="is-clickable icon is-small level-right">'
+                             '<i class="fa arrow-icon fa-angle-right"'
+                             'aria-hidden="true"></i></span>')
 
             lst_item += '</span>'
 
@@ -224,7 +238,8 @@ class TocTree(Directive):
                 # This is similar to Sphinx
                 while len(children) == 1 and len(children[0][2]) > 1:
                     children = children[0][2]
-                blst = TocTree.entries_to_html(children, depth=depth-1, begin_depth=begin_depth+1)
+                blst = TocTree.entries_to_html(children, depth=depth-1,
+                                               begin_depth=begin_depth+1)
                 lst_item += blst
             lst_item += "</li>\n"
             ret += lst_item
