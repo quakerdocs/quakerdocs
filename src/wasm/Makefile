@@ -5,16 +5,16 @@ BUILD := build
 OBJS := $(patsubst %.cpp, ${BUILD}/%.o, $(SOURCES))
 EM_OBJS := $(patsubst %.cpp, ${BUILD}/%.em, $(SOURCES))
 
-CC_ARGS := -Os #-flto
+CC_ARGS := -Os -flto
 CC := gcc $(CC_ARGS)
-EM_CC := emsdk/upstream/emscripten/emcc $(CC_ARGS) -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
+EM_CC := emsdk/upstream/emscripten/emcc $(CC_ARGS)
 
 $(BUILD)/%.em: %.cpp $(HEADERS)
 	@mkdir -p build
 	$(EM_CC) -std=c++17 -c -o $@ $<
 emscripten: emsdk $(EM_OBJS)
 	@mkdir -p build
-	$(EM_CC) $(EM_OBJS) -o build/search_data.js
+	$(EM_CC) $(EM_OBJS) -o build/search_data.js -s WASM=1 -s EXPORTED_FUNCTIONS=["_performSearch","_getSearch"] -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
 
 $(BUILD)/%.o: %.cpp $(HEADERS)
 	@mkdir -p build

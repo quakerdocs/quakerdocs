@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
-BUILDFILE	  = backend/main.py
+BUILDFILE	  = src/main.py
 SOURCEDIR     = codegrade/docs
 BUILDDIR      = build
 
@@ -11,7 +11,7 @@ BUILDDIR      = build
 help:
 	python3 $(BUILDFILE) --help
 
-.PHONY: help Makefile backend
+.PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.

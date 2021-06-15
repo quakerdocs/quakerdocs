@@ -5,9 +5,8 @@ Class to extend the functionality of the default HTML5 writer of docutils.
 import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
-from bs4 import BeautifulSoup
 
-import spdirs
+import directives.sphinx
 
 
 class Writer(docutils.writers._html_base.Writer):
@@ -157,28 +156,12 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Build navigation bar.
         self.navigation = ''
         for toc in document.settings.toc:
-            self.navigation += spdirs.TocTree.to_html(toc)
+            self.navigation += directives.sphinx.TocTree.to_html(toc)
 
         # Add logo to pages.
         self.logo = ''
         if document.settings.logo is not None:
             self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
-
-        # Expand the menu entry of the current open page.
-        soup = BeautifulSoup(self.navigation, 'html.parser')
-        a = soup.find('a', href=document.settings.html_path)
-        if a is not None:
-            parents = a.find_parents('li')
-            childrenUL = parents[0].find_all('ul')
-            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
-
-            if childrenUL is not None and childrenARROW is not None:
-                for child in childrenUL:
-                    child['class'] = "menu-list is-expanded"
-
-                for child in childrenARROW:
-                    child['class'] = 'fa arrow-icon fa-angle-down'
-        self.navigation = str(soup.prettify())
 
         # Add copyright notice to footer.
         self.footer.append(
@@ -186,6 +169,18 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             <p>Generated with &hearts; by <a href\
                 ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
             % document.settings.copyright)
+
+    def visit_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
+
+    def depart_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
 
     def visit_toc_data(self, node: nodes.Element):
         """
