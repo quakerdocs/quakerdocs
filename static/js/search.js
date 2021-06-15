@@ -1,3 +1,10 @@
+/* Keep track if the webassambly module has completed loading. */
+let wasmLoaded = false
+
+Module.onRuntimeInitialized = () => {
+    wasmLoaded = true
+}
+
 /**
  * Class representing a result entry.
  */
@@ -9,24 +16,17 @@ class Result {
      * @param {*} title The title of the result page.
      * @param {*} paragraph The paragraph title (STRETCH GOAL)
      */
-    constructor(page, title, paragraph="") {
+    constructor(page, title, paragraph = '') {
         // The page URL.
-        this.page = page;
+        this.page = page
 
         // The title of the page, for quick display.
-        this.title = title;
+        this.title = title
 
         // Optionally the paragraph title, to allow searching on paragraph level.
-        // This is a stretch goal, so it doesn't have to be supported right away.
-        this.paragraph = paragraph;
+        this.paragraph = paragraph
     }
 };
-
-/* Keep track if the webassambly module has completed loading. */
-var wasmLoaded = false;
-Module['onRuntimeInitialized'] = function() {
-    wasmLoaded = true;
-}
 
 /**
  * Perform a search action and yield the results to the HTML page.
@@ -35,21 +35,23 @@ Module['onRuntimeInitialized'] = function() {
  * @yields {Result} The next search result entry.
  */
 function* performSearch(query) {
-    if (!wasmLoaded)
-        return;
+    if (!wasmLoaded) {
+        return
+    }
 
     /* Get the functions from the wasm module. */
-    var search = Module.cwrap('performSearch', null, ['string']);
-    var getres = Module.cwrap('getSearch', 'string');
+    const search = Module.cwrap('performSearch', null, ['string'])
+    const getres = Module.cwrap('getSearch', 'string')
 
     /* Perform the search. */
-    search(query);
+    search(query)
 
     /* Return the results as they are asked. */
+    let result;
     while (result = getres()) {
         /* Split on new line, regex to work on all os'es. */
-        let sep = result.split("\n");
-        yield new Result(sep[0], sep[1], sep[2]);
+        const sep = result.split('\n')
+        yield new Result(sep[0], sep[1], sep[2])
     }
 }
 
@@ -60,18 +62,19 @@ function* performSearch(query) {
 function activateSearch() {
     /* Activate the search bar with an keyboard event listener.
      */
-    const searchInput = document.getElementById("searchbar");
-    const resultsWrapper = document.getElementById("search-results")
+    const searchInput = document.getElementById('searchbar')
+    const resultsWrapper = document.getElementById('search-results')
 
     if (searchInput) {
         // Update search results when a key is pressed.
         searchInput.addEventListener('keyup', () => {
-            let input = searchInput.value;
+            const input = searchInput.value
+
             if (input.length) {
-                let searcher = performSearch(input);
-                renderResults(input, searcher, resultsWrapper);
+                const searcher = performSearch(input);
+                renderResults(input, searcher, resultsWrapper)
             } else {
-                resultsWrapper.innerHTML = '';
+                resultsWrapper.innerHTML = ''
             }
         })
     }
@@ -86,13 +89,13 @@ function activateSearch() {
  * @returns An HTML element, the container of the result entry.
  */
 function createResultElement(href, title, content) {
-    var element = document.createElement('div');
-    element.innerHTML = `<a class="panel-block result is-flex-direction-column"
-                         href="${href}"><h1 class="result-title"><strong>
-                         ${title}</strong></h1><p class="result-content">
-                         ${content}</p></a>`;
+    const element = document.createElement('div')
+    element.innerHTML = `<a class="panel-block result is-flex-direction-column" href="${href}">
+                            <h1 class="result-title"><strong>${title}</strong></h1>
+                            <p class="result-content">${content}</p>
+                        </a>`
 
-    return element;
+    return element
 }
 
 /**
@@ -102,26 +105,28 @@ function createResultElement(href, title, content) {
  * @returns The text to be displayed containing the highlighted query.
  */
 function highlightSearchQuery(query, text) {
-    var highlighter = '<span class="has-background-primary-light has-text-primary">';
-    var index = text.search(new RegExp(query, "i"));
+    const maxLenTextBefore = 50
+    const maxLenTextAfter = 100
+    const highlighter = '<span class="has-background-primary-light has-text-primary">'
+    const index = text.search(new RegExp(query, 'i'))
     if (index < 0) {
-        return "";
+        return ''
     }
 
     /* Slice out the target text and wrap it in a span tag. */
-    var target = text.slice(index, index + query.length);
-    var textBefore = text.slice(Math.max(index - 50, 0), index);
-    var textAfter = text.slice(index + query.length, index + 100);
-    var displayText = textBefore + highlighter + target + "</span>" + textAfter;
-    var endIndex = displayText.lastIndexOf(' ');
-    var startIndex = 0;
+    const target = text.slice(index, index + query.length)
+    const textBefore = text.slice(Math.max(index - maxLenTextBefore, 0), index)
+    const textAfter = text.slice(index + query.length, index + maxLenTextAfter)
+    const displayText = textBefore + highlighter + target + '</span>' + textAfter
+    const endIndex = displayText.lastIndexOf(' ')
+    let startIndex = 0
 
-    /* Split resulting text on spaces. */
+    /* Split resulting text on full words. */
     if (textBefore.trim() && textBefore.indexOf(' ') >= 0) {
-        startIndex = displayText.indexOf(' ');
+        startIndex = displayText.indexOf(' ')
     }
 
-    return displayText.slice(startIndex, endIndex) + ' ...';
+    return displayText.slice(startIndex, endIndex) + ' ...'
 }
 
 /**
@@ -131,38 +136,39 @@ function highlightSearchQuery(query, text) {
  * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
 function renderResults(query, searcher, resultsWrapper) {
-    resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
-    var resultList = document.getElementById('result-list');
-    var parser = new DOMParser();
+    resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
+    const resultList = document.getElementById('result-list')
+    const parser = new DOMParser()
+    const maxResults = 9
 
-    var i = 0;
-    for (let r of searcher) {
+    let i = 0
+    for (const r of searcher) {
         /* Limit number of search results. */
-        if (i++ > 8) {
-            break;
+        if (++i > maxResults) {
+            break
         }
 
         /* Fetch page contents. */
         fetch('../' + r.page)
             .then(res => res.text())
             .then(data => {
-                var html = parser.parseFromString(data, 'text/html');
-                var href = '../' + r.page;
-                var text = html.getElementById('content').innerText;;
+                const html = parser.parseFromString(data, 'text/html')
+                let href = '../' + r.page
+                let text = html.getElementById('content').innerText
 
                 /* Look for the section containing the result. */
-                for (const section of html.querySelectorAll("section")) {
+                for (const section of html.querySelectorAll('section')) {
                     if (section.textContent.includes(query) && section.id) {
-                        href += "#" + section.id;
-                        text = section.innerText;
-                        break;
+                        href += '#' + section.id
+                        text = section.innerText
+                        break
                     }
                 }
 
-                var displayText = highlightSearchQuery(query, text);
-                resultEl = createResultElement(href, r.title, displayText);
-                resultList.append(resultEl);
+                const displayText = highlightSearchQuery(query, text)
+                const resultEl = createResultElement(href, r.title, displayText)
+                resultList.append(resultEl)
             })
-            .catch(console.error);
+            .catch(console.error)
     }
 }
