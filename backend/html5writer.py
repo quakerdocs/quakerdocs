@@ -188,7 +188,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add copyright notice to footer.
         self.footer.append(
             '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
+            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/\
+            lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
             % document.settings.copyright)
 
     def visit_toc_data(self, node: nodes.Element):
