@@ -21,7 +21,7 @@ from distutils.dir_util import copy_tree
 import index
 import application
 import html5writer
-import theme
+from theme import Theme
 import directives
 
 SKIP_TAGS = {'system_message', 'problematic'}
@@ -103,8 +103,8 @@ class Main:
         os.chdir(prev_cwd)
 
         # Get path to theme
-        self.theme = theme.Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
-                                 self.conf_vars.get('html_theme_path'))
+        self.theme = Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
+                           self.conf_vars.get('html_theme_path'))
 
     def generate(self):
         """
@@ -237,11 +237,12 @@ class Main:
                 settings_overrides={
                     'toc': self.toc_navigation,
                     'template': self.theme.get_file('template.txt'),
-                    'stylesheet': os.path.join('_static', self.conf_vars.get('html_style', self.theme.get_style())),
+                    'stylesheet': os.path.join(
+                        '_static', self.conf_vars.get('html_style',
+                                                      self.theme.get_style())),
                     'src_dir': self.source_path,
                     'html_path': html_path,
                     'embed_stylesheet': False,
-                    # 'rel_base': os.path.relpath(self.dest_path, os.path.dirname(dest)),
                     'rel_base': os.path.relpath(self.dest_path, dest.parent),
                     'handlers': self.sp_app.get_handlers(),
                     'favicon': self.conf_vars.get('html_favicon', None),

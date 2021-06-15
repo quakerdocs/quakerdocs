@@ -12,7 +12,7 @@ import directives.sphinx
 class Writer(docutils.writers._html_base.Writer):
     """
     Writer class for HTML5 documents.
-    This class is modified from docutils.writers.html5_polyglot.Writer (Jun 2021)
+    This class is modified from docutils html5_polyglot.Writer (Jun 2021)
     """
     default_stylesheets = []
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
@@ -39,7 +39,7 @@ class Writer(docutils.writers._html_base.Writer):
             ('Link to the stylesheet(s) in the output HTML file.',
              ['--link-stylesheet'],
              {'dest': 'embed_stylesheet', 'action': 'store_false'}),
-            ('Comma-separated list of directories where stylesheets are found.',
+            ('List of directories where stylesheets are found.',
              ['--stylesheet-dirs'],
              {'metavar': '<dir[,dir,...]>',
               'default': default_stylesheet_dirs}),

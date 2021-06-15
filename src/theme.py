@@ -26,7 +26,7 @@ class Theme:
                 self.theme_path = path
                 break
         if self.theme_path is None:
-            print("Failed to find specified theme %s!" % theme_name, file=stderr)
+            print("Failed to find specified theme %s!" % theme_name)
             return None
 
         config = ConfigParser()
