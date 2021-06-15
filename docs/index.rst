@@ -50,3 +50,5 @@ Some of the features that QuakerDocs has are:
 
    getting-started
    configuration
+   customization
+   credits

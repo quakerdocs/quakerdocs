@@ -97,3 +97,6 @@ html_static_path = ['_static']
 
 html_favicon = '_static/_images/favicon.ico'
 html_logo = '_static/_images/logo.png'
+
+# Change the html_style to oen of the packages given in static/css
+html_style = 'css/bulma.min.css'

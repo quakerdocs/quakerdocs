@@ -142,7 +142,7 @@ class Main:
         for path, content in source_files:
             self.write_rst(path, content)
 
-        # self.idx.build(os.path.join(self.dest_path, 'js'))
+        self.idx.build(os.path.join(self.dest_path, 'js'))
         self.copy_static_files()
 
         # TEMP
@@ -231,11 +231,7 @@ class Main:
                     'favicon': self.conf_vars.get('html_favicon', None),
                     'logo': self.conf_vars.get('html_logo', None),
                     'copyright': self.conf_vars.get('copyright', ''),
-                    'template': os.path.join(
-                        self.source_path,
-                        self.conf_vars.get('templates_path', '../static'),
-                        'template.txt'
-                    )
+                    'html_style': self.conf_vars.get('html_style', None)
                 })
             f.write(output)
 
