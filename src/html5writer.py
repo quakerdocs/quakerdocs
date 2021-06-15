@@ -7,7 +7,7 @@ from docutils import nodes
 import docutils.writers.html5_polyglot
 from bs4 import BeautifulSoup
 
-import spdirs
+import directives.sphinx
 
 
 class Writer(docutils.writers._html_base.Writer):
@@ -157,7 +157,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Build navigation bar.
         self.navigation = ''
         for toc in document.settings.toc:
-            self.navigation += spdirs.TocTree.to_html(toc)
+            self.navigation += directives.sphinx.TocTree.to_html(toc)
 
         # Add logo to pages.
         self.logo = ''
@@ -186,6 +186,18 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             <p>Generated with &hearts; by <a href\
                 ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
             % document.settings.copyright)
+
+    def visit_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
+
+    def depart_metadata(self, node: nodes.Element):
+        """
+        Skip rendering of metadata data-element.
+        """
+        raise nodes.SkipNode
 
     def visit_toc_data(self, node: nodes.Element):
         """
