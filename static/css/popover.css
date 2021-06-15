@@ -1,4 +1,4 @@
-#popover {
+.popover {
     visibility: hidden;
     position: absolute;
     background-color: #dbfaf4;
@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-#popover:before {
+.popover:before {
     position: absolute;
     content: "";
     right: calc(50% - 10px);
@@ -20,6 +20,6 @@
     border-color: transparent transparent #dbfaf4 transparent;
 }
 
-.popover-trigger:hover ~ #popover {
+.popover-trigger:hover ~ .popover {
     visibility: visible;
 }

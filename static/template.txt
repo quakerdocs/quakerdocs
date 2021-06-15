@@ -30,7 +30,7 @@
 						<span> Search</span>
 					</button>
 				</a>
-				<div id="popover" class="is-hidden-mobile">
+				<div class="popover" class="is-hidden-mobile">
 					<p>Search <b>(S)</b> </p>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 						<span>Bookmarks</span>
 					</button>
 				</a>
-				<div id="popover">
+				<div class="popover">
 					<p>Bookmarks <b>(B)</b> </p>
 					<!--<span class="icon><i class="fa fa></i></span>-->
 				</div>
