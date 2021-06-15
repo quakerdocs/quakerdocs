@@ -31,9 +31,6 @@ Version Nobel.2
 .. json_include:: ../../release_notes.json
    :path: Nobel.2/message
 
-.. raw::
-   <iframe width="560" height="315" src="https://www.youtube.com/embed/qZGwRz8wnSY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 Features
 ^^^^^^^^^
 

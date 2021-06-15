@@ -19,18 +19,17 @@ stopwords : set
 
 """
 
-
 import os
 import re
 import math
 import struct
-import shutil
-from collections import deque
-from types import SimpleNamespace
+from pathlib import Path
+from typing import Tuple
 from jinja2 import Template
+from collections import deque
 from collections import Counter
 from nltk.corpus import stopwords
-from typing import Tuple
+from types import SimpleNamespace
 
 try:
     stopwords = set(stopwords.words('english'))
@@ -302,14 +301,17 @@ class Trie:
 
         # Add each node to the binary arrays.
         for node in t.nodes:
+            struct_format = (t.char_p.id + t.node_p.id + t.page_p.id
+                             + t.child_s.id + t.page_s.id)
+
             # Add the node data.
             node_arr += struct.pack(
-                t.char_p.id + t.node_p.id + t.page_p.id + t.child_s.id + t.page_s.id,
+                struct_format,
                 char_len,
                 node.children_list[0].i if node.children else 0,
                 len(page_arr) // (t.page_i.bytes + t.page_c.bytes),
-                len(node.children),
-                len(node.pages))
+                len(node.children), len(node.pages)
+            )
 
             # Add the pages.
             for page in node.pages:
@@ -383,40 +385,44 @@ class IndexGenerator:
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, int(count * priority))
 
-    def build(self, dest_path: str):
+    def build(self, build_path: Path, dest_path: Path):
         """Write the search index file to the destination directory.
 
         Parameters
         ----------
+        build_path : str
+            Where to put compile output.
         dest_path : str
-            Where to put the output.
+            Where to copy the javascript and webassembly files.
 
         """
-        path = os.path.join('src', 'wasm')
+        print('Building the search index assembly')
+        source_path = Path('src') / 'wasm'
 
-        if not os.path.exists(path):
+        if not source_path.exists():
             raise FileNotFoundError('Wasm source files are not found.')
 
         # Generate the search.hpp
         data = self.trie.to_binary()
-        with open(os.path.join(path, 'search.hpp.jinja')) as f:
+        with open(source_path / 'search.hpp.jinja') as f:
             template = Template(f.read())
 
-            # Write the search index to hpp.
-            with open(os.path.join(path, 'search.hpp'), 'w') as f:
-                f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
-                f.write(template.render(urltitles=self.urltitles, **data.__dict__))
+        # Write the search index to hpp.
+        search_path = build_path / 'search'
+        search_path.mkdir(parents=True, exist_ok=True)
+        with open(search_path / 'search.hpp', 'w') as f:
+            f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
+            f.write(template.render(urltitles=self.urltitles, **data.__dict__))
 
-        # Make the .wasm file
-        working_dir = os.getcwd()
-        os.chdir(path)
-        os.system('make')
-        os.chdir(working_dir)
+        # Create the build command.
+        emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
+        cmnd = [f'{emcc}', '-std=c++17', '-flto',
+                '-I', f'"{search_path}/"',
+                f"{source_path / 'search.cpp'}",
+                '-o', f"{dest_path / 'search_data.js'}",
+                '-s', 'WASM=1',
+                '-s', 'EXPORTED_FUNCTIONS=["_performSearch","_getSearch"]',
+                '-s', 'EXPORTED_RUNTIME_METHODS=\'["ccall","cwrap"]\'']
 
-        if not os.path.exists(dest_path):
-            os.mkdir(dest_path)
-
-        shutil.copyfile(os.path.join(path, 'build', 'search_data.js'),
-                        os.path.join(dest_path, 'search_data.js'))
-        shutil.copyfile(os.path.join(path, 'build', 'search_data.wasm'),
-                        os.path.join(dest_path, 'search_data.wasm'))
+        dest_path.mkdir(parents=True, exist_ok=True)
+        os.system(' '.join(cmnd))

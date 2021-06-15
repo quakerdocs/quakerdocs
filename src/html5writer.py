@@ -146,16 +146,19 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         super().__init__(document)
 
         # Set base path for every document.
-        self.head.append('<base href="%s">' % document.settings.rel_base)
+        self.head.append('<base href="%s">'
+                         % document.settings.rel_base)
 
         # Add stylesheet to pages.
         self.html_style = ''
         if document.settings.html_style is not None:
-            self.html_style = '<link rel="stylesheet" type="text/css" href="%s">' % document.settings.html_style
+            self.html_style = ('<link rel="stylesheet" type="text/css" '
+                               'href="%s">' % document.settings.html_style)
 
         # Add favicon to pages.
         if document.settings.favicon is not None:
-            self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
+            self.head.append('<link rel="icon" href="%s">'
+                             % document.settings.favicon)
 
         # Build navigation bar.
         self.navigation = ''
@@ -167,12 +170,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         if document.settings.logo is not None:
             self.logo = '<img src="%s" alt="Logo">' % document.settings.logo
 
-        # Add copyright notice to footer.
+        link = ('https://gitlab-fnwi.uva.nl/'
+                'lreddering/pse-documentation-generator')
+
         self.footer.append(
-            '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/\
-            lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
-            % document.settings.copyright)
+            f'<p>&copy {document.settings.copyright}.</p>'
+            '<p>Generated with &hearts; by '
+            f'<a href="{link}">QuakerDocs</a></p>')
 
     def visit_metadata(self, node: nodes.Element):
         """
@@ -225,7 +229,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         width = node['width']
         height = node['height']
 
-        code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
+        code = (f'<iframe src="{url}" width="{width}" height="{height}" '
+                'frameborder="0" allow="autoplay"></iframe>')
         self.body.append(code)
 
     def visit_section(self, node: nodes.Element) -> None:
@@ -255,9 +260,11 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         title = node.astext()
         id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
-        bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                        '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
-        self.body.append(bookmark_html)
+        html = (f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" '
+                f'title="{title}" value=0>'
+                '<span class="icon"><i class="fa fa-bookmark-o">'
+                '</i></span></button>')
+        self.body.append(html)
 
     def create_bookmark_id(self, node: nodes.Element):
         """
@@ -267,5 +274,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             id_str = "BM_" + str(node.parent['ids'][0])
             return id_str
         except (KeyError, IndexError):
-            print('Cannot make bookmark ID, because parent ID can not be established.')
+            print('Cannot make bookmark ID, because parent ID can '
+                  'not be established.')
             raise
