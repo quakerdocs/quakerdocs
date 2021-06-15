@@ -2,7 +2,7 @@
 %(head)s
 %(stylesheet)s
 
-<link rel="stylesheet" type="text/css" href="css/bulma.min.css">
+%(html_style)s
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="css/friendly.css">
 <link rel="stylesheet" type="text/css" href="css/content.css">
