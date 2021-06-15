@@ -22,7 +22,6 @@ import html5writer
 import directives.metadata
 import directives.sphinx
 import directives.custom
-import directives.raw
 
 
 SKIP_TAGS = {'system_message', 'problematic'}
@@ -110,7 +109,6 @@ class Main:
         directives.metadata.setup()
         directives.sphinx.setup()
         directives.custom.setup()
-        directives.raw.setup()
 
         # Load user configuration and extensions
         prev_cwd = os.getcwd()
@@ -150,6 +148,7 @@ class Main:
         for path, content in source_files:
             self.write_rst(path, content)
 
+        # Build index.
         self.idx.build(os.path.join(self.dest_path, 'js'))
         self.copy_static_files()
 
@@ -297,13 +296,13 @@ class Main:
 
 
 if __name__ == "__main__":
-    arg_parser = argparse.ArgumentParser(description='SDG')
+    arg_parser = argparse.ArgumentParser(description='QuakerDocs')
     arg_parser.add_argument('source_path', type=dir_path, help='The directory containing the RST files.')
     arg_parser.add_argument('-d', type=str, dest='destination_path', default='build', help='The directory to write '
                                                                                            'the output.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html", help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
-    print("Running SDG 0.0.1")
+    print("Running QuakerDocs 0.0.2")
     main = Main(args.source_path, args.destination_path, args.builder)
     exit(main.generate())
