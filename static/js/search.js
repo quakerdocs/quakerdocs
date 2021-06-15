@@ -95,6 +95,12 @@ function createResultElement(href, title, content) {
     return element;
 }
 
+/**
+ * Highlights a query in the provided text using a span tag.
+ * @param {*} query The query to be highlighted in the text.
+ * @param {*} text The text.
+ * @returns The text to be displayed containing the highlighted query.
+ */
 function highlightSearchQuery(query, text) {
     var highlighter = '<span class="has-background-primary-light has-text-primary">';
     var index = text.search(new RegExp(query, "i"));
@@ -102,6 +108,7 @@ function highlightSearchQuery(query, text) {
         return "";
     }
 
+    /* Slice out the target text and wrap it in a span tag. */
     var target = text.slice(index, index + query.length);
     var textBefore = text.slice(Math.max(index - 50, 0), index);
     var textAfter = text.slice(index + query.length, index + 100);
@@ -109,6 +116,7 @@ function highlightSearchQuery(query, text) {
     var endIndex = displayText.lastIndexOf(' ');
     var startIndex = 0;
 
+    /* Split resulting text on spaces. */
     if (textBefore.trim() && textBefore.indexOf(' ') >= 0) {
         startIndex = displayText.indexOf(' ');
     }
@@ -120,8 +128,7 @@ function highlightSearchQuery(query, text) {
  * Display the results acquired by the search function {@link performSearch}
  * inside the HTML page alongside some text found in the appropriate pages.
  * @param {*} searcher The generator which yields the search results.
- * @param {*} resultsWrapper The html element in which the results are to be
- *     placed.
+ * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
 function renderResults(query, searcher, resultsWrapper) {
     resultsWrapper.innerHTML = '<ul id="result-list"></ul>';
@@ -130,13 +137,12 @@ function renderResults(query, searcher, resultsWrapper) {
 
     var i = 0;
     for (let r of searcher) {
-        // Limit number of search results for now.
+        /* Limit number of search results. */
         if (i++ > 8) {
             break;
         }
 
-        // Display text containing the searched word(s).
-        // TODO: improve / speed up.
+        /* Fetch page contents. */
         fetch('../' + r.page)
             .then(res => res.text())
             .then(data => {
@@ -144,6 +150,7 @@ function renderResults(query, searcher, resultsWrapper) {
                 var href = '../' + r.page;
                 var text = html.getElementById('content').innerText;;
 
+                /* Look for the section containing the result. */
                 for (const section of html.querySelectorAll("section")) {
                     if (section.textContent.includes(query) && section.id) {
                         href += "#" + section.id;
