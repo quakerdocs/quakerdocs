@@ -148,6 +148,20 @@ window.onscroll = function() {
     toggleBackToTopButton();
 };
 
+/**
+ * When all the content is loaded, call {@link expandSidebar} to expand the
+ * current page in the sidebar. Also set the scroll level of the sidebar to be
+ * equal to the recorded number.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     expandSidebar(document.location.href.split("/").splice(3).join('/'));
+
+    let sidebar = document.getElementById("menuPanel");
+    sidebar.scrollTo(0, localStorage.getItem('sidebarScrollPos') || 0)
+
+    // Record the current scroll level of the sidebar into a localStorage
+    // entry.
+    sidebar.onscroll = function() {
+        localStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
+    }
 }, false);
