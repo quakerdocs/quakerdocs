@@ -148,11 +148,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.bookmark_index = 0
 
         # Set base path for every document.
-        self.head.append('<base href="%s">' % document.settings.rel_base)
+        self.head.append('<base href="%s">'
+                         % document.settings.rel_base)
 
         # Add favicon to pages.
         if document.settings.favicon is not None:
-            self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
+            self.head.append('<link rel="icon" href="%s">'
+                             % document.settings.favicon)
 
         # Build navigation bar.
         self.navigation = ''
@@ -162,7 +164,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add logo to pages.
         self.logo = ''
         if document.settings.logo is not None:
-            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
+            self.logo = ('<img src="%s" width="200px" alt="Logo">'
+                         % document.settings.logo)
 
         # Expand the menu entry of the current open page.
         soup = BeautifulSoup(self.navigation, 'html.parser')
@@ -170,7 +173,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         if a is not None:
             parents = a.find_parents('li')
             childrenUL = parents[0].find_all('ul')
-            childrenARROW = parents[0].find_all('i', class_="fa arrow-icon fa-angle-right")
+            childrenARROW = parents[0].find_all(
+                'i', class_="fa arrow-icon fa-angle-right")
 
             if childrenUL is not None and childrenARROW is not None:
                 for child in childrenUL:
@@ -180,12 +184,14 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
                     child['class'] = 'fa arrow-icon fa-angle-down'
         self.navigation = str(soup.prettify())
 
-        # Add copyright notice to footer.
+        # Add copyright notice and github link to the footer.
+        link = ('https://gitlab-fnwi.uva.nl/'
+                'lreddering/pse-documentation-generator')
+
         self.footer.append(
-            '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href\
-                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
-            % document.settings.copyright)
+            f'<p>&copy {document.settings.copyright}.</p>'
+            '<p>Generated with &hearts; by '
+            f'<a href="{link}">QuakerDocs</a></p>')
 
     def visit_metadata(self, node: nodes.Element):
         """
@@ -238,7 +244,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         width = node['width']
         height = node['height']
 
-        code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
+        code = (f'<iframe src="{url}" width="{width}" height="{height}" '
+                'frameborder="0" allow="autoplay"></iframe>')
         self.body.append(code)
 
     def visit_section(self, node: nodes.Element) -> None:
@@ -268,9 +275,11 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         title = node.astext()
         id = self.create_bookmark_id(node)
         onclick = f"bookmarkClick('{id}')"
-        bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                        '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
-        self.body.append(bookmark_html)
+        html = (f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" '
+                f'title="{title}" value=0>'
+                '<span class="icon"><i class="fa fa-bookmark-o">'
+                '</i></span></button>')
+        self.body.append(html)
 
     # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):

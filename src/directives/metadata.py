@@ -58,6 +58,7 @@ def get_metadata(doctree):
     except StopIteration:
         return metadata(default_fields)
 
+
 def setup():
     """Add the metadata directives.
     """
