@@ -162,7 +162,7 @@ class Main:
         for path, content in source_files:
             self.write_rst(path, content)
 
-        # self.idx.build(os.path.join(self.dest_path, 'js'))
+        self.idx.build(os.path.join(self.dest_path, 'js'))
 
         # Copy files from the theme to build directory
         self.theme.copy_files(self.dest_path)
@@ -241,7 +241,7 @@ class Main:
                 writer=self.builder_class(),
                 settings_overrides={
                     'toc': self.toc_navigation,
-                    'template': self.theme.get_template(),
+                    'template': self.theme.get_file('template.txt'),
                     'stylesheet': os.path.join('_static', self.conf_vars.get('html_style', self.theme.get_style())),
                     'src_dir': self.source_path,
                     'html_path': html_path,

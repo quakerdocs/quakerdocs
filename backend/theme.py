@@ -26,15 +26,15 @@ class Theme:
             self.inherit = Theme(inherit_name)
         self.stylesheet = config.get('theme', 'stylesheet', fallback=None)
 
-    def get_template(self):
+    def get_file(self, filename):
         """
-        Return the path to the template for the pages.
+        Return the path to a file in the template.
         """
-        path = os.path.join(self.theme_path, 'template.txt')
+        path = os.path.join(self.theme_path, filename)
         if os.path.exists(path) and os.path.isfile(path):
             ...  # Template exists and can be used.
         elif self.inherit is not None:
-            path = self.inherit.get_template()
+            path = self.inherit.get_file(filename)
         else:
             path = None
 
