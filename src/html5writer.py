@@ -184,7 +184,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.footer.append(
             '<p>&copy %s.</p>\
             <p>Generated with &hearts; by <a href\
-                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a> </p>'
+                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
             % document.settings.copyright)
 
     def visit_metadata(self, node: nodes.Element):
@@ -238,7 +238,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         width = node['width']
         height = node['height']
 
-        code = f'<iframe src="{url}" width={width} height={height}></iframe>'
+        code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
         self.body.append(code)
 
     def visit_section(self, node: nodes.Element) -> None:
