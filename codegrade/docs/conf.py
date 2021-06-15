@@ -194,7 +194,7 @@ intersphinx_mapping = {
 }
 
 html_favicon = '_static/_images/favicon.ico'
-html_logo = '_static/_images/logo.svg'
+html_logo = '_static/_images/logo.png'
 html_theme_options = {
     'logo_only': True,
 }
