@@ -5,7 +5,6 @@ Class to extend the functionality of the default HTML5 writer of docutils.
 import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
-from bs4 import BeautifulSoup
 
 import directives.sphinx
 
@@ -145,7 +144,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         Initialize the HTML translator
         """
         super().__init__(document)
-        self.bookmark_index = 0
 
         # Set base path for every document.
         self.head.append('<base href="%s">'
@@ -167,24 +165,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             self.logo = ('<img src="%s" width="200px" alt="Logo">'
                          % document.settings.logo)
 
-        # Expand the menu entry of the current open page.
-        soup = BeautifulSoup(self.navigation, 'html.parser')
-        a = soup.find('a', href=document.settings.html_path)
-        if a is not None:
-            parents = a.find_parents('li')
-            childrenUL = parents[0].find_all('ul')
-            childrenARROW = parents[0].find_all(
-                'i', class_="fa arrow-icon fa-angle-right")
-
-            if childrenUL is not None and childrenARROW is not None:
-                for child in childrenUL:
-                    child['class'] = "menu-list is-expanded"
-
-                for child in childrenARROW:
-                    child['class'] = 'fa arrow-icon fa-angle-down'
-        self.navigation = str(soup.prettify())
-
-        # Add copyright notice and github link to the footer.
         link = ('https://gitlab-fnwi.uva.nl/'
                 'lreddering/pse-documentation-generator')
 
@@ -281,12 +261,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
                 '</i></span></button>')
         self.body.append(html)
 
-    # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):
         """
         Assign a unique identifier to the bookmark.
         """
-        comb_str = node.astext() + str(self.bookmark_index)
-        hash_str = str(hash(comb_str))
-        self.bookmark_index += 1
-        return "BM" + hash_str
+        try:
+            id_str = "BM_" + str(node.parent['ids'][0])
+            return id_str
+        except (KeyError, IndexError):
+            print('Cannot make bookmark ID, because parent ID can not be established.')
+            raise

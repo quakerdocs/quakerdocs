@@ -2,7 +2,8 @@
 Implement directives used by Sphinx
 
 All implementations of the directives have been inspired by:
-https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d34765e74edf3a3be3c62c/sphinx/directives/other.py
+https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d3
+4765e74edf3a3be3c62c/sphinx/directives/other.py
 """
 
 import os.path
@@ -216,13 +217,17 @@ class TocTree(Directive):
         add_class = '' if begin_depth == 0 else 'is-collapsed'
         ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
-            lst_item = '<li><span class="level mb-0">\
-                <a class="fill-menu" href=%s>%s</a>' % (ref, title)
+            lst_item = '<li><span class="level mb-0"><a class="fill-menu"'
+
+            if '#' in ref:
+                lst_item += ('onClick="expandSidebar(`%s`)"' % (ref))
+
+            lst_item += 'href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
-                lst_item += ('<span onclick="toggleExpand(this)" '
+                lst_item += ('<span onclick="toggleExpand(this.parentNode)"'
                              'class="is-clickable icon is-small level-right">'
-                             '<i class="fa arrow-icon fa-angle-right" '
+                             '<i class="fa arrow-icon fa-angle-right"'
                              'aria-hidden="true"></i></span>')
 
             lst_item += '</span>'
