@@ -78,6 +78,7 @@ function updateBookmark(b, new_title) {
     let cname = bookmarkCookieName(b.id);
     b.title = new_title;
     setCookie(cname, JSON.stringify(b));
+    console.log(document.cookie);
 }
 
 /**
@@ -180,7 +181,25 @@ function bookmarkTrashClick(id) {
 function bookmarkRenameClick(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark = getBookmark(bookmarkCookieName(id));
+
     bookmark_panel.innerHTML = createRenameEntry(bookmark);
+    inputAddListener(id);
+}
+
+function inputAddListener(id) {
+    let inputbox = document.getElementById(`IN_${id}`)
+    inputbox.addEventListener("keyup", (e) => {
+        if (e.code == 'Escape') {
+            renameCancel(id);
+        } else if (e.code == 'Enter') {
+            renameAccept(id);
+        }
+    });
+}
+
+function inputRemoveListener(id) {
+    let inputbox = document.getElementById(`IN_${id}`)
+    inputbox.removeEventListener("keyup");
 }
 
 function renameCancel(id) {
@@ -202,14 +221,15 @@ function renameAccept(id) {
 function createRenameEntry(b) {
     let inputbox_size = 55;
     let inputbox_maxlength = 500;
-    let max_words = 12;
-    let title = b.title;
-    let title_words = title.split(' ');
+    // let max_words = 12;
+    // let title = b.title;
+    // let title_words = title.split(' ');
 
-    /* Cut off title if it is too long. */
-    if (title_words.length > max_words) {
-        title = title_words.slice(0,max_words).join(' ') + "...";
-    }
+    // /* Cut off title if it is too long. */
+    // if (title_words.length > max_words) {
+    //     title = title_words.slice(0,max_words).join(' ') + "...";
+    // }
+    let title = restrictTitle(b.title);
     let entry = `
             <div class="tile is-10">
                 <div class="level">
@@ -244,6 +264,20 @@ function renameBookmark(id) {
     deleteCookie(cname);
 }
 
+function truncateTitle(title, max_words=12, max_length=50) {
+    let title_words = title.split(' ');
+
+    /* Cut off title if it is too long. */
+
+    if (title_words.length > max_words) {
+        title = title_words.slice(0, max_words).join(' ') + "...";
+    } else if (title.length > max_length) {
+        title = title.substring(0, max_length) + "...";
+    }
+
+    return title;
+}
+
 /**
  * Render all enabled bookmarks onto the enabled overlay.
  */
@@ -273,14 +307,18 @@ function createBookmarkListEntry(b) {
 }
 
 function createInnerEntry(b) {
-    let max_words = 12;
-    let title = b.title;
-    let title_words = title.split(' ');
+    // let max_words = 12;
+    // let max_length = 50;
+    // let title = b.title;
+    // let title_words = title.split(' ');
 
-    /* Cut off title if it is too long. */
-    if (title_words.length > max_words) {
-        title = title_words.slice(0,max_words).join(' ') + "...";
-    }
+    // /* Cut off title if it is too long. */
+    // if (title_words.length > max_words) {
+    //     title = title_words.slice(0,max_words).join(' ') + "...";
+    // } else if (title.length > max_length) {
+    //     title = title.substring(0,max_length) + "...";
+    // }
+    let title = restrictTitle(b.title);
 
     let entry = `<div class="tile is-10" onclick="location='${b.page}'; \
                 hideBookmarkOverlay()">
