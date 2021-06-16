@@ -41,6 +41,7 @@ class Main:
         self.build_path = build_path
         self.dest_path = build_path / 'html'
         self.builder = builder
+
         self.sp_app = None
         self.theme = None
         self.file_ext = '.out'
@@ -104,15 +105,18 @@ class Main:
         """
         prev_cwd = os.getcwd()
         os.chdir(self.source_path)
+
         self.read_conf()
         self.sp_app = application.SphinxApp()
         for ext in self.conf_vars['extensions']:
             application.setup_extension(ext, self.sp_app)
-        os.chdir(prev_cwd)
 
         # Get path to theme
         self.theme = Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
-                           self.conf_vars.get('html_theme_path'))
+                           self.conf_vars.get('html_theme_path'),
+                           self.conf_vars.get('templates_path', []))
+
+        os.chdir(prev_cwd)
 
     def generate(self):
         """
@@ -244,7 +248,7 @@ class Main:
                 writer=self.writer(),
                 settings_overrides={
                     'toc': self.toc_navigation,
-                    'template': self.theme.get_file('template.txt'),
+                    'template': self.theme.get_template(),
                     'stylesheet': os.path.join(
                         '_static', self.conf_vars.get('html_style',
                                                       self.theme.get_style())),

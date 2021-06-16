@@ -2,14 +2,14 @@ Configure with QuakerDocs
 ================================
 
 QuakerDocs supports configuring your own documentation build with a
-configuration file. This file is named ``conf.py`` and is found in the /docs
-directory.
+configuration file. This file is named ``conf.py`` and is found in the root of
+your configuration directory.
 
 Extensions
 ----------------
 Add extension module names here, as strings. Quaker will look for your
 extensions in your system path. To add a new folder containing extensions to
-your path, you can use python. For example:
+the path, you can use python. For example:
 
 .. code-block:: python
 
@@ -19,7 +19,8 @@ your path, you can use python. For example:
 
 Templates
 ----------------
-Add any paths that contain templates here, relative to this directory.
+Add any paths that contain templates here, relative to the configuration
+directory.
 
 .. code-block:: python
 
@@ -28,7 +29,7 @@ Add any paths that contain templates here, relative to this directory.
 
 Source suffix
 ----------------
-The suffix(es) of source filenames.
+The suffix(es) of source filenames to be parsed as reStructuredText.
 You can specify multiple suffix as a list of string:
 
 .. code-block:: python
@@ -38,9 +39,9 @@ You can specify multiple suffix as a list of string:
 
 Master document
 ----------------
-The master toctree document. This is the document that Quaker will use to
-generate the table of contents that is shown in the sidebar. It will parse
-the master document and retrieve all table of contents on that page.
+The master 'table of contents' document. This is the document that Quaker will
+use to generate the table of contents that is shown in the sidebar. It will
+parse the master document and retrieve all table of contents on that page.
 You can specify the master document of your documentation webpage:
 
 .. code-block:: python
@@ -89,11 +90,12 @@ Options for HTML
 HTML theme path
 ~~~~~~~~~~~~~~~~
 
-Specify the path to the directory containing custom template files.
+Specify the path to the directory containing custom template files, relative to
+the configuration directory.
 
 .. code-block:: python
 
-   templates_path = 'my_templates'
+   html_theme_path = ['my_templates']
 
 HTML theme
 ~~~~~~~~~~~~

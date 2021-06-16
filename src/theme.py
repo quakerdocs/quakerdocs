@@ -11,7 +11,7 @@ class Theme:
     """
     Class for theme reading.
     """
-    def __init__(self, theme_name, theme_path):
+    def __init__(self, theme_name, theme_path, templ_path):
         """
         Get all data related to a class.
         """
@@ -20,10 +20,13 @@ class Theme:
         self.stylesheet = None
 
         # Get the paths to places where themes could be.
-        dirs = theme_path if theme_path is not None else [
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
-        ]
+        if theme_path is not None:
+            dirs = [os.path.abspath(path) for path in theme_path]
+        else:
+            src_file_path = os.path.abspath(os.path.dirname(__file__))
+            dirs = [os.path.join(src_file_path, '..')]
 
+        # Find the requested theme in the given directories.
         for current_dir in dirs:
             path = os.path.join(current_dir, theme_name)
             if os.path.exists(path) and os.path.isdir(path):
@@ -32,6 +35,11 @@ class Theme:
         if self.theme_path is None:
             raise RuntimeError("Failed to find theme %s!" % theme_name)
 
+        # Save additional paths to templates
+        self.templates_path = [os.path.abspath(path) for path in templ_path] \
+            if templ_path is not None else []
+
+        # Parse the theme configuration.
         config = ConfigParser()
         config.read(os.path.join(self.theme_path, 'theme.conf'))
 
@@ -40,19 +48,28 @@ class Theme:
             self.inherit = Theme(inherit_name, theme_path)
         self.stylesheet = config.get('theme', 'stylesheet', fallback=None)
 
+    def get_template(self, filename='template.txt'):
+        """
+        Return the path to the template.
+        """
+        for current_dir in self.templates_path:
+            path = os.path.join(current_dir, filename)
+            if os.path.exists(path) and os.path.isfile(path):
+                return path
+
+        return self.get_file(filename)
+
     def get_file(self, filename):
         """
-        Return the path to a file in the template.
+        Return the path to a file in the theme.
         """
         path = os.path.join(self.theme_path, filename)
         if os.path.exists(path) and os.path.isfile(path):
-            ...  # Template exists and can be used.
-        elif self.inherit is not None:
-            path = self.inherit.get_file(filename)
-        else:
-            path = None
+            return path
+        if self.inherit is not None:
+            return self.inherit.get_file(filename)
 
-        return path
+        return None
 
     def get_style(self):
         """
