@@ -3,13 +3,13 @@
  * Toggle (show / hide) the sidebar menu on small screens when the hamburger
  * menu button has been clicked.
  */
-function toggleMenu() {
-    var menu = document.getElementById("menuPanel");
+function toggleMenu () {
+    const menu = document.getElementById('menuPanel')
 
     if (menu.classList.contains('is-hidden-touch')) {
-        menu.classList.replace('is-hidden-touch', 'is-full-touch');
+        menu.classList.replace('is-hidden-touch', 'is-full-touch')
     } else {
-        menu.classList.replace('is-full-touch', 'is-hidden-touch');
+        menu.classList.replace('is-full-touch', 'is-hidden-touch')
     }
 }
 
@@ -19,85 +19,87 @@ function toggleMenu() {
  * @param {Boolean} onlyExpand If true, the element will not collapse if it
  *     is expanded, but only expand if it is collapsed.
  */
-function toggleExpand(element, onlyExpand=false) {
+function toggleExpand (element, onlyExpand = false) {
     if (element.children.length < 2) {
-        return;
+        return
     }
 
-    var ul = element.parentElement.getElementsByTagName("UL")[0];
-    var i = element.children[1].firstChild;
+    const ul = element.parentElement.getElementsByTagName('UL')[0]
+    const i = element.children[1].firstChild
+
     if (ul.classList.contains('is-expanded') && !onlyExpand) {
-            i.classList.replace('fa-angle-down', 'fa-angle-right');
-            ul.classList.replace('is-expanded', 'is-collapsed');
+        i.classList.replace('fa-angle-down', 'fa-angle-right')
+        ul.classList.replace('is-expanded', 'is-collapsed')
     } else {
-        i.classList.replace('fa-angle-right', 'fa-angle-down');
-        ul.classList.replace('is-collapsed', 'is-expanded');
+        i.classList.replace('fa-angle-right', 'fa-angle-down')
+        ul.classList.replace('is-collapsed', 'is-expanded')
     }
 }
 
-let searchOpen = false;
+let searchOpen = false
 
 /**
  * Active the overlay containing the search bar and search results.
  */
-function showSearchOverlay() {
-    document.getElementById("search").classList.add("is-active")
-    searchbar = document.getElementById("searchbar")
+function showSearchOverlay () {
+    document.getElementById('search').classList.add('is-active')
+    const searchbar = document.getElementById('searchbar')
     searchbar.focus()
     searchbar.select()
 
     // Prevent background from scrolling while search window is open.
-    document.documentElement.style.overflowY = 'hidden';
-    document.body.scroll = "no";
+    document.documentElement.style.overflowY = 'hidden'
+    document.body.scroll = 'no'
 
-    searchOpen = true;
+    searchOpen = true
     activateSearch()
 }
 
 /**
  * Hide the overlay containing the search bar and results.
  */
-function hideSearchOverlay() {
+function hideSearchOverlay () {
     /* Hide the search bar overlay.
      */
-    document.getElementById("search").classList.remove("is-active")
+    document.getElementById('search').classList.remove('is-active')
 
     // Allow background to scroll again.
-    document.documentElement.style.overflowY = 'scroll';
-    document.body.scroll = "yes";
+    document.documentElement.style.overflowY = 'scroll'
+    document.body.scroll = 'yes'
 
-    searchOpen = false;
+    searchOpen = false
 }
 
 /**
  * Show or hide the back to top button based on scrolling position.
  */
-function toggleBackToTopButton() {
+function toggleBackToTopButton () {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("backTopBtn").style.display = "block";
+        document.getElementById('backTopBtn').style.display = 'block'
     } else {
-        document.getElementById("backTopBtn").style.display = "none";
+        document.getElementById('backTopBtn').style.display = 'none'
     }
 }
 
 /**
  * Scroll back to the top of the page.
  */
-function backToTop() {
-    document.body.scrollTo({top: 0, behavior: 'smooth'}); // For Safari
-    document.documentElement.scrollTo({top: 0, behavior: 'smooth'}); // For Chrome, Firefox, IE and Opera
+function backToTop () {
+    // For Safari
+    document.body.scrollTo({ top: 0, behavior: 'smooth' })
+    // For Chrome, Firefox, IE and Opera
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 /**
  * Expands the sidebar entry of the associated url and it's parents.
- * @param {string} url The url that is associated with the to be expanded
- *     button.
+ * @param {string} url The url that is associated with the to be expanded button.
  */
-function expandSidebar(url) {
-    a = document.querySelector('a[href="' + url + '"]');
+function expandSidebar (url) {
+    const a = document.querySelector('a[href="' + url + '"]')
 
-    toggleExpand(a.parentElement, forceExpand=true);
-    expandULParents(a);
+    toggleExpand(a.parentElement, true)
+    expandULParents(a)
 }
 
 /**
@@ -105,63 +107,65 @@ function expandSidebar(url) {
  * sidebar.
  * @param {*} element The element whose parents should be expanded.
  */
-function expandULParents(element) {
+function expandULParents (element) {
     while (element) {
-        if (element.tagName == "UL" &&
-            (element.classList.contains("is-collapsed") ||
-             element.classList.contains("is-expanded"))) {
-            toggleExpand(element.previousSibling, forceExpand=true);
+        if (element.tagName === 'UL' &&
+            (element.classList.contains('is-collapsed') ||
+            element.classList.contains('is-expanded'))) {
+            toggleExpand(element.previousSibling, true)
         }
-        element = element.parentNode;
+
+        element = element.parentNode
     }
 }
 
 /**
  * The search function for the bookmarks searchbar
  */
-function searchBookmarks() {
-    var input, filter, list, items, item, title, i, txtValue;
-    input = document.getElementById("bookmark-searchbar");
-    filter = input.value.toUpperCase();
-    /* The results are stored in list and each entry in items.*/
-    list = document.getElementById("bookmark-results");
-    items = list.getElementsByClassName("panel-block bookmark-entry");
+function searchBookmarks () {
+    // const items, list, filter, filter
+    let item, title, i, txtValue
+    const input = document.getElementById('bookmark-searchbar')
+    const filter = input.value.toUpperCase()
+    /* The results are stored in list and each entry in items. */
+    const list = document.getElementById('bookmark-results')
+    const items = list.getElementsByClassName('panel-block bookmark-entry')
 
-    /* Each bookmark title is collected here and indexed.*/
+    /* Each bookmark title is collected here and indexed. */
     for (i = 0; i < items.length; i++) {
-        item = items[i].getElementsByTagName("div");
+        item = items[i].getElementsByTagName('div')
         title = item[3]
-        txtValue = title.innerText;
+        txtValue = title.innerText
 
         /* If a title has no index then dont display  bookmark,
          * this way you only see needed results.
          */
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            items[i].style.display = "";
+            items[i].style.display = ''
         } else {
-            items[i].style.display = "none";
+            items[i].style.display = 'none'
         }
     }
 }
 
-window.onscroll = function() {
-    toggleBackToTopButton();
-};
+window.onscroll = () => {
+    toggleBackToTopButton()
+}
 
 /**
  * When all the content is loaded, call {@link expandSidebar} to expand the
  * current page in the sidebar. Also set the scroll level of the sidebar to be
  * equal to the recorded number.
  */
-document.addEventListener('DOMContentLoaded', function() {
-    expandSidebar(document.location.href.split("/").splice(3).join('/'));
+document.addEventListener('DOMContentLoaded', () => {
+    expandSidebar(document.location.href.split('/').splice(3).join('/'))
 
-    let sidebar = document.getElementById("menuPanel");
+    const sidebar = document.getElementById('menuPanel')
     sidebar.scrollTo(0, localStorage.getItem('sidebarScrollPos') || 0)
 
     // Record the current scroll level of the sidebar into a localStorage
     // entry.
-    sidebar.onscroll = function() {
-        localStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
+    sidebar.onscroll = () => {
+        localStorage.setItem('sidebarScrollPos', sidebar.scrollTop)
     }
-}, false);
+}, false)
