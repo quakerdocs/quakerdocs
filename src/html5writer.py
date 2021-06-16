@@ -107,7 +107,7 @@ class Writer(docutils.writers._html_base.Writer):
         """
         Initialize Writer class.
         """
-        self.parts = {}
+        super().__init__()
         self.translator_class = HTMLTranslator
 
 
@@ -188,7 +188,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         Do nothing on visit.
         """
-        pass
 
     def depart_iframe_node(self, node: nodes.Element) -> None:
         """
@@ -227,10 +226,10 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         Add bookmark button for node to the document body.
         """
         title = node.astext()
-        id = self.create_bookmark_id(node)
-        onclick = f"bookmarkClick('{id}')"
-        html = (f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" '
-                f'title="{title}" value=0>'
+        bookmark_id = self.create_bookmark_id(node)
+        onclick = f"bookmarkClick('{bookmark_id}')"
+        html = (f'<button id="{bookmark_id}" class="bookmark-btn" '
+                f'onclick="{onclick}" title="{title}" value=0>'
                 '<span class="icon"><i class="fa fa-bookmark-o">'
                 '</i></span></button>')
         self.body.append(html)

@@ -15,24 +15,26 @@ class Theme:
         """
         Get all data related to a class.
         """
+        self.theme_path = None
+        self.inherit = None
+        self.stylesheet = None
+
         # Get the paths to places where themes could be.
         dirs = theme_path if theme_path is not None else [
             os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
         ]
 
-        for dir in dirs:
-            path = os.path.join(dir, theme_name)
+        for current_dir in dirs:
+            path = os.path.join(current_dir, theme_name)
             if os.path.exists(path) and os.path.isdir(path):
                 self.theme_path = path
                 break
         if self.theme_path is None:
-            print("Failed to find specified theme %s!" % theme_name)
-            return None
+            raise RuntimeError("Failed to find theme %s!" % theme_name)
 
         config = ConfigParser()
         config.read(os.path.join(self.theme_path, 'theme.conf'))
 
-        self.inherit = None
         inherit_name = config.get('theme', 'inherit', fallback=None)
         if inherit_name is not None:
             self.inherit = Theme(inherit_name, theme_path)
@@ -58,10 +60,10 @@ class Theme:
         """
         if self.stylesheet is not None:
             return self.stylesheet
-        elif self.inherit is not None:
+        if self.inherit is not None:
             return self.inherit.get_style()
-        else:
-            return None
+
+        return None
 
     def copy_files(self, dest_path):
         """
