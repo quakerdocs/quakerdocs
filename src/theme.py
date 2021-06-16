@@ -45,7 +45,7 @@ class Theme:
 
         inherit_name = config.get('theme', 'inherit', fallback=None)
         if inherit_name is not None:
-            self.inherit = Theme(inherit_name, theme_path)
+            self.inherit = Theme(inherit_name, theme_path, [])
         self.stylesheet = config.get('theme', 'stylesheet', fallback=None)
 
     def get_template(self, filename='template.txt'):
