@@ -175,8 +175,13 @@ function bookmarkRenameClick(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark = getBookmark(bookmarkCookieName(id));
     bookmark_panel.innerHTML = createRenameEntry(bookmark);
-    // renameBookmark(id);
-    // renderBookmarkList();
+}
+
+function renameCancel(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark = getBookmark(bookmarkCookieName(id));
+    let entry = createInnerEntry(bookmark);
+    bookmark_panel.innerHTML = entry;
 }
 
 function createRenameEntry(b) {
@@ -207,12 +212,12 @@ function createRenameEntry(b) {
             </div>
             <div class="tile is-1">
                 <button class="bookmark-rename" onclick=" \
-                bookmarkRenameClick('${b.id}')"><i class="fa fa-check \
+                renameAccept('${b.id}')"><i class="fa fa-check \
                 fa-lg" aria-hidden="true"></i></button>
             </div>
             <div class="tile is-1">
                 <button class="bookmark-trash" onclick=" \
-                bookmarkTrashClick('${b.id}')"><i class="fa fa-ban \
+                renameCancel('${b.id}')"><i class="fa fa-ban \
                 fa-lg" aria-hidden="true"></i></button>
             </div>
             `;
@@ -247,6 +252,13 @@ function renderBookmarkList() {
  * @returns {string} The HTML code for the bookmark entry.
  */
 function createBookmarkListEntry(b) {
+    let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
+                    ${createInnerEntry(b)}
+                </div>`;
+    return entry;
+}
+
+function createInnerEntry(b) {
     let max_words = 12;
     let title = b.title;
     let title_words = title.split(' ');
@@ -256,31 +268,30 @@ function createBookmarkListEntry(b) {
         title = title_words.slice(0,max_words).join(' ') + "...";
     }
 
-    let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
-                    <div class="tile is-10" onclick="location='${b.page}'; \
-                    hideBookmarkOverlay()">
-                        <div class="level">
-                            <div class=level-item>
-                                <span class="panel-icon">
-                                <i class="fa fa-book" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <div class=level-item>
-                                ${title}
-                            </div>
+    let entry = `<div class="tile is-10" onclick="location='${b.page}'; \
+                hideBookmarkOverlay()">
+                    <div class="level">
+                        <div class=level-item>
+                            <span class="panel-icon">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div class=level-item>
+                            ${title}
                         </div>
                     </div>
-                    <div class="tile is-1">
-                        <button class="bookmark-rename" onclick=" \
-                        bookmarkRenameClick('${b.id}')"><i class="fa fa-pencil \
-                        fa-lg" aria-hidden="true"></i></button>
-                    </div>
-                    <div class="tile is-1">
-                        <button class="bookmark-trash" onclick=" \
-                        bookmarkTrashClick('${b.id}')"><i class="fa fa-trash \
-                        fa-lg" aria-hidden="true"></i></button>
-                    </div>
+                </div>
+                <div class="tile is-1">
+                    <button class="bookmark-rename" onclick=" \
+                    bookmarkRenameClick('${b.id}')"><i class="fa fa-pencil \
+                    fa-lg" aria-hidden="true"></i></button>
+                </div>
+                <div class="tile is-1">
+                    <button class="bookmark-trash" onclick=" \
+                    bookmarkTrashClick('${b.id}')"><i class="fa fa-trash \
+                    fa-lg" aria-hidden="true"></i></button>
                 </div>`;
+
     return entry;
 }
 
