@@ -171,6 +171,60 @@ function bookmarkTrashClick(id) {
     bookmark_panel.style.display = "none";
 }
 
+function bookmarkRenameClick(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark = getBookmark(bookmarkCookieName(id));
+    bookmark_panel.innerHTML = createRenameEntry(bookmark);
+    // renameBookmark(id);
+    // renderBookmarkList();
+}
+
+function createRenameEntry(b) {
+    let inputbox_size = 55;
+    let inputbox_maxlength = 45;
+    let max_words = 12;
+    let title = b.title;
+    let title_words = title.split(' ');
+
+    /* Cut off title if it is too long. */
+    if (title_words.length > max_words) {
+        title = title_words.slice(0,max_words).join(' ') + "...";
+    }
+    let entry = `
+            <div class="tile is-10">
+                <div class="level">
+                    <div class=level-item>
+                        <span class="panel-icon">
+                        <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="level-item">
+                        <input class="input input-rename" type="text"
+                        size="${inputbox_size}" value="${title}"
+                        maxlength=${inputbox_maxlength}>
+                    </div>
+                </div>
+            </div>
+            <div class="tile is-1">
+                <button class="bookmark-rename" onclick=" \
+                bookmarkRenameClick('${b.id}')"><i class="fa fa-check \
+                fa-lg" aria-hidden="true"></i></button>
+            </div>
+            <div class="tile is-1">
+                <button class="bookmark-trash" onclick=" \
+                bookmarkTrashClick('${b.id}')"><i class="fa fa-ban \
+                fa-lg" aria-hidden="true"></i></button>
+            </div>
+            `;
+    return entry;
+}
+
+function renameBookmark(id) {
+    cname = bookmarkCookieName(id);
+    deleteCookie(cname);
+
+}
+
 /**
  * Render all enabled bookmarks onto the enabled overlay.
  */
@@ -203,7 +257,7 @@ function createBookmarkListEntry(b) {
     }
 
     let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
-                    <div class="tile is-11" onclick="location='${b.page}'; \
+                    <div class="tile is-10" onclick="location='${b.page}'; \
                     hideBookmarkOverlay()">
                         <div class="level">
                             <div class=level-item>
@@ -215,6 +269,11 @@ function createBookmarkListEntry(b) {
                                 ${title}
                             </div>
                         </div>
+                    </div>
+                    <div class="tile is-1">
+                        <button class="bookmark-rename" onclick=" \
+                        bookmarkRenameClick('${b.id}')"><i class="fa fa-pencil \
+                        fa-lg" aria-hidden="true"></i></button>
                     </div>
                     <div class="tile is-1">
                         <button class="bookmark-trash" onclick=" \

@@ -125,6 +125,22 @@
     color: red;
 }
 
+.bookmark-rename {
+    border: none;
+    background: none;
+    border-color: none;
+}
+
+.bookmark-rename:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.input-rename {
+    width: 100%;
+    display: flex;
+}
+
 #backTopBtn {
     display: none;
     position: fixed;
