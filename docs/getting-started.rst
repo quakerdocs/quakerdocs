@@ -2,7 +2,7 @@ Getting Started with QuakerDocs
 ================================
 
 QuakerDocs is very easy to use, and you do not need a lot to get started!
-To get started, you only need a configuration file written in Python called 'conf.py', and one or more files containing your documentation called ‘<your_file_name>.rst’.
+To get started, you only need a configuration file written in Python called :code:`conf.py`, and one or more files containing your documentation called :code:`<your_file_name>.rst`.
 An example can be downloaded from `here <www.google.com>`_ .
 
 Installation
@@ -14,15 +14,15 @@ First of all clone the git repository:
 
     git clone ssh://git@gitlab-fnwi.uva.nl:1337/lreddering/pse-documentation-generator.git
 
-When all the files have been cloned, run 'pip install -r requirements.txt' to install all the required dependencies for  to work.
-When this is done, just run 'make install' to install quaker to your system.
+When all the files have been cloned, run :code:`pip install -r requirements.txt` to install all the required dependencies for quaker to work.
+When this is done, just run :code:`make install` to install quaker to your system.
 
 Usage
 -----
 
 To use QuakerDocs to turn your reStructuredText files into a static webpage you need the follow these steps:
 
-1. Open the directory containing your 'conf.py' in the terminal.
+1. Open the directory containing your :code:`conf.py` in the terminal.
 
    .. code-block:: bash
 
