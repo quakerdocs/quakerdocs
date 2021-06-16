@@ -10,13 +10,13 @@ import argparse
 import importlib
 from sys import stderr
 
+from pathlib import Path
+from distutils.dir_util import copy_tree
 import docutils.core
 import docutils.writers
-from pathlib import Path
 from docutils import nodes
 import docutils.parsers.rst
 import docutils.writers.html5_polyglot
-from distutils.dir_util import copy_tree
 
 import index
 import application
@@ -28,7 +28,10 @@ SKIP_TAGS = {'system_message', 'problematic'}
 
 
 class Main:
-    # Mapping builder name to (file extension, writer class)
+    """
+    Class for controlling the main functionality of the program.
+    """
+    # Mapping builder name to (output file extension, writer class) tuple
     supported_builders = {
         'html': ('html', html5writer.Writer)
     }
@@ -38,12 +41,18 @@ class Main:
         self.build_path = build_path
         self.dest_path = build_path / 'html'
         self.builder = builder
+        self.sp_app = None
+        self.theme = None
+        self.file_ext = '.out'
+        self.writer = None
+        self.idx = None
+        self.toc_navigation = list()
 
         # Import and setup all directives.
         dir_path = Path(__file__).parent / 'directives'
-        for _, m, _ in pkgutil.iter_modules([str(dir_path)]):
-            m = importlib.import_module(f'directives.{m}')
-            m.setup()
+        for _, module, _ in pkgutil.iter_modules([str(dir_path)]):
+            module = importlib.import_module(f'directives.{module}')
+            module.setup()
 
         self.docutil_settings = {
             'src_dir': self.source_path,
@@ -71,10 +80,9 @@ class Main:
         }
         conf_vars = {}
 
-        # TODO maybe don't use exec?
         # Check if file exists? Other cwd?
-        with open('conf.py') as f:
-            exec(f.read(), global_vars, conf_vars)
+        with open('conf.py') as conf_file:
+            exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
 
         # NOTE: this shouldn't be needed.
@@ -115,7 +123,7 @@ class Main:
         if self.builder not in Main.supported_builders:
             raise NotImplementedError("Requested builder not supported!")
 
-        self.file_ext, self.Builder = Main.supported_builders[self.builder]
+        self.file_ext, self.writer = Main.supported_builders[self.builder]
 
         # Make the destination directory if it does not exist.
         self.dest_path.mkdir(parents=True, exist_ok=True)
@@ -144,8 +152,8 @@ class Main:
         """
         for root, dirs, files in os.walk(self.source_path):
             # Recreate the source directories.
-            for dir in dirs:
-                new_dir = self.dest_path / self.relative_path(root) / dir
+            for cur_dir in dirs:
+                new_dir = self.dest_path / self.relative_path(root) / cur_dir
                 if not new_dir.exists():
                     new_dir.mkdir()
 
@@ -159,10 +167,10 @@ class Main:
                 try:
                     if path.suffix == '.rst':
                         self.write_rst(*self.parse_rst(path))
-                except FileNotFoundError as e:
-                    print(f'File [{file}] not found:', e)
-                except docutils.utils.SystemMessage as e:
-                    print('DOCUTILS ERROR!', e)
+                except FileNotFoundError as err:
+                    print(f'File [{file}] not found:', err)
+                except docutils.utils.SystemMessage as err:
+                    print('DOCUTILS ERROR!', err)
 
     def parse_rst(self, path):
         """
@@ -171,8 +179,8 @@ class Main:
         src = self.source_path / path
         html_path = path.with_suffix('.html')
 
-        with open(src) as f:
-            content = f.read()
+        with open(src) as file:
+            content = file.read()
 
         doctree = docutils.core.publish_doctree(
             content,
@@ -180,8 +188,8 @@ class Main:
             settings_overrides=self.docutil_settings
         )
 
-        for id in doctree.ids:
-            application.id_map.update({id: html_path})
+        for section_id in doctree.ids:
+            application.id_map.update({section_id: html_path})
 
         return src, html_path, content
 
@@ -229,11 +237,11 @@ class Main:
         self.idx.add_file(content, title, html_path, metadata.priority)
 
         # Write the document to a file.
-        with open(dest, 'wb') as f:
+        with open(dest, 'wb') as file:
             output = docutils.core.publish_from_doctree(
                 doctree,
                 destination_path=dest,
-                writer=self.Builder(),
+                writer=self.writer(),
                 settings_overrides={
                     'toc': self.toc_navigation,
                     'template': self.theme.get_file('template.txt'),
@@ -250,7 +258,7 @@ class Main:
                     'copyright': self.conf_vars.get('copyright', ''),
                     'html_style': self.conf_vars.get('html_style', None)
                 })
-            f.write(output)
+            file.write(output)
 
     def is_excluded(self, path):
         """
@@ -283,8 +291,8 @@ class Main:
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        for tt in doctree.traverse(directives.sphinx.toc_data):
-            self.toc_navigation.append(tt)
+        for current_toc in doctree.traverse(directives.sphinx.toc_data):
+            self.toc_navigation.append(current_toc)
 
     def copy_static_files(self):
         """
