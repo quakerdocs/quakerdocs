@@ -74,6 +74,12 @@ function getBookmark(cname) {
     return null;
 }
 
+function updateBookmark(b, new_title) {
+    let cname = bookmarkCookieName(b.id);
+    b.title = new_title;
+    setCookie(cname, JSON.stringify(b));
+}
+
 /**
  * Check if the bookmark button of the given id is activated or not.
  * @param {string} id The id of the to be checked bookmark button.
@@ -180,13 +186,22 @@ function bookmarkRenameClick(id) {
 function renameCancel(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark = getBookmark(bookmarkCookieName(id));
-    let entry = createInnerEntry(bookmark);
-    bookmark_panel.innerHTML = entry;
+    bookmark_panel.innerHTML = createInnerEntry(bookmark);
+}
+
+function renameAccept(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark_old = getBookmark(bookmarkCookieName(id));
+    let input_val = document.getElementById(`IN_${id}`).value;
+    updateBookmark(bookmark_old, input_val);
+
+    let bookmark_new = getBookmark(bookmarkCookieName(id));
+    bookmark_panel.innerHTML = createInnerEntry(bookmark_new);
 }
 
 function createRenameEntry(b) {
     let inputbox_size = 55;
-    let inputbox_maxlength = 45;
+    let inputbox_maxlength = 500;
     let max_words = 12;
     let title = b.title;
     let title_words = title.split(' ');
@@ -204,7 +219,7 @@ function createRenameEntry(b) {
                         </span>
                     </div>
                     <div class="level-item">
-                        <input class="input input-rename" type="text"
+                        <input id="IN_${b.id}" class="input input-rename" type="text"
                         size="${inputbox_size}" value="${title}"
                         maxlength=${inputbox_maxlength}>
                     </div>
@@ -227,7 +242,6 @@ function createRenameEntry(b) {
 function renameBookmark(id) {
     cname = bookmarkCookieName(id);
     deleteCookie(cname);
-
 }
 
 /**
