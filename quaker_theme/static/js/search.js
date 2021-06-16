@@ -16,7 +16,7 @@ class Result {
      * @param {*} title The title of the result page.
      * @param {*} paragraph The paragraph title (STRETCH GOAL)
      */
-    constructor(page, title, paragraph = '') {
+    constructor (page, title, paragraph = '') {
         // The page URL.
         this.page = page
 
@@ -34,7 +34,7 @@ class Result {
  * @returns {null} Nothing if no results were found.
  * @yields {Result} The next search result entry.
  */
-function* performSearch(query) {
+function * performSearch (query) {
     if (!wasmLoaded) {
         return
     }
@@ -47,7 +47,7 @@ function* performSearch(query) {
     search(query)
 
     /* Return the results as they are asked. */
-    let result;
+    let result
     while (result = getres()) {
         /* Split on new line, regex to work on all os'es. */
         const sep = result.split('\n')
@@ -59,7 +59,7 @@ function* performSearch(query) {
  * Add an keyboard event listener to activate a search function
  * {@link performSearch} on every keystroke.
  */
-function activateSearch() {
+function activateSearch () {
     /* Activate the search bar with an keyboard event listener.
      */
     const searchInput = document.getElementById('searchbar')
@@ -71,7 +71,7 @@ function activateSearch() {
             const input = searchInput.value
 
             if (input.length) {
-                const searcher = performSearch(input);
+                const searcher = performSearch(input)
                 renderResults(input, searcher, resultsWrapper)
             } else {
                 resultsWrapper.innerHTML = ''
@@ -88,7 +88,7 @@ function activateSearch() {
  * @param {*} content The content that should be displayed under the title.
  * @returns An HTML element, the container of the result entry.
  */
-function createResultElement(href, title, content) {
+function createResultElement (href, title, content) {
     const element = document.createElement('div')
     element.innerHTML = `<a class="panel-block result is-flex-direction-column" href="${href}">
                             <h1 class="result-title"><strong>${title}</strong></h1>
@@ -104,7 +104,7 @@ function createResultElement(href, title, content) {
  * @param {*} text The text.
  * @returns The text to be displayed containing the highlighted query.
  */
-function highlightSearchQuery(query, text) {
+function highlightSearchQuery (query, text) {
     const maxLenTextBefore = 50
     const maxLenTextAfter = 100
     const highlighter = '<span class="has-background-primary-light has-text-primary">'
@@ -135,7 +135,7 @@ function highlightSearchQuery(query, text) {
  * @param {*} searcher The generator which yields the search results.
  * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
-function renderResults(query, searcher, resultsWrapper) {
+function renderResults (query, searcher, resultsWrapper) {
     resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
     const resultList = document.getElementById('result-list')
     const parser = new DOMParser()
