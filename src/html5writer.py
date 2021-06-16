@@ -140,8 +140,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         if document.settings.logo is not None:
             self.logo = '<img src="%s" alt="Logo">' % document.settings.logo
 
-        link = ('https://gitlab-fnwi.uva.nl/'
-                'lreddering/pse-documentation-generator')
+        link = ('https://quakerdocs.nl/')
 
         self.footer.append(
             f'<p>&copy {document.settings.copyright}.</p>'

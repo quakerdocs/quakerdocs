@@ -76,7 +76,11 @@ Meet our team
 
 |team|
 
-Honourable mentions
-~~~~~~~~~~~~~~~~~~~~
-Dr. Ana Oprescu & Codegrade
+.. |hm| raw:: html
+
+    <h3 class"">Honourable mentions</h3>
+
+|hm|
+
+Dr. Ana Oprescu, Jelle van Dijk & Codegrade
 

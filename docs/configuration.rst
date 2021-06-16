@@ -1,4 +1,4 @@
-Configure with Quaker Docs
+Configure with QuakerDocs
 ================================
 
 QuakerDocs supports configuring your own documentation build with a

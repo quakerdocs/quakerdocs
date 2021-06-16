@@ -50,8 +50,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Quaker Docs'
-copyright = str(date.today().year) + ', Quaker Docs'
+project = 'QuakerDocs'
+copyright = str(date.today().year) + ', QuakerDocs'
 author = 'PSE Team D'
 
 # The version info for the project you're documenting, acts as replacement for

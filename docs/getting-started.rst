@@ -1,7 +1,7 @@
-Getting Started with Quaker Docs
+Getting Started with QuakerDocs
 ================================
 
-Quaker Docs is very easy to use, and you do not need a lot to get started!
+QuakerDocs is very easy to use, and you do not need a lot to get started!
 To get started, you only need a configuration file written in Python called 'conf.py', and one or more files containing your documentation called ‘<your_file_name>.rst’.
 An example can be downloaded from `here <www.google.com>`_ .
 
@@ -14,7 +14,7 @@ First of all clone the git repository:
 
     git clone ssh://git@gitlab-fnwi.uva.nl:1337/lreddering/pse-documentation-generator.git
 
-When all the files have been cloned, run 'pip install -r requirements.txt' to install all the required dependencies for Quaker Docs to work.
+When all the files have been cloned, run 'pip install -r requirements.txt' to install all the required dependencies for  to work.
 When this is done, just run 'make install' to install quaker to your system.
 
 Usage

@@ -1,4 +1,4 @@
-.. Quaker Docs documentation master file, created on Mon Jun 14 13:53:37 2021.
+.. QuakerDocs documentation master file, created on Mon Jun 14 13:53:37 2021.
 
 QuakerDocs - Documentation
 ===========================
