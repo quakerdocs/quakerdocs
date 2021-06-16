@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<base href="."><link rel="icon" href="_static/_images/favicon.ico"><title>API</title>
+
+
+<link rel="stylesheet" type="text/css" href="css/bulma.min.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/friendly.css">
+<link rel="stylesheet" type="text/css" href="css/content.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/search_data.js"></script>
+<script src="js/search.js"></script>
+<script src="js/script.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/bookmark.js"></script>
+<script src="js/keylistener.js"></script>
+
+</head>
+<body>
+<div class="document" id="api">
+<nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+	<div class="container">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="/">
+				<img src="_static/_images/logo.svg" alt="Logo">
+			</a>
+
+			<a class="navbar-item">
+				<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
+					<span class="icon"><i class="fa fa-search"></i></span>
+					<span>Search</span>
+				</button>
+			</a>
+
+			<a class="navbar-item is-hidden-mobile">
+				<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
+					<span class="icon"><i class="fa fa-bookmark"></i></span>
+					<span>Bookmarks</span>
+				</button>
+			</a>
+
+			<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+
+		<div class="navbar-menu">
+			<div class="navbar-start"></div>
+			<div class="navbar-end"></div>
+		</div>
+	</div>
+</nav>
+
+<!--Search window-->
+<div id="search" class="modal">
+	<div class="modal-background" onclick="hideSearchOverlay()"></div>
+	<div class="modal-content height panel">
+		<p class="panel-heading">
+			<span>Search</span>
+			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="searchbar" class="input" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
+		<div id="search-results" class="results max-height"></div>
+	</div>
+</div>
+
+<!--Bookmarks window-->
+<div id="bookmark-window" class="modal">
+	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
+	<div class="modal-content height panel">
+		<p class="panel-heading">
+			<span>Bookmarks</span>
+			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="bookmark-searchbar" class="input" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
+		<div id="bookmark-results" class="results max-height"></div>
+	</div>
+</div>
+
+<!--Main content-->
+<div class="container">
+	<section class="main-content columns is-desktop">
+		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">
+			<p class="caption menu-label"><span class="caption-text">User Guides</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=guides/use-codegrade-as-a-student.html>How to use CodeGrade as a student</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#handing-in`)"href=guides/use-codegrade-as-a-student.html#handing-in>Handing in</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#handing-in-with-git`)"href=guides/use-codegrade-as-a-student.html#handing-in-with-git>Handing in with Git</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#viewing-feedback`)"href=guides/use-codegrade-as-a-student.html#viewing-feedback>Viewing feedback</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#giving-peer-feedback`)"href=guides/use-codegrade-as-a-student.html#giving-peer-feedback>Giving peer feedback</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#number-of-given-comments`)"href=guides/use-codegrade-as-a-student.html#number-of-given-comments>Number of given comments</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#viewing-peer-feedback`)"href=guides/use-codegrade-as-a-student.html#viewing-peer-feedback>Viewing peer feedback</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/getting-started-with-codegrade.html>Getting started with CodeGrade</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/autotest-best-practices.html>Best Practices for AutoTest</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#when-to-use-hidden-steps`)"href=guides/autotest-best-practices.html#when-to-use-hidden-steps>When to use hidden steps?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#where-do-i-compile-students-code-and-how-do-i-stop-when-compiling-fails`)"href=guides/autotest-best-practices.html#where-do-i-compile-students-code-and-how-do-i-stop-when-compiling-fails>Where do I compile students’ code (and how do I stop when compiling fails?)</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-use-weights-and-set-rubric-points-when-using-a-discrete-rubric-category`)"href=guides/autotest-best-practices.html#how-to-use-weights-and-set-rubric-points-when-using-a-discrete-rubric-category>How to use weights and set rubric points when using a discrete rubric category?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-manually-adjust-autotest-grades`)"href=guides/autotest-best-practices.html#how-to-manually-adjust-autotest-grades>How to manually adjust AutoTest grades?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-install-packages-and-third-party-software`)"href=guides/autotest-best-practices.html#how-to-install-packages-and-third-party-software>How to install packages and third party software?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-assess-style-and-structure`)"href=guides/autotest-best-practices.html#how-to-assess-style-and-structure>How to assess style and structure?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-use-a-unit-testing-framework`)"href=guides/autotest-best-practices.html#how-to-use-a-unit-testing-framework>How to use a unit testing framework?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-integrate-existing-grading-scripts`)"href=guides/autotest-best-practices.html#how-to-integrate-existing-grading-scripts>How to integrate existing grading scripts?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-do-i-combine-autotest-and-manual-function-testing`)"href=guides/autotest-best-practices.html#how-do-i-combine-autotest-and-manual-function-testing>How do I combine AutoTest and manual function testing?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-hide-fixtures`)"href=guides/autotest-best-practices.html#how-to-hide-fixtures>How to hide fixtures?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-use-io-tests-with-floating-point-numbers`)"href=guides/autotest-best-practices.html#how-to-use-io-tests-with-floating-point-numbers>How to use IO tests with floating point numbers</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-let-io-tests-pass-when-the-exit-code-is-not-0`)"href=guides/autotest-best-practices.html#how-to-let-io-tests-pass-when-the-exit-code-is-not-0>How to let IO tests pass when the exit code is not 0</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-view-autotest-generated-files`)"href=guides/autotest-best-practices.html#how-to-view-autotest-generated-files>How to view AutoTest generated files</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-access-submission-metadata-from-the-tests`)"href=guides/autotest-best-practices.html#how-to-access-submission-metadata-from-the-tests>How to access submission metadata from the tests</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/creating-an-assignment.html>Create a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/set-up-a-rubric-for-an-assignment.html>Set up a rubric for an assignment</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/set-up-a-rubric-for-an-assignment.html#references`)"href=guides/set-up-a-rubric-for-an-assignment.html#references>References</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/setting-up-autotest.html>Setting up AutoTest</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/enabling-continuous-feedback-for-an-assignment.html>Enabling Continuous Feedback for an assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/set-up-group-assignment.html>Set up a CodeGrade group assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/setting-up-hand-in-requirements.html>Set up hand-in requirements for a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/setting-up-git-uploads.html>Set up Git uploads for a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/checking-for-plagiarism.html>Check for plagiarism in a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/dividing-submissions.html>Divide submissions over graders</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/dividing-submissions.html#manually-dividing-submissions`)"href=guides/dividing-submissions.html#manually-dividing-submissions>Manually dividing submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/dividing-submissions.html#randomly-dividing-submissions`)"href=guides/dividing-submissions.html#randomly-dividing-submissions>Randomly dividing submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/dividing-submissions.html#connecting-divisions-between-assignments`)"href=guides/dividing-submissions.html#connecting-divisions-between-assignments>Connecting divisions between assignments</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html>Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/creating-managing-and-using-snippets.html>Create, manage and use snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#personal-snippets`)"href=guides/creating-managing-and-using-snippets.html#personal-snippets>Personal Snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#creating-snippets`)"href=guides/creating-managing-and-using-snippets.html#creating-snippets>Creating snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#code-viewer`)"href=guides/creating-managing-and-using-snippets.html#code-viewer>Code Viewer</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#profile-page`)"href=guides/creating-managing-and-using-snippets.html#profile-page>Profile page</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#managing-snippets`)"href=guides/creating-managing-and-using-snippets.html#managing-snippets>Managing snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id1`)"href=guides/creating-managing-and-using-snippets.html#id1>Code Viewer</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id2`)"href=guides/creating-managing-and-using-snippets.html#id2>Profile page</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#course-snippets`)"href=guides/creating-managing-and-using-snippets.html#course-snippets>Course Snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id3`)"href=guides/creating-managing-and-using-snippets.html#id3>Creating snippets</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id4`)"href=guides/creating-managing-and-using-snippets.html#id4>Managing snippets</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#using-snippets`)"href=guides/creating-managing-and-using-snippets.html#using-snippets>Using snippets</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/using-shortcuts.html>Using shortcuts</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/cannot-find-feature-in-codegrade.html>I cannot find a feature in CodeGrade</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/installing-codegrade-filesystem.html>Install the CodeGrade Filesystem</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/use-codegrade-filesystem.html>Use the CodeGrade Filesystem to locally mount CodeGrade</a></span></li>
+</ul><p class="caption menu-label"><span class="caption-text">User Documentation</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=user/overview.html>Overview of CodeGrade</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#general-site`)"href=user/overview.html#general-site>General Site</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#filesystem`)"href=user/overview.html#filesystem>Filesystem</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#account-management`)"href=user/overview.html#account-management>Account Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#creating-a-new-account`)"href=user/overview.html#creating-a-new-account>Creating a new account</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#logging-in-to-an-existing-account`)"href=user/overview.html#logging-in-to-an-existing-account>Logging in to an existing account</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/codeviewer.html>Code Viewer</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#code-viewer-for-teachers`)"href=user/codeviewer.html#code-viewer-for-teachers>Code Viewer for Teachers</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#file-browser`)"href=user/codeviewer.html#file-browser>File browser</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#inline-feedback`)"href=user/codeviewer.html#inline-feedback>Inline feedback</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#student-questions`)"href=user/codeviewer.html#student-questions>Student questions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#snippets`)"href=user/codeviewer.html#snippets>Snippets</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#course-feedback`)"href=user/codeviewer.html#course-feedback>Course feedback</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#rubrics`)"href=user/codeviewer.html#rubrics>Rubrics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#general-feedback-and-grade`)"href=user/codeviewer.html#general-feedback-and-grade>General feedback and grade</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#grade-history`)"href=user/codeviewer.html#grade-history>Grade History</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#download-feedback-or-assignment`)"href=user/codeviewer.html#download-feedback-or-assignment>Download feedback or assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#deleting-a-submission`)"href=user/codeviewer.html#deleting-a-submission>Deleting a submission</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#code-viewer-for-students`)"href=user/codeviewer.html#code-viewer-for-students>Code Viewer for Students</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#settings`)"href=user/codeviewer.html#settings>Settings</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/management.html>Course and Assignment Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#id1`)"href=user/management.html#id1>Course Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#course-registration-links`)"href=user/management.html#course-registration-links>Course registration links</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#creating-a-new-course`)"href=user/management.html#creating-a-new-course>Creating a new Course</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#id2`)"href=user/management.html#id2>Assignment Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#assignment-state`)"href=user/management.html#assignment-state>Assignment State</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#general`)"href=user/management.html#general>General</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#assignment-type`)"href=user/management.html#assignment-type>Assignment type</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#available-at`)"href=user/management.html#available-at>Available at</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#upload-types`)"href=user/management.html#upload-types>Upload types</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#git-uploading`)"href=user/management.html#git-uploading>Git uploading</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#limiting-the-amount-of-submissions`)"href=user/management.html#limiting-the-amount-of-submissions>Limiting the amount of submissions</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#maximum-submissions`)"href=user/management.html#maximum-submissions>Maximum submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#cool-off-period`)"href=user/management.html#cool-off-period>Cool off period</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#uploading-submissions`)"href=user/management.html#uploading-submissions>Uploading Submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#peer-feedback`)"href=user/management.html#peer-feedback>Peer feedback</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#amount-of-students`)"href=user/management.html#amount-of-students>Amount of students</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#time-to-give-peer-feedback`)"href=user/management.html#time-to-give-peer-feedback>Time to give peer feedback</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#automatically-approve-comments`)"href=user/management.html#automatically-approve-comments>Automatically approve comments</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#group-assignment`)"href=user/management.html#group-assignment>Group assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#hand-in-requirements`)"href=user/management.html#hand-in-requirements>Hand-in Requirements</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#id3`)"href=user/management.html#id3>Group assignment</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#graders`)"href=user/management.html#graders>Graders</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#dividing-submissions`)"href=user/management.html#dividing-submissions>Dividing Submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#finished-grading-and-notifications`)"href=user/management.html#finished-grading-and-notifications>Finished Grading and Notifications</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#e-mail-notifications`)"href=user/management.html#e-mail-notifications>E-mail Notifications</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#plagiarism`)"href=user/management.html#plagiarism>Plagiarism</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#rubric`)"href=user/management.html#rubric>Rubric</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#discrete-rubric-categories`)"href=user/management.html#discrete-rubric-categories>Discrete rubric categories</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#continuous-rubric-categories`)"href=user/management.html#continuous-rubric-categories>Continuous rubric categories</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#autotest`)"href=user/management.html#autotest>AutoTest</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#creating-a-new-assignment`)"href=user/management.html#creating-a-new-assignment>Creating a new Assignment</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/plagiarism.html>Plagiarism Detection</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#running-the-plagiarism-checker`)"href=user/plagiarism.html#running-the-plagiarism-checker>Running the Plagiarism Checker</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#jplag-characteristics`)"href=user/plagiarism.html#jplag-characteristics>JPlag Characteristics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#extend-jplag-with-codegrade`)"href=user/plagiarism.html#extend-jplag-with-codegrade>Extend JPlag with CodeGrade</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#reviewing-plagiarism`)"href=user/plagiarism.html#reviewing-plagiarism>Reviewing Plagiarism</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#exporting-plagiarism-cases`)"href=user/plagiarism.html#exporting-plagiarism-cases>Exporting Plagiarism Cases</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/groups.html>Groups</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/groups.html#group-set`)"href=user/groups.html#group-set>Group set</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/groups.html#id1`)"href=user/groups.html#id1>Groups</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/preferences.html>Settings and Site Preferences</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#site-preferences`)"href=user/preferences.html#site-preferences>Site Preferences</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#account-information-settings`)"href=user/preferences.html#account-information-settings>Account Information Settings</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#personal-information`)"href=user/preferences.html#personal-information>Personal Information</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#change-password`)"href=user/preferences.html#change-password>Change Password</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#id1`)"href=user/preferences.html#id1>LMS Account Passwords</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#snippet-management`)"href=user/preferences.html#snippet-management>Snippet Management</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#manage-site`)"href=user/preferences.html#manage-site>Manage Site</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=https://fs-docs.codegra.de>Filesystem</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/lms.html>LMS Integration</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#blackboard`)"href=user/lms.html#blackboard>Blackboard</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#brightspace`)"href=user/lms.html#brightspace>Brightspace</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#canvas`)"href=user/lms.html#canvas>Canvas</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#moodle`)"href=user/lms.html#moodle>Moodle</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#sakai`)"href=user/lms.html#sakai>Sakai</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#other-lms`)"href=user/lms.html#other-lms>Other LMS</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#codegrade-lms-behaviour`)"href=user/lms.html#codegrade-lms-behaviour>CodeGrade LMS Behaviour</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#creating-courses-or-assignments`)"href=user/lms.html#creating-courses-or-assignments>Creating Courses or Assignments</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#grading`)"href=user/lms.html#grading>Grading</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#account-linking`)"href=user/lms.html#account-linking>Account Linking</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/autotest/overview.html>AutoTest</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/analytics-dashboard.html>Analytics Dashboard</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#general-statistics`)"href=user/analytics-dashboard.html#general-statistics>General statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#filters`)"href=user/analytics-dashboard.html#filters>Filters</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#filter-options`)"href=user/analytics-dashboard.html#filter-options>Filter options</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#creating-new-filters`)"href=user/analytics-dashboard.html#creating-new-filters>Creating new filters</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#splitting-filters`)"href=user/analytics-dashboard.html#splitting-filters>Splitting filters</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#submission-statistics`)"href=user/analytics-dashboard.html#submission-statistics>Submission statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#grade-statistics`)"href=user/analytics-dashboard.html#grade-statistics>Grade statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#rubric-statistics`)"href=user/analytics-dashboard.html#rubric-statistics>Rubric statistics</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#reduced-rubric-score`)"href=user/analytics-dashboard.html#reduced-rubric-score>Reduced rubric score</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#the-rit-rir-values`)"href=user/analytics-dashboard.html#the-rit-rir-values>The RIT & RIR values</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#correlation-diagrams`)"href=user/analytics-dashboard.html#correlation-diagrams>Correlation diagrams</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#relative-statistics`)"href=user/analytics-dashboard.html#relative-statistics>Relative statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#examples`)"href=user/analytics-dashboard.html#examples>Examples</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/exam-mode.html>Exam mode</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/exam-mode.html#exam-duration`)"href=user/exam-mode.html#exam-duration>Exam duration</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/exam-mode.html#student-login-links`)"href=user/exam-mode.html#student-login-links>Student login links</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/notifications.html>Notifications</a></span></li>
+</ul><p class="caption menu-label"><span class="caption-text">About CodeGrade</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=about/about.html>About CodeGrade</a></span></li>
+</ul><p class="caption menu-label"><span class="caption-text">API Documentation</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=api.html>API</a></span></li>
+</ul>
+		</aside>
+		<div id="content" class="column content">
+			<h1 class="title">API<button id="BM_api" class="bookmark-btn" onclick="bookmarkClick('BM_api')" title="API" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h1>
+			
+			<rapi-doc spec-url="/_static/swagger.json"
+          id="rapi-api-doc"
+          render-style="read"
+          sort-endpoints-by="method"
+          sort-tags="true"
+          allow-server-selection="false"
+          allow-try="false"
+          allow-authentication="false"
+          allow-spec-file-load="false"
+          allow-spec-url-load="false"
+          nav-bg-color="#2c3e50"
+          header-color="#2c3e50"
+          info-description-headings-in-navbar="true"
+          schema-description-expanded="true"
+          show-header="false"
+          response-area-height="50px"
+          >
+    <div slot="logo"></div>
+    <div slot="nav-logo" id="nav-logo">
+        <a href="#" class="api-logo-link">
+            <img src="/_static/logo.svg" class="api-logo" />
+        </a>
+        <div class="release">
+            {{ release }}
+        </div>
+
+        <div class="back">
+            <a href="https://help.codegrade.com">Back to documentation</a>
+        </div>
+    </div>
+</rapi-doc>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
+			<hr>
+			<footer class="footer-doc">
+				<p>&copy 2021, CodeGrade.</p><p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>
+			</footer>
+		</div>
+	</section>
+</div>
+
+
+</div>
+</body>
+</html>

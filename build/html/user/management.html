@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<base href=".."><link rel="icon" href="_static/_images/favicon.ico"><title>Course and Assignment Management</title>
+
+
+<link rel="stylesheet" type="text/css" href="css/bulma.min.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/friendly.css">
+<link rel="stylesheet" type="text/css" href="css/content.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/search_data.js"></script>
+<script src="js/search.js"></script>
+<script src="js/script.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/bookmark.js"></script>
+<script src="js/keylistener.js"></script>
+
+</head>
+<body>
+<div class="document" id="course-and-assignment-management">
+<span id="management-chapter"></span>
+<nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+	<div class="container">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="/">
+				<img src="_static/_images/logo.svg" alt="Logo">
+			</a>
+
+			<a class="navbar-item">
+				<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
+					<span class="icon"><i class="fa fa-search"></i></span>
+					<span>Search</span>
+				</button>
+			</a>
+
+			<a class="navbar-item is-hidden-mobile">
+				<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
+					<span class="icon"><i class="fa fa-bookmark"></i></span>
+					<span>Bookmarks</span>
+				</button>
+			</a>
+
+			<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+
+		<div class="navbar-menu">
+			<div class="navbar-start"></div>
+			<div class="navbar-end"></div>
+		</div>
+	</div>
+</nav>
+
+<!--Search window-->
+<div id="search" class="modal">
+	<div class="modal-background" onclick="hideSearchOverlay()"></div>
+	<div class="modal-content height panel">
+		<p class="panel-heading">
+			<span>Search</span>
+			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="searchbar" class="input" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
+		<div id="search-results" class="results max-height"></div>
+	</div>
+</div>
+
+<!--Bookmarks window-->
+<div id="bookmark-window" class="modal">
+	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
+	<div class="modal-content height panel">
+		<p class="panel-heading">
+			<span>Bookmarks</span>
+			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="bookmark-searchbar" class="input" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
+		<div id="bookmark-results" class="results max-height"></div>
+	</div>
+</div>
+
+<!--Main content-->
+<div class="container">
+	<section class="main-content columns is-desktop">
+		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">
+			<p class="caption menu-label"><span class="caption-text">User Guides</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=guides/use-codegrade-as-a-student.html>How to use CodeGrade as a student</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#handing-in`)"href=guides/use-codegrade-as-a-student.html#handing-in>Handing in</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#handing-in-with-git`)"href=guides/use-codegrade-as-a-student.html#handing-in-with-git>Handing in with Git</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#viewing-feedback`)"href=guides/use-codegrade-as-a-student.html#viewing-feedback>Viewing feedback</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#giving-peer-feedback`)"href=guides/use-codegrade-as-a-student.html#giving-peer-feedback>Giving peer feedback</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#number-of-given-comments`)"href=guides/use-codegrade-as-a-student.html#number-of-given-comments>Number of given comments</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/use-codegrade-as-a-student.html#viewing-peer-feedback`)"href=guides/use-codegrade-as-a-student.html#viewing-peer-feedback>Viewing peer feedback</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/getting-started-with-codegrade.html>Getting started with CodeGrade</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/autotest-best-practices.html>Best Practices for AutoTest</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#when-to-use-hidden-steps`)"href=guides/autotest-best-practices.html#when-to-use-hidden-steps>When to use hidden steps?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#where-do-i-compile-students-code-and-how-do-i-stop-when-compiling-fails`)"href=guides/autotest-best-practices.html#where-do-i-compile-students-code-and-how-do-i-stop-when-compiling-fails>Where do I compile students’ code (and how do I stop when compiling fails?)</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-use-weights-and-set-rubric-points-when-using-a-discrete-rubric-category`)"href=guides/autotest-best-practices.html#how-to-use-weights-and-set-rubric-points-when-using-a-discrete-rubric-category>How to use weights and set rubric points when using a discrete rubric category?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-manually-adjust-autotest-grades`)"href=guides/autotest-best-practices.html#how-to-manually-adjust-autotest-grades>How to manually adjust AutoTest grades?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-install-packages-and-third-party-software`)"href=guides/autotest-best-practices.html#how-to-install-packages-and-third-party-software>How to install packages and third party software?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-assess-style-and-structure`)"href=guides/autotest-best-practices.html#how-to-assess-style-and-structure>How to assess style and structure?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-use-a-unit-testing-framework`)"href=guides/autotest-best-practices.html#how-to-use-a-unit-testing-framework>How to use a unit testing framework?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-integrate-existing-grading-scripts`)"href=guides/autotest-best-practices.html#how-to-integrate-existing-grading-scripts>How to integrate existing grading scripts?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-do-i-combine-autotest-and-manual-function-testing`)"href=guides/autotest-best-practices.html#how-do-i-combine-autotest-and-manual-function-testing>How do I combine AutoTest and manual function testing?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-hide-fixtures`)"href=guides/autotest-best-practices.html#how-to-hide-fixtures>How to hide fixtures?</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-use-io-tests-with-floating-point-numbers`)"href=guides/autotest-best-practices.html#how-to-use-io-tests-with-floating-point-numbers>How to use IO tests with floating point numbers</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-let-io-tests-pass-when-the-exit-code-is-not-0`)"href=guides/autotest-best-practices.html#how-to-let-io-tests-pass-when-the-exit-code-is-not-0>How to let IO tests pass when the exit code is not 0</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-view-autotest-generated-files`)"href=guides/autotest-best-practices.html#how-to-view-autotest-generated-files>How to view AutoTest generated files</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/autotest-best-practices.html#how-to-access-submission-metadata-from-the-tests`)"href=guides/autotest-best-practices.html#how-to-access-submission-metadata-from-the-tests>How to access submission metadata from the tests</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/creating-an-assignment.html>Create a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/set-up-a-rubric-for-an-assignment.html>Set up a rubric for an assignment</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/set-up-a-rubric-for-an-assignment.html#references`)"href=guides/set-up-a-rubric-for-an-assignment.html#references>References</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/setting-up-autotest.html>Setting up AutoTest</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/enabling-continuous-feedback-for-an-assignment.html>Enabling Continuous Feedback for an assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/set-up-group-assignment.html>Set up a CodeGrade group assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/setting-up-hand-in-requirements.html>Set up hand-in requirements for a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/setting-up-git-uploads.html>Set up Git uploads for a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/checking-for-plagiarism.html>Check for plagiarism in a CodeGrade assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/dividing-submissions.html>Divide submissions over graders</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/dividing-submissions.html#manually-dividing-submissions`)"href=guides/dividing-submissions.html#manually-dividing-submissions>Manually dividing submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/dividing-submissions.html#randomly-dividing-submissions`)"href=guides/dividing-submissions.html#randomly-dividing-submissions>Randomly dividing submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/dividing-submissions.html#connecting-divisions-between-assignments`)"href=guides/dividing-submissions.html#connecting-divisions-between-assignments>Connecting divisions between assignments</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html>Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/creating-managing-and-using-snippets.html>Create, manage and use snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#personal-snippets`)"href=guides/creating-managing-and-using-snippets.html#personal-snippets>Personal Snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#creating-snippets`)"href=guides/creating-managing-and-using-snippets.html#creating-snippets>Creating snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#code-viewer`)"href=guides/creating-managing-and-using-snippets.html#code-viewer>Code Viewer</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#profile-page`)"href=guides/creating-managing-and-using-snippets.html#profile-page>Profile page</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#managing-snippets`)"href=guides/creating-managing-and-using-snippets.html#managing-snippets>Managing snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id1`)"href=guides/creating-managing-and-using-snippets.html#id1>Code Viewer</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id2`)"href=guides/creating-managing-and-using-snippets.html#id2>Profile page</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#course-snippets`)"href=guides/creating-managing-and-using-snippets.html#course-snippets>Course Snippets</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id3`)"href=guides/creating-managing-and-using-snippets.html#id3>Creating snippets</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#id4`)"href=guides/creating-managing-and-using-snippets.html#id4>Managing snippets</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`guides/creating-managing-and-using-snippets.html#using-snippets`)"href=guides/creating-managing-and-using-snippets.html#using-snippets>Using snippets</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/using-shortcuts.html>Using shortcuts</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/cannot-find-feature-in-codegrade.html>I cannot find a feature in CodeGrade</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/installing-codegrade-filesystem.html>Install the CodeGrade Filesystem</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=guides/use-codegrade-filesystem.html>Use the CodeGrade Filesystem to locally mount CodeGrade</a></span></li>
+</ul><p class="caption menu-label"><span class="caption-text">User Documentation</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=user/overview.html>Overview of CodeGrade</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#general-site`)"href=user/overview.html#general-site>General Site</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#filesystem`)"href=user/overview.html#filesystem>Filesystem</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#account-management`)"href=user/overview.html#account-management>Account Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#creating-a-new-account`)"href=user/overview.html#creating-a-new-account>Creating a new account</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/overview.html#logging-in-to-an-existing-account`)"href=user/overview.html#logging-in-to-an-existing-account>Logging in to an existing account</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/codeviewer.html>Code Viewer</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#code-viewer-for-teachers`)"href=user/codeviewer.html#code-viewer-for-teachers>Code Viewer for Teachers</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#file-browser`)"href=user/codeviewer.html#file-browser>File browser</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#inline-feedback`)"href=user/codeviewer.html#inline-feedback>Inline feedback</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#student-questions`)"href=user/codeviewer.html#student-questions>Student questions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#snippets`)"href=user/codeviewer.html#snippets>Snippets</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#course-feedback`)"href=user/codeviewer.html#course-feedback>Course feedback</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#rubrics`)"href=user/codeviewer.html#rubrics>Rubrics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#general-feedback-and-grade`)"href=user/codeviewer.html#general-feedback-and-grade>General feedback and grade</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#grade-history`)"href=user/codeviewer.html#grade-history>Grade History</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#download-feedback-or-assignment`)"href=user/codeviewer.html#download-feedback-or-assignment>Download feedback or assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#deleting-a-submission`)"href=user/codeviewer.html#deleting-a-submission>Deleting a submission</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#code-viewer-for-students`)"href=user/codeviewer.html#code-viewer-for-students>Code Viewer for Students</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/codeviewer.html#settings`)"href=user/codeviewer.html#settings>Settings</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/management.html>Course and Assignment Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#id1`)"href=user/management.html#id1>Course Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#course-registration-links`)"href=user/management.html#course-registration-links>Course registration links</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#creating-a-new-course`)"href=user/management.html#creating-a-new-course>Creating a new Course</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#id2`)"href=user/management.html#id2>Assignment Management</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#assignment-state`)"href=user/management.html#assignment-state>Assignment State</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#general`)"href=user/management.html#general>General</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#assignment-type`)"href=user/management.html#assignment-type>Assignment type</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#available-at`)"href=user/management.html#available-at>Available at</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#upload-types`)"href=user/management.html#upload-types>Upload types</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#git-uploading`)"href=user/management.html#git-uploading>Git uploading</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#limiting-the-amount-of-submissions`)"href=user/management.html#limiting-the-amount-of-submissions>Limiting the amount of submissions</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#maximum-submissions`)"href=user/management.html#maximum-submissions>Maximum submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#cool-off-period`)"href=user/management.html#cool-off-period>Cool off period</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#uploading-submissions`)"href=user/management.html#uploading-submissions>Uploading Submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#peer-feedback`)"href=user/management.html#peer-feedback>Peer feedback</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#amount-of-students`)"href=user/management.html#amount-of-students>Amount of students</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#time-to-give-peer-feedback`)"href=user/management.html#time-to-give-peer-feedback>Time to give peer feedback</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#automatically-approve-comments`)"href=user/management.html#automatically-approve-comments>Automatically approve comments</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#group-assignment`)"href=user/management.html#group-assignment>Group assignment</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#hand-in-requirements`)"href=user/management.html#hand-in-requirements>Hand-in Requirements</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#id3`)"href=user/management.html#id3>Group assignment</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#graders`)"href=user/management.html#graders>Graders</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#dividing-submissions`)"href=user/management.html#dividing-submissions>Dividing Submissions</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#finished-grading-and-notifications`)"href=user/management.html#finished-grading-and-notifications>Finished Grading and Notifications</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#e-mail-notifications`)"href=user/management.html#e-mail-notifications>E-mail Notifications</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#plagiarism`)"href=user/management.html#plagiarism>Plagiarism</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#rubric`)"href=user/management.html#rubric>Rubric</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#discrete-rubric-categories`)"href=user/management.html#discrete-rubric-categories>Discrete rubric categories</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#continuous-rubric-categories`)"href=user/management.html#continuous-rubric-categories>Continuous rubric categories</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#autotest`)"href=user/management.html#autotest>AutoTest</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/management.html#creating-a-new-assignment`)"href=user/management.html#creating-a-new-assignment>Creating a new Assignment</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/plagiarism.html>Plagiarism Detection</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#running-the-plagiarism-checker`)"href=user/plagiarism.html#running-the-plagiarism-checker>Running the Plagiarism Checker</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#jplag-characteristics`)"href=user/plagiarism.html#jplag-characteristics>JPlag Characteristics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#extend-jplag-with-codegrade`)"href=user/plagiarism.html#extend-jplag-with-codegrade>Extend JPlag with CodeGrade</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#reviewing-plagiarism`)"href=user/plagiarism.html#reviewing-plagiarism>Reviewing Plagiarism</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/plagiarism.html#exporting-plagiarism-cases`)"href=user/plagiarism.html#exporting-plagiarism-cases>Exporting Plagiarism Cases</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/groups.html>Groups</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/groups.html#group-set`)"href=user/groups.html#group-set>Group set</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/groups.html#id1`)"href=user/groups.html#id1>Groups</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/preferences.html>Settings and Site Preferences</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#site-preferences`)"href=user/preferences.html#site-preferences>Site Preferences</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#account-information-settings`)"href=user/preferences.html#account-information-settings>Account Information Settings</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#personal-information`)"href=user/preferences.html#personal-information>Personal Information</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#change-password`)"href=user/preferences.html#change-password>Change Password</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#id1`)"href=user/preferences.html#id1>LMS Account Passwords</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#snippet-management`)"href=user/preferences.html#snippet-management>Snippet Management</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/preferences.html#manage-site`)"href=user/preferences.html#manage-site>Manage Site</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=https://fs-docs.codegra.de>Filesystem</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/lms.html>LMS Integration</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#blackboard`)"href=user/lms.html#blackboard>Blackboard</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#brightspace`)"href=user/lms.html#brightspace>Brightspace</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#canvas`)"href=user/lms.html#canvas>Canvas</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#moodle`)"href=user/lms.html#moodle>Moodle</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#sakai`)"href=user/lms.html#sakai>Sakai</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#other-lms`)"href=user/lms.html#other-lms>Other LMS</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#codegrade-lms-behaviour`)"href=user/lms.html#codegrade-lms-behaviour>CodeGrade LMS Behaviour</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#creating-courses-or-assignments`)"href=user/lms.html#creating-courses-or-assignments>Creating Courses or Assignments</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#grading`)"href=user/lms.html#grading>Grading</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/lms.html#account-linking`)"href=user/lms.html#account-linking>Account Linking</a></span></li>
+</ul></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/autotest/overview.html>AutoTest</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/analytics-dashboard.html>Analytics Dashboard</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#general-statistics`)"href=user/analytics-dashboard.html#general-statistics>General statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#filters`)"href=user/analytics-dashboard.html#filters>Filters</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#filter-options`)"href=user/analytics-dashboard.html#filter-options>Filter options</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#creating-new-filters`)"href=user/analytics-dashboard.html#creating-new-filters>Creating new filters</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#splitting-filters`)"href=user/analytics-dashboard.html#splitting-filters>Splitting filters</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#submission-statistics`)"href=user/analytics-dashboard.html#submission-statistics>Submission statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#grade-statistics`)"href=user/analytics-dashboard.html#grade-statistics>Grade statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#rubric-statistics`)"href=user/analytics-dashboard.html#rubric-statistics>Rubric statistics</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#reduced-rubric-score`)"href=user/analytics-dashboard.html#reduced-rubric-score>Reduced rubric score</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#the-rit-rir-values`)"href=user/analytics-dashboard.html#the-rit-rir-values>The RIT & RIR values</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#correlation-diagrams`)"href=user/analytics-dashboard.html#correlation-diagrams>Correlation diagrams</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#relative-statistics`)"href=user/analytics-dashboard.html#relative-statistics>Relative statistics</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/analytics-dashboard.html#examples`)"href=user/analytics-dashboard.html#examples>Examples</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/exam-mode.html>Exam mode</a><span onclick="toggleExpand(this.parentNode)"class="is-clickable icon is-small level-right"><i class="fa arrow-icon fa-angle-right"aria-hidden="true"></i></span></span><ul class="menu-list is-collapsed">
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/exam-mode.html#exam-duration`)"href=user/exam-mode.html#exam-duration>Exam duration</a></span></li>
+<li><span class="level mb-0"><a class="fill-menu"onClick="expandSidebar(`user/exam-mode.html#student-login-links`)"href=user/exam-mode.html#student-login-links>Student login links</a></span></li>
+</ul></li>
+<li><span class="level mb-0"><a class="fill-menu"href=user/notifications.html>Notifications</a></span></li>
+</ul><p class="caption menu-label"><span class="caption-text">About CodeGrade</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=about/about.html>About CodeGrade</a></span></li>
+</ul><p class="caption menu-label"><span class="caption-text">API Documentation</span></p><ul class="menu-list ">
+<li><span class="level mb-0"><a class="fill-menu"href=api.html>API</a></span></li>
+</ul>
+		</aside>
+		<div id="content" class="column content">
+			<h1 class="title">Course and Assignment Management<button id="BM_course-and-assignment-management" class="bookmark-btn" onclick="bookmarkClick('BM_course-and-assignment-management')" title="Course and Assignment Management" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h1>
+			
+			<p>The <em class="fa fa-cog"></em> button next to courses or assignments is visible to all users with the right
+permissions to manage courses or assignments. Clicking this button shows the corresponding
+management page.</p>
+<p>Additionally, clicking on the name of a course results in an overview of its assignments and
+still allows to click the <em class="fa fa-cog"></em> button on the bottom right to show the management page.</p>
+<span class="anchor" id="id1"></span><div class="section" id="id1">
+<span id="course-management"></span><h2>Course Management<button id="BM_id1" class="bookmark-btn" onclick="bookmarkClick('BM_id1')" title="Course Management" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>CodeGrade has a Help Center, with better guides, more videos and updated
+documentation. The documentation and guides on this website are deprecated
+and will not be updated in the future. Please <a class="reference external" href="https://help.codegrade.com/user-reference/courses-general">click here</a> to go to this page on the Help Center!</p>
+</div>
+<p>On the first tab of the course management page, <em>General</em>, you can change the
+name of the course. The name may not be empty. As the name of LTI courses is
+copied from the LMS, the name of LTI courses cannot be changed within
+CodeGrade.</p>
+<p>On this tab you can also archive a course. Archiving a course will hide it for
+students (or more precisely all users that do not have the &quot;See archived
+courses&quot; permission), and will sort it below all non archived courses.  You can
+still import data from archived courses. Archiving can be reversed without data
+loss.</p>
+<p>The second tab of the course management page, <em>Members</em>, displays a list of all
+users (students, teachers and other roles) that are <em>enrolled</em> in the
+course. The role of users can be changed here and new users can be added to the
+course.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Course management is done in your learning management system if the course
+is connected, however managing roles and permissions is still done in
+CodeGrade.</p>
+</div>
+<p>The third tab, <em>Permissions</em>, shows an overview of all roles and their specific
+permissions. Existing roles can be altered and completely new roles can be added
+via the dialog on the bottom of the page. More information about the specific
+course permissions can be found in the
+.</p>
+<p>The fourth tab, <em>Groups</em>, shows all group sets of the course. Here you create,
+delete and can edit the minimum and maximum size of group sets. Group sets are a
+key concept for group assignments in CodeGrade, more information about them can
+be found in the .</p>
+<p>The fifth tab, <em>Snippets</em>, shows all course-wide snippets in this course. These
+course snippets can be set up by the teacher and can be used by all graders
+grading in the course. These snippets are always in addition to the graders'
+personal snippets and are indicated with the <em class="fa fa-books"></em> icon.</p>
+<span class="anchor" id="course-registration-links"></span><div class="section" id="course-registration-links">
+<h3>Course registration links<button id="BM_course-registration-links" class="bookmark-btn" onclick="bookmarkClick('BM_course-registration-links')" title="Course registration links" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>With a course registration link, you can let users sign up to your course via
+a URL.</p>
+<p>Create a new link under the &quot;Members&quot; tab on the &quot;Course Management&quot; page.
+Then set both &quot;Expiration date&quot; and &quot;Role&quot; and save your link. The link will
+become invalid once the expiration date has passed or when the link is deleted.
+When a link is invalid, it is no longer possible to register for the course with
+that link.</p>
+<p>&quot;Role&quot; is the role that is assigned to the users that register via the link.
+You can have multiple links with different roles, e.g. one for students to
+sign up and one for teachers or TAs to sign up.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You don't want to add a course registration link to LTI courses
+(courses that are connected to your Learning Management System), as all
+course registration should come from the LMS.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Everyone</em> with access to this link will be able to register for your course.
+Currently, it's not possible to delete users from a course, so be careful
+when sharing the link. Contact us if you wish to delete users.</p>
+</div>
+</div>
+<span class="anchor" id="creating-a-new-course"></span><div class="section" id="creating-a-new-course">
+<h3>Creating a new Course<button id="BM_creating-a-new-course" class="bookmark-btn" onclick="bookmarkClick('BM_creating-a-new-course')" title="Creating a new Course" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>Specific  are required to create a
+course, usually this can be done only be site administrators. If these
+permissions are set, a course can be created by navigating to the courses menu
+and clicking the <em class="fa fa-plus"></em> icon. The name for the new course can then be given.</p>
+</div>
+</div>
+<span class="anchor" id="id2"></span><div class="section" id="id2">
+<span id="assignment-management"></span><h2>Assignment Management<button id="BM_id2" class="bookmark-btn" onclick="bookmarkClick('BM_id2')" title="Assignment Management" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>CodeGrade has a Help Center, with better guides, more videos and updated
+documentation. The documentation and guides on this website are deprecated
+and will not be updated in the future. Please <a class="reference external" href="https://help.codegrade.com/user-reference/assignments">click here</a> to go to this page on the Help Center!</p>
+</div>
+<p>Clicking the <em class="fa fa-cog"></em> button next to a specific assignment shows the assignment
+management page. Usually all teachers and course designers can manage
+courses and assignments.</p>
+<span class="anchor" id="assignment-state"></span><div class="section" id="assignment-state">
+<span id="manage-assignment-state"></span><h3>Assignment State<button id="BM_assignment-state" class="bookmark-btn" onclick="bookmarkClick('BM_assignment-state')" title="Assignment State" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>Three assignment states are available and can be set on the top right:</p>
+<ul class="simple">
+<li><p><em class="fa fa-eye-slash"></em> <strong>Hidden</strong> state: the assignment is invisible to students.</p></li>
+<li><p><em class="fa fa-clock-o"></em> <strong>Open</strong> state: the assignment is visible to students and
+students can hand in submissions before the deadline.</p></li>
+<li><p><em class="fa fa-check"></em> <strong>Done</strong> state: the assignment is visible to students and grading
+is finished.</p></li>
+</ul>
+</div>
+<span class="anchor" id="general"></span><div class="section" id="general">
+<h3>General<button id="BM_general" class="bookmark-btn" onclick="bookmarkClick('BM_general')" title="General" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>In this tab you can edit basic settings, such as the assignment name and
+deadline, but also some more advanced settings.</p>
+<span class="anchor" id="assignment-type"></span><div class="section" id="assignment-type">
+<h4>Assignment type<button id="BM_assignment-type" class="bookmark-btn" onclick="bookmarkClick('BM_assignment-type')" title="Assignment type" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>A CodeGrade assignment can be one of three types:</p>
+<ul>
+<li><p><strong>Normal</strong>: a regular assignment.</p></li>
+<li><p><strong>Exam</strong>: an exam. For exams you do not configure the deadline of an
+assignment but rather when it starts and a duration. Students can optionally
+receive an email with a link with which they can set a password and log into
+CodeGrade when the exam starts. During the exam students only have access to
+the course of the exam, and not any other courses.</p>
+<p>See the  documentation for more
+information about exams in CodeGrade.</p>
+</li>
+<li><p><strong>LTI</strong>: an assignment managed via a Learning Management System. You cannot
+switch to one of the other types of assignment.</p></li>
+</ul>
+</div>
+<span class="anchor" id="available-at"></span><div class="section" id="available-at">
+<h4>Available at<button id="BM_available-at" class="bookmark-btn" onclick="bookmarkClick('BM_available-at')" title="Available at" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>The available at date of an assignment automates the transition from the
+<strong>hidden</strong> state of the assignment to the <strong>open</strong> state. Set a date and time
+and at that moment the assignment will become visible to students, so you don't
+have to think about it anymore.</p>
+</div>
+<span class="anchor" id="upload-types"></span><div class="section" id="upload-types">
+<h4>Upload types<button id="BM_upload-types" class="bookmark-btn" onclick="bookmarkClick('BM_upload-types')" title="Upload types" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>CodeGrade offers two means of handing in for students: via the file uploader
+in CodeGrade or using Git (GitHub or GitLab).</p>
+<ul class="simple">
+<li><p><strong>File Uploader</strong>: this option allows students to hand in their submission
+through CodeGrade's file uploader. Students can hand in one or multiple files
+and can even hand in archives (e.g. <span class="docutils literal">.zip</span> or <span class="docutils literal">.tar.gz</span>) which will be
+extracted automatically.</p></li>
+<li><p><strong>Git</strong>: this option allows students to configure their GitHub or GitLab
+repository to upload to CodeGrade with every <span class="docutils literal">push</span>. Configuration
+instructions can be found on the hand-in page, the unique deploy key and
+webhook have to be configured for each separate assignment once per student.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is possible to use both the File Uploader and Git upload type together for the same assignment. Students can then choose which means of handing in they prefer.</p>
+</div>
+<span class="anchor" id="git-uploading"></span><div class="section" id="git-uploading">
+<h5>Git uploading<button id="BM_git-uploading" class="bookmark-btn" onclick="bookmarkClick('BM_git-uploading')" title="Git uploading" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h5>
+<p>CodeGrade allows students to hand in directly via GitHub or GitLab if the
+<strong>Git upload type</strong> is turned on for an assignment. Students can find
+instructions to configure their repository on the hand in page.</p>
+<p>Setting up your repository to work together with CodeGrade is done with a
+<em>deploy key</em> and <em>webhook</em>. The deploy key is used to grant CodeGrade access
+to read your repository. The webhook is used to notify CodeGrade for each push
+event that takes place. With this setup, students will automatically upload
+their work to CodeGrade every time they <span class="docutils literal">push</span>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>CodeGrade has a size limit on student submissions. Exceeding this size limit
+will result in a warning message when regularly handing in, but not when
+using git to upload. If a student exceeds this limit, files exceeding the
+limit are silently deleted. This very rare case does result in a
+<span class="docutils literal"><span class="pre">cg-size-limit-exceeded</span></span> file to show up in the Code Viewer.</p>
+</div>
+<p>Uploading via Git works together with CodeGrade's tools, use it in
+combination with Continuous Feedback and AutoTest to provide immediate and
+automatic feedback to students every time they submit. It is also possible to
+combine Git uploading with group assignments. All students in a group will share
+the deploy key and webhook, anyone in the group can hand in for the whole group
+with a <span class="docutils literal">git push</span>. Just like with regular handing in, all group members will
+have to open the CodeGrade assignment in their LMS (Canvas, Blackboard,
+Brightspace or Moodle).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Hand-In Requirements are <strong>disabled</strong> when using the Git upload type.</p>
+</div>
+<p>In addition to further streamlining the workflow for students, Git uploading
+allows teachers to also assess git usage within CodeGrade. This can be done
+manually, by looking at the <span class="docutils literal">.git</span> folder in the Code Viewer or directly
+opening the student repository by clicking the GitLab or GitHub link in the
+submission. In AutoTest, the student submission is a normal Git
+directory and can be handled and assessed that way automatically.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using git in AutoTest? Run <span class="docutils literal">git fetch <span class="pre">--unshallow</span></span> to make sure the
+information in the <span class="docutils literal">.git</span> folder is complete and shows all history.</p>
+</div>
+<p>More information on setting up Git uploading can be found in the
+.</p>
+</div>
+</div>
+<span class="anchor" id="limiting-the-amount-of-submissions"></span><div class="section" id="limiting-the-amount-of-submissions">
+<h4>Limiting the amount of submissions<button id="BM_limiting-the-amount-of-submissions" class="bookmark-btn" onclick="bookmarkClick('BM_limiting-the-amount-of-submissions')" title="Limiting the amount of submissions" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>By setting the maximum amount of submissions, and the <em>cool off period</em> you can
+limit the number of times students can hand-in.</p>
+<span class="anchor" id="maximum-submissions"></span><div class="section" id="maximum-submissions">
+<h5>Maximum submissions<button id="BM_maximum-submissions" class="bookmark-btn" onclick="bookmarkClick('BM_maximum-submissions')" title="Maximum submissions" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h5>
+<p>By setting the maximum amount of submissions you can limit how many submissions
+a student can make in total for an assignment. If you set this to value to
+anything higher than 0 this is the total amount of submissions the student can
+make. They will be informed of this limit when they create a new submission. You
+can disable this limit by setting the limit to &quot;0&quot; or &quot;infinite&quot;.</p>
+</div>
+<span class="anchor" id="cool-off-period"></span><div class="section" id="cool-off-period">
+<h5>Cool off period<button id="BM_cool-off-period" class="bookmark-btn" onclick="bookmarkClick('BM_cool-off-period')" title="Cool off period" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h5>
+<p>The cool off period allows for a more advanced way of limiting the amount of
+submissions a student can create. Instead of setting a limit for the entire
+assignment, you can set a limit for a certain time frame in an assignment. This
+allows you to effectively set an amount of submissions a student may create in a
+certain time period.</p>
+<div class="admonition example">
+<p class="example-title">Example</p>
+<div class="example-content compound">
+<p>When the cool off period is set to &quot;2 submissions every 10 minutes&quot;, and a
+student submits at 10:00, and at 10:05 it will be impossible for this
+student to submit again before 10:10. If the student submits again at 10:11,
+it will now be impossible to submit again before 10:15.</p>
+</div>
+</div>
+<p>You can combine the <em>cool off period</em> with a maximum amount of submissions. This
+could allow you, for example, to enforce a small wait period between two
+submissions, but also enforce a total amount of submissions.</p>
+</div>
+</div>
+<span class="anchor" id="uploading-submissions"></span><div class="section" id="uploading-submissions">
+<h4>Uploading Submissions<button id="BM_uploading-submissions" class="bookmark-btn" onclick="bookmarkClick('BM_uploading-submissions')" title="Uploading Submissions" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>Submissions can be uploaded via the assignment management page too. Using the
+<em>Upload submission</em> tool submissions can be uploaded as any requested user:
+hand in submissions for students or hand in as administrator by selecting
+a user via the search bar. Submissions can be uploaded as an archive, which is
+automatically extracted by CodeGrade, or as multiple individual files.</p>
+<p>You can also do a submission as a test student to check if your assignment
+setup works as expected. It can be useful to test your hand-in requirements,
+AutoTest configuration, you name it. You can even do test submissions before
+you have set a deadline on the assignment.</p>
+</div>
+<span class="anchor" id="peer-feedback"></span><div class="section" id="peer-feedback">
+<h4>Peer feedback<button id="BM_peer-feedback" class="bookmark-btn" onclick="bookmarkClick('BM_peer-feedback')" title="Peer feedback" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>Who knows better what problems students run into than the students themselves?
+This is why CodeGrade offers peer feedback, a way for students to review and
+learn from each other's code. When peer feedback is enabled for an assignment
+students get assigned to a number of other students and get access to their
+submissions.</p>
+<p>You can enable peer feedback by clicking the <em class="fa fa-comments-o"></em> button,
+configuring the peer feedback settings, and finally pressing the &quot;Submit&quot;
+button.</p>
+<span class="anchor" id="amount-of-students"></span><div class="section" id="amount-of-students">
+<h5>Amount of students<button id="BM_amount-of-students" class="bookmark-btn" onclick="bookmarkClick('BM_amount-of-students')" title="Amount of students" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h5>
+<p>This is the amount of submissions each student should review. Students are
+distributed randomly amongst each other. This happens in an auomated fashion
+once the deadline of the assignment has passed.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This setting should be treated with care, <em>especially after the assignment's
+deadline</em>, because changing it will cause all students to be reassigned. The
+process of reassigning does not guarantee that students are assigned to the
+same peers as before the change, even when the number has increased. On the
+contrary, it is quite likely that almost all students are assigned to
+someone else than they had been.</p>
+</div>
+</div>
+<span class="anchor" id="time-to-give-peer-feedback"></span><div class="section" id="time-to-give-peer-feedback">
+<h5>Time to give peer feedback<button id="BM_time-to-give-peer-feedback" class="bookmark-btn" onclick="bookmarkClick('BM_time-to-give-peer-feedback')" title="Time to give peer feedback" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h5>
+<p>The amount of time students have to give feedback to their peers. During this
+time students can place comments on the submissions they were assigned to.
+Students will still be able to view the submissions even after this time has
+passed.</p>
+</div>
+<span class="anchor" id="automatically-approve-comments"></span><div class="section" id="automatically-approve-comments">
+<h5>Automatically approve comments<button id="BM_automatically-approve-comments" class="bookmark-btn" onclick="bookmarkClick('BM_automatically-approve-comments')" title="Automatically approve comments" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h5>
+<p>By default when a student places peer feedback on another student's submission
+the other student will not be able to see it immediately. The comment first has
+to be approved by the teacher or teaching assistant. Enabling this option
+changes that behavior so that each comment is automatically approved.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Comments can still be disapproved even with this setting turned on.</p>
+</div>
+</div>
+</div>
+<span class="anchor" id="group-assignment"></span><div class="section" id="group-assignment">
+<h4>Group assignment<button id="BM_group-assignment" class="bookmark-btn" onclick="bookmarkClick('BM_group-assignment')" title="Group assignment" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>Here you can select which group set to use for this assignment. When a group set
+is selected the assignment becomes a group assignment. Group sets are a
+key concept for group assignments in CodeGrade, more information about them can
+be found in the .</p>
+</div>
+<span class="anchor" id="hand-in-requirements"></span><div class="section" id="hand-in-requirements">
+<h4>Hand-in Requirements<button id="BM_hand-in-requirements" class="bookmark-btn" onclick="bookmarkClick('BM_hand-in-requirements')" title="Hand-in Requirements" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>The hand-in requirements make it possible to set up strict rules to the
+structure requested for submissions to a specific assignment. Hand-in
+requirements consist of three different parts that specify the behaviour of
+your requirements.</p>
+<p>First, a default policy should be selected: <strong>by default deny all files</strong> or
+<strong>by default allow all files</strong>. Exceptions to these rules can be given in the
+third part of the specifications.</p>
+<p>Secondly, numerous options can be selected to further specify the behaviour of
+your requirements. These options are:</p>
+<ul class="simple">
+<li><p><strong>Delete empty directories</strong>: If enabled, automatically delete empty
+directories in submissions.</p></li>
+<li><p><strong>Delete leading directories</strong>: If enabled, automatically delete superfluous
+leading directories (i.e. top-level directories in which all files
+/ subdirectories are located).</p></li>
+<li><p><strong>Allow overrides by students</strong>: If enabled, the student can, after being
+shown a warning, still force hand in the submission even if it violates the
+hand-in requirements.</p></li>
+</ul>
+<p>Thirdly, rules can be given that consist of exceptions to the default rule and
+requiring certain files. These rules can apply to files anywhere in the
+submission or files that have to be in an given path relative to the top level
+directory. These rules are individual and do not have any ordering between them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <span class="docutils literal">/</span> or <span class="docutils literal">\</span> as a directory separator to specify that certain files are
+required, allowed or denied in a directory. Start the rule with a directory
+separator (<span class="docutils literal">/</span> or <span class="docutils literal">\</span>) to specify that a file is required, allowed or denied in
+the top level directory.</p>
+<p>To match more than one file, you can use a single wildcard for the name of
+the file, by using a <span class="docutils literal">*</span>. For example <span class="docutils literal"><span class="pre">/src/*.py</span></span> matches any file ending with
+<span class="docutils literal">.py</span> in the directory src that is directly in the top level directory of the
+submission.</p>
+</div>
+<p>More information on setting up hand-in requirements can be found in the
+.</p>
+</div>
+<span class="anchor" id="id3"></span><div class="section" id="id3">
+<h4>Group assignment<button id="BM_id3" class="bookmark-btn" onclick="bookmarkClick('BM_id3')" title="Group assignment" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>Here you can select which group set to use for this assignment. When a group set
+is selected the assignment becomes a group assignment. Group sets are a
+key concept for group assignments in CodeGrade, more information about them can
+be found in the .</p>
+</div>
+</div>
+<span class="anchor" id="graders"></span><div class="section" id="graders">
+<span id="upload-blackboard-zip"></span><h3>Graders<button id="BM_graders" class="bookmark-btn" onclick="bookmarkClick('BM_graders')" title="Graders" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>In this tab you can edit all settings regarding graders, like dividing and
+setting up notifications for them.</p>
+<span class="anchor" id="dividing-submissions"></span><div class="section" id="dividing-submissions">
+<h4>Dividing Submissions<button id="BM_dividing-submissions" class="bookmark-btn" onclick="bookmarkClick('BM_dividing-submissions')" title="Dividing Submissions" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>To randomly and automatically assign graders to all submissions the Divide
+Submission feature on the assignment management page can be used. A list of all
+graders is displayed and after selecting the wanted graders weights can be given
+to affect the workload per grader. The resulting percentage is the percentage of
+submissions the grader will be randomly assigned to. Newly submitted submissions
+are automatically assigned to graders after dividing is performed.  Dividing
+submissions is consistent, so new submissions will get assigned to the same
+teaching assistant.</p>
+<p>Manually assigning submissions is possible via the submission list, by selecting
+the grader using the 'Assigned to' dropdown dialog.</p>
+<p>It is also possible to link the divisions and assignees of multiple
+assignments. To do this you can select a parent assignment in the selector below
+the weights of the graders. When an assignment is connected to another
+assignment, the child assignment copies the settings and assignees of the parent
+assignment. After linking, the division settings of the parent and the child are
+frozen. Multiple assignments can be linked to the same parent, however a parent
+cannot be linked to another assignment as a child.</p>
+<p>When a student submits to a child or parent assignment CodeGrade tries to assign
+the student to the same assignee as in other assignments. It does this by first
+copying the assignee of the parent assignment for the submitting student, or if
+this is not possible selecting the most common assignee in the children
+assignments.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When teachers manually assign themselves, weights are not updated to reflect
+this.</p>
+</div>
+</div>
+<span class="anchor" id="finished-grading-and-notifications"></span><div class="section" id="finished-grading-and-notifications">
+<h4>Finished Grading and Notifications<button id="BM_finished-grading-and-notifications" class="bookmark-btn" onclick="bookmarkClick('BM_finished-grading-and-notifications')" title="Finished Grading and Notifications" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>CodeGrade provides essential communication tools between graders in the shape of
+email notifications. These notifications rely on graders indicating that they
+are done grading by setting their state to 'Done' after all grading is finished.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is possible to set a grader to the 'Done' state that did not finish
+grading all assigned submissions, a warning is shown in this case.</p>
+</div>
+</div>
+<span class="anchor" id="e-mail-notifications"></span><div class="section" id="e-mail-notifications">
+<h4>E-mail Notifications<button id="BM_e-mail-notifications" class="bookmark-btn" onclick="bookmarkClick('BM_e-mail-notifications')" title="E-mail Notifications" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>CodeGrade provides two types of email notifications to enable essential
+communication between graders:</p>
+<ul class="simple">
+<li><p><strong>Graders</strong> notification: send an email at a specified date and time to all
+graders that have not yet finished grading.</p></li>
+<li><p><strong>Finished</strong> notification: send an email to a specified email address to
+notify when all graders are finished grading.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For these notifications to be sent, graders must manually update
+their status.</p>
+</div>
+</div>
+</div>
+<span class="anchor" id="plagiarism"></span><div class="section" id="plagiarism">
+<h3>Plagiarism<button id="BM_plagiarism" class="bookmark-btn" onclick="bookmarkClick('BM_plagiarism')" title="Plagiarism" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>CodeGrade offers built in plagiarism detection functionalities, to efficiently
+and clearly detect for plagiarism on programming assignments. In this tab you
+can configure plagiarism runs. Please consult the  chapter for more information.</p>
+</div>
+<span class="anchor" id="rubric"></span><div class="section" id="rubric">
+<h3>Rubric<button id="BM_rubric" class="bookmark-btn" onclick="bookmarkClick('BM_rubric')" title="Rubric" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>Rubrics are an indispensable tool in modern day education and allow for easy and
+consistent grading between different graders and submissions. In this tab you
+can setup and edit the rubric of the assignment. Sophisticated rubrics can be
+made in CodeGrade. A basic rubric consist of multiple categories that all have
+multiple levels and corresponding points. All components in a CodeGrade rubric
+can have a name and description.</p>
+<p>A new rubric can be created by clicking the <em class="fa fa-plus"></em> button. You can also
+import a rubric by clicking the <em class="fa fa-copy"></em> button.</p>
+<p>After creating a new rubric or copying an existing rubric you can add
+categories by pressing <em class="fa fa-plus"></em> at the end of the list of categories. There
+are two types of categories:</p>
+<span class="anchor" id="discrete-rubric-categories"></span><div class="section" id="discrete-rubric-categories">
+<h4>Discrete rubric categories<button id="BM_discrete-rubric-categories" class="bookmark-btn" onclick="bookmarkClick('BM_discrete-rubric-categories')" title="Discrete rubric categories" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>Discrete rubric categories are rubric categories with multiple levels, each
+assigned a number of points, in them. When grading one level in a category can
+be selected. New levels can be created by clicking on the empty level with the
+large <em class="fa fa-plus"></em> in it. You can remove levels by pressing the <em class="fa fa-times"></em>
+button.</p>
+</div>
+<span class="anchor" id="continuous-rubric-categories"></span><div class="section" id="continuous-rubric-categories">
+<h4>Continuous rubric categories<button id="BM_continuous-rubric-categories" class="bookmark-btn" onclick="bookmarkClick('BM_continuous-rubric-categories')" title="Continuous rubric categories" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
+<p>Besides the more traditional discrete categories, CodeGrade also offers
+continuous categories. Continuous categories are assigned a maximum amount of
+points (which should be higher than 0), and when grading any amount of points
+between 0 and the set maximum can be assigned for the category. This allows you,
+for example, to split your grade into multiple categories, while still allowing
+precise grading. Continuous rubric categories are also very useful for
+.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A rubric is only saved after pressing the 'Submit' button, it is recommended
+to occasionally save the rubric to prevent losing work.</p>
+</div>
+</div>
+</div>
+<span class="anchor" id="autotest"></span><div class="section" id="autotest">
+<h3>AutoTest<button id="BM_autotest" class="bookmark-btn" onclick="bookmarkClick('BM_autotest')" title="AutoTest" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>The AutoTest configuration and results can be viewed and edited in the AutoTest
+tab. For more information on how to set up AutoTest refer to
+.</p>
+</div>
+<span class="anchor" id="creating-a-new-assignment"></span><div class="section" id="creating-a-new-assignment">
+<h3>Creating a new Assignment<button id="BM_creating-a-new-assignment" class="bookmark-btn" onclick="bookmarkClick('BM_creating-a-new-assignment')" title="Creating a new Assignment" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
+<p>With the right  new assignments for a
+course can be created. To do this, select the course in the Course menu and
+click on it to display its assignment list. A new assignment can now be created
+for this course using the <em class="fa fa-plus"></em> button on the bottom of the
+menu-screen. Press <em>Add</em> after specifying a name for the assignment to create
+it.</p>
+</div>
+</div>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
+			<hr>
+			<footer class="footer-doc">
+				<p>&copy 2021, CodeGrade.</p><p>Generated with &hearts; by <a href="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>
+			</footer>
+		</div>
+	</section>
+</div>
+
+
+</div>
+</body>
+</html>

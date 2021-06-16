@@ -1,4 +1,4 @@
-build*/
+# build*/
 .vscode
 dist
 .pytest_cache/

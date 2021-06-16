@@ -28,8 +28,8 @@ def read_file(filename):
 
     Parameters
     ----------
-    filename : str
-        The name of the file to be read.
+    filename : str or pathlib.Path
+        The name or path of the file to be read.
 
     Returns
     -------
@@ -41,5 +41,5 @@ def read_file(filename):
     FileNotFoundError
         When the file doesn't exist.
     """
-    with open(filename) as f:
+    with open(filename, 'r') as f:
         return f.read()

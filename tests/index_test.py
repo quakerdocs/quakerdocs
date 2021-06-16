@@ -1,5 +1,5 @@
 import pytest
-from index import Trie, CPrimitive
+from src.index import *
 
 
 def all_in(container, *items):
@@ -20,6 +20,18 @@ def hello_root(hello_trie):
     return r
 
 
+@pytest.fixture
+def bigger_trie(hello_root):
+    hello_root.insert('help', 1, 1)
+    hello_root.insert('goodbye', 1, 1)
+    hello_root.insert('hi', 1, 1)
+
+    for i in range(2000):
+        hello_root.insert('hello', i, i)
+
+    return hello_root
+
+
 def test_trie(hello_trie):
     """Utterly trivial test for __init__"""
     assert hello_trie.char == 'hello'
@@ -32,6 +44,13 @@ def test_match():
     assert Trie.match('hello', 'help') == ('hel', 'lo', 'p')
     assert Trie.match('hell', 'hello') == ('hell', '', 'o')
     assert Trie.match('hello', 'hello') == ('hello', '', '')
+
+
+def test_get_word(bigger_trie):
+    assert bigger_trie.get_word('help') is bigger_trie.children['h'].children['el'].children['p']
+    assert bigger_trie.get_word('hello') is bigger_trie.children['h'].children['el'].children['lo']
+
+    assert len(bigger_trie.get_word('hello').pages) == 2000
 
 
 def test_insert_helper_exact(hello_root):
@@ -89,14 +108,35 @@ def test_insert_chain():
     assert 'ance' in sist_node.children
 
 
-@pytest.mark.parametrize('size, expected_id', [(200, 'B'),
+def test_insert_ignore(hello_root):
+    hello_root.insert_ignore('goodbye')
+    assert hello_root.children['goodbye'].pages == []
+
+    hello_root.insert_ignore('help')
+    assert hello_root.children['hel'].children['p'].pages == []
+
+
+@pytest.mark.parametrize('size, expected_id', [(1, 'B'),
+                                               (200, 'B'),
                                                (500, 'H'),
                                                (100000, 'I'),
                                                (1e12, 'Q')])
-def test_CPrimitive(size, expected_id):
-    assert CPrimitive(size).id == expected_id
+def test_get_primitive(size, expected_id):
+    assert get_primitive(size).id == expected_id
 
 
-def test_CPrimitive_too_large():
+def test_get_primitive_too_large():
     with pytest.raises(ValueError):
-        CPrimitive(1e50)
+        get_primitive(1e50)
+
+
+def test_flatten_data(bigger_trie):
+    # TODO ideally refector flatten_data so exact values can be accessed,
+    # instead of having to call get_primitive on everything
+    data = bigger_trie.flatten_data()
+
+    assert data.page_s == get_primitive(2000)
+    assert data.child_s == get_primitive(2)
+
+    assert data.page_p == get_primitive(2003)
+    assert data.char_p == get_primitive(22)

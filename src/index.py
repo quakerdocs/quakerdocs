@@ -31,12 +31,15 @@ from collections import Counter
 from nltk.corpus import stopwords
 from types import SimpleNamespace
 
+# Load the stopwords.
 try:
-    stopwords = set(stopwords.words('english'))
+    stopwords = stopwords.words('english')
 except LookupError:
     from nltk import download
     download('stopwords')
-    stopwords = set(stopwords.words('english'))
+    stopwords = stopwords.words('english')
+
+stopwords = set(word.replace("'", '') for word in stopwords)
 
 
 def get_primitive(size: int) -> SimpleNamespace:
@@ -61,7 +64,7 @@ def get_primitive(size: int) -> SimpleNamespace:
     prim = SimpleNamespace()
     prim.actual_bytes = math.ceil(math.log2(size) / 8)
 
-    if prim.actual_bytes == 1:
+    if prim.actual_bytes <= 1:
         prim.id, prim.type, prim.bytes = 'B', 'unsigned char', 1
     elif prim.actual_bytes == 2:
         prim.id, prim.type, prim.bytes = 'H', 'unsigned short', 2
@@ -182,16 +185,33 @@ class Trie:
         if not word:
             return
 
-        # Start at the root.
+        # Start at the root and continue until the end of the word.
         current = self
-
-        # Continue until the end of the word.
         while word:
             word, current = self.insert_helper(word, current)
 
-        # If while loop exited it means that the current node is an end node.
+        # If the loop exited it means that the current node is an end node.
         current.end = True
         current.pages.append((page, count))
+
+    def insert_ignore(self, word: str):
+        """Insert method to insert a new word into the trie, but ignore the
+        pages associated with it.
+
+        Parameters
+        ----------
+        word : str
+            The word to be inserted.
+
+        """
+        # Start at the root and continue until the end of the word.
+        current = self
+        while word:
+            word, current = self.insert_helper(word, current)
+
+        # If the loop exited it means that the current node is an end node.
+        current.end = True
+        current.pages = []
 
     @staticmethod
     def match(n_word: str, s_word: str):
@@ -226,13 +246,48 @@ class Trie:
         # Return matching part and both remainders.
         return n_word[:i], n_word[i:], s_word[i:]
 
+    def get_word(self, word):
+        """"Find the node for a specific word in the trie.
+
+        Parameters
+        ----------
+        word : str
+            The word to search for.
+
+        Returns
+        -------
+        Trie
+            The node containing the data for the specified word.
+
+        Raises
+        ------
+        KeyError
+            When the trie does not contain the word.
+        """
+        current = self
+        while word:
+            # Loop over the children of the current node.
+            for c_word, child in current.children.items():
+                # Find how well the current node matches the word.
+                match, remainder, word = self.match(c_word, word)
+
+                if match:
+                    current = child
+                    break
+            else:
+                # No suitable child found.
+                raise KeyError
+
+        return current
+
+
     def flatten_data(self) -> SimpleNamespace:
         """ Convert the trie to an object containing arrays instead of a tree.
 
         Returns
         -------
         SimpleNamespace
-            An object containging the data from the trie as separate arrays.
+            An object containing the data from the trie as separate arrays.
 
         """
         # Flatten the node trie into a list.
@@ -368,11 +423,13 @@ class IndexGenerator:
         """
 
         # Change to lowercase, separate _ and only keep letters/numbers.
+        # TODO add title weight to config
+        content += (title + ' ') * 5
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
         # Remove stopwords.
-        content = [word for word in content.split() if word not in stopwords]
+        content = [word for word in content.split()]
 
         # Count occurrences of words in page.
         word_counter = Counter(content)
@@ -381,7 +438,7 @@ class IndexGenerator:
         i = len(self.urltitles)
         self.urltitles.append((url, title))
 
-        # Create the trie.
+        # Add the words from this page to the trie.
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, int(count * priority))
 
@@ -402,7 +459,11 @@ class IndexGenerator:
         if not source_path.exists():
             raise FileNotFoundError('Wasm source files are not found.')
 
-        # Generate the search.hpp
+        # Insert the stopwords into the trie.
+        for stopword in stopwords:
+            self.trie.insert_ignore(stopword)
+
+        # Generate the search.hpp.
         data = self.trie.to_binary()
         with open(source_path / 'search.hpp.jinja') as f:
             template = Template(f.read())
@@ -412,11 +473,12 @@ class IndexGenerator:
         search_path.mkdir(parents=True, exist_ok=True)
         with open(search_path / 'search.hpp', 'w') as f:
             f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
-            f.write(template.render(urltitles=self.urltitles, **data.__dict__))
+            f.write(template.render(urltitles=self.urltitles, stopwords=stopwords,
+                                    **data.__dict__))
 
         # Create the build command.
         emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
-        cmnd = [f'{emcc}', '-std=c++17', '-flto',
+        cmnd = [f'{emcc}', '-std=c++17', '-flto', '-Os',
                 '-I', f'"{search_path}/"',
                 f"{source_path / 'search.cpp'}",
                 '-o', f"{dest_path / 'search_data.js'}",

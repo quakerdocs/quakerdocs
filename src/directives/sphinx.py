@@ -279,6 +279,12 @@ class CodeBlock(Directive):
         return [wrappernode]
 
 
+class ref_element(nodes.General, nodes.Element):
+    """
+    Custom reference node to handle unparsed pages.
+    """
+
+
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
@@ -293,14 +299,18 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
     title, ref = explicit_link
     set_classes(options)
-    ref = '%s#%s' % (application.id_map.get(ref, ''), ref)
-    node = nodes.reference(rawtext, title, refuri=ref, **options)
+
+    node = ref_element()
+    node['title'] = title
+    node['ref'] = ref
+    # node = nodes.reference(rawtext, title, refuri=ref, **options)
     return [node], []
 
 
 class kbd_element(nodes.General, nodes.Element):
-    """Empty node for rendering keyboard inputs"""
-    ...
+    """
+    Empty node for rendering keyboard inputs
+    """
 
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):

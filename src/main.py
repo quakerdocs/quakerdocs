@@ -9,25 +9,27 @@ import fnmatch
 import argparse
 import importlib
 from sys import stderr
+from pathlib import Path
 
 import docutils.core
 import docutils.writers
-from pathlib import Path
 from docutils import nodes
 import docutils.parsers.rst
 import docutils.writers.html5_polyglot
 from distutils.dir_util import copy_tree
 
 import index
+import directives
 import application
 import html5writer
+from util import read_file
+from rst import Rst
 
-import directives
-
-SKIP_TAGS = {'system_message', 'problematic'}
 
 
 class Main:
+    SKIP_TAGS = {'system_message', 'problematic'}
+
     # Mapping builder name to (file extension, writer class)
     supported_builders = {
         'html': ('html', html5writer.Writer)
@@ -45,9 +47,11 @@ class Main:
             m = importlib.import_module(f'directives.{m}')
             m.setup()
 
+        self.waiting = {}
+
         self.docutil_settings = {
             'src_dir': self.source_path,
-            'dst_dir': self.dest_path
+            'dst_dir': self.dest_path,
         }
 
         self.conf_vars = {
@@ -155,94 +159,13 @@ class Main:
 
                 try:
                     if path.suffix == '.rst':
-                        self.write_rst(*self.parse_rst(path))
+                        rst = Rst(self, path)
+                        rst.parse(self)
+                        rst.write(self)
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
-
-    def parse_rst(self, path):
-        """
-        Parse a rst file.
-        """
-        src = self.source_path / path
-        html_path = path.with_suffix('.html')
-
-        with open(src) as f:
-            content = f.read()
-
-        doctree = docutils.core.publish_doctree(
-            content,
-            source_path=str(src),
-            settings_overrides=self.docutil_settings
-        )
-
-        for id in doctree.ids:
-            application.id_map.update({id: html_path})
-
-        return src, html_path, content
-
-    def write_rst(self, src, html_path, content):
-        """
-        Parse a rst file and write its contents to a file.
-        """
-        # src = self.source_path / path
-        # html_path = path.with_suffix('.html')
-        dest = self.dest_path / html_path
-
-        # Add epilogue and prolog to source file.
-        file_contents = '%s\n%s\n%s' % (
-            self.conf_vars.get('rst_prolog', ''),
-            content,
-            self.conf_vars.get('rst_epilog', ''))
-
-        # Read the rst file.
-        doctree = docutils.core.publish_doctree(
-            file_contents,
-            source_path=str(src),
-            settings_overrides=self.docutil_settings)
-
-        # Get the page metadata.
-        metadata = directives.metadata.get_metadata(doctree)
-        if metadata.ignore:
-            return
-
-        # Delete the nodes we want to skip.
-        for node in doctree.traverse():
-            for i, child in reversed(list(enumerate(node.children))):
-                if child.tagname in SKIP_TAGS:
-                    del node[i]
-
-        # Find the page title.
-        try:
-            title = next(iter(doctree.traverse(nodes.title)))
-            title = title[0].astext()
-        except StopIteration:
-            title = ''
-
-        # Collect all the text
-        content = ' '.join(n.astext() for n in doctree.traverse(
-                           lambda n: isinstance(n, nodes.Text)))
-        self.idx.add_file(content, title, html_path, metadata.priority)
-
-        # Write the document to a file.
-        with open(dest, 'wb') as f:
-            output = docutils.core.publish_from_doctree(
-                doctree,
-                destination_path=dest,
-                writer=self.Builder(),
-                settings_overrides={
-                    'toc': self.toc_navigation,
-                    'src_dir': self.source_path,
-                    'html_path': html_path,
-                    'rel_base': os.path.relpath(self.dest_path, dest.parent),
-                    'handlers': self.sp_app.get_handlers(),
-                    'favicon': self.conf_vars.get('html_favicon', None),
-                    'logo': self.conf_vars.get('html_logo', None),
-                    'copyright': self.conf_vars.get('copyright', ''),
-                    'html_style': self.conf_vars.get('html_style', None)
-                })
-            f.write(output)
 
     def is_excluded(self, path):
         """
@@ -270,7 +193,8 @@ class Main:
             return
 
         doctree = docutils.core.publish_doctree(
-            master_source.open().read(),
+            # master_source.open().read(),
+            read_file(master_source),
             source_path=str(master_source),
             settings_overrides={'src_dir': self.source_path})
 
