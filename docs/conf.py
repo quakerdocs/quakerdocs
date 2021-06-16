@@ -77,12 +77,11 @@ exclude_patterns = [
 ]
 
 # -- Options for HTML output ----------------------------------------------
-templates_path = '../static'  # TODO: Should be a list of directories!
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 
-html_theme_path = ['.']
+html_theme_path = ['..']
 html_theme = 'quaker_theme'
 # html_style = 'css/bulma.min-classy.css'
 

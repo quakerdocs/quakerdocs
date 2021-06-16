@@ -2,7 +2,7 @@
 Functionality related to the application.
 """
 
-import optparse
+from types import SimpleNamespace
 from importlib import import_module
 # from docutils import nodes
 from docutils.parsers.rst import directives, roles
@@ -16,7 +16,7 @@ class SphinxApp:
     """
     def __init__(self):
         # Ignore for now
-        self.config = optparse.Values()
+        self.config = SimpleNamespace()
         self.handlers = {
             'html': [],
             'latex': [],
@@ -24,16 +24,28 @@ class SphinxApp:
         }
 
     def get_handlers(self):
+        """
+        Return list of handlers that should be added to the translator.
+        """
         return self.handlers
 
     def add_directive(self, name, directive):
+        """
+        Add a docutils directive to the program.
+        """
         directives.register_directive(name, directive)
 
     def add_role(self, name, role):
+        """
+        Add a docutils role to the program.
+        """
         roles.register_local_role(name, role)
 
     def add_node(self, node, **kwargs):
-        # Does nothing at the moment.
+        """
+        Placeholder function for adding node types to docutils.
+        Does nothing at the moment.
+        """
         ...
 
 
