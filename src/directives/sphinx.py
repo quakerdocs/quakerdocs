@@ -14,6 +14,8 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives, roles
 from docutils.parsers.rst.roles import set_classes
 from docutils.parsers.rst.directives.misc import Class, Include
+from importlib import import_module
+import inspect
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -289,6 +291,56 @@ class CodeBlock(Directive):
         return [wrappernode]
 
 
+class AutoModule(Directive):
+    """
+    Directive for automatically a Python module.
+    """
+    required_arguments = 1
+    option_spec = {
+        'members': directives.flag,
+        'show-inheritance': directives.flag,
+        'undoc-members': directives.flag
+    }
+
+    class_translation = {
+        'type': 'class',
+        'function': 'function'
+    }
+
+    def run(self):
+        """
+        Create nodes for this directive.
+        """
+        modname = self.arguments[0]
+        mod = import_module(modname)
+        members = [(i, getattr(mod, i)) for i in dir(mod)
+                   if not i.startswith('__')
+                   and not inspect.ismodule(getattr(mod, i))
+                   and getattr(mod, i).__module__ == modname]
+
+        ret = nodes.compound()
+        for member in members:
+            node = nodes.definition_list()
+            member_type = type(member[1]).__name__
+
+            if member_type == 'type':
+                init_params = inspect.getargspec(member[1].__init__).args
+                function_params = f'({", ".join(init_params)})'
+            elif member_type == 'function':
+                params = inspect.getargspec(member[1]).args
+                function_params = f'({", ".join(params)})'
+
+            items = [
+                nodes.emphasis('', self.class_translation[member_type]),
+                nodes.term('', f'{modname}.'),
+                nodes.term('', f'{member[0]}'),
+                nodes.emphasis('', function_params)
+            ]
+            node.append(nodes.definition_list_item('', *items))
+            ret.append(node)
+        return [ret]
+
+
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
@@ -332,6 +384,7 @@ def setup():
     directives.register_directive('include', Include)  # Does not work yet
     directives.register_directive('toctree', TocTree)
     directives.register_directive('code-block', CodeBlock)
+    directives.register_directive('automodule', AutoModule)
 
     roles.register_canonical_role('ref', ref_role)
     roles.register_canonical_role('kbd', kbd_role)
