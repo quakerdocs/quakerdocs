@@ -3,17 +3,18 @@ import docutils
 import application
 import directives.metadata
 from docutils import nodes
+import directives.sphinx
 
 class Rst():
     """TODO
     """
 
-    def __init__(self, main, path, ref):
+    def __init__(self, main, path):
+        self.path = path
         self.html_path = str(path.with_suffix('.html'))
         self.src = main.source_path / path
         self.dest = main.dest_path / self.html_path
         self.doctree = None
-        self.ref_element = ref
         self.unresolved_references = 0
 
     def parse(self, main):
@@ -33,7 +34,10 @@ class Rst():
         self.doctree = docutils.core.publish_doctree(
             content,
             source_path=str(self.src),
-            settings_overrides=main.docutil_settings
+            settings_overrides={
+                **main.docutil_settings,
+                'src_path': self.path
+            }
         )
 
         for page_id in self.doctree.ids:
@@ -49,7 +53,8 @@ class Rst():
                 main.waiting.pop(page_id)
 
         # Check if the file can be written,
-        for node in self.doctree.traverse(lambda n: isinstance(n, self.ref_element)):
+        ref = directives.sphinx.ref_element
+        for node in self.doctree.traverse(lambda n: isinstance(n, ref)):
             if node['ref'] not in application.id_map:
                 main.waiting[node['ref']].append(self)
                 self.unresolved_references += 1
@@ -97,6 +102,7 @@ class Rst():
                     '_static', main.conf_vars.get('html_style',
                                                   main.theme.get_style())),
                 'src_dir': main.source_path,
+                'dest_dir': main.relative_path(self.src),
                 'html_path': self.html_path,
                 'embed_stylesheet': False,
                 'rel_base': os.path.relpath(main.dest_path, self.dest.parent),

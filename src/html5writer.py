@@ -132,16 +132,17 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
                              % self.settings.favicon)
 
         # Build navigation bar.
-        self.navigation = ''
-        for toc in self.settings.toc:
-            self.navigation += directives.sphinx.TocTree.to_html(toc)
+        # self.navigation = ''
+        # for toc in self.settings.toc:
+        #     self.navigation += directives.sphinx.TocTree.to_html(toc)
+        self.navigation = '<div id="navigation-tree"></div>'
 
         # Add logo to pages.
         self.logo = ''
         if self.settings.logo is not None:
             self.logo = '<img src="%s" alt="Logo">' % self.settings.logo
 
-        link = ('https://quakerdocs.nl/')
+        link = 'https://quakerdocs.nl/'
 
         self.footer.append(
             f'<p>&copy {self.settings.copyright}.</p>'

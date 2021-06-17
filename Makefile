@@ -31,7 +31,7 @@ clean:
 # Create a local search executable to test the search functionality.
 # Only run after the search.hpp file has been created by the build process.
 local_search:
-	g++ -I"$(BUILDDIR)/search" src/wasm/search.cpp -o $(BUILDDIR)/search/search
+	g++ -I"tmp/$(BUILDDIR)/search" src/wasm/search.cpp -o $(BUILDDIR)/search/search
 
 # Download and install the Emscripten toolchain in ./emsdk. If you have
 # emscripten installed somewhere else, you can also simlink that

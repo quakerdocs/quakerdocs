@@ -112,5 +112,6 @@
 	</section>
 </div>
 
+<script src="_static/js/load_navbar.js"></script>
 
 %(body_suffix)s

@@ -29,7 +29,6 @@ from util import read_file
 from rst import Rst
 from theme import Theme
 
-
 class Main:
     SKIP_TAGS = {'system_message', 'problematic'}
 
@@ -50,7 +49,7 @@ class Main:
         self.file_ext = '.out'
         self.writer = None
         self.idx = None
-        self.toc_navigation = list()
+        self.toc_navigation = []
 
         # Import and setup all directives.
         dir_path = Path(__file__).parent / 'directives'
@@ -140,14 +139,15 @@ class Main:
         # Load user configuration and extensions.
         self.load_extensions()
 
-        # Set-up Table of Contents data
-        self.build_global_toc()
 
         # Set-up index generator and build the files.
         self.idx = index.IndexGenerator()
         self.build_files()
 
-        # Build index.
+        # Set-up Table of Contents data
+        self.build_global_toc()
+
+        # Build search index.
         self.idx.build(self.temp_path, self.static_path / 'js')
 
         # Copy the directories from our theme directly to the dest folder.
@@ -159,6 +159,8 @@ class Main:
     def build_files(self):
         """Iterate over files in source directory and save in [(path, content)]
         """
+        master_doc = self.conf_vars.get('master_doc', 'index')
+
         for root, _, files in os.walk(self.source_path):
             # Read, parse and write the source files to html.
             for file in files:
@@ -167,15 +169,19 @@ class Main:
                 if self.is_excluded(path):
                     continue
 
-                try:
-                    if path.suffix == '.rst':
-                        rst = Rst(self, path, directives.sphinx.ref_element)
-                        rst.parse(self)
-                except FileNotFoundError as e:
-                    print(f'File [{file}] not found:', e)
-                except docutils.utils.SystemMessage as e:
-                    print('DOCUTILS ERROR!', e)
+                if path.suffix == '.rst':
+                    page = Rst(self, path)
+                    page.parse(self)
 
+                if str(path.with_suffix('')) == master_doc:
+                    # Iterate and join ToC's.
+                    for queue in page.doctree.traverse(directives.sphinx.toc_data):
+                        self.toc_navigation.append(directives.sphinx.TocTree.to_html(queue))
+
+                        # for current_toc in queue['entries']:
+                        #     self.toc_navigation.append(current_toc)
+
+        # Check if all the references are resolved.
         for ref_name, pages in self.waiting.items():
             for page in pages:
                 print(f'Warning: {page.src} contains an unresolved '
@@ -193,30 +199,18 @@ class Main:
         """
         Read and save the ToC from master_doc.
         """
-        self.toc_navigation = list()
 
-        # Open the file containing the ToC's
-        master_doc = self.conf_vars.get('master_doc', 'index')
-        master_source = None
-        for suffix in ['.rst']:
-            src = self.source_path / (master_doc + suffix)
-            if src.exists():
-                master_source = src
-                break
-        else:
-            print("Invalid master_doc file specified in conf.py!", file=stderr)
-            return
+        path = self.static_path / 'js'
+        path.mkdir(parents=True, exist_ok=True)
 
-        doctree = docutils.core.publish_doctree(
-            # master_source.open().read(),
-            read_file(master_source),
-            source_path=str(master_source),
-            settings_overrides={'src_dir': self.source_path})
+        with (path / 'load_navbar.js').open('w') as f:
+            f.write(f'document.getElementById("navigation-tree").innerHTML = `')
 
-        # Iterate and join ToC's.
-        for queue in doctree.traverse(directives.sphinx.toc_data):
-            for current_toc in queue:
-                self.toc_navigation.append(current_toc)
+            for html in self.toc_navigation:
+                f.write(html)
+
+            f.write('`;')
+
 
     def copy_static_files(self):
         """
