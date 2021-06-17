@@ -21,7 +21,6 @@ from pygments.formatters import HtmlFormatter
 
 from pathlib import Path
 import util
-import application
 
 
 class Only(Directive):
@@ -167,8 +166,10 @@ class TocTree(Directive):
                 doctree = docutils.core.publish_doctree(
                     Path(src).read_text(),
                     source_path=src,
-                    settings_overrides={'src_dir': src[:-4],
-                                        'src_path': (tocdata['src_path'] / entry).parent}
+                    settings_overrides={
+                        'src_dir': src[:-4],
+                        'src_path': (tocdata['src_path'] / entry).parent
+                    }
                 )
 
                 # Find the page title.

@@ -6,8 +6,6 @@ import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
 
-import directives.sphinx
-
 
 class Writer(docutils.writers._html_base.Writer):
     """
@@ -171,7 +169,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
             self.body.append(f'<a href="{ref}">{title}</a>')
         else:
             self.body.append(title)
-
 
     def depart_ref_element(self, node: nodes.Element):
         """

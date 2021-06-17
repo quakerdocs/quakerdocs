@@ -8,17 +8,10 @@ import pkgutil
 import fnmatch
 import argparse
 import importlib
-from sys import stderr
 from pathlib import Path
 from collections import defaultdict
 
-from pathlib import Path
 from distutils.dir_util import copy_tree
-import docutils.core
-import docutils.writers
-from docutils import nodes
-import docutils.parsers.rst
-import docutils.writers.html5_polyglot
 
 import index
 import directives
@@ -27,6 +20,7 @@ import html5writer
 
 from rst import Rst
 from theme import Theme
+
 
 class Main:
     SKIP_TAGS = {'system_message', 'problematic'}
@@ -138,7 +132,6 @@ class Main:
         # Load user configuration and extensions.
         self.load_extensions()
 
-
         # Set-up index generator and build the files.
         self.idx = index.IndexGenerator()
         self.build_files()
@@ -174,8 +167,9 @@ class Main:
 
                 if str(path.with_suffix('')) == master_doc:
                     # Iterate and join ToC's.
-                    for queue in page.doctree.traverse(directives.sphinx.toc_data):
-                        self.toc_navigation.append(directives.sphinx.TocTree.to_html(queue))
+                    ds = directives.sphinx
+                    for queue in page.doctree.traverse(ds.toc_data):
+                        self.toc_navigation.append(ds.TocTree.to_html(queue))
 
                         # for current_toc in queue['entries']:
                         #     self.toc_navigation.append(current_toc)
@@ -203,13 +197,12 @@ class Main:
         path.mkdir(parents=True, exist_ok=True)
 
         with (path / 'load_navbar.js').open('w') as f:
-            f.write(f'document.getElementById("navigation-tree").innerHTML = `')
+            f.write('document.getElementById("navigation-tree").innerHTML = `')
 
             for html in self.toc_navigation:
                 f.write(html)
 
             f.write('`;')
-
 
     def copy_static_files(self):
         """
