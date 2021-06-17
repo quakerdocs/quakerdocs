@@ -96,5 +96,5 @@ html_theme = 'quaker_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# html_favicon = '_static/_images/favicon.ico'
+html_favicon = '_static/_images/favicon.ico'
 html_logo = '_static/_images/logo.png'

@@ -24,7 +24,7 @@
 			<a class="navbar-item">
 				<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
 					<span class="icon"><i class="fa fa-search"></i></span>
-					<span>Search</span>
+					<span class="is-hidden-touch">Search</span>
 				</button>
 			</a>
 
