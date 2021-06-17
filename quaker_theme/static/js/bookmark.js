@@ -221,15 +221,7 @@ function renameAccept(id) {
 function createRenameEntry(b) {
     let inputbox_size = 55;
     let inputbox_maxlength = 500;
-    // let max_words = 12;
-    // let title = b.title;
-    // let title_words = title.split(' ');
-
-    // /* Cut off title if it is too long. */
-    // if (title_words.length > max_words) {
-    //     title = title_words.slice(0,max_words).join(' ') + "...";
-    // }
-    let title = restrictTitle(b.title);
+    let title = truncateTitle(b.title);
     let entry = `
             <div class="tile is-10">
                 <div class="level">
@@ -307,19 +299,7 @@ function createBookmarkListEntry(b) {
 }
 
 function createInnerEntry(b) {
-    // let max_words = 12;
-    // let max_length = 50;
-    // let title = b.title;
-    // let title_words = title.split(' ');
-
-    // /* Cut off title if it is too long. */
-    // if (title_words.length > max_words) {
-    //     title = title_words.slice(0,max_words).join(' ') + "...";
-    // } else if (title.length > max_length) {
-    //     title = title.substring(0,max_length) + "...";
-    // }
-    let title = restrictTitle(b.title);
-
+    let title = truncateTitle(b.title);
     let entry = `<div class="tile is-10" onclick="location='${b.page}'; \
                 hideBookmarkOverlay()">
                     <div class="level">
