@@ -85,7 +85,7 @@
   border: 1px solid #ddd;
 }
 
-.result:hover {
+.result.selected {
   background: #ddd;
 }
 
@@ -114,7 +114,7 @@
   outline: none;
 }
 
-.bookmark-entry:hover {
+.bookmark-entry.selected {
   cursor: pointer;
   background: hsl(0, 0%, 96%);
 }

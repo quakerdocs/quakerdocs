@@ -37,6 +37,71 @@ function toggleExpand (element, onlyExpand = false) {
 }
 
 let searchOpen = false
+/**
+ * Selects and highlights selected element in the search or bookmark overlay.
+ * @param {*} element The element to be highlighted.
+ * @param {*} overlay Which overlay the program should look in.
+ *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
+ *     overlay.
+ * @returns {null} If the element was already selected.
+ */
+function selectEntry(element, overlay) {
+    var results = document.getElementsByClassName(overlay + ' selected');
+
+    if (Array.from(results).includes(element)) {
+        return null;
+    }
+
+    for (var i = 0; i < results.length; i++) {
+        results[i].classList.remove('selected');
+    }
+
+    element.classList.add('selected');
+}
+
+/**
+ * Select the element which is offset elements away from the current element.
+ * @param {*} offset The offset.
+ * @param {*} overlay Which overlay the program should look in.
+ *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
+ *     overlay.
+ * @returns {null} If the element was already selected.
+ */
+function selectRelativeEntry(offset, overlay) {
+    var curEl = document.getElementsByClassName(overlay + ' selected');
+    var els = Array.from(document.getElementsByClassName(overlay));
+    var index = -1;
+    if (curEl.length != 0) {
+        index = els.indexOf(curEl[0])
+    }
+
+    var newIndex = Math.max(0, Math.min(index + offset, els.length - 1));
+    var newEl = document.getElementsByClassName(overlay)[newIndex];
+
+    return selectEntry(newEl, overlay);
+}
+
+/**
+ * Click the entry to redirect the page to the href of the selected element.
+ * @param {*} overlay Which overlay the program should look in.
+ *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
+ *     overlay.
+ * @returns {null} If the element was already selected.
+ */
+function redirectEntry(overlay) {
+    var curEl = document.getElementsByClassName(overlay + ' selected');
+    console.log(curEl);
+    if (curEl.length == 0) {
+        return null;
+    }
+
+    if (overlay === 'result') {
+        window.location.href = curEl[0].href;
+    } else if (overlay === 'bookmark-entry') {
+        console.log(curEl[0].children[0])
+        console.log(curEl[0].children[0].click());
+    }
+}
 
 /**
  * Active the overlay containing the search bar and search results.

@@ -201,7 +201,7 @@ function createBookmarkListEntry (b) {
         title = titleWords.slice(0, maxWords).join(' ') + '...'
     }
 
-    return `<div id="panel-${b.id}" class="panel-block bookmark-entry">
+    return `<div id="panel-${b.id}" class="panel-block bookmark-entry" onmouseover="selectEntry(this, 'bookmark-entry')">
                 <div class="tile is-11" onclick="location='${b.page}'; \
                 hideBookmarkOverlay()">
                     <div class="level">

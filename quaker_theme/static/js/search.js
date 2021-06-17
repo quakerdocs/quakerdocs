@@ -67,7 +67,15 @@ function activateSearch () {
 
     if (searchInput) {
         // Update search results when a key is pressed.
-        searchInput.addEventListener('keyup', () => {
+        searchInput.addEventListener('keyup', (event) => {
+            const code = event.code;
+
+            // Don't execute a new search when any arrow key or enter is pressed.
+            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter']
+                 .includes(code)) {
+                return;
+            }
+
             const input = searchInput.value
 
             if (input.length) {
@@ -90,7 +98,7 @@ function activateSearch () {
  */
 function createResultElement (href, title, content) {
     const element = document.createElement('div')
-    element.innerHTML = `<a class="panel-block result is-flex-direction-column" href="${href}">
+    element.innerHTML = `<a class="panel-block result is-flex-direction-column" onmouseover="selectEntry(this, 'result')" href="${href}">
                             <h1 class="result-title"><strong>${title}</strong></h1>
                             <p class="result-content">${content}</p>
                         </a>`
