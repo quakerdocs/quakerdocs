@@ -5,9 +5,6 @@ QuakerDocs supports configuring your own documentation build with a
 configuration file. This file is named ``conf.py`` and is found in the root of
 your configuration directory.
 
-.. automodule:: directives.sphinx
-   :members:
-
 Extensions
 ----------------
 Add extension module names here, as strings. Quaker will look for your

@@ -2,8 +2,7 @@
 Implement directives used by Sphinx
 
 All implementations of the directives have been inspired by:
-https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d3
-4765e74edf3a3be3c62c/sphinx/directives/other.py
+`https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/directives/other.py`
 """
 
 import os.path
@@ -293,7 +292,7 @@ class CodeBlock(Directive):
 
 class AutoModule(Directive):
     """
-    Directive for automatically a Python module.
+    Directive for automatically documenting a Python module.
     """
     required_arguments = 1
     option_spec = {
@@ -313,31 +312,40 @@ class AutoModule(Directive):
         """
         modname = self.arguments[0]
         mod = import_module(modname)
-        members = [(i, getattr(mod, i)) for i in dir(mod)
-                   if not i.startswith('__')
-                   and not inspect.ismodule(getattr(mod, i))
-                   and getattr(mod, i).__module__ == modname]
 
         ret = nodes.compound()
-        for member in members:
-            node = nodes.definition_list()
-            member_type = type(member[1]).__name__
+        ret.append(nodes.emphasis('', modname))
+        ret.append(nodes.term('', mod.__doc__))
+        if 'members' in self.options:
+            members = [(i, getattr(mod, i)) for i in dir(mod)
+                       if not i.startswith('__')
+                       and not inspect.ismodule(getattr(mod, i))
+                       and getattr(mod, i).__module__ == modname]
 
-            if member_type == 'type':
-                init_params = inspect.getargspec(member[1].__init__).args
-                function_params = f'({", ".join(init_params)})'
-            elif member_type == 'function':
-                params = inspect.getargspec(member[1]).args
-                function_params = f'({", ".join(params)})'
+            for member in members:
+                node = nodes.definition_list()
+                member_type = type(member[1]).__name__
 
-            items = [
-                nodes.emphasis('', self.class_translation[member_type]),
-                nodes.term('', f'{modname}.'),
-                nodes.term('', f'{member[0]}'),
-                nodes.emphasis('', function_params)
-            ]
-            node.append(nodes.definition_list_item('', *items))
-            ret.append(node)
+                if member_type == 'type':
+                    init_params = inspect.getargspec(member[1].__init__).args
+                    function_params = f'({", ".join(init_params)})'
+                elif member_type == 'function':
+                    params = inspect.getargspec(member[1]).args
+                    function_params = f'({", ".join(params)})'
+
+                items = [
+                    nodes.emphasis('', self.class_translation[member_type]),
+                    nodes.term('', f'{modname}.'),
+                    nodes.term('', member[0]),
+                    nodes.emphasis('', function_params),
+                    nodes.term('', member[1].__doc__)
+                ]
+
+                # TODO: Display member attributes/methods
+
+                node.append(nodes.definition_list_item('', *items))
+                ret.append(node)
+
         return [ret]
 
 
