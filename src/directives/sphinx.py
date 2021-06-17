@@ -7,6 +7,7 @@ https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d3
 """
 
 import os.path
+from typing import Iterable
 import docutils.core
 from docutils import nodes
 from docutils.parsers.rst import Directive
@@ -23,24 +24,29 @@ import application
 
 
 class Only(Directive):
+    """
+    Directive for only including content for certain builds.
+    """
     required_arguments = 1
-    optional_arguments = 0
-    final_argument_whitespace = True  # necessary?
+    optional_arguments = 1
 
     has_content = True
     option_spec = {}
 
     def run(self):
+        """
+        Create nodes for this directive.
+        """
         node = nodes.container()
 
         if (self.arguments[0] == 'html'
-            or (self.arguments[0][:4] == 'not '
-                and self.arguments[0][4:] != 'html')):  # FIX
+           or (self.arguments[0] == 'not' and self.arguments[1] != 'html')):
             self.state.nested_parse(self.content, self.content_offset, node,
                                     match_titles=True)
             return [*node]
 
         return []
+
 
 class toc_data(nodes.General, nodes.Element):
     """
@@ -100,6 +106,7 @@ class TocTree(Directive):
             wrappernode += lst
         return [wrappernode]
 
+    @staticmethod
     def parse_node(node, ref):
         """
         Generate a tree-like structure for the sections in a given doctree.
@@ -107,24 +114,25 @@ class TocTree(Directive):
         entries = list()
 
         # Iterate over all section-nodes belonging to node.
-        for c in node.children:
-            if not isinstance(c, nodes.section):
+        for child in node.children:
+            if not isinstance(child, nodes.section):
                 continue
 
             # Only continue if the current section contains a title.
-            if len(c.children) > 0:
-                title = c.next_node(nodes.Titular)
+            if len(child.children) > 0:
+                title = child.next_node(nodes.Titular)
                 if title:
-                    children = TocTree.parse_node(c, ref)
+                    children = TocTree.parse_node(child, ref)
                     # Use id of the anchor, not of the section!
-                    anchor = c.attributes['ids'][0]
+                    anchor = child.attributes['ids'][0]
                     entries.append((title.astext(), '%s#%s'
                                     % (ref, anchor), children))
 
         return entries
 
     # TODO: Integrate with search index?
-    def parse_content(tocdata):
+    @staticmethod
+    def parse_content(tocdata: toc_data):
         """
         Fill the toctree data structure with entries.
         """
@@ -170,6 +178,7 @@ class TocTree(Directive):
         if tocdata['reversed']:
             tocdata['entries'] = list(reversed(tocdata['entries']))
 
+    @staticmethod
     def to_nodes(entries, depth=999, list_type=nodes.bullet_list):
         """
         Convert a given ToC-tree into a displayable structure for the document.
@@ -192,7 +201,8 @@ class TocTree(Directive):
             items.append(lst_item)
         return items
 
-    def to_html(tocdata):
+    @staticmethod
+    def to_html(tocdata: toc_data):
         """
         Parse the TocData data-structure to HTML.
         """
@@ -201,7 +211,8 @@ class TocTree(Directive):
         ret += TocTree.entries_to_html(tocdata['entries'], 999)
         return ret
 
-    def entries_to_html(entries, depth=999, begin_depth=0):
+    @staticmethod
+    def entries_to_html(entries: Iterable, depth=999, begin_depth=0):
         """
         Parse the entries that need to be in the ToC to HTML format.
         """
@@ -209,17 +220,17 @@ class TocTree(Directive):
         add_class = '' if begin_depth == 0 else 'is-collapsed'
         ret = '<ul class="menu-list %s">\n' % add_class
         for title, ref, children in entries:
-            lst_item = '<li><span class="level mb-0"><a class="fill-menu"'
+            lst_item = '<li><span class="level mb-0"><a class="fill-menu" '
 
             if '#' in ref:
-                lst_item += ('onClick="expandSidebar(`%s`)"' % (ref))
+                lst_item += ('onClick="expandSidebar(`%s`)" ' % (ref))
 
             lst_item += 'href=%s>%s</a>' % (ref, title)
 
             if len(children) > 0:
-                lst_item += ('<span onclick="toggleExpand(this.parentNode)"'
+                lst_item += ('<span onclick="toggleExpand(this.parentNode)" '
                              'class="is-clickable icon is-small level-right">'
-                             '<i class="fa arrow-icon fa-angle-right"'
+                             '<i class="fa arrow-icon fa-angle-right" '
                              'aria-hidden="true"></i></span>')
 
             lst_item += '</span>'
@@ -240,6 +251,9 @@ class TocTree(Directive):
 
 
 class CodeBlock(Directive):
+    """
+    Directive for displaying code samples.
+    """
     option_spec = {
         'name': directives.unchanged,
         'linenos': directives.flag,
@@ -251,6 +265,9 @@ class CodeBlock(Directive):
     optional_arguments = 1
 
     def run(self):
+        """
+        Create nodes for this directive.
+        """
         language = self.arguments[0] if len(self.arguments) > 0 else None
         linenos = 'linenos' in self.options
         linenostart = self.options.get('lineno-start', 1)

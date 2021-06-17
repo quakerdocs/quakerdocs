@@ -80,17 +80,21 @@ class Rst():
         output = docutils.core.publish_from_doctree(
             self.doctree,
             destination_path=self.dest,
-            writer=main.Builder(),
+            writer=main.writer(),
             settings_overrides={
                 'toc': main.toc_navigation,
+                'template': main.theme.get_template(),
+                'stylesheet': os.path.join(
+                    '_static', main.conf_vars.get('html_style',
+                                                  main.theme.get_style())),
                 'src_dir': main.source_path,
                 'html_path': self.html_path,
+                'embed_stylesheet': False,
                 'rel_base': os.path.relpath(main.dest_path, self.dest.parent),
                 'handlers': main.sp_app.get_handlers(),
                 'favicon': main.conf_vars.get('html_favicon', None),
                 'logo': main.conf_vars.get('html_logo', None),
                 'copyright': main.conf_vars.get('copyright', ''),
-                'html_style': main.conf_vars.get('html_style', None),
                 'id_map': application.id_map
             })
 

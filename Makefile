@@ -21,6 +21,9 @@ help:
 %: Makefile emsdk
 	python3 $(BUILDFILE) "$(SOURCEDIR)" -d "$(BUILDDIR)" -b $@
 
+docs: Makefile emsdk
+	python3 $(BUILDFILE) "docs" -d "builddocs" -b html
+
 clean:
 	rm -rf $(BUILDDIR) tmp
 

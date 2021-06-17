@@ -11,42 +11,51 @@ import importlib
 from sys import stderr
 from pathlib import Path
 
+from pathlib import Path
+from distutils.dir_util import copy_tree
 import docutils.core
 import docutils.writers
 from docutils import nodes
 import docutils.parsers.rst
 import docutils.writers.html5_polyglot
-from distutils.dir_util import copy_tree
 
 import index
 import directives
 import application
 import html5writer
+
 from util import read_file
 from rst import Rst
-
+from theme import Theme
 
 
 class Main:
     SKIP_TAGS = {'system_message', 'problematic'}
 
-    # Mapping builder name to (file extension, writer class)
+    # Mapping builder name to (output file extension, writer class) tuple
     supported_builders = {
         'html': ('html', html5writer.Writer)
     }
 
     def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
+        self.dest_path = dest_path
         self.temp_path = dest_path.parent / 'tmp' / dest_path.name
-        self.dest_path = dest_path / 'html'
-        self.static_path = self.dest_path / 'assets'
+        self.static_path = dest_path / '_static'
         self.builder = builder
+
+        self.sp_app = None
+        self.theme = None
+        self.file_ext = '.out'
+        self.writer = None
+        self.idx = None
+        self.toc_navigation = list()
 
         # Import and setup all directives.
         dir_path = Path(__file__).parent / 'directives'
-        for _, m, _ in pkgutil.iter_modules([str(dir_path)]):
-            m = importlib.import_module(f'directives.{m}')
-            m.setup()
+        for _, module, _ in pkgutil.iter_modules([str(dir_path)]):
+            module = importlib.import_module(f'directives.{module}')
+            module.setup()
 
         self.waiting = {}
 
@@ -76,10 +85,9 @@ class Main:
         }
         conf_vars = {}
 
-        # TODO maybe don't use exec?
         # Check if file exists? Other cwd?
-        with open('conf.py') as f:
-            exec(f.read(), global_vars, conf_vars)
+        with open('conf.py') as conf_file:
+            exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
 
         # NOTE: this shouldn't be needed.
@@ -96,13 +104,22 @@ class Main:
             self.conf_vars.get('templates_path', [])
 
     def load_extensions(self):
-        """ Load user configuration and extensions. """
+        """
+        Load user configuration and extensions.
+        """
         prev_cwd = os.getcwd()
         os.chdir(self.source_path)
+
         self.read_conf()
         self.sp_app = application.SphinxApp()
         for ext in self.conf_vars['extensions']:
             application.setup_extension(ext, self.sp_app)
+
+        # Get path to theme
+        self.theme = Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
+                           self.conf_vars.get('html_theme_path'),
+                           self.conf_vars.get('templates_path', []))
+
         os.chdir(prev_cwd)
 
     def generate(self):
@@ -114,7 +131,7 @@ class Main:
         if self.builder not in Main.supported_builders:
             raise NotImplementedError("Requested builder not supported!")
 
-        self.file_ext, self.Builder = Main.supported_builders[self.builder]
+        self.file_ext, self.writer = Main.supported_builders[self.builder]
 
         # Make the destination directory if it does not exist.
         self.dest_path.mkdir(parents=True, exist_ok=True)
@@ -122,7 +139,7 @@ class Main:
         # Load user configuration and extensions.
         self.load_extensions()
 
-        # Set-up Table of Contents data.
+        # Set-up Table of Contents data
         self.build_global_toc()
 
         # Set-up index generator and build the files.
@@ -131,13 +148,10 @@ class Main:
 
         # Build index.
         self.idx.build(self.temp_path, self.static_path / 'js')
-        self.copy_static_files()
 
-        # Copy the directories from static directly to the dest folder. (TEMP)
-        temp_paths = ['css', 'js', 'fonts']
-        for path in temp_paths:
-            copy_tree(os.path.join('static', path),
-                      str(self.dest_path / path), update=1)
+        # Copy the directories from our theme directly to the dest folder.
+        self.theme.copy_files(self.dest_path)
+        self.copy_static_files()
 
         print('The generated documents have been saved in %s' % self.dest_path)
 
@@ -197,8 +211,8 @@ class Main:
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        for tt in doctree.traverse(directives.sphinx.toc_data):
-            self.toc_navigation.append(tt)
+        for current_toc in doctree.traverse(directives.sphinx.toc_data):
+            self.toc_navigation.append(current_toc)
 
     def copy_static_files(self):
         """

@@ -1,3 +1,7 @@
+"""
+Module for testing functionality related to search index generation.
+"""
+
 import pytest
 from src.index import *
 
