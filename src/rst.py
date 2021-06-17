@@ -22,8 +22,7 @@ class Rst():
         Parse a rst file.
         """
 
-        with self.src.open() as f:
-            content = f.read()
+        content = self.src.read_text()
 
         # Add epilogue and prolog to source file.
         content = '%s\n%s\n%s' % (
@@ -115,5 +114,4 @@ class Rst():
 
         # Write the document to a file.
         self.dest.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.dest, 'wb') as f:
-            f.write(output)
+        self.dest.write_bytes(output)

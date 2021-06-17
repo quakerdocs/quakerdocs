@@ -490,8 +490,7 @@ class IndexGenerator:
 
         # Generate the search.hpp.
         data = self.trie.to_binary()
-        with open(source_path / 'search.hpp.jinja') as f:
-            template = Template(f.read())
+        template = Template((source_path / 'search.hpp.jinja').read_text())
 
         # Write the search index to hpp.
         search_path = temp_path / 'search'

@@ -25,7 +25,6 @@ import directives
 import application
 import html5writer
 
-from util import read_file
 from rst import Rst
 from theme import Theme
 

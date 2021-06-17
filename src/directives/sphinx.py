@@ -165,7 +165,7 @@ class TocTree(Directive):
                     continue
 
                 doctree = docutils.core.publish_doctree(
-                    util.read_file(src),
+                    Path(src).read_text(),
                     source_path=src,
                     settings_overrides={'src_dir': src[:-4],
                                         'src_path': (tocdata['src_path'] / entry).parent}
