@@ -42,19 +42,11 @@ class Only(Directive):
 
         return []
 
-
-def int_or_nothing(argument: str) -> int:
-    if not argument:
-        return 999
-    return int(argument)
-
-
 class toc_data(nodes.General, nodes.Element):
     """
     Container class for Toc data.
     """
-    ...
-
+    pass
 
 class TocTree(Directive):
     """
@@ -283,6 +275,7 @@ class ref_element(nodes.General, nodes.Element):
     """
     Custom reference node to handle unparsed pages.
     """
+    pass
 
 
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
@@ -311,6 +304,7 @@ class kbd_element(nodes.General, nodes.Element):
     """
     Empty node for rendering keyboard inputs
     """
+    pass
 
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):

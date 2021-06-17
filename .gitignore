@@ -1,4 +1,5 @@
-# build*/
+build*/
+tmp/
 .vscode
 dist
 .pytest_cache/

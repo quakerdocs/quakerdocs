@@ -22,7 +22,7 @@ help:
 	python3 $(BUILDFILE) "$(SOURCEDIR)" -d "$(BUILDDIR)" -b $@
 
 clean:
-	rm -rf $(BUILDDIR)
+	rm -rf $(BUILDDIR) tmp
 
 
 # Create a local search executable to test the search functionality.

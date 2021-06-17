@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 <base href=".."><link rel="icon" href="_static/_images/favicon.ico"><title>Changelog</title>
 
 
@@ -20,7 +21,7 @@
 
 </head>
 <body>
-<div class="document" id="changelog">
+<main id="changelog">
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
 	<div class="container">
 		<div class="navbar-brand">
@@ -312,12 +313,12 @@
 documentation. The documentation and guides on this website are deprecated
 and will not be updated in the future. Please <a class="reference external" href="https://help.codegrade.com/changelog">click here</a> to go to this page on the Help Center!</p>
 </div>
-<span class="anchor" id="version-next"></span><div class="section" id="version-next">
+<span class="anchor" id="version-next"></span><section id="version-next">
 <h2>Version <em>Next</em><button id="BM_version-next" class="bookmark-btn" onclick="bookmarkClick('BM_version-next')" title="Version Next" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: TBD</p>
-<span class="anchor" id="removals"></span><div class="section" id="removals">
+<span class="anchor" id="removals"></span><section id="removals">
 <h3>Removals<button id="BM_removals" class="bookmark-btn" onclick="bookmarkClick('BM_removals')" title="Removals" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
-<span class="anchor" id="api"></span><div class="section" id="api">
+<span class="anchor" id="api"></span><section id="api">
 <h4>API<button id="BM_api" class="bookmark-btn" onclick="bookmarkClick('BM_api')" title="API" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
 <ul class="simple">
 <li><p>The option to incrementally fill in rubrics has been removed. You should
@@ -325,14 +326,14 @@ now do a single request with all the selected rubric items for a submission
 with the <span class="docutils literal">PUT <span class="pre">/api/v1/submissions/&lt;submission_id&gt;/rubricitems/</span></span> to update
 the rubric result.</p></li>
 </ul>
-</div>
-</div>
-</div>
-<span class="anchor" id="version-nobel-2"></span><div class="section" id="version-nobel-2">
+</section>
+</section>
+</section>
+<span class="anchor" id="version-nobel-2"></span><section id="version-nobel-2">
 <h2>Version Nobel.2<button id="BM_version-nobel-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-nobel-2')" title="Version Nobel.2" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: March 9th, 2021</p>
 <p>This release makes it easier to allow late submissions using the lock date, making it possible to allow late submissions up to a certain date. We've also updated various software packages in AutoTest, and made it easier to use the <cite>CG_INFO</cite> information.</p>
-<span class="anchor" id="features"></span><div class="section" id="features">
+<span class="anchor" id="features"></span><section id="features">
 <h3>Features<button id="BM_features" class="bookmark-btn" onclick="bookmarkClick('BM_features')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>We now publish a library to consume our API, check it out on
@@ -342,14 +343,14 @@ this, allowing you to make the deadline &quot;soft&quot;.</p></li>
 <li><p>We've added a utils module within AutoTest (<span class="docutils literal">cg_at_utils</span>). Using the
 <span class="docutils literal">CG_IFNO</span> data is now as easy as doing <span class="docutils literal">from cg_at_utils import CG_INFO</span>.</p></li>
 </ul>
-</div>
-<span class="anchor" id="updates"></span><div class="section" id="updates">
+</section>
+<span class="anchor" id="updates"></span><section id="updates">
 <h3>Updates<button id="BM_updates" class="bookmark-btn" onclick="bookmarkClick('BM_updates')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Added support for the Populi LMS.</p></li>
 </ul>
-</div>
-<span class="anchor" id="fixes"></span><div class="section" id="fixes">
+</section>
+<span class="anchor" id="fixes"></span><section id="fixes">
 <h3>Fixes<button id="BM_fixes" class="bookmark-btn" onclick="bookmarkClick('BM_fixes')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fixed a rare bug where LTI 1.1 passback would fail if we encountered a
@@ -359,19 +360,19 @@ redirect.</p></li>
 <li><p>Fixed a bug that caused AutoTest description templates to not be copied when
 importing an AutoTest.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-nobel-1"></span><div class="section" id="version-nobel-1">
+</section>
+</section>
+<span class="anchor" id="version-nobel-1"></span><section id="version-nobel-1">
 <h2>Version Nobel.1<button id="BM_version-nobel-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-nobel-1')" title="Version Nobel.1" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: January 28th, 2021</p>
 <p>This release kicks off our push to make AutoTest even better this year. You can now give even more accurate feedback by customizing AutoTest messages, and the workflow for uploading fixtures has been optimized.</p>
-<span class="anchor" id="id1"></span><div class="section" id="id1">
+<span class="anchor" id="id1"></span><section id="id1">
 <h3>Features<button id="BM_id1" class="bookmark-btn" onclick="bookmarkClick('BM_id1')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Provide more accurate feedback by customizing the messages in AutoTest.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id2"></span><div class="section" id="id2">
+</section>
+<span class="anchor" id="id2"></span><section id="id2">
 <h3>Updates<button id="BM_id2" class="bookmark-btn" onclick="bookmarkClick('BM_id2')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Improve UX for setting up AutoTest setup scripts, making it more clear when
@@ -383,37 +384,37 @@ categories) in the AutoTest output file tree.</p></li>
 <li><p>We've added a tenant system to make our service even better. When logging in
 you now have to select your instance.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id3"></span><div class="section" id="id3">
+</section>
+<span class="anchor" id="id3"></span><section id="id3">
 <h3>Fixes<button id="BM_id3" class="bookmark-btn" onclick="bookmarkClick('BM_id3')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix rare CSV export bug where exported data might be outdated if you didn't
 refresh the page since the last update.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-nobel"></span><div class="section" id="version-nobel">
+</section>
+</section>
+<span class="anchor" id="version-nobel"></span><section id="version-nobel">
 <h2>Version Nobel<button id="BM_version-nobel" class="bookmark-btn" onclick="bookmarkClick('BM_version-nobel')" title="Version Nobel" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: December 26th, 2020</p>
 <p>In this release we have made CodeGrade ready for a new infrastructure, so that we can provide a faster and more reliable experience. Happy new year from all of us at CodeGrade!</p>
-<span class="anchor" id="id4"></span><div class="section" id="id4">
+<span class="anchor" id="id4"></span><section id="id4">
 <h3>Updates<button id="BM_id4" class="bookmark-btn" onclick="bookmarkClick('BM_id4')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add a limit to the maximum amount of plagiarism cases a single run can
 generate.</p></li>
 <li><p>Improve error messages when the server is overloaded.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id5"></span><div class="section" id="id5">
+</section>
+<span class="anchor" id="id5"></span><section id="id5">
 <h3>Fixes<button id="BM_id5" class="bookmark-btn" onclick="bookmarkClick('BM_id5')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Never hyphenate code. When wrapping lines it could happen that code was
 hyphenated in the CodeViewer.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id6"></span><div class="section" id="id6">
+</section>
+<span class="anchor" id="id6"></span><section id="id6">
 <h3>Removals<button id="BM_id6" class="bookmark-btn" onclick="bookmarkClick('BM_id6')" title="Removals" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
-<span class="anchor" id="id7"></span><div class="section" id="id7">
+<span class="anchor" id="id7"></span><section id="id7">
 <h4>API<button id="BM_id7" class="bookmark-btn" onclick="bookmarkClick('BM_id7')" title="API" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
 <ul class="simple">
 <li><p>The option to get an entire course when getting an assignment has been
@@ -430,42 +431,42 @@ course. Please either use the <span class="docutils literal">/api/v1/permissions
 own permissions, or the <span class="docutils literal"><span class="pre">/api/v1/courses/&lt;course_id&gt;/users/</span></span> to retrieve the
 role of a user.</p></li>
 </ul>
-</div>
-<span class="anchor" id="ui"></span><div class="section" id="ui">
+</section>
+<span class="anchor" id="ui"></span><section id="ui">
 <h4>UI<button id="BM_ui" class="bookmark-btn" onclick="bookmarkClick('BM_ui')" title="UI" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
 <ul class="simple">
 <li><p>Linters have been moved to AutoTest (AutoTest Quality Comments). The new
 integration allows for more flexibility and grading based on linter output.</p></li>
 </ul>
-</div>
-</div>
-</div>
-<span class="anchor" id="version-mosaic-3"></span><div class="section" id="version-mosaic-3">
+</section>
+</section>
+</section>
+<span class="anchor" id="version-mosaic-3"></span><section id="version-mosaic-3">
 <h2>Version Mosaic.3<button id="BM_version-mosaic-3" class="bookmark-btn" onclick="bookmarkClick('BM_version-mosaic-3')" title="Version Mosaic.3" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: November 26th, 2020</p>
 <p>This release brings many small fixes and improvements, and is the last release on our old infrastructure. We will migrate CodeGrade to AWS on the 28th and 29th of December, during which CodeGrade might not be available.</p>
-<span class="anchor" id="id8"></span><div class="section" id="id8">
+<span class="anchor" id="id8"></span><section id="id8">
 <h3>Updates<button id="BM_id8" class="bookmark-btn" onclick="bookmarkClick('BM_id8')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>More descriptive error message when launched with LTI 1.3 without an
 assignment name.</p></li>
 <li><p>Make sure deleted submissions are ignored for calculating the analytics.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id9"></span><div class="section" id="id9">
+</section>
+<span class="anchor" id="id9"></span><section id="id9">
 <h3>Fixes<button id="BM_id9" class="bookmark-btn" onclick="bookmarkClick('BM_id9')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Ignore empty &quot;branch&quot; parameter in webhook payload URLs.</p></li>
 <li><p>Fix crash on analytics page.</p></li>
 <li><p>Fix wrong rubrics being cleared when restarting an AutoTest result.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-mosaic-2"></span><div class="section" id="version-mosaic-2">
+</section>
+</section>
+<span class="anchor" id="version-mosaic-2"></span><section id="version-mosaic-2">
 <h2>Version Mosaic.2<button id="BM_version-mosaic-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-mosaic-2')" title="Version Mosaic.2" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: October 22nd, 2020</p>
 <p>The Rubric Editor has a new design, which allows you to reorder categories and use markdown. The new Code Quality step in AutoTest allows you to grade and add inline comments to submissions based on code style. This will replace the current Linters integration.</p>
-<span class="anchor" id="id10"></span><div class="section" id="id10">
+<span class="anchor" id="id10"></span><section id="id10">
 <h3>Features<button id="BM_id10" class="bookmark-btn" onclick="bookmarkClick('BM_id10')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Rubric improvements. The rubric editor
@@ -477,8 +478,8 @@ step type designed for linters. You can now place line comments within
 AutoTest and deduct points based on the amount of lines. We've integrated some
 popular linters, but it is also possible to create your own custom linters.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id11"></span><div class="section" id="id11">
+</section>
+<span class="anchor" id="id11"></span><section id="id11">
 <h3>Updates<button id="BM_id11" class="bookmark-btn" onclick="bookmarkClick('BM_id11')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Expand inline links in markdown viewer. When you use http
@@ -497,24 +498,24 @@ contains ANSI colored output we will display these colors in all their glory.</p
 hide inline feedback using the preference settings on the submission page,
 this is now saved when switching between files and submissions.</p></li>
 </ul>
-</div>
-<span class="anchor" id="deprecations"></span><div class="section" id="deprecations">
+</section>
+<span class="anchor" id="deprecations"></span><section id="deprecations">
 <h3>Deprecations<button id="BM_deprecations" class="bookmark-btn" onclick="bookmarkClick('BM_deprecations')" title="Deprecations" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
-<span class="anchor" id="id12"></span><div class="section" id="id12">
+<span class="anchor" id="id12"></span><section id="id12">
 <h4>UI<button id="BM_id12" class="bookmark-btn" onclick="bookmarkClick('BM_id12')" title="UI" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
 <ul class="simple">
 <li><p>The linters integration has been deprecated. The new AutoTest Quality Comments
 bring all the advantages, and also allow you to give a grade based on the
 output of the linter.</p></li>
 </ul>
-</div>
-</div>
-</div>
-<span class="anchor" id="version-mosaic-1"></span><div class="section" id="version-mosaic-1">
+</section>
+</section>
+</section>
+<span class="anchor" id="version-mosaic-1"></span><section id="version-mosaic-1">
 <h2>Version Mosaic.1<button id="BM_version-mosaic-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-mosaic-1')" title="Version Mosaic.1" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: September 9th, 2020</p>
 <p>CodeGrade now has an Exam mode in which students will be able to log in to CodeGrade and only have access to the course of the exam. Other changes include course archiving, importing of hand-in requirements, and including even more information in the AutoTest Unit Test output.</p>
-<span class="anchor" id="id13"></span><div class="section" id="id13">
+<span class="anchor" id="id13"></span><section id="id13">
 <h3>Features<button id="BM_id13" class="bookmark-btn" onclick="bookmarkClick('BM_id13')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add Sakai support. Full LTI integration
@@ -529,8 +530,8 @@ hand-in requirements of other assignments that you have access to.</p></li>
 <li><p>Add course archiving. You can now archive
 old courses, hiding them from students and cleaning your own homepage.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id14"></span><div class="section" id="id14">
+</section>
+<span class="anchor" id="id14"></span><section id="id14">
 <h3>Updates<button id="BM_id14" class="bookmark-btn" onclick="bookmarkClick('BM_id14')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Use the same icons from the &quot;Capture Points&quot; AutoTest step for the &quot;Unit
@@ -555,10 +556,10 @@ displayed in the output of the step.</p></li>
 <li><p>Renaming courses. It is now possible to
 rename existing courses.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id15"></span><div class="section" id="id15">
+</section>
+<span class="anchor" id="id15"></span><section id="id15">
 <h3>Deprecations<button id="BM_id15" class="bookmark-btn" onclick="bookmarkClick('BM_id15')" title="Deprecations" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
-<span class="anchor" id="id16"></span><div class="section" id="id16">
+<span class="anchor" id="id16"></span><section id="id16">
 <h4>API<button id="BM_id16" class="bookmark-btn" onclick="bookmarkClick('BM_id16')" title="API" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h4>
 <ul class="simple">
 <li><p>The option to get an entire course when getting an assignment has been
@@ -582,17 +583,17 @@ route to retrieve your own permissions, or the
 still use the old behavior you will get a warning, you can already opt-in to
 the new behavior by providing <span class="docutils literal">no_role_name=true</span> in the request arguments.</p></li>
 </ul>
-</div>
-</div>
-</div>
-<span class="anchor" id="version-mosaic"></span><div class="section" id="version-mosaic">
+</section>
+</section>
+</section>
+<span class="anchor" id="version-mosaic"></span><section id="version-mosaic">
 <h2>Version Mosaic<button id="BM_version-mosaic" class="bookmark-btn" onclick="bookmarkClick('BM_version-mosaic')" title="Version Mosaic" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: July 21st, 2020</p>
 <p>With CodeGrade Peer Feedback it is now possible for students to review code of
 other students, allowing them to learn from each other. Furthermore, it is even
 easier to integrate existing unit tests in AutoTest, by utilizing the new &quot;Unit
 test&quot; step type.</p>
-<span class="anchor" id="id17"></span><div class="section" id="id17">
+<span class="anchor" id="id17"></span><section id="id17">
 <h3>Features<button id="BM_id17" class="bookmark-btn" onclick="bookmarkClick('BM_id17')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add &quot;Unit Test&quot; AutoTest step. This new AutoTest
@@ -609,8 +610,8 @@ from within CodeGrade.</p></li>
 is enabled for an assignment, students can give each other feedback after the
 deadline of an assignment has passed.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id18"></span><div class="section" id="id18">
+</section>
+<span class="anchor" id="id18"></span><section id="id18">
 <h3>Updates<button id="BM_id18" class="bookmark-btn" onclick="bookmarkClick('BM_id18')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Automatically focus the percentage input in continuous rubric rows.</p></li>
@@ -622,17 +623,17 @@ general feedback or interacting with the page.</p></li>
 the same name.</p></li>
 <li><p>It is now possible to restart the AutoTest run for a single student.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id19"></span><div class="section" id="id19">
+</section>
+<span class="anchor" id="id19"></span><section id="id19">
 <h3>Fixes<button id="BM_id19" class="bookmark-btn" onclick="bookmarkClick('BM_id19')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix IPython <span class="docutils literal">execute_result</span> cell outputs.</p></li>
 <li><p>Add missing newline at the end of symbolic link replacement files.</p></li>
 <li><p>Miscellaneous fixes.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-lowvoltage-1"></span><div class="section" id="version-lowvoltage-1">
+</section>
+</section>
+<span class="anchor" id="version-lowvoltage-1"></span><section id="version-lowvoltage-1">
 <h2>Version <em>LowVoltage.1</em><button id="BM_version-lowvoltage-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-lowvoltage-1')" title="Version LowVoltage.1" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: June 10th, 2020</p>
 <p>With our new Feedback Sidebar, you can now view all previous feedback from
@@ -640,7 +641,7 @@ a student in the course, while grading the current submission. It is now also
 possible to get submission metadata in AutoTest, for instance to automate late
 day penalties. Finally, we have upgraded CodeGrade to the newest version of
 LTI: LTI 1.3 Advantage!</p>
-<span class="anchor" id="id20"></span><div class="section" id="id20">
+<span class="anchor" id="id20"></span><section id="id20">
 <h3>Features<button id="BM_id20" class="bookmark-btn" onclick="bookmarkClick('BM_id20')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Course feedback. Adds an overview of
@@ -660,14 +661,14 @@ stored in an environment variables. This is useful to automatically subtract
 points based on the submission date and deadline, or to generate a unique
 input for each submission or student.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id21"></span><div class="section" id="id21">
+</section>
+<span class="anchor" id="id21"></span><section id="id21">
 <h3>Updates<button id="BM_id21" class="bookmark-btn" onclick="bookmarkClick('BM_id21')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Use Bootstrap-Vue toasts instead of vue-toasted,</p></li>
 </ul>
-</div>
-<span class="anchor" id="id22"></span><div class="section" id="id22">
+</section>
+<span class="anchor" id="id22"></span><section id="id22">
 <h3>Fixes<button id="BM_id22" class="bookmark-btn" onclick="bookmarkClick('BM_id22')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix AutoTest result being in state &quot;done&quot; while it has steps that are in
@@ -679,15 +680,15 @@ another button to add new filters we removed it.</p></li>
 notifications are now always sorted before read notifications.</p></li>
 <li><p>Miscellaneous fixes.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-lowvoltage"></span><div class="section" id="version-lowvoltage">
+</section>
+</section>
+<span class="anchor" id="version-lowvoltage"></span><section id="version-lowvoltage">
 <h2>Version LowVoltage<button id="BM_version-lowvoltage" class="bookmark-btn" onclick="bookmarkClick('BM_version-lowvoltage')" title="Version LowVoltage" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: April 15th, 2020</p>
 <p>You can now view assignment statistics on the Analytics Dashboard, giving you
 insight into student performance. Students can now also comment on their own
 code, and they can reply to comments placed by teachers.</p>
-<span class="anchor" id="id23"></span><div class="section" id="id23">
+<span class="anchor" id="id23"></span><section id="id23">
 <h3>Features<button id="BM_id23" class="bookmark-btn" onclick="bookmarkClick('BM_id23')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Analytics dashboard. The analytics
@@ -702,8 +703,8 @@ notifies you when you have received new replies.</p></li>
 possible for teachers to send emails to students of a submission, or to
 multiple students in a course.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id24"></span><div class="section" id="id24">
+</section>
+<span class="anchor" id="id24"></span><section id="id24">
 <h3>Updates<button id="BM_id24" class="bookmark-btn" onclick="bookmarkClick('BM_id24')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make usernames case insensitive. This reduces
@@ -715,20 +716,20 @@ to improve CodeGrade in the future.</p></li>
 <li><p>Plagiarism support for newer versions of Java. You can now use the Plagiarism
 checker for newer versions of Java.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id25"></span><div class="section" id="id25">
+</section>
+<span class="anchor" id="id25"></span><section id="id25">
 <h3>Fixes<button id="BM_id25" class="bookmark-btn" onclick="bookmarkClick('BM_id25')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make sure that empty markdown files show a useful error.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-knoet-3"></span><div class="section" id="version-knoet-3">
+</section>
+</section>
+<span class="anchor" id="version-knoet-3"></span><section id="version-knoet-3">
 <h2>Version Knoet.3<button id="BM_version-knoet-3" class="bookmark-btn" onclick="bookmarkClick('BM_version-knoet-3')" title="Version Knoet.3" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: March 16th, 2020</p>
 <p>You can now render HTML pages submitted by students right inside CodeGrade,
 allowing you to preview webpages or test Javascript more easily than ever.</p>
-<span class="anchor" id="id26"></span><div class="section" id="id26">
+<span class="anchor" id="id26"></span><section id="id26">
 <h3>Features<button id="BM_id26" class="bookmark-btn" onclick="bookmarkClick('BM_id26')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it possible to render html pages: It is now possible to
@@ -738,8 +739,8 @@ courses on the HomeGrid based on the creation date of the courses, and courses
 with duplicate names can now be more easily identified as the creation date of
 the course will be appended to the name.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id27"></span><div class="section" id="id27">
+</section>
+<span class="anchor" id="id27"></span><section id="id27">
 <h3>Updates<button id="BM_id27" class="bookmark-btn" onclick="bookmarkClick('BM_id27')" title="Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Upgrade bootstrap-vue.</p></li>
@@ -753,8 +754,8 @@ to the HomeGrid, Submissions list and users manager to improve the first
 render speed.</p></li>
 <li><p>Start using timezones everywhere when dealing with datetimes.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id28"></span><div class="section" id="id28">
+</section>
+<span class="anchor" id="id28"></span><section id="id28">
 <h3>Fixes<button id="BM_id28" class="bookmark-btn" onclick="bookmarkClick('BM_id28')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Do not discard changed rubric viewer when saving general feedback: The previous version
@@ -763,15 +764,15 @@ changed rubric the changes in the rubric were discarded.</p></li>
 <li><p>Fix downloading submissions with reserved chars in their name.</p></li>
 <li><p>Fix student count in submission list.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-19-0-knoet-2"></span><div class="section" id="version-1-19-0-knoet-2">
+</section>
+</section>
+<span class="anchor" id="version-1-19-0-knoet-2"></span><section id="version-1-19-0-knoet-2">
 <h2>Version 1.19.0 (Knoet.2)<button id="BM_version-1-19-0-knoet-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-19-0-knoet-2')" title="Version 1.19.0 (Knoet.2)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: January 30th, 2020</p>
 <p>You can now add Continuous Rubric Categories, which can score anywhere on a
 continuous scale and work great with AutoTest. You can also now set student
 submission limits and a cool off period.</p>
-<span class="anchor" id="id29"></span><div class="section" id="id29">
+<span class="anchor" id="id29"></span><section id="id29">
 <h3>Features<button id="BM_id29" class="bookmark-btn" onclick="bookmarkClick('BM_id29')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Continuous rubric categories: this new type of
@@ -795,8 +796,8 @@ students would get. New <cite>can_see_user_feedback_before_done</cite> and
 these types of feedback before an assignment is set to done while still
 hiding others.</p></li>
 </ul>
-</div>
-<span class="anchor" id="minor-updates"></span><div class="section" id="minor-updates">
+</section>
+<span class="anchor" id="minor-updates"></span><section id="minor-updates">
 <h3>Minor updates<button id="BM_minor-updates" class="bookmark-btn" onclick="bookmarkClick('BM_minor-updates')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add warning when creating a wrong external tool link in Canvas: Canvas has multiple
@@ -804,22 +805,22 @@ ways to integrate external tools, some of which leave CodeGrade unable to
 communicate correctly with it. This update displays a message when this
 happens.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id30"></span><div class="section" id="id30">
+</section>
+<span class="anchor" id="id30"></span><section id="id30">
 <h3>Fixes<button id="BM_id30" class="bookmark-btn" onclick="bookmarkClick('BM_id30')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Use the most privileged LTI role available.</p></li>
 <li><p>Fix float matching for AutoTest capture points test.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-17-0-knoet-1"></span><div class="section" id="version-1-17-0-knoet-1">
+</section>
+</section>
+<span class="anchor" id="version-1-17-0-knoet-1"></span><section id="version-1-17-0-knoet-1">
 <h2>Version 1.17.0 (Knoet.1)<button id="BM_version-1-17-0-knoet-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-17-0-knoet-1')" title="Version 1.17.0 (Knoet.1)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: December 20th, 2019</p>
 <p>The hand in page for students has been completely redesigned, making it simpler
 and easier to use. You can now import AutoTest configurations and the ESLint
 linter is now available.</p>
-<span class="anchor" id="id31"></span><div class="section" id="id31">
+<span class="anchor" id="id31"></span><section id="id31">
 <h3>Features<button id="BM_id31" class="bookmark-btn" onclick="bookmarkClick('BM_id31')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Submissions page redesign:
@@ -837,8 +838,8 @@ the rubric.</p></li>
 for standalone courses, you can let users register via a unique URL. You can
 set this up on the Course Management Page.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id32"></span><div class="section" id="id32">
+</section>
+<span class="anchor" id="id32"></span><section id="id32">
 <h3>Minor updates<button id="BM_id32" class="bookmark-btn" onclick="bookmarkClick('BM_id32')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Update git instructions:
@@ -848,8 +849,8 @@ also added a button to the last step to check if submitting works correctly.</p>
 you're now only logged in persistently when pressing the &quot;New Tab&quot; button. This fixes some issues
 where users were always logged in via LTI.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id33"></span><div class="section" id="id33">
+</section>
+<span class="anchor" id="id33"></span><section id="id33">
 <h3>Fixes<button id="BM_id33" class="bookmark-btn" onclick="bookmarkClick('BM_id33')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Set groups of user in AutoTest run.</p></li>
@@ -858,14 +859,14 @@ where users were always logged in via LTI.</p></li>
 <li><p>Fix deadlock that would occur when attaching failed.</p></li>
 <li><p>Use a blob storage for the jwt data instead of passing it in the request.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-16-2-knoet"></span><div class="section" id="version-1-16-2-knoet">
+</section>
+</section>
+<span class="anchor" id="version-1-16-2-knoet"></span><section id="version-1-16-2-knoet">
 <h2>Version 1.16.2 (Knoet)<button id="BM_version-1-16-2-knoet" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-16-2-knoet')" title="Version 1.16.2 (Knoet)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: November 27th, 2019</p>
 <p>It is now possible to hand in via GitHub or GitLab. You can now also write
 files back from AutoTest to the Code Viewer to ease manual grading.</p>
-<span class="anchor" id="id34"></span><div class="section" id="id34">
+<span class="anchor" id="id34"></span><section id="id34">
 <h3>Features<button id="BM_id34" class="bookmark-btn" onclick="bookmarkClick('BM_id34')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it possible to hand in submission through GitHub+GitLab:
@@ -880,8 +881,8 @@ You can now check for plagiarism in Jupyter Notebooks.</p></li>
 <li><p>AutoTest Best Practices in docs:
 there is now a Best Practices for AutoTest guide in the documentation.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id35"></span><div class="section" id="id35">
+</section>
+<span class="anchor" id="id35"></span><section id="id35">
 <h3>Minor updates<button id="BM_id35" class="bookmark-btn" onclick="bookmarkClick('BM_id35')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add year to old assignments dropdown:
@@ -893,8 +894,8 @@ the name of hidden fixtures are now also hidden for students making it harder fo
 <li><p>Improve the first render speed for AutoTest:
 AutoTest now loads much faster.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id36"></span><div class="section" id="id36">
+</section>
+<span class="anchor" id="id36"></span><section id="id36">
 <h3>Fixes<button id="BM_id36" class="bookmark-btn" onclick="bookmarkClick('BM_id36')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix giving feedback on PDF files in edge.</p></li>
@@ -911,16 +912,16 @@ AutoTest now loads much faster.</p></li>
 <li><p>Don't show AutoTest popover on page load.</p></li>
 <li><p>Stop loading the rubric and graders twice on the management page.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-13-0-junglejoy-4"></span><div class="section" id="version-1-13-0-junglejoy-4">
+</section>
+</section>
+<span class="anchor" id="version-1-13-0-junglejoy-4"></span><section id="version-1-13-0-junglejoy-4">
 <h2>Version 1.13.0 (JungleJoy.4)<button id="BM_version-1-13-0-junglejoy-4" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-13-0-junglejoy-4')" title="Version 1.13.0 (JungleJoy.4)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: October 11th, 2019</p>
 <p>AutoTest and Continuous Feedback cooperate even better with this release. Tests
 are always run immediately after handing in, and even fill in the rubric
 directly when possible. Teachers can still choose when to make results visible
 to students.</p>
-<span class="anchor" id="id37"></span><div class="section" id="id37">
+<span class="anchor" id="id37"></span><section id="id37">
 <h3>Features<button id="BM_id37" class="bookmark-btn" onclick="bookmarkClick('BM_id37')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Merge AutoTest &amp; Continuous Feedback:
@@ -931,8 +932,8 @@ Feedback) or only after the assignment state is set to done.</p></li>
 <li><p>Brightspace support:
 CodeGrade now fully supports Brightspace.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id38"></span><div class="section" id="id38">
+</section>
+<span class="anchor" id="id38"></span><section id="id38">
 <h3>Minor updates<button id="BM_id38" class="bookmark-btn" onclick="bookmarkClick('BM_id38')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Improve scrolling on the submission list page:
@@ -949,8 +950,8 @@ this makes it easier to give TAs the permission to see plagiarism cases,
 without them being able to edit the plagiairism run.</p></li>
 <li><p>The CodeViewer is faster, and works better when dealing with large files.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id39"></span><div class="section" id="id39">
+</section>
+<span class="anchor" id="id39"></span><section id="id39">
 <h3>Fixes<button id="BM_id39" class="bookmark-btn" onclick="bookmarkClick('BM_id39')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix race condition in editable rubric editor.</p></li>
@@ -960,15 +961,15 @@ sometimes a file was matched by multiple rules and there was a bug with empty di
 <li><p>Fix race condition when creating unassigned runners.</p></li>
 <li><p>Fix plagiarism overview when missing permissions on other courses.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-11-11-junglejoy-3"></span><div class="section" id="version-1-11-11-junglejoy-3">
+</section>
+</section>
+<span class="anchor" id="version-1-11-11-junglejoy-3"></span><section id="version-1-11-11-junglejoy-3">
 <h2>Version 1.11.11 (JungleJoy.3)<button id="BM_version-1-11-11-junglejoy-3" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-11-11-junglejoy-3')" title="Version 1.11.11 (JungleJoy.3)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: September 13th, 2019 <em>(we blame all bugs on Friday the 13th)</em></p>
 <p>AutoTest and Continuous Feedback are now more reliable and efficient by fixing
 many small bugs and tweaks in the back-end. Additionally, a diff-viewer is added
 to the output of IO tests.</p>
-<span class="anchor" id="id40"></span><div class="section" id="id40">
+<span class="anchor" id="id40"></span><section id="id40">
 <h3>Features<button id="BM_id40" class="bookmark-btn" onclick="bookmarkClick('BM_id40')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add diff view to IO test: Adds a
@@ -976,8 +977,8 @@ difference viewer to the IO test in AutoTest and Continuous Feedback.</p></li>
 <li><p>Make it possible to use CF after a final run: enable
 starting Continuous Feedback after an AutoTest run finished.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id41"></span><div class="section" id="id41">
+</section>
+<span class="anchor" id="id41"></span><section id="id41">
 <h3>Minor updates<button id="BM_id41" class="bookmark-btn" onclick="bookmarkClick('BM_id41')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add Test Submissions:
@@ -1012,8 +1013,8 @@ makes AutoTest and Continuous Feedback more reliable and efficient:</p>
 without deadlines were displayed above assignments with a deadline in the
 upcoming assignments list. This is reversed now.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id42"></span><div class="section" id="id42">
+</section>
+<span class="anchor" id="id42"></span><section id="id42">
 <h3>Fixes<button id="BM_id42" class="bookmark-btn" onclick="bookmarkClick('BM_id42')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix rubric item deletion bug:
@@ -1033,15 +1034,15 @@ bug that points for capture points tests were not counted.</p></li>
 <li><p>Make sure markdown rendering is he same as in IPython Notebooks.</p></li>
 <li><p>Fix group management loaders in LMS.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-10-3-junglejoy-2"></span><div class="section" id="version-1-10-3-junglejoy-2">
+</section>
+</section>
+<span class="anchor" id="version-1-10-3-junglejoy-2"></span><section id="version-1-10-3-junglejoy-2">
 <h2>Version 1.10.3 (JungleJoy.2)<button id="BM_version-1-10-3-junglejoy-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-10-3-junglejoy-2')" title="Version 1.10.3 (JungleJoy.2)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: August 28th, 2019</p>
 <p>It is now significantly more efficient to run AutoTest or Continuous Feedback by
 a big improvement in our back-end. Additionally, our latest update adds further
 improvements to CodeGrade and fixes several minor and rare bugs.</p>
-<span class="anchor" id="id43"></span><div class="section" id="id43">
+<span class="anchor" id="id43"></span><section id="id43">
 <h3>Features<button id="BM_id43" class="bookmark-btn" onclick="bookmarkClick('BM_id43')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Use multiple runners: make
@@ -1053,8 +1054,8 @@ submissions by default, which especially is a problem with continuous
 feedback which can cause high amounts of attempts per student. Additionally
 adds an improved dropdown to switch between submissions of one student.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id44"></span><div class="section" id="id44">
+</section>
+<span class="anchor" id="id44"></span><section id="id44">
 <h3>Minor updates<button id="BM_id44" class="bookmark-btn" onclick="bookmarkClick('BM_id44')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Improve popovers for locked rubric rows:
@@ -1079,8 +1080,8 @@ need modifications in the CodeGrade source code.</p></li>
 many results for an AutoTest run the results will be paginated, which
 decreases loading time and makes the page responsive.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id45"></span><div class="section" id="id45">
+</section>
+<span class="anchor" id="id45"></span><section id="id45">
 <h3>Fixes<button id="BM_id45" class="bookmark-btn" onclick="bookmarkClick('BM_id45')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix general feedback overflow:
@@ -1113,16 +1114,16 @@ numerous small bugs, including:</p>
 <li><p>Fix a bug where multiple submisions of a user could be shown if they had the
 exact same date.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-9-0-junglejoy-1"></span><div class="section" id="version-1-9-0-junglejoy-1">
+</section>
+</section>
+<span class="anchor" id="version-1-9-0-junglejoy-1"></span><section id="version-1-9-0-junglejoy-1">
 <h2>Version 1.9.0 (JungleJoy.1)<button id="BM_version-1-9-0-junglejoy-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-9-0-junglejoy-1')" title="Version 1.9.0 (JungleJoy.1)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: August 14th, 2019</p>
 <p>You can now make sure students get near instant automatic feedback using our
 new extension of AutoTest called Continuous Feedback. To better present
 this feedback to students, we have redesigned the entire submission page to be
 more intuitive.</p>
-<span class="anchor" id="id46"></span><div class="section" id="id46">
+<span class="anchor" id="id46"></span><section id="id46">
 <h3>Features<button id="BM_id46" class="bookmark-btn" onclick="bookmarkClick('BM_id46')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Rewrite submission page: make overview
@@ -1132,8 +1133,8 @@ Feedback, students receive near instant automatic feedback on every submission
 they hand in.</p></li>
 <li><p>Add Scala as plagiarism option.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id47"></span><div class="section" id="id47">
+</section>
+<span class="anchor" id="id47"></span><section id="id47">
 <h3>Minor updates<button id="BM_id47" class="bookmark-btn" onclick="bookmarkClick('BM_id47')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul>
 <li><p>Add <em>all_whitespace</em> option to IO test: add new
@@ -1149,31 +1150,31 @@ if not updated to percentages.</p>
 </div>
 </li>
 </ul>
-</div>
-<span class="anchor" id="id48"></span><div class="section" id="id48">
+</section>
+<span class="anchor" id="id48"></span><section id="id48">
 <h3>Fixes<button id="BM_id48" class="bookmark-btn" onclick="bookmarkClick('BM_id48')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Improve plagiarism export:
 fix non-escaped underscores and add option to output each listing on new page.</p></li>
 <li><p>Change text on 'delete files' button when handing in.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-7-0-junglejoy"></span><div class="section" id="version-1-7-0-junglejoy">
+</section>
+</section>
+<span class="anchor" id="version-1-7-0-junglejoy"></span><section id="version-1-7-0-junglejoy">
 <h2>Version 1.7.0 (JungleJoy)<button id="BM_version-1-7-0-junglejoy" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-7-0-junglejoy')" title="Version 1.7.0 (JungleJoy)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: July 09th, 2019</p>
 <p>You can now automatically grade code of students using our brand new feature
 called <em>AutoTest</em>. This enables teachers to easily create test configurations
 and students to automatically get insightful feedback.</p>
-<span class="anchor" id="id49"></span><div class="section" id="id49">
+<span class="anchor" id="id49"></span><section id="id49">
 <h3>Features<button id="BM_id49" class="bookmark-btn" onclick="bookmarkClick('BM_id49')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>AutoTest is CodeGrade's new Automatic Grading Environment: with AutoTest you can
 automatically grade code of students and provide them with insightful
 feedback.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id50"></span><div class="section" id="id50">
+</section>
+<span class="anchor" id="id50"></span><section id="id50">
 <h3>Fixes<button id="BM_id50" class="bookmark-btn" onclick="bookmarkClick('BM_id50')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Improve documentation: We are always
@@ -1182,15 +1183,15 @@ pushing for the best documentation!</p></li>
 <li><p>Show error when negative grader weights are submitted.</p></li>
 <li><p>Further improve the way we handle too large archives.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-6-6-izanami-2"></span><div class="section" id="version-1-6-6-izanami-2">
+</section>
+</section>
+<span class="anchor" id="version-1-6-6-izanami-2"></span><section id="version-1-6-6-izanami-2">
 <h2>Version 1.6.6 (Izanami.2)<button id="BM_version-1-6-6-izanami-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-6-6-izanami-2')" title="Version 1.6.6 (Izanami.2)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: April 04th, 2019</p>
 <p>You can now set up detailed hand-in requirements for your students,
 create course snippets and the submission page is easier to and has more
 information (including the possibility to upload multiple files).</p>
-<span class="anchor" id="id51"></span><div class="section" id="id51">
+<span class="anchor" id="id51"></span><section id="id51">
 <h3>Features<button id="BM_id51" class="bookmark-btn" onclick="bookmarkClick('BM_id51')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add a new version of the ignore file: this
@@ -1208,8 +1209,8 @@ better documentation which includes user guides.</p></li>
 <li><p>Rewrite submission list page header: more
 information, including a better visible rubric for students.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id52"></span><div class="section" id="id52">
+</section>
+<span class="anchor" id="id52"></span><section id="id52">
 <h3>Minor updates<button id="BM_id52" class="bookmark-btn" onclick="bookmarkClick('BM_id52')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Edit snippets in modal: a
@@ -1229,8 +1230,8 @@ by default.</p></li>
 <li><p>Improve filtering the course users:
 increased the efficiency of the filtering.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id53"></span><div class="section" id="id53">
+</section>
+<span class="anchor" id="id53"></span><section id="id53">
 <h3>Fixes<button id="BM_id53" class="bookmark-btn" onclick="bookmarkClick('BM_id53')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make sure duplicate filenames are detected and renamed.</p></li>
@@ -1242,14 +1243,14 @@ increased the efficiency of the filtering.</p></li>
 <li><p>Fix file tree resizer z-index.</p></li>
 <li><p>Rename &quot;Old password&quot; to &quot;Current password&quot;.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-3-29-izanami-1"></span><div class="section" id="version-1-3-29-izanami-1">
+</section>
+</section>
+<span class="anchor" id="version-1-3-29-izanami-1"></span><section id="version-1-3-29-izanami-1">
 <h2>Version 1.3.29 (Izanami.1)<button id="BM_version-1-3-29-izanami-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-3-29-izanami-1')" title="Version 1.3.29 (Izanami.1)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: March 09th, 2019</p>
 <p>Along with many UI improvements and bug fixes, you can connect grading divisions
 between assignments and import rubrics from previous assignments.</p>
-<span class="anchor" id="id54"></span><div class="section" id="id54">
+<span class="anchor" id="id54"></span><section id="id54">
 <h3>Features<button id="BM_id54" class="bookmark-btn" onclick="bookmarkClick('BM_id54')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it possible to connect assignment divisions: This makes it possible
@@ -1262,8 +1263,8 @@ runs on the individual submissions can now be viewed.</p></li>
 to connect with Blackboard, Moodle, Brightspace, and others!</p></li>
 <li><p>Make it possible to resize the filetree.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id55"></span><div class="section" id="id55">
+</section>
+<span class="anchor" id="id55"></span><section id="id55">
 <h3>Minor updates<button id="BM_id55" class="bookmark-btn" onclick="bookmarkClick('BM_id55')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it impossible to list all users on the system by searching: All users on the
@@ -1294,8 +1295,8 @@ changes to take effect.</p></li>
 of CodeGrade is installed, a notification will be shown on the home page with
 a link to this changelog.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id56"></span><div class="section" id="id56">
+</section>
+<span class="anchor" id="id56"></span><section id="id56">
 <h3>Fixes<button id="BM_id56" class="bookmark-btn" onclick="bookmarkClick('BM_id56')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add formatted_deadline property to the course store for assignments.</p></li>
@@ -1315,12 +1316,12 @@ a link to this changelog.</p></li>
 <li><p>Clearer plagiarism similarity placeholder.</p></li>
 <li><p>Reserve some extra special filenames.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-2-19-izanami"></span><div class="section" id="version-1-2-19-izanami">
+</section>
+</section>
+<span class="anchor" id="version-1-2-19-izanami"></span><section id="version-1-2-19-izanami">
 <h2>Version 1.2.19 (Izanami)<button id="BM_version-1-2-19-izanami" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-2-19-izanami')" title="Version 1.2.19 (Izanami)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: February 07th, 2019</p>
-<span class="anchor" id="id57"></span><div class="section" id="id57">
+<span class="anchor" id="id57"></span><section id="id57">
 <h3>Features<button id="BM_id57" class="bookmark-btn" onclick="bookmarkClick('BM_id57')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Group assignments: With this release
@@ -1336,8 +1337,8 @@ blob. Additionally, markdown files are also rendered. Teachers can place
 comments in both types of files, as well as on image files now. This also
 adds a message when a file does not end in a newline character.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id58"></span><div class="section" id="id58">
+</section>
+<span class="anchor" id="id58"></span><section id="id58">
 <h3>Minor updates<button id="BM_id58" class="bookmark-btn" onclick="bookmarkClick('BM_id58')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Show message when uploaded file is empty: When a file is empty,
@@ -1351,8 +1352,8 @@ been changed to use a date picker, so users of browsers besides Chromium can
 now also pleasantly select a date or time.</p></li>
 <li><p>Change icon for user in the sidebar</p></li>
 </ul>
-</div>
-<span class="anchor" id="id59"></span><div class="section" id="id59">
+</section>
+<span class="anchor" id="id59"></span><section id="id59">
 <h3>Fixes<button id="BM_id59" class="bookmark-btn" onclick="bookmarkClick('BM_id59')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Hide plagiarism providers when there is only one</p></li>
@@ -1366,12 +1367,12 @@ by the rubric.</p></li>
 <li><p>Various front-end UI fixes</p></li>
 <li><p>Various browser specific UI fixes</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-1-4-herebemonsters-3"></span><div class="section" id="version-1-1-4-herebemonsters-3">
+</section>
+</section>
+<span class="anchor" id="version-1-1-4-herebemonsters-3"></span><section id="version-1-1-4-herebemonsters-3">
 <h2>Version 1.1.4 (HereBeMonsters.3)<button id="BM_version-1-1-4-herebemonsters-3" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-1-4-herebemonsters-3')" title="Version 1.1.4 (HereBeMonsters.3)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: January 16th, 2019</p>
-<span class="anchor" id="id60"></span><div class="section" id="id60">
+<span class="anchor" id="id60"></span><section id="id60">
 <h3>Features<button id="BM_id60" class="bookmark-btn" onclick="bookmarkClick('BM_id60')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add PMD and Checkstyle linters: Addition of two Java
@@ -1380,8 +1381,8 @@ apply. Please see the documentation for more details</p></li>
 <li><p>Add snippet completion and selection: This
 makes it easier for users to use and add snippets.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id61"></span><div class="section" id="id61">
+</section>
+<span class="anchor" id="id61"></span><section id="id61">
 <h3>Fixes<button id="BM_id61" class="bookmark-btn" onclick="bookmarkClick('BM_id61')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix a bug hiding indentation on lines with linter errors: When
@@ -1397,12 +1398,12 @@ all other submissions directly.</p></li>
 <li><p>Make sure the grade is updated when rubric is.</p></li>
 <li><p>Improve worst case performance in some plagiarism cases.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-0-22-herebemonsters-2"></span><div class="section" id="version-1-0-22-herebemonsters-2">
+</section>
+</section>
+<span class="anchor" id="version-1-0-22-herebemonsters-2"></span><section id="version-1-0-22-herebemonsters-2">
 <h2>Version 1.0.22 (HereBeMonsters.2)<button id="BM_version-1-0-22-herebemonsters-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-0-22-herebemonsters-2')" title="Version 1.0.22 (HereBeMonsters.2)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: November 21st, 2018</p>
-<span class="anchor" id="id62"></span><div class="section" id="id62">
+<span class="anchor" id="id62"></span><section id="id62">
 <h3>Features<button id="BM_id62" class="bookmark-btn" onclick="bookmarkClick('BM_id62')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Enforce minimal password strength:
@@ -1419,8 +1420,8 @@ will always be logged-in in CodeGrade with the current LMS user.</p></li>
 <li><p>Show a loader instead of the delete button for plagiarism checks that
 are still running.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id63"></span><div class="section" id="id63">
+</section>
+<span class="anchor" id="id63"></span><section id="id63">
 <h3>Fixes<button id="BM_id63" class="bookmark-btn" onclick="bookmarkClick('BM_id63')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Only show register button when the feature is enabled.</p></li>
@@ -1446,18 +1447,18 @@ using the database in a more efficient way this route should become
 about twice as fast!</p></li>
 <li><p>Various styling fixes.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-0-7-herebemonsters-1"></span><div class="section" id="version-1-0-7-herebemonsters-1">
+</section>
+</section>
+<span class="anchor" id="version-1-0-7-herebemonsters-1"></span><section id="version-1-0-7-herebemonsters-1">
 <h2>Version 1.0.7 (HereBeMonsters.1)<button id="BM_version-1-0-7-herebemonsters-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-0-7-herebemonsters-1')" title="Version 1.0.7 (HereBeMonsters.1)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: November 12th, 2018</p>
-<span class="anchor" id="id64"></span><div class="section" id="id64">
+<span class="anchor" id="id64"></span><section id="id64">
 <h3>Features<button id="BM_id64" class="bookmark-btn" onclick="bookmarkClick('BM_id64')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Support files encoded as ISO-8859-1 (latin1) in the frontend.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id65"></span><div class="section" id="id65">
+</section>
+<span class="anchor" id="id65"></span><section id="id65">
 <h3>Fixes<button id="BM_id65" class="bookmark-btn" onclick="bookmarkClick('BM_id65')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it impossible to override the special files of the CodeGrade
@@ -1465,12 +1466,12 @@ filesystem.</p></li>
 <li><p>Various frontend fixes.</p></li>
 <li><p>Improve documentation.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-1-0-0-herebemonsters"></span><div class="section" id="version-1-0-0-herebemonsters">
+</section>
+</section>
+<span class="anchor" id="version-1-0-0-herebemonsters"></span><section id="version-1-0-0-herebemonsters">
 <h2>Version 1.0.0 (HereBeMonsters)<button id="BM_version-1-0-0-herebemonsters" class="bookmark-btn" onclick="bookmarkClick('BM_version-1-0-0-herebemonsters')" title="Version 1.0.0 (HereBeMonsters)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: October 30th, 2018</p>
-<span class="anchor" id="id66"></span><div class="section" id="id66">
+<span class="anchor" id="id66"></span><section id="id66">
 <h3>Features<button id="BM_id66" class="bookmark-btn" onclick="bookmarkClick('BM_id66')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul>
 <li><p>Add Plagiarism checkers: It is now possible to check for plagiarism in
@@ -1490,8 +1491,8 @@ canvas LTI config for CodeGrade:</p>
 <span class="name tag">&lt;/lticm:property&gt;</span></code></pre>
 </li>
 </ul>
-</div>
-<span class="anchor" id="id67"></span><div class="section" id="id67">
+</section>
+<span class="anchor" id="id67"></span><section id="id67">
 <h3>Minor updates<button id="BM_id67" class="bookmark-btn" onclick="bookmarkClick('BM_id67')" title="Minor updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Change homepage to login screen:
@@ -1536,8 +1537,8 @@ possible score is &lt; 0. If you needed this to create rubrics with
 bonus categories simply use the ‘Max points’ option in the rubric
 editor. All existing rubrics are not changed.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id68"></span><div class="section" id="id68">
+</section>
+<span class="anchor" id="id68"></span><section id="id68">
 <h3>Fixes<button id="BM_id68" class="bookmark-btn" onclick="bookmarkClick('BM_id68')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Various small bugs in the sidebar</p></li>
@@ -1607,12 +1608,12 @@ it easier to review and display code on smaller screens.</p></li>
 <li><p>Use custom font in toasted actions: It is now always possible
 to close toasts, even when your font cannot display ‘✖’.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-23-21-godfriedmetdenbaard-2"></span><div class="section" id="version-0-23-21-godfriedmetdenbaard-2">
+</section>
+</section>
+<span class="anchor" id="version-0-23-21-godfriedmetdenbaard-2"></span><section id="version-0-23-21-godfriedmetdenbaard-2">
 <h2>Version 0.23.21 (GodfriedMetDenBaard.2)<button id="BM_version-0-23-21-godfriedmetdenbaard-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-23-21-godfriedmetdenbaard-2')" title="Version 0.23.21 (GodfriedMetDenBaard.2)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: May 4th, 2018</p>
-<span class="anchor" id="id69"></span><div class="section" id="id69">
+<span class="anchor" id="id69"></span><section id="id69">
 <h3>Fixes<button id="BM_id69" class="bookmark-btn" onclick="bookmarkClick('BM_id69')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make long rubric item headers show an ellipsis</p></li>
@@ -1622,12 +1623,12 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Fix non-editable general feedback area</p></li>
 <li><p>Make sure non top-level submenus are hidden</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-23-13-godfriedmetdenbaard-1"></span><div class="section" id="version-0-23-13-godfriedmetdenbaard-1">
+</section>
+</section>
+<span class="anchor" id="version-0-23-13-godfriedmetdenbaard-1"></span><section id="version-0-23-13-godfriedmetdenbaard-1">
 <h2>Version 0.23.13 (GodfriedMetDenBaard.1)<button id="BM_version-0-23-13-godfriedmetdenbaard-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-23-13-godfriedmetdenbaard-1')" title="Version 0.23.13 (GodfriedMetDenBaard.1)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: April 24th, 2018</p>
-<span class="anchor" id="id70"></span><div class="section" id="id70">
+<span class="anchor" id="id70"></span><section id="id70">
 <h3>Fixes<button id="BM_id70" class="bookmark-btn" onclick="bookmarkClick('BM_id70')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Actually make sure permissions are not deleted in migration</p></li>
@@ -1640,12 +1641,12 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Use placeholder for the &quot;new category&quot; field in the rubric editor</p></li>
 <li><p>Make sure general comment is updated after switching submission</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-23-5-godfriedmetdenbaard"></span><div class="section" id="version-0-23-5-godfriedmetdenbaard">
+</section>
+</section>
+<span class="anchor" id="version-0-23-5-godfriedmetdenbaard"></span><section id="version-0-23-5-godfriedmetdenbaard">
 <h2>Version 0.23.5 (GodfriedMetDenBaard)<button id="BM_version-0-23-5-godfriedmetdenbaard" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-23-5-godfriedmetdenbaard')" title="Version 0.23.5 (GodfriedMetDenBaard)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: April 24th, 2018</p>
-<span class="anchor" id="id71"></span><div class="section" id="id71">
+<span class="anchor" id="id71"></span><section id="id71">
 <h3>Features<button id="BM_id71" class="bookmark-btn" onclick="bookmarkClick('BM_id71')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Update readme and add new sections to it</p></li>
@@ -1656,8 +1657,8 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Revamp entire frontend design</p></li>
 <li><p>Make sure docs are published at docs.codegra.de</p></li>
 </ul>
-</div>
-<span class="anchor" id="id72"></span><div class="section" id="id72">
+</section>
+<span class="anchor" id="id72"></span><section id="id72">
 <h3>Fixes<button id="BM_id72" class="bookmark-btn" onclick="bookmarkClick('BM_id72')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make sure upload dialog is visible after deadline</p></li>
@@ -1673,38 +1674,38 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Fix not catching errors caused by invalid files</p></li>
 <li><p>Fix error when submitting for an LTI assignment without sourcedid</p></li>
 </ul>
-</div>
-<span class="anchor" id="packages-updates"></span><div class="section" id="packages-updates">
+</section>
+<span class="anchor" id="packages-updates"></span><section id="packages-updates">
 <h3>Packages Updates<button id="BM_packages-updates" class="bookmark-btn" onclick="bookmarkClick('BM_packages-updates')" title="Packages Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Upgrade NPM packages</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-22-1-flipfloppedwhitesocked-2"></span><div class="section" id="version-0-22-1-flipfloppedwhitesocked-2">
+</section>
+</section>
+<span class="anchor" id="version-0-22-1-flipfloppedwhitesocked-2"></span><section id="version-0-22-1-flipfloppedwhitesocked-2">
 <h2>Version 0.22.1 (FlipFloppedWhiteSocked.2)<button id="BM_version-0-22-1-flipfloppedwhitesocked-2" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-22-1-flipfloppedwhitesocked-2')" title="Version 0.22.1 (FlipFloppedWhiteSocked.2)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: February 17th, 2018</p>
-<span class="anchor" id="id73"></span><div class="section" id="id73">
+<span class="anchor" id="id73"></span><section id="id73">
 <h3>Fixes<button id="BM_id73" class="bookmark-btn" onclick="bookmarkClick('BM_id73')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make sure upload dialog is visible after deadline</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-21-5-flipfloppedwhitesocked-1"></span><div class="section" id="version-0-21-5-flipfloppedwhitesocked-1">
+</section>
+</section>
+<span class="anchor" id="version-0-21-5-flipfloppedwhitesocked-1"></span><section id="version-0-21-5-flipfloppedwhitesocked-1">
 <h2>Version 0.21.5 (FlipFloppedWhiteSocked.1)<button id="BM_version-0-21-5-flipfloppedwhitesocked-1" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-21-5-flipfloppedwhitesocked-1')" title="Version 0.21.5 (FlipFloppedWhiteSocked.1)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: January 25th, 2018</p>
-<span class="anchor" id="id74"></span><div class="section" id="id74">
+<span class="anchor" id="id74"></span><section id="id74">
 <h3>Fixes<button id="BM_id74" class="bookmark-btn" onclick="bookmarkClick('BM_id74')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix assignment state buttons for LTI assignment</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-21-4-flipfloppedwhitesocked"></span><div class="section" id="version-0-21-4-flipfloppedwhitesocked">
+</section>
+</section>
+<span class="anchor" id="version-0-21-4-flipfloppedwhitesocked"></span><section id="version-0-21-4-flipfloppedwhitesocked">
 <h2>Version 0.21.4 (FlipFloppedWhiteSocked)<button id="BM_version-0-21-4-flipfloppedwhitesocked" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-21-4-flipfloppedwhitesocked')" title="Version 0.21.4 (FlipFloppedWhiteSocked)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: January 24th, 2018</p>
-<span class="anchor" id="id75"></span><div class="section" id="id75">
+<span class="anchor" id="id75"></span><section id="id75">
 <h3>Features<button id="BM_id75" class="bookmark-btn" onclick="bookmarkClick('BM_id75')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it possible to force reset of email when using LTI</p></li>
@@ -1719,8 +1720,8 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Make it possible to reset password even if old password was NULL.</p></li>
 <li><p>Add permission descriptions</p></li>
 </ul>
-</div>
-<span class="anchor" id="id76"></span><div class="section" id="id76">
+</section>
+<span class="anchor" id="id76"></span><section id="id76">
 <h3>Fixes<button id="BM_id76" class="bookmark-btn" onclick="bookmarkClick('BM_id76')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix the reload behaviour of snippets</p></li>
@@ -1737,12 +1738,12 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Make sure grades are compared numerically if this is possible</p></li>
 <li><p>Make blackboard zip regex handle more edge cases</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-16-9-exporthell"></span><div class="section" id="version-0-16-9-exporthell">
+</section>
+</section>
+<span class="anchor" id="version-0-16-9-exporthell"></span><section id="version-0-16-9-exporthell">
 <h2>Version 0.16.9 (ExportHell)<button id="BM_version-0-16-9-exporthell" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-16-9-exporthell')" title="Version 0.16.9 (ExportHell)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: November 23rd, 2017</p>
-<span class="anchor" id="id77"></span><div class="section" id="id77">
+<span class="anchor" id="id77"></span><section id="id77">
 <h3>Features<button id="BM_id77" class="bookmark-btn" onclick="bookmarkClick('BM_id77')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it possible to give feedback without any grade</p></li>
@@ -1753,8 +1754,8 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Add weight fields to submission divider</p></li>
 <li><p>Courses actions buttons <em>nicefied</em></p></li>
 </ul>
-</div>
-<span class="anchor" id="id78"></span><div class="section" id="id78">
+</section>
+<span class="anchor" id="id78"></span><section id="id78">
 <h3>Fixes<button id="BM_id78" class="bookmark-btn" onclick="bookmarkClick('BM_id78')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix <cite>null</cite> in submission navbar</p></li>
@@ -1775,19 +1776,19 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Make sure sorting tables works as expected</p></li>
 <li><p>Make sure blackboard zips with multiple files are uploaded correctly</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-12-6-dobbelejava"></span><div class="section" id="version-0-12-6-dobbelejava">
+</section>
+</section>
+<span class="anchor" id="version-0-12-6-dobbelejava"></span><section id="version-0-12-6-dobbelejava">
 <h2>Version 0.12.6 (DobbeleJava)<button id="BM_version-0-12-6-dobbelejava" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-12-6-dobbelejava')" title="Version 0.12.6 (DobbeleJava)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: September 21st, 2017</p>
-<span class="anchor" id="id79"></span><div class="section" id="id79">
+<span class="anchor" id="id79"></span><section id="id79">
 <h3>Features<button id="BM_id79" class="bookmark-btn" onclick="bookmarkClick('BM_id79')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add a dark theme to the website.</p></li>
 <li><p>Revamping exporting all submissions by making it possible to include feedback and fixed a bug that prevented the name of the grader to show.</p></li>
 </ul>
-</div>
-<span class="anchor" id="id80"></span><div class="section" id="id80">
+</section>
+<span class="anchor" id="id80"></span><section id="id80">
 <h3>Fixes<button id="BM_id80" class="bookmark-btn" onclick="bookmarkClick('BM_id80')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix bug that prevented downloading code of persons non <cite>latin-1</cite> characters in their names.</p></li>
@@ -1803,12 +1804,12 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Fix bug that resulted in that every grade attempt showed as a new submission in the LMS.</p></li>
 <li><p>Fix bug that some floating point rubric items points resulted in very large descriptions overlapping the grade viewer.</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-10-0-columbus"></span><div class="section" id="version-0-10-0-columbus">
+</section>
+</section>
+<span class="anchor" id="version-0-10-0-columbus"></span><section id="version-0-10-0-columbus">
 <h2>Version 0.10.0 (Columbus)<button id="BM_version-0-10-0-columbus" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-10-0-columbus')" title="Version 0.10.0 (Columbus)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: September 12th, 2017</p>
-<span class="anchor" id="id81"></span><div class="section" id="id81">
+<span class="anchor" id="id81"></span><section id="id81">
 <h3>Features<button id="BM_id81" class="bookmark-btn" onclick="bookmarkClick('BM_id81')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Make it possible for a user to reset its password</p></li>
@@ -1818,8 +1819,8 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Add new course and assignment</p></li>
 <li><p>Add global permission managing system</p></li>
 </ul>
-</div>
-<span class="anchor" id="id82"></span><div class="section" id="id82">
+</section>
+<span class="anchor" id="id82"></span><section id="id82">
 <h3>Fixes<button id="BM_id82" class="bookmark-btn" onclick="bookmarkClick('BM_id82')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix jumping text when toggling directories in the file tree</p></li>
@@ -1833,18 +1834,18 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Make sure global permissions are checked in the front- and back-end</p></li>
 <li><p>Fix issue where error would disappear immediately after submitting with the keyboard</p></li>
 </ul>
-</div>
-<span class="anchor" id="id83"></span><div class="section" id="id83">
+</section>
+<span class="anchor" id="id83"></span><section id="id83">
 <h3>Packages Updates:<button id="BM_id83" class="bookmark-btn" onclick="bookmarkClick('BM_id83')" title="Packages Updates:" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Upgrade bootstrap-vue</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-3-2-belhamel"></span><div class="section" id="version-0-3-2-belhamel">
+</section>
+</section>
+<span class="anchor" id="version-0-3-2-belhamel"></span><section id="version-0-3-2-belhamel">
 <h2>Version 0.3.2 (Belhamel)<button id="BM_version-0-3-2-belhamel" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-3-2-belhamel')" title="Version 0.3.2 (Belhamel)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: September 4th, 2017</p>
-<span class="anchor" id="id84"></span><div class="section" id="id84">
+<span class="anchor" id="id84"></span><section id="id84">
 <h3>Features<button id="BM_id84" class="bookmark-btn" onclick="bookmarkClick('BM_id84')" title="Features" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Add delete submission feature</p></li>
@@ -1865,8 +1866,8 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Make it possible again to grade work</p></li>
 <li><p>Make duplicate emails possible</p></li>
 </ul>
-</div>
-<span class="anchor" id="id85"></span><div class="section" id="id85">
+</section>
+<span class="anchor" id="id85"></span><section id="id85">
 <h3>Fixes<button id="BM_id85" class="bookmark-btn" onclick="bookmarkClick('BM_id85')" title="Fixes" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Fix all missing or wrong quickrefs on api calls</p></li>
@@ -1888,8 +1889,8 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Fix bugs introduced by postgres</p></li>
 <li><p>Add links to them fine shields</p></li>
 </ul>
-</div>
-<span class="anchor" id="package-updates"></span><div class="section" id="package-updates">
+</section>
+<span class="anchor" id="package-updates"></span><section id="package-updates">
 <h3>Package Updates<button id="BM_package-updates" class="bookmark-btn" onclick="bookmarkClick('BM_package-updates')" title="Package Updates" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <ul class="simple">
 <li><p>Remove pdfobject and pdf.js dependencies</p></li>
@@ -1897,13 +1898,13 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 <li><p>Add npm-shrinkwrap.json and delete yarn.lock</p></li>
 <li><p>Change to JWT tokens</p></li>
 </ul>
-</div>
-</div>
-<span class="anchor" id="version-0-2-0-alfa"></span><div class="section" id="version-0-2-0-alfa">
+</section>
+</section>
+<span class="anchor" id="version-0-2-0-alfa"></span><section id="version-0-2-0-alfa">
 <h2>Version 0.2.0 (Alfa)<button id="BM_version-0-2-0-alfa" class="bookmark-btn" onclick="bookmarkClick('BM_version-0-2-0-alfa')" title="Version 0.2.0 (Alfa)" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p><strong>Released</strong>: July 21st, 2017</p>
 <p>Initial CodeGrade release</p>
-</div>
+</section>
 			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
@@ -1914,6 +1915,6 @@ to close toasts, even when your font cannot display ‘✖’.</p></li>
 </div>
 
 
-</div>
+</main>
 </body>
 </html>

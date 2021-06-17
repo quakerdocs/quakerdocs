@@ -6,11 +6,12 @@ from docutils import nodes
 
 class Rst():
 
-    def __init__(self, main, path):
+    def __init__(self, main, path, ref):
         self.html_path = str(path.with_suffix('.html'))
         self.src = main.source_path / path
         self.dest = main.dest_path / self.html_path
         self.doctree = None
+        self.ref_element = ref
 
     def parse(self, main):
         """
@@ -38,12 +39,15 @@ class Rst():
             if page_id in main.waiting:
                 rst = main.waiting[page_id]
 
-
-        for node in self.doctree.traverse(lambda n: isinstance(n, ref_element)):
+        # Check if the file can be written,
+        can_write = True
+        for node in self.doctree.traverse(lambda n: isinstance(n, self.ref_element)):
             if node['ref'] not in application.id_map:
                 main.waiting[node['ref']] = self
+                can_write = False
 
-        return True
+        if can_write:
+            self.write(main)
 
     def write(self, main):
         """
@@ -91,5 +95,6 @@ class Rst():
             })
 
         # Write the document to a file.
+        self.dest.parent.mkdir(parents=True, exist_ok=True)
         with open(self.dest, 'wb') as f:
             f.write(output)

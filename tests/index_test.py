@@ -46,11 +46,22 @@ def test_match():
     assert Trie.match('hello', 'hello') == ('hello', '', '')
 
 
+def test_match_empty():
+    assert Trie.match('hello', '') == ('', 'hello', '')
+
+
 def test_get_word(bigger_trie):
     assert bigger_trie.get_word('help') is bigger_trie.children['h'].children['el'].children['p']
     assert bigger_trie.get_word('hello') is bigger_trie.children['h'].children['el'].children['lo']
 
     assert len(bigger_trie.get_word('hello').pages) == 2000
+
+
+def test_get_word_keyerror(bigger_trie):
+    with pytest.raises(KeyError):
+        bigger_trie.get_word('he')
+    with pytest.raises(KeyError):
+        bigger_trie.get_word('hel')
 
 
 def test_insert_helper_exact(hello_root):
@@ -110,10 +121,10 @@ def test_insert_chain():
 
 def test_insert_ignore(hello_root):
     hello_root.insert_ignore('goodbye')
-    assert hello_root.children['goodbye'].pages == []
+    assert hello_root.get_word('goodbye').pages == []
 
     hello_root.insert_ignore('help')
-    assert hello_root.children['hel'].children['p'].pages == []
+    assert hello_root.get_word('help').pages == []
 
 
 @pytest.mark.parametrize('size, expected_id', [(1, 'B'),

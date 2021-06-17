@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 <base href="../.."><link rel="icon" href="_static/_images/favicon.ico"><title>Setup</title>
 <style type="text/css">
 
@@ -299,7 +300,7 @@ span.boxed, span.framebox {
 
 </head>
 <body>
-<div class="document" id="setup">
+<main id="setup">
 <span id="autotest-setup"></span>
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
 	<div class="container">
@@ -612,7 +613,7 @@ variable) and setup script.</p>
 </div>
 <p>There are multiple options for setting up your environment, which makes AutoTest
 easy to use for simple cases yet very flexible for all advanced cases.</p>
-<span class="anchor" id="default-installed-software"></span><div class="section" id="default-installed-software">
+<span class="anchor" id="default-installed-software"></span><section id="default-installed-software">
 <h2>Default Installed Software<button id="BM_default-installed-software" class="bookmark-btn" onclick="bookmarkClick('BM_default-installed-software')" title="Default Installed Software" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>Each AutoTest VPS environment comes with pre-installed software that is
 commonly used for testing and running student submissions. This body of software
@@ -643,15 +644,15 @@ updated to the latest version shipped by Ubuntu:</p>
 </ul>
 <p>Read the following sections to find out about extending this environment with
 other required software.</p>
-<span class="anchor" id="unit-testing-wrapper-scripts"></span><div class="section" id="unit-testing-wrapper-scripts">
+<span class="anchor" id="unit-testing-wrapper-scripts"></span><section id="unit-testing-wrapper-scripts">
 <h3>Unit testing wrapper scripts<button id="BM_unit-testing-wrapper-scripts" class="bookmark-btn" onclick="bookmarkClick('BM_unit-testing-wrapper-scripts')" title="Unit testing wrapper scripts" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>In addition to the software listed above, CodeGrade provides custom wrapper
 scripts for popular unit testing frameworks to make integration with Autotest
 a breeze. See 
 for a list of supported unit testing frameworks.</p>
-</div>
-</div>
-<span class="anchor" id="result-visibility"></span><div class="section" id="result-visibility">
+</section>
+</section>
+<span class="anchor" id="result-visibility"></span><section id="result-visibility">
 <span id="at-result-visibility"></span><h2>Result visibility<button id="BM_result-visibility" class="bookmark-btn" onclick="bookmarkClick('BM_result-visibility')" title="Result visibility" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>When a student uploads, AutoTest immediately runs on the handed in submission.
 You can choose whether you want the student to directly be able to view the
@@ -666,12 +667,12 @@ either case if you have not created any hidden steps.</p>
 within 30 minutes after the deadline, where the hidden steps are also executed.
 Before the deadline, hidden steps are never executed.</p>
 </div>
-</div>
-<span class="anchor" id="rubric-calculation"></span><div class="section" id="rubric-calculation">
+</section>
+<span class="anchor" id="rubric-calculation"></span><section id="rubric-calculation">
 <span id="autotest-setup-rubric-calculation"></span><h2>Rubric calculation<button id="BM_rubric-calculation" class="bookmark-btn" onclick="bookmarkClick('BM_rubric-calculation')" title="Rubric calculation" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>The rubric calculation setting determines how (discrete) rubric categories will
 be filled-in.</p>
-<span class="anchor" id="discrete-categories"></span><div class="section" id="discrete-categories">
+<span class="anchor" id="discrete-categories"></span><section id="discrete-categories">
 <h3>Discrete Categories<button id="BM_discrete-categories" class="bookmark-btn" onclick="bookmarkClick('BM_discrete-categories')" title="Discrete Categories" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>There are two modes to fill in discrete rubric categories:</p>
 <ol class="arabic simple">
@@ -688,8 +689,8 @@ filled in).</p></li>
 points given to them. E.g. if you have 4 items, item 1 is always 0%-25%,
 item 2 is 25%-50% and so forth.</p>
 </div>
-</div>
-<span class="anchor" id="continuous-categories"></span><div class="section" id="continuous-categories">
+</section>
+<span class="anchor" id="continuous-categories"></span><section id="continuous-categories">
 <h3>Continuous Categories<button id="BM_continuous-categories" class="bookmark-btn" onclick="bookmarkClick('BM_continuous-categories')" title="Continuous Categories" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>Continuous rubric categories are filled in one way, this means this setting will
 have no influence on rubric calculation for this type of rubric category. The
@@ -704,9 +705,9 @@ points for this level, in the continuous rubric category the student will
 receive <span class="formula">5 × <span class="fraction"><span class="ignored">(</span><span class="numerator">7</span><span class="ignored">)/(</span><span class="denominator">10</span><span class="ignored">)</span></span> = 3.5</span> points.</p>
 </div>
 </div>
-</div>
-</div>
-<span class="anchor" id="running-a-teacher-s-revision"></span><div class="section" id="running-a-teacher-s-revision">
+</section>
+</section>
+<span class="anchor" id="running-a-teacher-s-revision"></span><section id="running-a-teacher-s-revision">
 <h2>Running a teacher's revision<button id="BM_running-a-teacher-s-revision" class="bookmark-btn" onclick="bookmarkClick('BM_running-a-teacher-s-revision')" title="Running a teacher's revision" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>When the preferred revision is set to &quot;Teacher&quot;, and a teacher's revision is
 available for a submission, AutoTest is run against the teacher revision
@@ -721,8 +722,8 @@ restarted if it has already started or finished, to make it run against the
 teacher's revision. You can restart an AutoTest by going to a result, clicking
 on the arrow next to the state of the result, and selecting &quot;Restart this
 result&quot;.</p>
-</div>
-<span class="anchor" id="uploading-fixtures"></span><div class="section" id="uploading-fixtures">
+</section>
+<span class="anchor" id="uploading-fixtures"></span><section id="uploading-fixtures">
 <h2>Uploading fixtures<button id="BM_uploading-fixtures" class="bookmark-btn" onclick="bookmarkClick('BM_uploading-fixtures')" title="Uploading fixtures" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>Fixtures can be optionally uploaded to the AutoTest VPS. Fixtures are files you
 can upload prior to the test, which will be available in every separate test
@@ -739,7 +740,7 @@ commands <span class="docutils literal">tar xfvz $FIXTURES/ARCHIVE.tar.gz</span>
 <span class="docutils literal">unzip $FIXTURES/ARCHIVE.zip</span> to extract archives manually. Be careful
 with the permissions, we recommend running <span class="docutils literal">chown <span class="pre">-R</span> codegrade:codegrade $FIXTURES/dir</span> and <span class="docutils literal">chmod <span class="pre">-R</span> 750 $FIXTURES/dir</span> after extracting.</p>
 </div>
-<span class="anchor" id="limiting-student-access"></span><div class="section" id="limiting-student-access">
+<span class="anchor" id="limiting-student-access"></span><section id="limiting-student-access">
 <span id="autotest-limit-student-access"></span><h3>Limiting student access<button id="BM_limiting-student-access" class="bookmark-btn" onclick="bookmarkClick('BM_limiting-student-access')" title="Limiting student access" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>It is sometimes desirable to limit student access to fixtures or to limit the
 visibility of your uploaded fixtures. For instance if one of your fixtures is a
@@ -772,9 +773,9 @@ you create a new subdirectory where the output should be written with
 <span class="docutils literal">install <span class="pre">-Dm</span> 777 <span class="pre">$STUDENT/&lt;SUBDIR&gt;</span></span>. If this subdirectory contains files
 that should not be read by students, use permission <span class="docutils literal">733</span>.</p>
 </div>
-</div>
-</div>
-<span class="anchor" id="global-setup-script"></span><div class="section" id="global-setup-script">
+</section>
+</section>
+<span class="anchor" id="global-setup-script"></span><section id="global-setup-script">
 <h2>Global setup script<button id="BM_global-setup-script" class="bookmark-btn" onclick="bookmarkClick('BM_global-setup-script')" title="Global setup script" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>A setup script can be specified which runs prior to the tests to customize the
 initial environment. Any script can be uploaded as fixture and subsequently
@@ -795,8 +796,8 @@ AutoTest Runs</p>
 <p><strong>Network access</strong> and <strong>Superuser rights</strong> are available during the Setup
 Phase.</p>
 </div>
-</div>
-<span class="anchor" id="per-student-setup-script"></span><div class="section" id="per-student-setup-script">
+</section>
+<span class="anchor" id="per-student-setup-script"></span><section id="per-student-setup-script">
 <h2>Per student setup script<button id="BM_per-student-setup-script" class="bookmark-btn" onclick="bookmarkClick('BM_per-student-setup-script')" title="Per student setup script" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>Use the per student setup script to compile, for example, each submission's code.</p>
 <div class="admonition note">
@@ -804,8 +805,8 @@ Phase.</p>
 <p>If you want compiling to be part of a test, use the <em>Run program</em> test for
 this.</p>
 </div>
-</div>
-<span class="anchor" id="automatically-generated-output"></span><div class="section" id="automatically-generated-output">
+</section>
+<span class="anchor" id="automatically-generated-output"></span><section id="automatically-generated-output">
 <span id="autotest-automatically-generated-output"></span><h2>Automatically generated output<button id="BM_automatically-generated-output" class="bookmark-btn" onclick="bookmarkClick('BM_automatically-generated-output')" title="Automatically generated output" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>It may be desirable have files generated automatically after students submit
 their work. This is also possible on the AutoTest infrastructure. While most
@@ -820,9 +821,9 @@ tree.</p>
 <p>By default the <span class="docutils literal">$AT_OUTPUT</span> directory is writable by the user running the
 AutoTest steps. This means that students will also be able to write to this
 directory, or even overwrite files that were generated earlier. To prevent
-this from happening, see also the notes in <a href="user/autotest/setup.html">Limiting student access</a></p>
+this from happening, see also the notes in </p>
 </div>
-</div>
+</section>
 			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
@@ -833,6 +834,6 @@ this from happening, see also the notes in <a href="user/autotest/setup.html">Li
 </div>
 
 
-</div>
+</main>
 </body>
 </html>

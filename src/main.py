@@ -35,10 +35,11 @@ class Main:
         'html': ('html', html5writer.Writer)
     }
 
-    def __init__(self, source_path, build_path, builder):
+    def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
-        self.build_path = build_path
-        self.dest_path = build_path / 'html'
+        self.temp_path = dest_path.parent / 'tmp' / dest_path.name
+        self.dest_path = dest_path / 'html'
+        self.static_path = self.dest_path / 'assets'
         self.builder = builder
 
         # Import and setup all directives.
@@ -129,7 +130,7 @@ class Main:
         self.build_files()
 
         # Build index.
-        self.idx.build(self.build_path, self.dest_path / 'js')
+        self.idx.build(self.temp_path, self.static_path / 'js')
         self.copy_static_files()
 
         # Copy the directories from static directly to the dest folder. (TEMP)
@@ -143,13 +144,7 @@ class Main:
     def build_files(self):
         """Iterate over files in source directory and save in [(path, content)]
         """
-        for root, dirs, files in os.walk(self.source_path):
-            # Recreate the source directories.
-            for dir in dirs:
-                new_dir = self.dest_path / self.relative_path(root) / dir
-                if not new_dir.exists():
-                    new_dir.mkdir()
-
+        for root, _, files in os.walk(self.source_path):
             # Read, parse and write the source files to html.
             for file in files:
                 path = self.relative_path(root) / file
@@ -159,13 +154,16 @@ class Main:
 
                 try:
                     if path.suffix == '.rst':
-                        rst = Rst(self, path)
+                        rst = Rst(self, path, directives.sphinx.ref_element)
                         rst.parse(self)
-                        rst.write(self)
                 except FileNotFoundError as e:
                     print(f'File [{file}] not found:', e)
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
+
+        for page in self.waiting.values():
+            # TODO: check if writing is possible, output error otherwise.
+            page.write(self)
 
     def is_excluded(self, path):
         """
@@ -208,7 +206,7 @@ class Main:
         """
         for path in self.conf_vars['html_static_path']:
             copy_tree(str(self.source_path / path),
-                      str(self.dest_path / '_static'),
+                      str(self.static_path),
                       update=1)
 
 

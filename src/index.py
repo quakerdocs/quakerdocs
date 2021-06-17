@@ -234,6 +234,8 @@ class Trie:
             The remaining part of s_word.
 
         """
+        # In case either string is empty.
+        i = -1
 
         # Loop over both words.
         for i, (n_char, s_char) in enumerate(zip(n_word, s_word)):
@@ -241,6 +243,7 @@ class Trie:
             if n_char != s_char:
                 break
         else:
+            # Perfect match: split on end of string.
             i += 1
 
         # Return matching part and both remainders.
@@ -271,12 +274,16 @@ class Trie:
                 # Find how well the current node matches the word.
                 match, remainder, word = self.match(c_word, word)
 
-                if match:
+                if not remainder:
                     current = child
                     break
             else:
                 # No suitable child found.
                 raise KeyError
+
+        if not current.end:
+            # requested string is part of a word, but not a word itself.
+            raise KeyError
 
         return current
 
@@ -442,15 +449,15 @@ class IndexGenerator:
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, int(count * priority))
 
-    def build(self, build_path: Path, dest_path: Path):
+    def build(self, temp_path: Path, dest_path: Path):
         """Write the search index file to the destination directory.
 
         Parameters
         ----------
-        build_path : str
-            Where to put compile output.
+        temp_path : str
+            Where to put the temporary compile output.
         dest_path : str
-            Where to copy the javascript and webassembly files.
+            Where to place the javascript and webassembly files.
 
         """
         print('Building the search index assembly')
@@ -469,7 +476,7 @@ class IndexGenerator:
             template = Template(f.read())
 
         # Write the search index to hpp.
-        search_path = build_path / 'search'
+        search_path = temp_path / 'search'
         search_path.mkdir(parents=True, exist_ok=True)
         with open(search_path / 'search.hpp', 'w') as f:
             f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')

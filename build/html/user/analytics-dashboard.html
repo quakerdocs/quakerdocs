@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 <base href=".."><link rel="icon" href="_static/_images/favicon.ico"><title>Analytics Dashboard</title>
 
 
@@ -20,7 +21,7 @@
 
 </head>
 <body>
-<div class="document" id="id1">
+<main id="id1">
 <span id="analytics-dashboard"></span>
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
 	<div class="container">
@@ -320,7 +321,7 @@ submissions for an assignment using filters. These selections are displayed in
 parallel in intuitive graphs. There are graphs for when and how many times
 students submitted their work, the distribution of grades, and, if the
 assignment has a rubric, statistics about the rubric's categories.</p>
-<span class="anchor" id="general-statistics"></span><div class="section" id="general-statistics">
+<span class="anchor" id="general-statistics"></span><section id="general-statistics">
 <span id="analytics-dashboard-general-statistics"></span><h2>General statistics<button id="BM_general-statistics" class="bookmark-btn" onclick="bookmarkClick('BM_general-statistics')" title="General statistics" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>The general statistics show statistics over all submissions and are not subject
 to the selected filters.</p>
@@ -349,8 +350,8 @@ sample.</p></li>
 is not always the case that ~66% of students lie within 1 standard
 deviation from the mean.</p>
 </div>
-</div>
-<span class="anchor" id="filters"></span><div class="section" id="filters">
+</section>
+<span class="anchor" id="filters"></span><section id="filters">
 <h2>Filters<button id="BM_filters" class="bookmark-btn" onclick="bookmarkClick('BM_filters')" title="Filters" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>Filters can be used to select a subset of the available data. You can create
 multiple filters to select multiple datasets that will be visualized in
@@ -369,7 +370,7 @@ very difficult to take fair conclusions.</p>
 filters will decrease the size even further. Make sure that the amount of
 submissions per selection is sufficient to take any conclusion.</p>
 </div>
-<span class="anchor" id="filter-options"></span><div class="section" id="filter-options">
+<span class="anchor" id="filter-options"></span><section id="filter-options">
 <h3>Filter options<button id="BM_filter-options" class="bookmark-btn" onclick="bookmarkClick('BM_filter-options')" title="Filter options" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>Each filter has a set of options that narrow the scope of its selection.</p>
 <ul class="simple">
@@ -383,16 +384,16 @@ number.</p></li>
 <li><p><strong>Submitted before</strong>: only select submissions from strictly before this date.</p></li>
 <li><p><strong>Graders</strong>: only select submissions assigned to one of the selected graders.</p></li>
 </ul>
-<p>At the bottom of each filter there is a field showing the <a href="user/analytics-dashboard.html">general statistics</a> for the submissions selected by this
+<p>At the bottom of each filter there is a field showing the  for the submissions selected by this
 filter.</p>
-</div>
-<span class="anchor" id="creating-new-filters"></span><div class="section" id="creating-new-filters">
+</section>
+<span class="anchor" id="creating-new-filters"></span><section id="creating-new-filters">
 <h3>Creating new filters<button id="BM_creating-new-filters" class="bookmark-btn" onclick="bookmarkClick('BM_creating-new-filters')" title="Creating new filters" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>There are multiple ways to create a new filter: click <em class="fa fa-plus"></em> to add a new
 default filter, click <em class="fa fa-copy"></em> to duplicate an existing filter, or click
-<em class="fa fa-scissors"></em> to <a href="user/analytics-dashboard.html">split a filter</a>.</p>
-</div>
-<span class="anchor" id="splitting-filters"></span><div class="section" id="splitting-filters">
+<em class="fa fa-scissors"></em> to .</p>
+</section>
+<span class="anchor" id="splitting-filters"></span><section id="splitting-filters">
 <span id="analytics-dashboard-splitting-filters"></span><h3>Splitting filters<button id="BM_splitting-filters" class="bookmark-btn" onclick="bookmarkClick('BM_splitting-filters')" title="Splitting filters" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>You can split the set of submissions selected by a filter into several subsets.
 Click the <em class="fa fa-scissors"></em> button to start splitting a filter.</p>
@@ -412,7 +413,7 @@ submitted after this date.</p></li>
 <li><p><strong>Grader</strong>: creates a new subset for each selected grader. The subset per
 grader will only contain submissions that are assigned to that grader.</p></li>
 </ul>
-<p>Below the splitting options is a field with <a href="user/analytics-dashboard.html">general statistics</a> for each result that would be
+<p>Below the splitting options is a field with  for each result that would be
 produced by these splits.</p>
 <p>Multiple splits can be applied at the same time. The resulting amount of
 datasets will be the product of applying each separately.</p>
@@ -430,9 +431,9 @@ filters with others.</p>
 <p>Without the permission &quot;Can view analytics&quot; the Analytics Dashboard cannot
 be displayed.</p>
 </div>
-</div>
-</div>
-<span class="anchor" id="submission-statistics"></span><div class="section" id="submission-statistics">
+</section>
+</section>
+<span class="anchor" id="submission-statistics"></span><section id="submission-statistics">
 <h2>Submission statistics<button id="BM_submission-statistics" class="bookmark-btn" onclick="bookmarkClick('BM_submission-statistics')" title="Submission statistics" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>The submission statistics consist of two diagrams.</p>
 <p>The first is a histogram that shows, per interval of time, when students have
@@ -441,13 +442,13 @@ visualised, and select a proper bin size.</p>
 <p>The second histogram gives insight in how many submissions students have made.
 The X-axis lists the amount of submimssions, and the Y-axis lists the number of
 students that fall into that category.</p>
-</div>
-<span class="anchor" id="grade-statistics"></span><div class="section" id="grade-statistics">
+</section>
+<span class="anchor" id="grade-statistics"></span><section id="grade-statistics">
 <h2>Grade statistics<button id="BM_grade-statistics" class="bookmark-btn" onclick="bookmarkClick('BM_grade-statistics')" title="Grade statistics" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>The grade statistics shows the distribution of grades. On the X-axis is the
 grade and on the Y-axis the number of students that achieved that grade.</p>
-</div>
-<span class="anchor" id="rubric-statistics"></span><div class="section" id="rubric-statistics">
+</section>
+<span class="anchor" id="rubric-statistics"></span><section id="rubric-statistics">
 <h2>Rubric statistics<button id="BM_rubric-statistics" class="bookmark-btn" onclick="bookmarkClick('BM_rubric-statistics')" title="Rubric statistics" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>The rubric statistics contains several diagrams giving insight in how students
 scored on the rubric of this assignment:</p>
@@ -459,23 +460,23 @@ taking the middle value in the sorted list of scores.</p></li>
 <li><p><strong>Mode</strong> gives the mode per rubric category. The mode is obtained by taking
 the most common value amongst a sample.</p></li>
 <li><p><strong>RIT</strong> is the correlation, commonly denoted <strong>R</strong>, between the <strong>I</strong>tem
-and the <strong>T</strong>otal score.  <a href="user/analytics-dashboard.html">More details</a>.</p></li>
+and the <strong>T</strong>otal score.  .</p></li>
 <li><p><strong>RIR</strong> is the correlation <strong>R</strong> between the <strong>I</strong>tem and the <strong>R</strong>educed
 score, where the rest score is the total score for the rubric minus the score
-for this category. <a href="user/analytics-dashboard.html">More details</a>.</p></li>
+for this category. .</p></li>
 <li><p>A <strong>Correlation</strong> diagram per rubric category plots the achieved scores in
-the rubric category against the <a href="user/analytics-dashboard.html">reduced score</a> of the entire rubric. Each point
-in the graph represents a single student. <a href="user/analytics-dashboard.html">More details</a>.</p></li>
+the rubric category against the  of the entire rubric. Each point
+in the graph represents a single student. .</p></li>
 </ul>
-<span class="anchor" id="reduced-rubric-score"></span><div class="section" id="reduced-rubric-score">
+<span class="anchor" id="reduced-rubric-score"></span><section id="reduced-rubric-score">
 <span id="analytics-dashboard-reduced-rubric-score"></span><h3>Reduced rubric score<button id="BM_reduced-rubric-score" class="bookmark-btn" onclick="bookmarkClick('BM_reduced-rubric-score')" title="Reduced rubric score" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>The reduced rubric score of a rubric category is the total amount of points
 achieved for a rubric minus the amount of points achieved for the rubric
 category. For example, if a student achieved 10 points in a rubric, of which
 2 in the first rubric category, then their reduced rubric score for the first
 rubric category is 8.</p>
-</div>
-<span class="anchor" id="the-rit-rir-values"></span><div class="section" id="the-rit-rir-values">
+</section>
+<span class="anchor" id="the-rit-rir-values"></span><section id="the-rit-rir-values">
 <span id="analytics-dashboard-rit-rir"></span><h3>The RIT &amp; RIR values<button id="BM_the-rit-rir-values" class="bookmark-btn" onclick="bookmarkClick('BM_the-rit-rir-values')" title="The RIT & RIR values" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>The <strong>RIT</strong> and <strong>RIR</strong> values of a rubric category are the correlation
 coefficients between the score achieved in one rubric category category versus
@@ -499,25 +500,25 @@ using the reduced rubric score instead of the total rubric score. Subtracting
 the total score from the item score first, and only then calculating the
 correlation between the two removes this bias. The RIR value is often a fairer
 representation of the quality of a rubric category.</p>
-</div>
-<span class="anchor" id="correlation-diagrams"></span><div class="section" id="correlation-diagrams">
+</section>
+<span class="anchor" id="correlation-diagrams"></span><section id="correlation-diagrams">
 <span id="analytics-dashboard-correlation-diagrams"></span><h3>Correlation diagrams<button id="BM_correlation-diagrams" class="bookmark-btn" onclick="bookmarkClick('BM_correlation-diagrams')" title="Correlation diagrams" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h3>
 <p>The correlation diagram of a rubric category has the achieved score in the
-category on the X-axis versus the <a href="user/analytics-dashboard.html">reduced rubric score</a> on the Y-axis. Each point in the
+category on the X-axis versus the  on the Y-axis. Each point in the
 diagram represents a single student. These diagrams are useful to understand
 where the RIR values of the rubric categories came from.</p>
 <p>A linear line is drawn through the diagram that best fits the data. This line
 reflects the RIR value: if the line is increasing the RIR value for this rubric
 category is positive, and if the line is decreasing the RIR value is negative.</p>
-</div>
-</div>
-<span class="anchor" id="relative-statistics"></span><div class="section" id="relative-statistics">
+</section>
+</section>
+<span class="anchor" id="relative-statistics"></span><section id="relative-statistics">
 <h2>Relative statistics<button id="BM_relative-statistics" class="bookmark-btn" onclick="bookmarkClick('BM_relative-statistics')" title="Relative statistics" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <p>Because it is common to compare datasets of different sizes, all graphs display
 their data as percentages of a total, rather than absolute numbers. This
 behavior can be toggled with the <em class="fa fa-percent"></em> button at the top of each chart.</p>
-</div>
-<span class="anchor" id="examples"></span><div class="section" id="examples">
+</section>
+<span class="anchor" id="examples"></span><section id="examples">
 <h2>Examples<button id="BM_examples" class="bookmark-btn" onclick="bookmarkClick('BM_examples')" title="Examples" value=0><span class="icon"><i class="fa fa-bookmark-o"></i></span></button></h2>
 <div class="admonition example">
 <p class="example-title">Example: Splitting on grades</p>
@@ -567,7 +568,7 @@ feedback entries per TA.</p>
 the grade distribution per teaching assistant.</p>
 </div>
 </div>
-</div>
+</section>
 			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
@@ -578,6 +579,6 @@ the grade distribution per teaching assistant.</p>
 </div>
 
 
-</div>
+</main>
 </body>
 </html>
