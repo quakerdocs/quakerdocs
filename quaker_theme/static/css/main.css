@@ -138,10 +138,17 @@
 
 .bookmark-rename:hover {
     cursor: pointer;
-    color: blue;
+    color: rgb(0, 102, 255);
 }
 
-.input-rename {
-    width: 100%;
-    display: flex;
+.level-rename {
+    width:95%;
+}
+
+.level-icon {
+    width: 7%;
+}
+
+.level-title {
+    width: 93%;
 }
