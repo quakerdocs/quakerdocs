@@ -74,6 +74,13 @@ function getBookmark (cname) {
     return null
 }
 
+function updateBookmark(b, new_title) {
+    let cname = bookmarkCookieName(b.id);
+    b.title = new_title;
+    setCookie(cname, JSON.stringify(b));
+    console.log(document.cookie);
+}
+
 /**
  * Check if the bookmark button of the given id is activated or not.
  * @param {string} id The id of the to be checked bookmark button.
@@ -171,13 +178,105 @@ function bookmarkTrashClick (id) {
     bookmarkPanel.style.display = 'none'
 }
 
+function bookmarkRenameClick(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark = getBookmark(bookmarkCookieName(id));
+
+    bookmark_panel.innerHTML = createRenameEntry(bookmark);
+    inputAddListener(id);
+}
+
+function inputAddListener(id) {
+    let inputbox = document.getElementById(`IN_${id}`)
+    inputbox.addEventListener("keyup", (e) => {
+        if (e.code == 'Escape') {
+            renameCancel(id);
+        } else if (e.code == 'Enter') {
+            renameAccept(id);
+        }
+    });
+}
+
+function inputRemoveListener(id) {
+    let inputbox = document.getElementById(`IN_${id}`)
+    inputbox.removeEventListener("keyup");
+}
+
+function renameCancel(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark = getBookmark(bookmarkCookieName(id));
+    bookmark_panel.innerHTML = createInnerEntry(bookmark);
+}
+
+function renameAccept(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark_old = getBookmark(bookmarkCookieName(id));
+    let input_val = document.getElementById(`IN_${id}`).value;
+    updateBookmark(bookmark_old, input_val);
+
+    let bookmark_new = getBookmark(bookmarkCookieName(id));
+    bookmark_panel.innerHTML = createInnerEntry(bookmark_new);
+}
+
+function createRenameEntry(b) {
+    let inputbox_size = 55;
+    let inputbox_maxlength = 500;
+    let title = truncateTitle(b.title);
+    let entry = `
+            <div class="tile is-10">
+                <div class="level level-rename">
+                    <div class="level-item level-icon">
+                        <span class="panel-icon">
+                        <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="level-item level-title">
+                        <input id="IN_${b.id}" class="input" type="text"
+                        size="30" value="${title}"
+                        maxlength=${inputbox_maxlength}>
+                    </div>
+                </div>
+            </div>
+            <div class="tile is-1">
+                <button class="bookmark-rename" onclick=" \
+                renameAccept('${b.id}')"><i class="fa fa-check \
+                fa-lg" aria-hidden="true"></i></button>
+            </div>
+            <div class="tile is-1">
+                <button class="bookmark-trash" onclick=" \
+                renameCancel('${b.id}')"><i class="fa fa-ban \
+                fa-lg" aria-hidden="true"></i></button>
+            </div>
+            `;
+    return entry;
+}
+
+function renameBookmark(id) {
+    cname = bookmarkCookieName(id);
+    deleteCookie(cname);
+}
+
+function truncateTitle(title, max_words=12, max_length=50) {
+    let title_words = title.split(' ');
+
+    /* Cut off title if it is too long. */
+
+    if (title_words.length > max_words) {
+        title = title_words.slice(0, max_words).join(' ') + "...";
+    } else if (title.length > max_length) {
+        title = title.substring(0, max_length) + "...";
+    }
+
+    return title;
+}
+
 /**
  * Render all enabled bookmarks onto the enabled overlay.
  */
 function renderBookmarkList () {
     const bookmarkResults = document.getElementById('bookmark-results')
     const bookmarks = getAllBookmarks()
-    let content = ''
+    let content = '';
 
     for (const b of bookmarks) {
         content += createBookmarkListEntry(b)
@@ -191,36 +290,40 @@ function renderBookmarkList () {
  * @param {*} b The bookmark of which an entry has to be created.
  * @returns {string} The HTML code for the bookmark entry.
  */
-function createBookmarkListEntry (b) {
-    let title = b.title
-    const titleWords = title.split(' ')
-    const maxWords = 12
+function createBookmarkListEntry(b) {
+    let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
+                    ${createInnerEntry(b)}
+                </div>`;
+    return entry;
+}
 
-    /* Cut off title if it is too long. */
-    if (titleWords.length > maxWords) {
-        title = titleWords.slice(0, maxWords).join(' ') + '...'
-    }
-
-    return `<div id="panel-${b.id}" class="panel-block bookmark-entry" onmouseover="selectEntry(this, 'bookmark-entry')">
-                <div class="tile is-11" onclick="location='${b.page}'; \
+function createInnerEntry(b) {
+    let title = truncateTitle(b.title);
+    let entry = `<div class="tile is-10 bookmark-entry" onclick="location='${b.page}'; \
                 hideBookmarkOverlay()">
                     <div class="level">
-                        <div class=level-item>
+                        <div class="level-item">
                             <span class="panel-icon">
                             <i class="fa fa-book" aria-hidden="true"></i>
                             </span>
                         </div>
-                        <div class=level-item>
+                        <div class="level-item">
                             ${title}
                         </div>
                     </div>
                 </div>
                 <div class="tile is-1">
+                    <button class="bookmark-rename" onclick=" \
+                    bookmarkRenameClick('${b.id}')"><i class="fa fa-pencil \
+                    fa-lg" aria-hidden="true"></i></button>
+                </div>
+                <div class="tile is-1">
                     <button class="bookmark-trash" onclick=" \
                     bookmarkTrashClick('${b.id}')"><i class="fa fa-trash \
                     fa-lg" aria-hidden="true"></i></button>
-                </div>
-            </div>`
+                </div>`;
+
+    return entry;
 }
 
 /**

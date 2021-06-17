@@ -98,7 +98,7 @@ function activateSearch () {
  */
 function createResultElement (href, title, content) {
     const element = document.createElement('div')
-    element.innerHTML = `<a class="panel-block result is-flex-direction-column" onmouseover="selectEntry(this, 'result')" href="${href}">
+    element.innerHTML = `<a class="panel-block result is-flex-direction-column" onmouseover="selectEntry(this, 'result')" href="${href}" onclick="storeSearchResults()">
                             <h1 class="result-title"><strong>${title}</strong></h1>
                             <p class="result-content">${content}</p>
                         </a>`
@@ -180,3 +180,26 @@ function renderResults (query, searcher, resultsWrapper) {
             .catch(console.error)
     }
 }
+
+function storeSearchResults () {
+    const searchbar = document.getElementById('searchbar')
+    const query = searchbar.value
+    const resultList = document.getElementById('result-list')
+
+    localStorage.setItem('searchQuery', query)
+    localStorage.setItem('searchResults', resultList.innerHTML)
+}
+
+function loadSearchResults () {
+    const searchbar = document.getElementById('searchbar')
+    const query = localStorage.getItem('searchQuery')
+    const resultList = localStorage.getItem('searchResults')
+    const resultsWrapper = document.getElementById('search-results')
+
+    searchbar.value = query
+    resultsWrapper.innerHTML = resultList
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    loadSearchResults()
+})
