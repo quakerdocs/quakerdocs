@@ -219,7 +219,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
             if close_tag.startswith('</h'):
                 self.add_bookmark_btn(node)
-            super().depart_title(node)
+        super().depart_title(node)
 
     def add_bookmark_btn(self, node: nodes.Element):
         """
