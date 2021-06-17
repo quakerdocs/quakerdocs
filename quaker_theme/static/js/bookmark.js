@@ -224,15 +224,15 @@ function createRenameEntry(b) {
     let title = truncateTitle(b.title);
     let entry = `
             <div class="tile is-10">
-                <div class="level">
-                    <div class=level-item>
+                <div class="level level-rename">
+                    <div class="level-item level-icon">
                         <span class="panel-icon">
                         <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
                         </span>
                     </div>
-                    <div class="level-item">
-                        <input id="IN_${b.id}" class="input input-rename" type="text"
-                        size="${inputbox_size}" value="${title}"
+                    <div class="level-item level-title">
+                        <input id="IN_${b.id}" class="input" type="text"
+                        size="30" value="${title}"
                         maxlength=${inputbox_maxlength}>
                     </div>
                 </div>
@@ -276,7 +276,7 @@ function truncateTitle(title, max_words=12, max_length=50) {
 function renderBookmarkList () {
     const bookmarkResults = document.getElementById('bookmark-results')
     const bookmarks = getAllBookmarks()
-    let content = ''
+    let content = '';
 
     for (const b of bookmarks) {
         content += createBookmarkListEntry(b)
@@ -302,12 +302,12 @@ function createInnerEntry(b) {
     let entry = `<div class="tile is-10" onclick="location='${b.page}'; \
                 hideBookmarkOverlay()">
                     <div class="level">
-                        <div class=level-item>
+                        <div class="level-item">
                             <span class="panel-icon">
                             <i class="fa fa-book" aria-hidden="true"></i>
                             </span>
                         </div>
-                        <div class=level-item>
+                        <div class="level-item">
                             ${title}
                         </div>
                     </div>
