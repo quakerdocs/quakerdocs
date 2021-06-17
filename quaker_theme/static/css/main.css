@@ -40,6 +40,10 @@
   font-size: 18px;
 }
 
+.navbar-brand img{
+  max-width: 45vw;
+}
+
 /******************************** Menu ********************************/
 .menu {
   position: sticky;
@@ -51,12 +55,12 @@
   vertical-align: top;
 }
 
-.fill-menu {
-  width: 100%;
-}
-
 .menu-list li ul {
   border-left: 2px solid #3273dc;
+}
+
+.menu-list a {
+  display: inline-flex;
 }
 
 .menu-list a:hover {
