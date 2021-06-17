@@ -10,6 +10,7 @@ import argparse
 import importlib
 from sys import stderr
 from pathlib import Path
+from collections import defaultdict
 
 from pathlib import Path
 from distutils.dir_util import copy_tree
@@ -57,7 +58,7 @@ class Main:
             module = importlib.import_module(f'directives.{module}')
             module.setup()
 
-        self.waiting = {}
+        self.waiting = defaultdict(list)
 
         self.docutil_settings = {
             'src_dir': self.source_path,
@@ -175,9 +176,11 @@ class Main:
                 except docutils.utils.SystemMessage as e:
                     print('DOCUTILS ERROR!', e)
 
-        for page in self.waiting.values():
-            # TODO: check if writing is possible, output error otherwise.
-            page.write(self)
+        for ref_name, pages in self.waiting.items():
+            for page in pages:
+                print(f'Warning: {page.src} contains an unresolved '
+                      f'reference "{ref_name}"')
+                page.write(self)
 
     def is_excluded(self, path):
         """
@@ -211,8 +214,9 @@ class Main:
             settings_overrides={'src_dir': self.source_path})
 
         # Iterate and join ToC's.
-        for current_toc in doctree.traverse(directives.sphinx.toc_data):
-            self.toc_navigation.append(current_toc)
+        for queue in doctree.traverse(directives.sphinx.toc_data):
+            for current_toc in queue:
+                self.toc_navigation.append(current_toc)
 
     def copy_static_files(self):
         """

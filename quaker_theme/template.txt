@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
 <link rel="stylesheet" type="text/css" href="_static/css/content.css">
 <link rel="stylesheet" type="text/css" href="_static/css/main.css">
-<script src="js/search_data.js"></script>
+<script src="_static/js/search_data.js"></script>
 <script src="_static/js/search.js"></script>
 <script src="_static/js/script.js"></script>
 <script src="_static/js/cookies.js"></script>

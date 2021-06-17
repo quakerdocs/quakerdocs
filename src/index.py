@@ -28,18 +28,37 @@ from typing import Tuple
 from jinja2 import Template
 from collections import deque
 from collections import Counter
-from nltk.corpus import stopwords
 from types import SimpleNamespace
 
-# Load the stopwords.
-try:
-    stopwords = stopwords.words('english')
-except LookupError:
-    from nltk import download
-    download('stopwords')
-    stopwords = stopwords.words('english')
-
-stopwords = set(word.replace("'", '') for word in stopwords)
+# Stopwords taken from nltk using:
+#     from nltk.corpus import stopwords
+#     from nltk import download
+#     download('stopwords')
+#     stopwords = stopwords.words('english')
+#     stopwords = set(word.replace("'", '') for word in stopwords)
+stopwords = {
+    'him', 'then', 'i', 'couldn', 'too', 'shan', 'a', 'them', 'doesnt', 'it',
+    'shouldnt', 'no', 'only', 'that', 'yourself', 'because', 'ain', 'very',
+    'werent', 'at', 'nor', 'below', 'mightn', 'to', 'don', 'there', 'about',
+    'did', 'will', 'mustnt', 'these', 'your', 'are', 'hasn', 'from', 'what',
+    'in', 'isnt', 'she', 'they', 'having', 'mightnt', 'll', 'shant', 'shes',
+    'my', 'wouldn', 'have', 'am', 'some', 'as', 'on', 'where', 'most', 'not',
+    'our', 'herself', 'both', 'should', 'myself', 'he', 'and', 'mustn',
+    'hadnt', 'youll', 'been', 'be', 'during', 'arent', 'when', 'doing',
+    'ourselves', 'after', 'than', 'youre', 'if', 'isn', 'wasn', 'shouldve',
+    'didnt', 'until', 'd', 'his', 'between', 'out', 'didn', 'so', 'dont',
+    'which', 'off', 'doesn', 'down', 'wouldnt', 've', 'why', 'ma', 'being',
+    'wont', 'but', 'yours', 'youve', 'few', 'were', 'before', 'any', 'for',
+    'through', 'up', 'again', 'into', 'same', 'of', 'its', 'aren', 'own',
+    'haven', 're', 'under', 'thatll', 'was', 'this', 'such', 'over', 'neednt',
+    's', 'once', 'himself', 'me', 'her', 'hasnt', 'all', 'itself', 'ours',
+    'while', 'o', 'themselves', 'youd', 'each', 't', 'just', 'their', 'm',
+    'won', 'hers', 'who', 'by', 'does', 'above', 'hadn', 'more', 'we',
+    'weren', 'had', 'couldnt', 'is', 'or', 'an', 'needn', 'y', 'further',
+    'now', 'you', 'how', 'against', 'those', 'can', 'here', 'has', 'theirs',
+    'with', 'yourselves', 'the', 'wasnt', 'havent', 'whom', 'do', 'other',
+    'shouldn'
+}
 
 
 def get_primitive(size: int) -> SimpleNamespace:
@@ -287,7 +306,6 @@ class Trie:
 
         return current
 
-
     def flatten_data(self) -> SimpleNamespace:
         """ Convert the trie to an object containing arrays instead of a tree.
 
@@ -480,7 +498,8 @@ class IndexGenerator:
         search_path.mkdir(parents=True, exist_ok=True)
         with open(search_path / 'search.hpp', 'w') as f:
             f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
-            f.write(template.render(urltitles=self.urltitles, stopwords=stopwords,
+            f.write(template.render(urltitles=self.urltitles,
+                                    stopwords=stopwords,
                                     **data.__dict__))
 
         # Create the build command.

@@ -312,8 +312,8 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
     node = ref_element()
     node['title'] = title
-    node['ref'] = ref
-    # node = nodes.reference(rawtext, title, refuri=ref, **options)
+    node['ref'] = ref.replace('_', '-').lower()
+
     return [node], []
 
 

@@ -146,7 +146,7 @@ def test_get_primitive_too_large():
 
 
 def test_flatten_data(bigger_trie):
-    # TODO ideally refector flatten_data so exact values can be accessed,
+    # TODO ideally refactor flatten_data so exact values can be accessed,
     # instead of having to call get_primitive on everything
     data = bigger_trie.flatten_data()
 

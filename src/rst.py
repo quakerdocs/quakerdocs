@@ -5,6 +5,8 @@ import directives.metadata
 from docutils import nodes
 
 class Rst():
+    """TODO
+    """
 
     def __init__(self, main, path, ref):
         self.html_path = str(path.with_suffix('.html'))
@@ -12,6 +14,7 @@ class Rst():
         self.dest = main.dest_path / self.html_path
         self.doctree = None
         self.ref_element = ref
+        self.unresolved_references = 0
 
     def parse(self, main):
         """
@@ -36,17 +39,23 @@ class Rst():
         for page_id in self.doctree.ids:
             application.id_map.update({page_id: self.html_path})
 
+            # Resolve the references of the waiting pages.
             if page_id in main.waiting:
-                rst = main.waiting[page_id]
+                for page in main.waiting[page_id]:
+                    page.unresolved_references -= 1
+                    if page.unresolved_references == 0:
+                        page.write(main)
+
+                main.waiting.pop(page_id)
 
         # Check if the file can be written,
-        can_write = True
         for node in self.doctree.traverse(lambda n: isinstance(n, self.ref_element)):
             if node['ref'] not in application.id_map:
-                main.waiting[node['ref']] = self
-                can_write = False
+                main.waiting[node['ref']].append(self)
+                self.unresolved_references += 1
 
-        if can_write:
+        # Write if all the references are already resolved.
+        if self.unresolved_references == 0:
             self.write(main)
 
     def write(self, main):

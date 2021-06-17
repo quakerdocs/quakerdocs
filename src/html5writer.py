@@ -154,19 +154,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         raise nodes.SkipNode
 
-    def depart_metadata(self, node: nodes.Element):
-        """
-        Skip rendering of metadata data-element.
-        """
-        raise nodes.SkipNode
-
     def visit_toc_data(self, node: nodes.Element):
-        """
-        Skip rendering of Table of Contents data-element.
-        """
-        raise nodes.SkipNode
-
-    def depart_toc_data(self, node: nodes.Element):
         """
         Skip rendering of Table of Contents data-element.
         """
@@ -176,13 +164,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         Find reference belonging to this element.
         """
+        title = node['title']
         if node['ref'] in self.settings.id_map:
             ref = self.settings.id_map[node['ref']]
-            title = node['title']
             self.body.append(f'<a href="{ref}">{title}</a>')
         else:
-            print("References went wrong", node['ref'])
-            raise nodes.SkipNode
+            self.body.append(title)
+
 
     def depart_ref_element(self, node: nodes.Element):
         """
