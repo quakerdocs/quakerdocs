@@ -28,10 +28,10 @@
 				</button>
 			</a>
 
-			<a class="navbar-item is-hidden-mobile">
+			<a class="navbar-item">
 				<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
 					<span class="icon"><i class="fa fa-bookmark"></i></span>
-					<span>Bookmarks</span>
+					<span class="is-hidden-touch">Bookmarks</span>
 				</button>
 			</a>
 
