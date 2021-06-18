@@ -200,4 +200,4 @@ html_theme_options = {
 }
 
 # Change the html_style to oen of the packages given in static/css
-html_style = 'css/bulma.min.css'
+# html_style = 'css/bulma.min.css'

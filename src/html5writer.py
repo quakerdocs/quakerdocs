@@ -6,8 +6,6 @@ import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
 
-import directives.sphinx
-
 
 class Writer(docutils.writers._html_base.Writer):
     """
@@ -120,40 +118,36 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         Initialize the HTML translator
         """
         super().__init__(document)
+        self.settings = document.settings
 
         # Set base path for every document.
         self.head.append('<base href="%s">'
-                         % document.settings.rel_base)
+                         % self.settings.rel_base)
 
         # Add favicon to pages.
-        if document.settings.favicon is not None:
+        if self.settings.favicon is not None:
             self.head.append('<link rel="icon" href="%s">'
-                             % document.settings.favicon)
+                             % self.settings.favicon)
 
         # Build navigation bar.
-        self.navigation = ''
-        for toc in document.settings.toc:
-            self.navigation += directives.sphinx.TocTree.to_html(toc)
+        # self.navigation = ''
+        # for toc in self.settings.toc:
+        #     self.navigation += directives.sphinx.TocTree.to_html(toc)
+        self.navigation = '<div id="navigation-tree"></div>'
 
         # Add logo to pages.
         self.logo = ''
-        if document.settings.logo is not None:
-            self.logo = '<img src="%s" alt="Logo">' % document.settings.logo
+        if self.settings.logo is not None:
+            self.logo = '<img src="%s" alt="Logo">' % self.settings.logo
 
-        link = ('https://quakerdocs.nl/')
+        link = 'https://quakerdocs.nl/'
 
         self.footer.append(
-            f'<p>&copy {document.settings.copyright}.</p>'
+            f'<p>&copy {self.settings.copyright}.</p>'
             '<p>Generated with &hearts; by '
             f'<a href="{link}">QuakerDocs</a></p>')
 
     def visit_metadata(self, node: nodes.Element):
-        """
-        Skip rendering of metadata data-element.
-        """
-        raise nodes.SkipNode
-
-    def depart_metadata(self, node: nodes.Element):
         """
         Skip rendering of metadata data-element.
         """
@@ -165,11 +159,21 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         raise nodes.SkipNode
 
-    def depart_toc_data(self, node: nodes.Element):
+    def visit_ref_element(self, node: nodes.Element):
         """
-        Skip rendering of Table of Contents data-element.
+        Find reference belonging to this element.
         """
-        raise nodes.SkipNode
+        title = node['title']
+        if node['ref'] in self.settings.id_map:
+            ref = self.settings.id_map[node['ref']]
+            self.body.append(f'<a href="{ref}">{title}</a>')
+        else:
+            self.body.append(title)
+
+    def depart_ref_element(self, node: nodes.Element):
+        """
+        End of rendering reference.
+        """
 
     def visit_kbd_element(self, node: nodes.Element):
         """

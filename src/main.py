@@ -8,38 +8,33 @@ import pkgutil
 import fnmatch
 import argparse
 import importlib
-from sys import stderr
-
 from pathlib import Path
+from collections import defaultdict
+
 from distutils.dir_util import copy_tree
-import docutils.core
-import docutils.writers
-from docutils import nodes
-import docutils.parsers.rst
-import docutils.writers.html5_polyglot
 
 import index
+import directives
 import application
 import html5writer
-from theme import Theme
-import directives
 
-SKIP_TAGS = {'system_message', 'problematic'}
+from rst import Rst
+from theme import Theme
 
 
 class Main:
-    """
-    Class for controlling the main functionality of the program.
-    """
+    SKIP_TAGS = {'system_message', 'problematic'}
+
     # Mapping builder name to (output file extension, writer class) tuple
     supported_builders = {
         'html': ('html', html5writer.Writer)
     }
 
-    def __init__(self, source_path, build_path, builder):
+    def __init__(self, source_path, dest_path, builder):
         self.source_path = source_path
-        self.build_path = build_path
-        self.dest_path = build_path / 'html'
+        self.dest_path = dest_path
+        self.temp_path = dest_path.parent / 'tmp' / dest_path.name
+        self.static_path = dest_path / '_static'
         self.builder = builder
 
         self.sp_app = None
@@ -47,7 +42,7 @@ class Main:
         self.file_ext = '.out'
         self.writer = None
         self.idx = None
-        self.toc_navigation = list()
+        self.toc_navigation = []
 
         # Import and setup all directives.
         dir_path = Path(__file__).parent / 'directives'
@@ -55,9 +50,11 @@ class Main:
             module = importlib.import_module(f'directives.{module}')
             module.setup()
 
+        self.waiting = defaultdict(list)
+
         self.docutil_settings = {
             'src_dir': self.source_path,
-            'dst_dir': self.dest_path
+            'dst_dir': self.dest_path,
         }
 
         self.conf_vars = {
@@ -135,15 +132,15 @@ class Main:
         # Load user configuration and extensions.
         self.load_extensions()
 
-        # Set-up Table of Contents data
-        self.build_global_toc()
-
         # Set-up index generator and build the files.
         self.idx = index.IndexGenerator()
         self.build_files()
 
-        # Build index.
-        self.idx.build(self.build_path, self.dest_path / 'js')
+        # Set-up Table of Contents data
+        self.build_global_toc()
+
+        # Build search index.
+        self.idx.build(self.temp_path, self.static_path / 'js')
 
         # Copy the directories from our theme directly to the dest folder.
         self.theme.copy_files(self.dest_path)
@@ -154,13 +151,9 @@ class Main:
     def build_files(self):
         """Iterate over files in source directory and save in [(path, content)]
         """
-        for root, dirs, files in os.walk(self.source_path):
-            # Recreate the source directories.
-            for cur_dir in dirs:
-                new_dir = self.dest_path / self.relative_path(root) / cur_dir
-                if not new_dir.exists():
-                    new_dir.mkdir()
+        master_doc = self.conf_vars.get('master_doc', 'index')
 
+        for root, _, files in os.walk(self.source_path):
             # Read, parse and write the source files to html.
             for file in files:
                 path = self.relative_path(root) / file
@@ -168,100 +161,25 @@ class Main:
                 if self.is_excluded(path):
                     continue
 
-                try:
-                    if path.suffix == '.rst':
-                        self.write_rst(*self.parse_rst(path))
-                except FileNotFoundError as err:
-                    print(f'File [{file}] not found:', err)
-                except docutils.utils.SystemMessage as err:
-                    print('DOCUTILS ERROR!', err)
+                if path.suffix == '.rst':
+                    page = Rst(self, path)
+                    page.parse(self)
 
-    def parse_rst(self, path):
-        """
-        Parse a rst file.
-        """
-        src = self.source_path / path
-        html_path = path.with_suffix('.html')
+                if str(path.with_suffix('')) == master_doc:
+                    # Iterate and join ToC's.
+                    ds = directives.sphinx
+                    for queue in page.doctree.traverse(ds.toc_data):
+                        self.toc_navigation.append(ds.TocTree.to_html(queue))
 
-        with open(src) as file:
-            content = file.read()
+                        # for current_toc in queue['entries']:
+                        #     self.toc_navigation.append(current_toc)
 
-        doctree = docutils.core.publish_doctree(
-            content,
-            source_path=str(src),
-            settings_overrides=self.docutil_settings
-        )
-
-        for section_id in doctree.ids:
-            application.id_map.update({section_id: html_path})
-
-        return src, html_path, content
-
-    def write_rst(self, src, html_path, content):
-        """
-        Parse a rst file and write its contents to a file.
-        """
-        # src = self.source_path / path
-        # html_path = path.with_suffix('.html')
-        dest = self.dest_path / html_path
-
-        # Add epilogue and prolog to source file.
-        file_contents = '%s\n%s\n%s' % (
-            self.conf_vars.get('rst_prolog', ''),
-            content,
-            self.conf_vars.get('rst_epilog', ''))
-
-        # Read the rst file.
-        doctree = docutils.core.publish_doctree(
-            file_contents,
-            source_path=str(src),
-            settings_overrides=self.docutil_settings)
-
-        # Get the page metadata.
-        metadata = directives.metadata.get_metadata(doctree)
-        if metadata.ignore:
-            return
-
-        # Delete the nodes we want to skip.
-        for node in doctree.traverse():
-            for i, child in reversed(list(enumerate(node.children))):
-                if child.tagname in SKIP_TAGS:
-                    del node[i]
-
-        # Find the page title.
-        try:
-            title = next(iter(doctree.traverse(nodes.title)))
-            title = title[0].astext()
-        except StopIteration:
-            title = ''
-
-        # Collect all the text
-        content = ' '.join(n.astext() for n in doctree.traverse(
-                           lambda n: isinstance(n, nodes.Text)))
-        self.idx.add_file(content, title, html_path, metadata.priority)
-
-        # Write the document to a file.
-        with open(dest, 'wb') as file:
-            output = docutils.core.publish_from_doctree(
-                doctree,
-                destination_path=dest,
-                writer=self.writer(),
-                settings_overrides={
-                    'toc': self.toc_navigation,
-                    'template': self.theme.get_template(),
-                    'stylesheet': os.path.join(
-                        '_static', self.conf_vars.get('html_style',
-                                                      self.theme.get_style())),
-                    'src_dir': self.source_path,
-                    'html_path': html_path,
-                    'embed_stylesheet': False,
-                    'rel_base': os.path.relpath(self.dest_path, dest.parent),
-                    'handlers': self.sp_app.get_handlers(),
-                    'favicon': self.conf_vars.get('html_favicon', None),
-                    'logo': self.conf_vars.get('html_logo', None),
-                    'copyright': self.conf_vars.get('copyright', '')
-                })
-            file.write(output)
+        # Check if all the references are resolved.
+        for ref_name, pages in self.waiting.items():
+            for page in pages:
+                print(f'Warning: {page.src} contains an unresolved '
+                      f'reference "{ref_name}"')
+                page.write(self)
 
     def is_excluded(self, path):
         """
@@ -274,28 +192,17 @@ class Main:
         """
         Read and save the ToC from master_doc.
         """
-        self.toc_navigation = list()
 
-        # Open the file containing the ToC's
-        master_doc = self.conf_vars.get('master_doc', 'index')
-        master_source = None
-        for suffix in ['.rst']:
-            src = self.source_path / (master_doc + suffix)
-            if src.exists():
-                master_source = src
-                break
-        else:
-            print("Invalid master_doc file specified in conf.py!", file=stderr)
-            return
+        path = self.static_path / 'js'
+        path.mkdir(parents=True, exist_ok=True)
 
-        doctree = docutils.core.publish_doctree(
-            master_source.open().read(),
-            source_path=str(master_source),
-            settings_overrides={'src_dir': self.source_path})
+        with (path / 'load_navbar.js').open('w') as f:
+            f.write('document.getElementById("navigation-tree").innerHTML = `')
 
-        # Iterate and join ToC's.
-        for current_toc in doctree.traverse(directives.sphinx.toc_data):
-            self.toc_navigation.append(current_toc)
+            for html in self.toc_navigation:
+                f.write(html)
+
+            f.write('`;')
 
     def copy_static_files(self):
         """
@@ -303,7 +210,7 @@ class Main:
         """
         for path in self.conf_vars['html_static_path']:
             copy_tree(str(self.source_path / path),
-                      str(self.dest_path / '_static'),
+                      str(self.static_path),
                       update=1)
 
 
@@ -318,6 +225,6 @@ if __name__ == "__main__":
                             help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
-    print("Running QuakerDocs 0.0.2")
+    print("Running QuakerDocs 0.0.3")
     main = Main(args.source_path, args.build_path, args.builder)
     main.generate()

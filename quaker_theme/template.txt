@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
 <link rel="stylesheet" type="text/css" href="_static/css/content.css">
 <link rel="stylesheet" type="text/css" href="_static/css/main.css">
-<script src="js/search_data.js"></script>
+<script src="_static/js/search_data.js"></script>
 <script src="_static/js/search.js"></script>
 <script src="_static/js/script.js"></script>
 <script src="_static/js/cookies.js"></script>
@@ -28,10 +28,10 @@
 				</button>
 			</a>
 
-			<a class="navbar-item is-hidden-mobile">
+			<a class="navbar-item">
 				<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
 					<span class="icon"><i class="fa fa-bookmark"></i></span>
-					<span>Bookmarks</span>
+					<span class="is-hidden-touch">Bookmarks</span>
 				</button>
 			</a>
 
@@ -112,5 +112,6 @@
 	</section>
 </div>
 
+<script src="_static/js/load_navbar.js"></script>
 
 %(body_suffix)s
