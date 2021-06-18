@@ -178,14 +178,14 @@ function storeSearchResults () {
     const query = searchbar.value
     const resultList = document.getElementById('result-list')
 
-    localStorage.setItem('searchQuery', query)
-    localStorage.setItem('searchResults', resultList.innerHTML)
+    sessionStorage.setItem('searchQuery', query)
+    sessionStorage.setItem('searchResults', resultList.innerHTML)
 }
 
 function loadSearchResults () {
     const searchbar = document.getElementById('searchbar')
-    const query = localStorage.getItem('searchQuery')
-    const resultList = localStorage.getItem('searchResults')
+    const query = sessionStorage.getItem('searchQuery')
+    const resultList = sessionStorage.getItem('searchResults')
     const resultsWrapper = document.getElementById('search-results')
 
     searchbar.value = query
