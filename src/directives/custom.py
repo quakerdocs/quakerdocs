@@ -66,8 +66,8 @@ class IFrameDirective(Directive):
             xy_ratio = 3/5
 
             if self.options:
-                width = self.options[0]
-                height = self.options[1] if len(self.options) > 1 else \
+                width = self.options['width']
+                height = self.options['height'] if len(self.options) > 1 else \
                     width * xy_ratio
             else:
                 width = 500
