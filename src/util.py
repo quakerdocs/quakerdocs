@@ -20,26 +20,3 @@ def link_explicit(link):
         return (res.group(1), res.group(2))
 
     return None
-
-
-def read_file(filename):
-    """
-    Read the contents of a file, then close it.
-
-    Parameters
-    ----------
-    filename : str
-        The name of the file to be read.
-
-    Returns
-    -------
-    str
-        The contents of the file.
-
-    Raises
-    ------
-    FileNotFoundError
-        When the file doesn't exist.
-    """
-    with open(filename) as file:
-        return file.read()

@@ -19,8 +19,8 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
+from pathlib import Path
 import util
-import application
 
 
 class Only(Directive):
@@ -52,7 +52,7 @@ class toc_data(nodes.General, nodes.Element):
     """
     Container class for Toc data.
     """
-    ...
+    pass
 
 
 class TocTree(Directive):
@@ -80,6 +80,7 @@ class TocTree(Directive):
         tocdata = toc_data()
         tocdata['content'] = self.content
         tocdata['src_dir'] = self.state.document.settings.src_dir
+        tocdata['src_path'] = self.state.document.settings.src_path
 
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
@@ -112,7 +113,7 @@ class TocTree(Directive):
         """
         Generate a tree-like structure for the sections in a given doctree.
         """
-        entries = list()
+        entries = []
 
         # Iterate over all section-nodes belonging to node.
         for child in node.children:
@@ -138,18 +139,23 @@ class TocTree(Directive):
         Fill the toctree data structure with entries.
         """
         for entry in tocdata['content']:
-            children = list()
+            children = []
             src_dir = tocdata['src_dir']
             if entry.endswith('.rst'):
                 entry = entry[:-4]
 
             # Check if current entry is in format 'Some Title <some_link>'.
             explicit_link = util.link_explicit(entry)
+
             if explicit_link is not None:
                 title, ref = explicit_link
                 if (not ref.startswith("https://")
                         and not ref.startswith("http://")):
-                    ref = os.path.join(src_dir, ref + ".html")
+
+                    if not ref.startswith('/'):
+                        ref = tocdata['src_path'].parent / ref
+
+                    ref = Path(ref).with_suffix('.html')
             else:
                 ref = os.path.join(entry + ".html")
                 src = os.path.join(src_dir, entry + ".rst")
@@ -158,9 +164,12 @@ class TocTree(Directive):
                     continue
 
                 doctree = docutils.core.publish_doctree(
-                    open(src, 'r').read(),
+                    Path(src).read_text(),
                     source_path=src,
-                    settings_overrides={'src_dir': src[:-4]}
+                    settings_overrides={
+                        'src_dir': src[:-4],
+                        'src_path': (tocdata['src_path'] / entry).parent
+                    }
                 )
 
                 # Find the page title.
@@ -184,7 +193,7 @@ class TocTree(Directive):
         """
         Convert a given ToC-tree into a displayable structure for the document.
         """
-        items = list()
+        items = []
         for title, ref, children in entries:
             lst_item = nodes.list_item('', nodes.paragraph('', '',
                                        nodes.reference('', title, refuri=ref)))
@@ -208,8 +217,8 @@ class TocTree(Directive):
         Parse the TocData data-structure to HTML.
         """
         ret = ('<p class="caption menu-label"><span class="caption-text">'
-               '%s</span></p>' % tocdata['caption'])
-        ret += TocTree.entries_to_html(tocdata['entries'], 999)
+               '{%s}</span></p>' % tocdata['caption'])
+        ret += TocTree.entries_to_html(tocdata['entries'])
         return ret
 
     @staticmethod
@@ -219,14 +228,14 @@ class TocTree(Directive):
         """
         # TODO: Fix indentation
         add_class = '' if begin_depth == 0 else 'is-collapsed'
-        ret = '<ul class="menu-list %s">\n' % add_class
+        ret = f'<ul class="menu-list {add_class}">\n'
         for title, ref, children in entries:
             lst_item = '<li><span class="level mb-0"><a '
 
             if '#' in ref:
-                lst_item += ('onClick="expandSidebar(`%s`)" ' % (ref))
+                lst_item += f'onClick="expandSidebar(\'{ref}\')" '
 
-            lst_item += 'href=%s>%s</a>' % (ref, title)
+            lst_item += f'href={ref}>{title}</a>'
 
             if len(children) > 0:
                 lst_item += ('<span onclick="toggleExpand(this.parentNode)" '
@@ -289,6 +298,13 @@ class CodeBlock(Directive):
         return [wrappernode]
 
 
+class ref_element(nodes.General, nodes.Element):
+    """
+    Custom reference node to handle unparsed pages.
+    """
+    pass
+
+
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
@@ -303,14 +319,19 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
     title, ref = explicit_link
     set_classes(options)
-    ref = '%s#%s' % (application.id_map.get(ref, ''), ref)
-    node = nodes.reference(rawtext, title, refuri=ref, **options)
+
+    node = ref_element()
+    node['title'] = title
+    node['ref'] = ref.replace('_', '-').lower()
+
     return [node], []
 
 
 class kbd_element(nodes.General, nodes.Element):
-    """Empty node for rendering keyboard inputs"""
-    ...
+    """
+    Empty node for rendering keyboard inputs
+    """
+    pass
 
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):

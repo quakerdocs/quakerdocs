@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <optional>
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
@@ -54,13 +55,18 @@ const Node *findNode(const char *word) {
 }
 
 /* TODO */
-PageMap searchWord(const char *word) {
+std::optional<PageMap> searchWord(const char *word, bool ignore_words = false) {
     /* Check if a matching node exists. */
     const Node *node = findNode(word);
     if (node == nullptr)
         return {};
 
     PageMap page_map;
+
+    if (node->page_count == 0 && ignore_words) {
+        /* This is a word we should ignore, so return an empty map. */
+        return {page_map};
+    }
 
     /* The most closely matching node has been found. Now combine all of its pages. */
     std::vector<const Node*> stack = {node};
@@ -82,7 +88,7 @@ PageMap searchWord(const char *word) {
 
     }
 
-    return page_map;
+    return {page_map};
 }
 
 /* TODO */
@@ -133,7 +139,7 @@ public:
                         found_word = cleaned_it;
                     *(cleaned_it++) = *input_it;
                     break;
-                case ' ': case '\n': case '\t':
+                case ' ': case '\n': case '\t': case '\r':
                     /* Split into a new word. */
                     if (found_word) {
                         *(cleaned_it++) = '\0';
@@ -176,12 +182,21 @@ extern "C" {
         if (words.empty())
             return;
 
-        /* Create the initial page map with the first word. */
-        PageMap page_map = searchWord(words[0]);
+        PageMap page_map;
 
-        /* Combine the map with the remaining words. */
-        for (int i = 1, l = words.size(); i < l && !page_map.empty(); ++i) {
-            intersectMap(page_map, searchWord(words[i]));
+        /* Iterate over the words to fill the page map. */
+        for (int i = 0, l = words.size(); i < l; ++i) {
+            std::optional<PageMap> map = searchWord(words[i]);
+            if (!map) {
+                /* A word was not found, so there are no results. */
+                return;
+            }
+            else if (!(*map).empty()) { /* Empty maps are ignored. */
+                if (page_map.empty())
+                    page_map = std::move(*map);
+                else
+                    intersectMap(page_map, *map);
+			}
         }
 
         /* Add the final page map contents to the results vector. */
@@ -219,10 +234,11 @@ int main(int n, char **input) {
 
     for (int i = 1; i < n; i++) {
         query += input[i];
-        query += " ";
+        if (i != n - 1)
+            query += " ";
     }
 
-    std::cout << "Searching query: " << query << std::endl;
+    std::cout << "Searching query: [" << query << "]" << std::endl;
     performSearch(&query[0]);
 
     /* Print the results. */
