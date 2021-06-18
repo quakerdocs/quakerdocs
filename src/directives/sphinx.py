@@ -217,7 +217,7 @@ class TocTree(Directive):
         Parse the TocData data-structure to HTML.
         """
         ret = ('<p class="caption menu-label"><span class="caption-text">'
-               '{%s}</span></p>' % tocdata['caption'])
+               '%s</span></p>' % tocdata['caption'])
         ret += TocTree.entries_to_html(tocdata['entries'])
         return ret
 
