@@ -98,8 +98,10 @@ function backToTop () {
 function expandSidebar (url) {
     const a = document.querySelector('a[href="' + url + '"]')
 
-    toggleExpand(a.parentElement, true)
-    expandULParents(a)
+    if (a) {
+        toggleExpand(a.parentElement, true)
+        expandULParents(a)
+    }
 }
 
 /**
