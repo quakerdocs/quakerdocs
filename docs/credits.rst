@@ -14,7 +14,7 @@
                 <img class="is-rounded" src="https://image.shutterstock.com/image-photo/monkey-face-close-260nw-220510171.jpg">
             </figure>
             <p class="title is-4">Dylan Koster</p>
-            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/dylan-koster-067884205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
@@ -35,7 +35,7 @@
                 <img class="is-rounded" src="https://cdn.shopify.com/s/files/1/0078/8575/0369/products/Monkey_Face_Diamond_Painting_Kit_550x.jpg?v=1571713803">
             </figure>
             <p class="title is-4">Philip Schutte</p>
-            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/philip-schutte-838ab5205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
     </div>
 
