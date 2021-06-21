@@ -4,7 +4,7 @@
     <div class="columns has-text-centered">
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://media.istockphoto.com/photos/closeup-of-mixedbreed-monkey-between-chimpanzee-and-bonobo-smiling-picture-id119838172?k=6&m=119838172&s=612x612&w=0&h=C6yKSGBkRi_85jnSv1aryQWKu08QKq6aLXWJGpHVd90=">
+                <img class="is-rounded" src="_static/_images/bob.png">
             </figure>
             <p class="title is-4">Bob Reus</p>
             <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
