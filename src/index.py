@@ -30,12 +30,7 @@ from collections import deque
 from collections import Counter
 from types import SimpleNamespace
 
-# Stopwords taken from nltk using:
-#     from nltk.corpus import stopwords
-#     from nltk import download
-#     download('stopwords')
-#     stopwords = stopwords.words('english')
-#     stopwords = set(word.replace("'", '') for word in stopwords)
+
 stopwords = {
     'him', 'then', 'i', 'couldn', 'too', 'shan', 'a', 'them', 'doesnt', 'it',
     'shouldnt', 'no', 'only', 'that', 'yourself', 'because', 'ain', 'very',

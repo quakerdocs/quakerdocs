@@ -3,10 +3,10 @@ import docutils
 import application
 import directives.metadata
 from docutils import nodes
-import directives.sphinx
+from directives.sphinx import ref_element
 
 
-class Rst():
+class Page():
     """TODO
     """
 
@@ -53,7 +53,7 @@ class Rst():
                 main.waiting.pop(page_id)
 
         # Check if the file can be written,
-        ref = directives.sphinx.ref_element
+        ref = ref_element
         for node in self.doctree.traverse(lambda n: isinstance(n, ref)):
             if node['ref'] not in application.id_map:
                 main.waiting[node['ref']].append(self)

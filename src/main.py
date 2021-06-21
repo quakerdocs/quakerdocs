@@ -18,7 +18,7 @@ import directives
 import application
 import html5writer
 
-from rst import Rst
+from page import Page
 from theme import Theme
 
 
@@ -100,7 +100,7 @@ class Main:
         """
         Load user configuration and extensions.
         """
-        prev_cwd = os.getcwd()
+        prev_cwd = Path.cwd()
         os.chdir(self.source_path)
 
         self.read_conf()
@@ -138,7 +138,6 @@ class Main:
 
         # Set-up Table of Contents data
         self.build_global_toc()
-
         # Build search index.
         self.idx.build(self.temp_path, self.static_path / 'js')
 
@@ -162,7 +161,7 @@ class Main:
                     continue
 
                 if path.suffix == '.rst':
-                    page = Rst(self, path)
+                    page = Page(self, path)
                     page.parse(self)
 
                 if str(path.with_suffix('')) == master_doc:
@@ -170,9 +169,6 @@ class Main:
                     ds = directives.sphinx
                     for queue in page.doctree.traverse(ds.toc_data):
                         self.toc_navigation.append(ds.TocTree.to_html(queue))
-
-                        # for current_toc in queue['entries']:
-                        #     self.toc_navigation.append(current_toc)
 
         # Check if all the references are resolved.
         for ref_name, pages in self.waiting.items():
