@@ -299,7 +299,7 @@ function renderBookmarkList () {
  * @returns {string} The HTML code for the bookmark entry.
  */
 function createBookmarkListEntry(b) {
-    let entry = `<tr class="is-fullwidth" id="panel-${b.id}" class="panel-block bookmark-entry">
+    let entry = `<tr class="is-fullwidth" id="panel-${b.id}">
                     ${createInnerEntry(b)}
                 </tr>`;
     return entry;
