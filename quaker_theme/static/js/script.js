@@ -43,14 +43,16 @@ let searchOpen = false
  * @param {*} overlay Which overlay the program should look in.
  *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
  *     overlay.
- * @returns {null} If the element was already selected.
  */
 function selectEntry(element, overlay) {
     var curEl = document.getElementsByClassName(overlay + ' selected')[0];
+
+    // Stop if the given element is already selected.
     if (curEl === element) {
-        return;
+        return
     }
 
+    // If any element is selected, unselect it.
     if (curEl) {
         curEl.classList.remove('selected');
     }
@@ -111,18 +113,18 @@ function selectRelativeEntry(overlay, forwards) {
 function redirectEntry(overlay) {
     var curEl = document.getElementsByClassName(overlay + ' selected')[0]
 
-    console.log(curEl)
+    // If no element is selected, return to prevent errors.
     if (!curEl) {
-        return;
+        return
     }
 
-    curEl = curEl.firstElementChild;
 
+    curEl = curEl.firstElementChild
+    // Behaviour has to differ between search and bookmark.
     if (overlay === 'result') {
         window.location.href = curEl.href
     } else if (overlay === 'bookmark-entry') {
-        curEl.firstElementChild.click()
-        // window.location.href = curEl.onclick.split(';')[0].split('=')[1]
+        curEl.nextSibling.click()
     }
 }
 

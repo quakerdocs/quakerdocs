@@ -98,12 +98,15 @@ function activateSearch () {
 function createResultElement (href, title, content) {
     const element = document.createElement('div')
     element.className = 'result'
-    console.log(element)
+
     element.innerHTML = `<a class="panel-block is-flex-direction-column" href="${href}" onclick="storeSearchResults()">
                             <h1 class="result-title"><strong>${title}</strong></h1>
                             <p class="result-content">${content}</p>
                         </a>`
-    element.addEventListener('mouseover', selectEntry(element, 'result'))
+
+    element.addEventListener('mouseenter', function(event) {
+        selectEntry(element, 'result')
+    })
     return element
 }
 
@@ -150,7 +153,6 @@ function renderResults (query, searcher, resultsWrapper) {
     const parser = new DOMParser()
     const maxResults = 9
 
-    console.log(query)
     let i = 0
     for (const r of searcher) {
         /* Limit number of search results. */
@@ -176,7 +178,6 @@ function renderResults (query, searcher, resultsWrapper) {
                 }
 
                 const displayText = highlightSearchQuery(query, text)
-                console.log(displayText)
                 const resultEl = createResultElement(href, r.title, displayText)
                 resultList.append(resultEl)
             })

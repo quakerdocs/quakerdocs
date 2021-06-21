@@ -78,7 +78,6 @@ function updateBookmark(b, new_title) {
     let cname = bookmarkCookieName(b.id);
     b.title = new_title;
     setCookie(cname, JSON.stringify(b));
-    console.log(document.cookie);
 }
 
 /**
@@ -129,6 +128,10 @@ function showBookmarkOverlay () {
     // Prevent background from scrolling while search window is open.
     document.documentElement.style.overflowY = 'hidden'
     document.body.scroll = 'no'
+
+    const searchbar = document.getElementById('bookmark-searchbar')
+    searchbar.focus()
+    searchbar.select()
 
     renderBookmarkList()
 }
@@ -286,11 +289,18 @@ function renderBookmarkList () {
     const bookmarks = getAllBookmarks()
     let content = '';
 
+    let tab = document.createElement('table')
+    tab.className = "table is-hoverable is-fullwidth"
+    let tbody = document.createElement('tbody')
+    tab.appendChild(tbody)
+
     for (const b of bookmarks) {
-        content += createBookmarkListEntry(b)
+        tbody.appendChild(createBookmarkListEntry(b))
     }
 
-    bookmarkResults.innerHTML = `<table class="table is-hoverable is-fullwidth"><tbody> ${content} </tbody></table>`
+    tab.appendChild(tbody)
+    bookmarkResults.innerHTML = '';
+    bookmarkResults.appendChild(tab);
 }
 
 /**
@@ -299,46 +309,16 @@ function renderBookmarkList () {
  * @returns {string} The HTML code for the bookmark entry.
  */
 function createBookmarkListEntry(b) {
-<<<<<<< HEAD
+    var element = document.createElement('tr')
+    element.className = "is-fullwidth bookmark-entry"
+    element.id = "panel-" + b.id
+    element.innerHTML = createInnerEntry(b);
 
-    let entry = `<div class="bookmark-entry"><div id="panel-${b.id}" class="panel-block">
-                    ${createInnerEntry(b)}
-                </div></div>`;
-    return entry;
-}
+    element.addEventListener('mouseenter', function(event) {
+        selectEntry(element, 'bookmark-entry')
+    })
 
-function createInnerEntry(b) {
-    let title = truncateTitle(b.title);
-    let entry = `<div class="tile is-10" onclick="location='${b.page}'; \
-                hideBookmarkOverlay()">
-                    <div class="level">
-                        <div class="level-item">
-                            <span class="panel-icon">
-                            <i class="fa fa-book" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                        <div class="level-item">
-                            ${title}
-                        </div>
-                    </div>
-                </div>
-                <div class="tile is-1">
-                    <button class="bookmark-rename" onclick=" \
-                    bookmarkRenameClick('${b.id}')"><i class="fa fa-pencil \
-                    fa-lg" aria-hidden="true"></i></button>
-                </div>
-                <div class="tile is-1">
-                    <button class="bookmark-trash" onclick=" \
-                    bookmarkTrashClick('${b.id}')"><i class="fa fa-trash \
-                    fa-lg" aria-hidden="true"></i></button>
-                </div>`;
-
-=======
-    let entry = `<tr class="is-fullwidth" id="panel-${b.id}" class="panel-block bookmark-entry">
-                    ${createInnerEntry(b)}
-                </tr>`;
->>>>>>> 82707a4bbd2ba7a803c27730ef68de24d832ad4b
-    return entry;
+    return element;
 }
 
 /**

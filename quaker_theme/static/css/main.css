@@ -119,14 +119,11 @@
   outline: none;
 }
 
-<<<<<<< HEAD
 .bookmark-entry.selected {
   cursor: pointer;
-  background: hsl(0, 0%, 96%);
+  background: #ddd;
 }
 
-=======
->>>>>>> 82707a4bbd2ba7a803c27730ef68de24d832ad4b
 .bookmark-trash {
   background: none;
   border: none;
@@ -178,4 +175,8 @@
 
 .title-table:hover {
   cursor: pointer;
+}
+
+a.panel-block:hover, .table.is-hoverable tbody tr:not(.is-selected):hover {
+  background-color: transparent;
 }

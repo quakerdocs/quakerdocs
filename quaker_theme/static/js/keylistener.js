@@ -2,8 +2,8 @@ document.addEventListener('keyup', (event) => {
     const code = event.code;
 
     /**
-     * If user presses Escape and the search bar is open, close the search
-     * overlay or bookmark overlay.
+     * If user presses Escape and the search overlay or bookmark overlay
+     *  is open, close the search overlay or bookmark overlay.
      */
     if (code === 'Escape') {
         if (searchOpen) {
@@ -15,6 +15,11 @@ document.addEventListener('keyup', (event) => {
         }
     }
 
+    /**
+     * Keyboard controls for search and bookmark overlays:
+     * Arrow Up or Arrow Down: Select the next or previous entry respectively.
+     * Enter: 'Click' on the currently selected entry.
+     */
     if (searchOpen) {
         if (code === 'ArrowDown') {
             selectRelativeEntry('result', true);
