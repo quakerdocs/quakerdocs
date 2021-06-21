@@ -1,7 +1,6 @@
 import os
 import docutils
 from quaker_lib import application, directives
-from quaker_lib.directives import metadata, sphinx
 from docutils import nodes
 
 
