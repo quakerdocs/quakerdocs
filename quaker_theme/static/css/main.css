@@ -124,6 +124,7 @@
   border: none;
   border-color: none;
   padding: 0px;
+  margin: 0px;
 }
 
 .bookmark-trash:hover {
@@ -136,6 +137,7 @@
     background: none;
     border-color: none;
     padding: 0px;
+  margin: 0px;
 }
 
 .bookmark-rename:hover {

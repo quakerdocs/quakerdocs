@@ -231,14 +231,10 @@ function createRenameEntry(b) {
                     maxlength=${inputbox_maxlength}>
                 </td>
                 <td class="button-table">
-                    <button class="bookmark-rename" onclick=" \
-                    renameAccept('${b.id}')"><i class="fa fa-check \
-                    fa-lg" aria-hidden="true"></i></button>
+                    <i class="fa fa-check bookmark-rename" onclick="renameAccept('${b.id}')"aria-hidden="true"></i>
                 </td>
                 <td class="button-table">
-                <button class="bookmark-trash" onclick=" \
-                renameCancel('${b.id}')"><i class="fa fa-ban \
-                fa-lg" aria-hidden="true"></i></button>
+                    <i class="fa fa-ban bookmark-trash" onclick="renameCancel('${b.id}')" aria-hidden="true"></i></button>
                 </td>
             `;
     return entry;
@@ -248,20 +244,16 @@ function createInnerEntry(b) {
     let title = truncateTitle(b.title);
     let entry = `
                 <td class="icon-table">
-                    <i class="fa fa-book" aria-hidden="true"></i>
+                    <i class="fa fa-book fa" aria-hidden="true"></i>
                 </td>
                 <td class="title-table" onclick="location='${b.page}'; hideBookmarkOverlay()">
                     ${title}
                 </td>
                 <td class="button-table">
-                    <button class="bookmark-rename" onclick=" \
-                    bookmarkRenameClick('${b.id}')"><i class="fa fa-pencil \
-                    fa-lg" aria-hidden="true"></i></button>
+                    <i class="fa fa-pencil bookmark-rename"onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true"></i>
                 </td>
                 <td class="button-table">
-                    <button class="bookmark-trash" onclick=" \
-                    bookmarkTrashClick('${b.id}')"><i class="fa fa-trash \
-                    fa-lg" aria-hidden="true"></i></button>
+                    <i class="fa fa-trash bookmark-trash"onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true"></i>
                 </td>`;
 
     return entry;
