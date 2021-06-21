@@ -148,10 +148,7 @@ class Main:
         # Copy static files from the source directly to the static dest folder.
         self.copy_static_files()
 
-        # Delete the temporary build files.
-        # TODO
-
-        print('The generated documents have been saved in %s' % self.dest_path)
+        print(f'The generated documents have been saved in {self.dest_path}')
 
     def build_files(self):
         """Iterate over files in source directory and save in [(path, content)]

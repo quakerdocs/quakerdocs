@@ -121,13 +121,12 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.settings = document.settings
 
         # Set base path for every document.
-        self.head.append('<base href="%s">'
-                         % self.settings.rel_base)
+        self.head.append(f'<base href="{self.settings.rel_base}">')
 
         # Add favicon to pages.
         if self.settings.favicon is not None:
-            self.head.append('<link rel="icon" href="%s">'
-                             % self.settings.favicon)
+            self.head.append('<link rel="icon" '
+                             f'href="{self.settings.favicon}">')
 
         # Build navigation bar.
         # self.navigation = ''
@@ -138,7 +137,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add logo to pages.
         self.logo = ''
         if self.settings.logo is not None:
-            self.logo = '<img src="%s" alt="Logo">' % self.settings.logo
+            self.logo = f'<img src="{self.settings.logo}" alt="Logo">'
 
         link = 'https://quakerdocs.nl/'
 

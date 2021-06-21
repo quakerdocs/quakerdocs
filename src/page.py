@@ -24,11 +24,9 @@ class Page():
 
         content = self.src.read_text()
 
-        # Add epilogue and prolog to source file.
-        content = '%s\n%s\n%s' % (
-            main.conf_vars.get('rst_prolog', ''),
-            content,
-            main.conf_vars.get('rst_epilog', ''))
+        # Add prologue and epilogue to source file.
+        content = (f"{main.conf_vars.get('rst_prolog', '')}\n"
+                   f"{content}\n{main.conf_vars.get('rst_epilog', '')}")
 
         self.doctree = docutils.core.publish_doctree(
             content,
