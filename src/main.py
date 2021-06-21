@@ -145,7 +145,7 @@ class Main:
         self.theme.copy_files(self.dest_path)
         self.copy_static_files()
 
-        print('The generated documents have been saved in %s' % self.dest_path)
+        print(f'The generated documents have been saved in {self.dest_path}')
 
     def build_files(self):
         """Iterate over files in source directory and save in [(path, content)]
