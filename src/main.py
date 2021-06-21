@@ -221,6 +221,6 @@ if __name__ == "__main__":
                             help='Builder used for the generator.')
     args = arg_parser.parse_args()
 
-    print("Running QuakerDocs 0.0.2")
+    print("Running QuakerDocs 0.0.3")
     main = Main(args.source_path, args.build_path, args.builder)
     main.generate()
