@@ -3,13 +3,22 @@ import docutils
 import directives.metadata
 from docutils import nodes
 from directives.sphinx import ref_element
+import application
 
 
-class Page():
-    """TODO
+class Page:
+    """Handler for a single page.
+
+    Parameters
+    ----------
+    main : Main
+        The instance of main, from which settings are extracted.
+    path : pathlib.Path
+        The path to the file to be handled.
     """
 
     def __init__(self, main, path):
+        self.main = main
         self.path = path
         self.html_path = path.with_suffix('.html')
         self.src = main.source_path / path
@@ -17,22 +26,20 @@ class Page():
         self.doctree = None
         self.unresolved_references = 0
 
-    def parse(self, main):
+    def parse(self):
         """
-        Parse a rst file.
+        Parse an RST file.
         """
-
-        content = self.src.read_text()
-
         # Add prologue and epilogue to source file.
-        content = (f"{main.conf_vars.get('rst_prolog', '')}\n"
-                   f"{content}\n{main.conf_vars.get('rst_epilog', '')}")
+        content = (f"{self.main.conf_vars.get('rst_prolog', '')}\n"
+                   f"{self.src.read_text()}\n"
+                   f"{self.main.conf_vars.get('rst_epilog', '')}")
 
         self.doctree = docutils.core.publish_doctree(
             content,
             source_path=str(self.src),
             settings_overrides={
-                **main.docutil_settings,
+                **self.main.docutil_settings,
                 'src_path': self.path
             }
         )
@@ -42,32 +49,45 @@ class Page():
 
             # Walk over subtree to create list of sections
             # And sublist of toctrees.
-            main.id_map[page_id] = contents
-            main.id_map[self.html_path.parent / page_id] = contents
+            self.main.id_map[page_id] = contents
+            self.main.id_map[self.html_path.parent / page_id] = contents
 
             # Resolve the references of the waiting pages.
-            if page_id in main.waiting:
-                for page in main.waiting[page_id]:
+            if page_id in self.main.waiting:
+                for page in self.main.waiting[page_id]:
                     page.unresolved_references -= 1
                     if page.unresolved_references == 0:
-                        page.write(main)
+                        page.write(self.main)
 
-                main.waiting.pop(page_id)
+                self.main.waiting.pop(page_id)
 
         # Check if the file can be written,
-        ref = ref_element
-        for node in self.doctree.traverse(lambda n: isinstance(n, ref)):
-            if node['ref'] not in main.id_map:
-                main.waiting[node['ref']].append(self)
+        for node in self.doctree.traverse(ref_element):
+            if node['ref'] not in application.id_map:
+                self.main.waiting[node['ref']].append(self)
                 self.unresolved_references += 1
 
         # Write if all the references are already resolved.
         if self.unresolved_references == 0:
-            self.write(main)
+            self.write()
 
-    def write(self, main):
+    def get_title(self):
+        """Get the title of the page.
+
+        Returns
+        -------
+        title : str
+            The title of the page.
         """
-        Parse a rst file and write its contents to a file.
+        # TODO this is the biggest hack I've ever seen.
+        try:
+            return next(iter(self.doctree.traverse(nodes.title)))[0].astext()
+        except StopIteration:
+            return
+
+    def write(self):
+        """
+        Parse an RST file and write its contents to a file.
         """
 
         # Get the page metadata.
@@ -78,41 +98,41 @@ class Page():
         # Delete the nodes we want to skip.
         for node in self.doctree.traverse():
             for i, child in reversed(list(enumerate(node.children))):
-                if child.tagname in main.SKIP_TAGS:
+                if child.tagname in self.main.SKIP_TAGS:
                     del node[i]
 
         # Find the page title.
-        try:
-            title = next(iter(self.doctree.traverse(nodes.title)))[0].astext()
-        except StopIteration:
-            title = ''
+        title = self.get_title()
 
         # Collect all the text content to add the page to the index.
-        content = ' '.join(n.astext() for n in self.doctree.traverse(
-                           lambda n: isinstance(n, nodes.Text)))
-        main.idx.add_file(content, title, self.html_path, metadata.priority)
+        content = ' '.join(n.astext()
+                           for n in self.doctree.traverse(nodes.Text))
+        self.main.idx.add_file(content, title,
+                               self.html_path, metadata.priority)
 
         # Create the output file contents.
         output = docutils.core.publish_from_doctree(
             self.doctree,
             destination_path=self.dest,
-            writer=main.writer(),
+            writer=self.main.writer(),
             settings_overrides={
-                'toc': main.toc_navigation,
-                'template': main.theme.get_template(),
+                'toc': self.main.toc_navigation,
+                'template': self.main.theme.get_template(),
                 'stylesheet': os.path.join(
-                    '_static', main.conf_vars.get('html_style',
-                                                  main.theme.get_style())),
-                'src_dir': main.source_path,
-                'dest_dir': main.relative_path(self.src),
+                    '_static',
+                    self.main.conf_vars.get('html_style',
+                                            self.main.theme.get_style())),
+                'src_dir': self.main.source_path,
+                'dest_dir': self.main.relative_path(self.src),
                 'html_path': self.html_path,
                 'embed_stylesheet': False,
-                'rel_base': os.path.relpath(main.dest_path, self.dest.parent),
-                'handlers': main.sp_app.get_handlers(),
-                'favicon': main.conf_vars.get('html_favicon', None),
-                'logo': main.conf_vars.get('html_logo', None),
-                'copyright': main.conf_vars.get('copyright', ''),
-                'id_map': main.id_map
+                'rel_base': os.path.relpath(self.main.dest_path,
+                                            self.dest.parent),
+                'handlers': self.main.sp_app.get_handlers(),
+                'favicon': self.main.conf_vars.get('html_favicon', None),
+                'logo': self.main.conf_vars.get('html_logo', None),
+                'copyright': self.main.conf_vars.get('copyright', ''),
+                'id_map': application.id_map
             })
 
         # Write the document to a file.
