@@ -25,10 +25,10 @@
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://media.npr.org/assets/img/2015/09/23/ap_836720500193_sq-57a032ff491f37e572cb77216b40d978a6f5fff3-s800-c85.jpg">
+                <img class="is-rounded" src="_static/_images/lars.png">
             </figure>
             <p class="title is-4">Lars Reddering</p>
-            <a href="https://www.linkedin.com/in/lars-reddering-a7a643207/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/lars-reddering/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
