@@ -219,35 +219,43 @@ function renameAccept(id) {
 }
 
 function createRenameEntry(b) {
-    let inputbox_size = 55;
     let inputbox_maxlength = 500;
     let title = truncateTitle(b.title);
     let entry = `
-            <div class="tile is-10">
-                <div class="level level-rename">
-                    <div class="level-item level-icon">
-                        <span class="panel-icon">
-                        <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                    <div class="level-item level-title">
-                        <input id="IN_${b.id}" class="input" type="text"
-                        size="30" value="${title}"
-                        maxlength=${inputbox_maxlength}>
-                    </div>
-                </div>
-            </div>
-            <div class="tile is-1">
-                <button class="bookmark-rename" onclick=" \
-                renameAccept('${b.id}')"><i class="fa fa-check \
-                fa-lg" aria-hidden="true"></i></button>
-            </div>
-            <div class="tile is-1">
-                <button class="bookmark-trash" onclick=" \
-                renameCancel('${b.id}')"><i class="fa fa-ban \
-                fa-lg" aria-hidden="true"></i></button>
-            </div>
+                <td class="icon-table">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </td>
+                <td class="input-table">
+                    <input id="IN_${b.id}" class="input" type="text"
+                    value="${title}"
+                    maxlength=${inputbox_maxlength}>
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-check bookmark-rename" onclick="renameAccept('${b.id}')"aria-hidden="true"></i>
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-ban bookmark-trash" onclick="renameCancel('${b.id}')" aria-hidden="true"></i></button>
+                </td>
             `;
+    return entry;
+}
+
+function createInnerEntry(b) {
+    let title = truncateTitle(b.title);
+    let entry = `
+                <td class="icon-table">
+                    <i class="fa fa-book fa" aria-hidden="true"></i>
+                </td>
+                <td class="title-table" onclick="location='${b.page}'; hideBookmarkOverlay()">
+                    ${title}
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-pencil bookmark-rename"onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true"></i>
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-trash bookmark-trash"onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true"></i>
+                </td>`;
+
     return entry;
 }
 
@@ -282,7 +290,7 @@ function renderBookmarkList () {
         content += createBookmarkListEntry(b)
     }
 
-    bookmarkResults.innerHTML = content
+    bookmarkResults.innerHTML = `<table class="table is-hoverable is-fullwidth"><tbody> ${content} </tbody></table>`
 }
 
 /**
@@ -291,6 +299,7 @@ function renderBookmarkList () {
  * @returns {string} The HTML code for the bookmark entry.
  */
 function createBookmarkListEntry(b) {
+<<<<<<< HEAD
 
     let entry = `<div class="bookmark-entry"><div id="panel-${b.id}" class="panel-block">
                     ${createInnerEntry(b)}
@@ -324,6 +333,11 @@ function createInnerEntry(b) {
                     fa-lg" aria-hidden="true"></i></button>
                 </div>`;
 
+=======
+    let entry = `<tr class="is-fullwidth" id="panel-${b.id}" class="panel-block bookmark-entry">
+                    ${createInnerEntry(b)}
+                </tr>`;
+>>>>>>> 82707a4bbd2ba7a803c27730ef68de24d832ad4b
     return entry;
 }
 

@@ -96,13 +96,14 @@ function activateSearch () {
  * @returns An HTML element, the container of the result entry.
  */
 function createResultElement (href, title, content) {
-    element = `<div class="result">
-                    <a class="panel-block is-flex-direction-column" href="${href}" onclick="storeSearchResults()">
-                        <h1 class="result-title"><strong>${title}</strong></h1>
-                        <p class="result-content">${content}</p>
-                    </a>
-                </div>`
-
+    const element = document.createElement('div')
+    element.className = 'result'
+    console.log(element)
+    element.innerHTML = `<a class="panel-block is-flex-direction-column" href="${href}" onclick="storeSearchResults()">
+                            <h1 class="result-title"><strong>${title}</strong></h1>
+                            <p class="result-content">${content}</p>
+                        </a>`
+    element.addEventListener('mouseover', selectEntry(element, 'result'))
     return element
 }
 
@@ -188,14 +189,14 @@ function storeSearchResults () {
     const query = searchbar.value
     const resultList = document.getElementById('result-list')
 
-    sessionStorage.setItem('searchQuery', query)
-    sessionStorage.setItem('searchResults', resultList.innerHTML)
+    localStorage.setItem('searchQuery', query)
+    localStorage.setItem('searchResults', resultList.innerHTML)
 }
 
 function loadSearchResults () {
     const searchbar = document.getElementById('searchbar')
-    const query = sessionStorage.getItem('searchQuery')
-    const resultList = sessionStorage.getItem('searchResults')
+    const query = localStorage.getItem('searchQuery')
+    const resultList = localStorage.getItem('searchResults')
     const resultsWrapper = document.getElementById('search-results')
 
     searchbar.value = query
