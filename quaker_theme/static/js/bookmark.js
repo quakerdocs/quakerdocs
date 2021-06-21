@@ -142,15 +142,11 @@ function bookmarkClick (id) {
     if (bookmarkButton.value == 0) {
         setBookmark(id)
         bookmarkButton.value = 1
-
-        // bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
-        //                             fa-bookmark"></i></span>'
     } else {
         deleteBookmark(id)
         bookmarkButton.value = 0
-        // bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
-        //                             fa-bookmark-o"></i></span>'
     }
+
     setBookmarkBtn(id);
 }
 
@@ -309,7 +305,7 @@ function createRenameEntry(b) {
  * @param {string} id The id of the to be checked bookmark button.
  * @returns {number} 1 if the button was activated, 0 if not.
  */
- function getBookmarkBtnVal (id) {
+ function getBookmarkBtnVal(id) {
     const name = bookmarkCookieName(id)
     if (getBookmark(name) != null) {
         return 1
@@ -323,7 +319,7 @@ function createRenameEntry(b) {
  * button.
  * @param {*} id The id of the bookmark button which has to be toggled.
  */
-function setBookmarkBtn (id) {
+function setBookmarkBtn(id) {
     const bookmarkButton = document.getElementById(id)
     bookmarkButton.value = getBookmarkBtnVal(id)
 
@@ -339,7 +335,7 @@ function setBookmarkBtn (id) {
 /**
  * Load the values of the bookmark buttons when the page had just loaded.
  */
-function loadBookmarks () {
+function loadBookmarks() {
     const bookmarkButtons = document.getElementsByClassName('bookmark-btn')
 
     for (const button of bookmarkButtons) {
@@ -350,7 +346,7 @@ function loadBookmarks () {
 /**
  * The search function for the bookmarks searchbar
  */
-function searchBookmarks () {
+function searchBookmarks() {
     // const items, list, filter, filter
     let item, title, i, txtValue
     const input = document.getElementById('bookmark-searchbar')
