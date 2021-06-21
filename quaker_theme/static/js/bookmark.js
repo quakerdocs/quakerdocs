@@ -10,7 +10,6 @@ class Bookmark {
      * @param {*} id The id of the bookmark.
      * @param {*} page The page URL where the bookmark belongs to.
      * @param {*} title The title of the page where the bookmark belongs to.
-     * @param {*} paragraph TODO: Define paragraph.
      */
     constructor (id, page, title, paragraph = '') {
         this.id = id
@@ -20,11 +19,6 @@ class Bookmark {
 
         // The title of the page, for quick display.
         this.title = title
-
-        // Optionally the paragraph title, to allow searching on paragraph
-        // level. This is a stretch goal, so it doesn't have to be supported
-        // right away.
-        this.paragraph = paragraph
     }
 }
 
@@ -45,10 +39,25 @@ function setBookmark (id) {
     const name = bookmarkCookieName(id)
     const bookmarkButton = document.getElementById(id)
 
-    /* substring(3), because id starts with BM_ */
-    const pageUrl = window.location.pathname + '#' + id.substring(3)
+    /* Remove "BM_" tag from id */
+    const idPath = id.split('_')[1]
+    const pageUrl = window.location.pathname + '#' + idPath;
     const bookmark = new Bookmark(id, pageUrl, bookmarkButton.title)
     setCookie(name, JSON.stringify(bookmark))
+}
+
+/**
+ * Get the data bookmark with the given cname.
+ * @param {string} cname The name of the to be retrieved bookmark.
+ * @returns {*} The data contained in the bookmark cookie.
+ */
+ function getBookmark (cname) {
+    const cookie = getCookie(cname)
+    if (cookie) {
+        return JSON.parse(cookie)
+    }
+
+    return null
 }
 
 /**
@@ -61,38 +70,14 @@ function deleteBookmark (id) {
 }
 
 /**
- * Get the data bookmark with the given cname.
- * @param {string} cname The name of the to be retrieved bookmark.
- * @returns {*} The data contained in the bookmark cookie.
+ * Update bookmark b's title with given new_title.
+ * @param {Bookmark} b The bookmark object.
+ * @param {string} new_title The new title the bookmark needs to be set to.
  */
-function getBookmark (cname) {
-    const cookie = getCookie(cname)
-    if (cookie) {
-        return JSON.parse(cookie)
-    }
-
-    return null
-}
-
 function updateBookmark(b, new_title) {
     let cname = bookmarkCookieName(b.id);
     b.title = new_title;
     setCookie(cname, JSON.stringify(b));
-    console.log(document.cookie);
-}
-
-/**
- * Check if the bookmark button of the given id is activated or not.
- * @param {string} id The id of the to be checked bookmark button.
- * @returns {number} 1 if the button was activated, 0 if not.
- */
-function getBookmarkBtnVal (id) {
-    const name = bookmarkCookieName(id)
-    if (getBookmark(name) != null) {
-        return 1
-    }
-
-    return 0
 }
 
 /**
@@ -157,14 +142,16 @@ function bookmarkClick (id) {
     if (bookmarkButton.value == 0) {
         setBookmark(id)
         bookmarkButton.value = 1
-        bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
-                                    fa-bookmark"></i></span>'
+
+        // bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
+        //                             fa-bookmark"></i></span>'
     } else {
         deleteBookmark(id)
         bookmarkButton.value = 0
-        bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
-                                    fa-bookmark-o"></i></span>'
+        // bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
+        //                             fa-bookmark-o"></i></span>'
     }
+    setBookmarkBtn(id);
 }
 
 /**
@@ -219,63 +206,61 @@ function renameAccept(id) {
 }
 
 function createRenameEntry(b) {
-    let inputbox_maxlength = 500;
-    let title = truncateTitle(b.title);
     let entry = `
                 <td class="icon-table">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </td>
                 <td class="input-table">
                     <input id="IN_${b.id}" class="input" type="text"
-                    value="${title}"
-                    maxlength=${inputbox_maxlength}>
+                    value="${b.title}">
                 </td>
                 <td class="button-table">
-                    <i class="fa fa-check bookmark-rename" onclick="renameAccept('${b.id}')"aria-hidden="true"></i>
+                    <i class="fa fa-check bookmark-rename"
+                    onclick="renameAccept('${b.id}')" aria-hidden="true">
+                    </i>
                 </td>
                 <td class="button-table">
-                    <i class="fa fa-ban bookmark-trash" onclick="renameCancel('${b.id}')" aria-hidden="true"></i></button>
+                    <i class="fa fa-ban bookmark-trash"
+                    onclick="renameCancel('${b.id}')" aria-hidden="true">
+                    </i>
                 </td>
             `;
     return entry;
 }
 
+/**
+ * Create an HTML entry for the given bookmark.
+ * @param {*} b The bookmark of which an entry has to be  created.
+ * @returns {string} The HTML code for the bookmark entry.
+ */
+ function createBookmarkListEntry(b) {
+    let entry = `<tr class="is-fullwidth" id="panel-${b.id}">
+                    ${createInnerEntry(b)}
+                </tr>`;
+    return entry;
+}
+
 function createInnerEntry(b) {
-    let title = truncateTitle(b.title);
     let entry = `
                 <td class="icon-table">
                     <i class="fa fa-book fa" aria-hidden="true"></i>
                 </td>
-                <td class="title-table" onclick="location='${b.page}'; hideBookmarkOverlay()">
-                    ${title}
+                <td class="title-table"
+                onclick="location='${b.page}';hideBookmarkOverlay()">
+                    ${b.title}
                 </td>
                 <td class="button-table">
-                    <i class="fa fa-pencil bookmark-rename"onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true"></i>
+                    <i class="fa fa-pencil bookmark-rename"
+                    onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true">
+                    </i>
                 </td>
                 <td class="button-table">
-                    <i class="fa fa-trash bookmark-trash"onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true"></i>
+                    <i class="fa fa-trash bookmark-trash"
+                    onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true">
+                    </i>
                 </td>`;
 
     return entry;
-}
-
-function renameBookmark(id) {
-    cname = bookmarkCookieName(id);
-    deleteCookie(cname);
-}
-
-function truncateTitle(title, max_words=12, max_length=50) {
-    let title_words = title.split(' ');
-
-    /* Cut off title if it is too long. */
-
-    if (title_words.length > max_words) {
-        title = title_words.slice(0, max_words).join(' ') + "...";
-    } else if (title.length > max_length) {
-        title = title.substring(0, max_length) + "...";
-    }
-
-    return title;
 }
 
 /**
@@ -290,19 +275,24 @@ function renderBookmarkList () {
         content += createBookmarkListEntry(b)
     }
 
-    bookmarkResults.innerHTML = `<table class="table is-hoverable is-fullwidth"><tbody> ${content} </tbody></table>`
+    bookmarkResults.innerHTML = `
+                                <table class="table is-hoverable is-fullwidth">
+                                <tbody> ${content} </tbody></table>
+                                `;
 }
 
 /**
- * Create an HTML entry for the given bookmark.
- * @param {*} b The bookmark of which an entry has to be created.
- * @returns {string} The HTML code for the bookmark entry.
+ * Check if the bookmark button of the given id is activated or not.
+ * @param {string} id The id of the to be checked bookmark button.
+ * @returns {number} 1 if the button was activated, 0 if not.
  */
-function createBookmarkListEntry(b) {
-    let entry = `<tr class="is-fullwidth" id="panel-${b.id}">
-                    ${createInnerEntry(b)}
-                </tr>`;
-    return entry;
+ function getBookmarkBtnVal (id) {
+    const name = bookmarkCookieName(id)
+    if (getBookmark(name) != null) {
+        return 1
+    }
+
+    return 0
 }
 
 /**
