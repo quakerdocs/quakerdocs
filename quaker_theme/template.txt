@@ -2,18 +2,17 @@
 %(head)s
 %(stylesheet)s
 
-<link rel="stylesheet" type="text/css" href="css/bulma.min.css">
-<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="css/friendly.css">
-<link rel="stylesheet" type="text/css" href="css/content.css">
-<link rel="stylesheet" type="text/css" href="css/main.css">
-<link rel="stylesheet" type="text/css" href="css/popover.css">
-<script src="js/search_data.js"></script>
-<script src="js/search.js"></script>
-<script src="js/script.js"></script>
-<script src="js/cookies.js"></script>
-<script src="js/bookmark.js"></script>
-<script src="js/keylistener.js"></script>
+<link rel="stylesheet" type="text/css" href="_static/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
+<link rel="stylesheet" type="text/css" href="_static/css/content.css">
+<link rel="stylesheet" type="text/css" href="_static/css/main.css">
+<link rel="stylesheet" type="text/css" href="_static/css/popover.css">
+<script src="_static/js/search_data.js"></script>
+<script src="_static/js/search.js"></script>
+<script src="_static/js/script.js"></script>
+<script src="_static/js/cookies.js"></script>
+<script src="_static/js/bookmark.js"></script>
+<script src="_static/js/keylistener.js"></script>
 
 %(body_prefix)s
 <nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -25,7 +24,7 @@
 
 			<div id="search-wrapper">
 				<a class="popover-trigger navbar-item">
-					<button class="popover-trigger-search button is-primary is-inverted" onclick="showSearchOverlay()">
+					<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
 						<span class="icon"><i class="fa fa-search"></i></span>
 						<span> Search</span>
 					</button>
@@ -37,7 +36,7 @@
 
 			<div id="bookmarkwrapper" class="is-hidden-mobile">
 				<a class="popover-trigger navbar-item">
-					<button class="button is-primary is-inverted" onclick="showBookmarkOverlay()">
+					<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
 						<span class="icon"><i class="fa fa-bookmark"></i></span>
 						<span>Bookmarks</span>
 					</button>
@@ -65,7 +64,7 @@
 <!--Search window-->
 <div id="search" class="modal">
 	<div class="modal-background" onclick="hideSearchOverlay()"></div>
-	<div class="modal-content height panel is-primary">
+	<div class="modal-content height panel">
 		<p class="panel-heading">
 			<span>Search</span>
 			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -73,7 +72,7 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-				<input id="searchbar" class="input is-primary" type="text" placeholder="Search">
+				<input id="searchbar" class="input" type="text" placeholder="Search">
 				<span class="icon is-left">
 					<span class="icon"><i class="fa fa-search"></i></span>
 				</span>
@@ -87,7 +86,7 @@
 <!--Bookmarks window-->
 <div id="bookmark-window" class="modal">
 	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
-	<div class="modal-content height panel is-primary">
+	<div class="modal-content height panel">
 		<p class="panel-heading">
 			<span>Bookmarks</span>
 			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -95,7 +94,7 @@
 
 		<div class="panel-block">
 			<p class="control has-icons-left">
-				<input id="bookmark-searchbar" class="input is-primary" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<input id="bookmark-searchbar" class="input" onkeyup="searchBookmarks()" type="text" placeholder="Search">
 				<span class="icon is-left">
 					<span class="icon"><i class="fa fa-search"></i></span>
 				</span>
@@ -116,7 +115,7 @@
 			%(body_pre_docinfo)s
 			%(docinfo)s
 			%(body)s
-			<button onclick="backToTop()" id="backTopBtn" class="button is-primary is-outlined fa arrow-icon fa-angle-up" title="Go to top"></button>
+			<button onclick="backToTop()" id="backTopBtn" class="button is-light fa arrow-icon fa-angle-up" title="Go to top"></button>
 			<hr>
 			<footer class="footer-doc">
 				%(footer)s
@@ -125,5 +124,6 @@
 	</section>
 </div>
 
+<script src="_static/js/load_navbar.js"></script>
 
 %(body_suffix)s

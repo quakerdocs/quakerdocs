@@ -19,25 +19,46 @@ stopwords : set
 
 """
 
-
 import os
 import re
 import math
 import struct
-import shutil
-from collections import deque
-from types import SimpleNamespace
-from jinja2 import Template
-from collections import Counter
-from nltk.corpus import stopwords
+from pathlib import Path
 from typing import Tuple
+from jinja2 import Template
+from collections import deque
+from collections import Counter
+from types import SimpleNamespace
 
-try:
-    stopwords = set(stopwords.words('english'))
-except LookupError:
-    from nltk import download
-    download('stopwords')
-    stopwords = set(stopwords.words('english'))
+# Stopwords taken from nltk using:
+#     from nltk.corpus import stopwords
+#     from nltk import download
+#     download('stopwords')
+#     stopwords = stopwords.words('english')
+#     stopwords = set(word.replace("'", '') for word in stopwords)
+stopwords = {
+    'him', 'then', 'i', 'couldn', 'too', 'shan', 'a', 'them', 'doesnt', 'it',
+    'shouldnt', 'no', 'only', 'that', 'yourself', 'because', 'ain', 'very',
+    'werent', 'at', 'nor', 'below', 'mightn', 'to', 'don', 'there', 'about',
+    'did', 'will', 'mustnt', 'these', 'your', 'are', 'hasn', 'from', 'what',
+    'in', 'isnt', 'she', 'they', 'having', 'mightnt', 'll', 'shant', 'shes',
+    'my', 'wouldn', 'have', 'am', 'some', 'as', 'on', 'where', 'most', 'not',
+    'our', 'herself', 'both', 'should', 'myself', 'he', 'and', 'mustn',
+    'hadnt', 'youll', 'been', 'be', 'during', 'arent', 'when', 'doing',
+    'ourselves', 'after', 'than', 'youre', 'if', 'isn', 'wasn', 'shouldve',
+    'didnt', 'until', 'd', 'his', 'between', 'out', 'didn', 'so', 'dont',
+    'which', 'off', 'doesn', 'down', 'wouldnt', 've', 'why', 'ma', 'being',
+    'wont', 'but', 'yours', 'youve', 'few', 'were', 'before', 'any', 'for',
+    'through', 'up', 'again', 'into', 'same', 'of', 'its', 'aren', 'own',
+    'haven', 're', 'under', 'thatll', 'was', 'this', 'such', 'over', 'neednt',
+    's', 'once', 'himself', 'me', 'her', 'hasnt', 'all', 'itself', 'ours',
+    'while', 'o', 'themselves', 'youd', 'each', 't', 'just', 'their', 'm',
+    'won', 'hers', 'who', 'by', 'does', 'above', 'hadn', 'more', 'we',
+    'weren', 'had', 'couldnt', 'is', 'or', 'an', 'needn', 'y', 'further',
+    'now', 'you', 'how', 'against', 'those', 'can', 'here', 'has', 'theirs',
+    'with', 'yourselves', 'the', 'wasnt', 'havent', 'whom', 'do', 'other',
+    'shouldn'
+}
 
 
 def get_primitive(size: int) -> SimpleNamespace:
@@ -62,7 +83,7 @@ def get_primitive(size: int) -> SimpleNamespace:
     prim = SimpleNamespace()
     prim.actual_bytes = math.ceil(math.log2(size) / 8)
 
-    if prim.actual_bytes == 1:
+    if prim.actual_bytes <= 1:
         prim.id, prim.type, prim.bytes = 'B', 'unsigned char', 1
     elif prim.actual_bytes == 2:
         prim.id, prim.type, prim.bytes = 'H', 'unsigned short', 2
@@ -183,16 +204,33 @@ class Trie:
         if not word:
             return
 
-        # Start at the root.
+        # Start at the root and continue until the end of the word.
         current = self
-
-        # Continue until the end of the word.
         while word:
             word, current = self.insert_helper(word, current)
 
-        # If while loop exited it means that the current node is an end node.
+        # If the loop exited it means that the current node is an end node.
         current.end = True
         current.pages.append((page, count))
+
+    def insert_ignore(self, word: str):
+        """Insert method to insert a new word into the trie, but ignore the
+        pages associated with it.
+
+        Parameters
+        ----------
+        word : str
+            The word to be inserted.
+
+        """
+        # Start at the root and continue until the end of the word.
+        current = self
+        while word:
+            word, current = self.insert_helper(word, current)
+
+        # If the loop exited it means that the current node is an end node.
+        current.end = True
+        current.pages = []
 
     @staticmethod
     def match(n_word: str, s_word: str):
@@ -215,6 +253,8 @@ class Trie:
             The remaining part of s_word.
 
         """
+        # In case either string is empty.
+        i = -1
 
         # Loop over both words.
         for i, (n_char, s_char) in enumerate(zip(n_word, s_word)):
@@ -222,10 +262,49 @@ class Trie:
             if n_char != s_char:
                 break
         else:
+            # Perfect match: split on end of string.
             i += 1
 
         # Return matching part and both remainders.
         return n_word[:i], n_word[i:], s_word[i:]
+
+    def get_word(self, word):
+        """"Find the node for a specific word in the trie.
+
+        Parameters
+        ----------
+        word : str
+            The word to search for.
+
+        Returns
+        -------
+        Trie
+            The node containing the data for the specified word.
+
+        Raises
+        ------
+        KeyError
+            When the trie does not contain the word.
+        """
+        current = self
+        while word:
+            # Loop over the children of the current node.
+            for c_word, child in current.children.items():
+                # Find how well the current node matches the word.
+                match, remainder, word = self.match(c_word, word)
+
+                if not remainder:
+                    current = child
+                    break
+            else:
+                # No suitable child found.
+                raise KeyError
+
+        if not current.end:
+            # requested string is part of a word, but not a word itself.
+            raise KeyError
+
+        return current
 
     def flatten_data(self) -> SimpleNamespace:
         """ Convert the trie to an object containing arrays instead of a tree.
@@ -233,7 +312,7 @@ class Trie:
         Returns
         -------
         SimpleNamespace
-            An object containging the data from the trie as separate arrays.
+            An object containing the data from the trie as separate arrays.
 
         """
         # Flatten the node trie into a list.
@@ -302,14 +381,17 @@ class Trie:
 
         # Add each node to the binary arrays.
         for node in t.nodes:
+            struct_format = (t.char_p.id + t.node_p.id + t.page_p.id
+                             + t.child_s.id + t.page_s.id)
+
             # Add the node data.
             node_arr += struct.pack(
-                t.char_p.id + t.node_p.id + t.page_p.id + t.child_s.id + t.page_s.id,
+                struct_format,
                 char_len,
                 node.children_list[0].i if node.children else 0,
                 len(page_arr) // (t.page_i.bytes + t.page_c.bytes),
-                len(node.children),
-                len(node.pages))
+                len(node.children), len(node.pages)
+            )
 
             # Add the pages.
             for page in node.pages:
@@ -366,11 +448,13 @@ class IndexGenerator:
         """
 
         # Change to lowercase, separate _ and only keep letters/numbers.
+        # TODO add title weight to config
+        content += (title + ' ') * 5
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
         # Remove stopwords.
-        content = [word for word in content.split() if word not in stopwords]
+        content = [word for word in content.split()]
 
         # Count occurrences of words in page.
         word_counter = Counter(content)
@@ -379,44 +463,53 @@ class IndexGenerator:
         i = len(self.urltitles)
         self.urltitles.append((url, title))
 
-        # Create the trie.
+        # Add the words from this page to the trie.
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, int(count * priority))
 
-    def build(self, dest_path: str):
+    def build(self, temp_path: Path, dest_path: Path):
         """Write the search index file to the destination directory.
 
         Parameters
         ----------
+        temp_path : str
+            Where to put the temporary compile output.
         dest_path : str
-            Where to put the output.
+            Where to place the javascript and webassembly files.
 
         """
-        path = os.path.join('src', 'wasm')
+        print('Building the search index assembly')
+        source_path = Path('src') / 'wasm'
 
-        if not os.path.exists(path):
+        if not source_path.exists():
             raise FileNotFoundError('Wasm source files are not found.')
 
-        # Generate the search.hpp
+        # Insert the stopwords into the trie.
+        for stopword in stopwords:
+            self.trie.insert_ignore(stopword)
+
+        # Generate the search.hpp.
         data = self.trie.to_binary()
-        with open(os.path.join(path, 'search.hpp.jinja')) as f:
-            template = Template(f.read())
+        template = Template((source_path / 'search.hpp.jinja').read_text())
 
-            # Write the search index to hpp.
-            with open(os.path.join(path, 'search.hpp'), 'w') as f:
-                f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
-                f.write(template.render(urltitles=self.urltitles, **data.__dict__))
+        # Write the search index to hpp.
+        search_path = temp_path / 'search'
+        search_path.mkdir(parents=True, exist_ok=True)
+        with open(search_path / 'search.hpp', 'w') as f:
+            f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
+            f.write(template.render(urltitles=self.urltitles,
+                                    stopwords=stopwords,
+                                    **data.__dict__))
 
-        # Make the .wasm file
-        working_dir = os.getcwd()
-        os.chdir(path)
-        os.system('make')
-        os.chdir(working_dir)
+        # Create the build command.
+        emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
+        cmnd = [f'{emcc}', '-std=c++17', '-flto', '-Os',
+                '-I', f'"{search_path}/"',
+                f"{source_path / 'search.cpp'}",
+                '-o', f"{dest_path / 'search_data.js'}",
+                '-s', 'WASM=1',
+                '-s', 'EXPORTED_FUNCTIONS=["_performSearch","_getSearch"]',
+                '-s', 'EXPORTED_RUNTIME_METHODS=\'["ccall","cwrap"]\'']
 
-        if not os.path.exists(dest_path):
-            os.mkdir(dest_path)
-
-        shutil.copyfile(os.path.join(path, 'build', 'search_data.js'),
-                        os.path.join(dest_path, 'search_data.js'))
-        shutil.copyfile(os.path.join(path, 'build', 'search_data.wasm'),
-                        os.path.join(dest_path, 'search_data.wasm'))
+        dest_path.mkdir(parents=True, exist_ok=True)
+        os.system(' '.join(cmnd))

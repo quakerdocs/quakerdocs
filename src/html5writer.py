@@ -6,117 +6,91 @@ import os.path
 from docutils import nodes
 import docutils.writers.html5_polyglot
 
-import directives.sphinx
-
 
 class Writer(docutils.writers._html_base.Writer):
     """
     Writer class for HTML5 documents.
-    This class is modified from docutils.writers.html5_polyglot.Writer
+    This class is modified from docutils html5_polyglot.Writer (Jun 2021)
     """
-    supported = ('html', 'html5')
-    """Formats this writer supports."""
-
     default_stylesheets = []
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
-    default_template = '../static/template.txt'
+    default_template = '../quaker_theme/template.txt'
     default_template_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), default_template)
 
     settings_spec = (
-        'HTML-Specific Options',
+        'Quaker HTML Options',
         None,
-        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
-          % default_template_path,
-          ['--template'],
-          {'default': default_template_path, 'metavar': '<file>'}),
-         ('Comma separated list of stylesheet URLs. '
-          'Overrides previous --stylesheet and --stylesheet-path settings.',
-          ['--stylesheet'],
-          {'metavar': '<URL[,URL,...]>', 'overrides': 'stylesheet_path'}),
-         ('Comma separated list of stylesheet paths. '
-          'Relative paths are expanded if a matching file is found in '
-          'the --stylesheet-dirs. With --link-stylesheet, '
-          'the path is rewritten relative to the output HTML file. '
-          'Default: "%s"' % ','.join(default_stylesheets),
-          ['--stylesheet-path'],
-          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
-           'default': default_stylesheets}),
-         ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
-          'files must be accessible during processing. This is the default.',
-          ['--embed-stylesheet'],
-          {'default': 1, 'action': 'store_true'}),
-         ('Link to the stylesheet(s) in the output HTML file. '
-          'Default: embed stylesheets.',
-          ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
-         ('Comma-separated list of directories where stylesheets are found. '
-          'Used by --stylesheet-path when expanding relative path arguments. '
-          'Default: "%s"' % default_stylesheet_dirs,
-          ['--stylesheet-dirs'],
-          {'metavar': '<dir[,dir,...]>',
-           'default': default_stylesheet_dirs}),
-         ('Specify the initial header level.  Default is 2 for "<h2>".  '
-          'Does not affect document title & subtitle (see --no-doc-title).',
-          ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
-           'metavar': '<level>'}),
-         ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "brackets".',
-          ['--footnote-references'],
-          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
-           'metavar': '<format>',
-           'overrides': 'trim_footnote_reference_space'}),
-         ('Format for block quote attributions: one of "dash" (em-dash '
-          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
-          ['--attribution'],
-          {'choices': ['dash', 'parentheses', 'parens', 'none'],
-           'default': 'dash', 'metavar': '<format>'}),
-         ('Remove extra vertical whitespace between items of "simple" bullet '
-          'lists and enumerated lists.  Default: enabled.',
-          ['--compact-lists'],
-          {'default': True, 'action': 'store_true'}),
-         ('Disable compact simple bullet and enumerated lists.',
-          ['--no-compact-lists'],
-          {'dest': 'compact_lists', 'action': 'store_false'}),
-         ('Remove extra vertical whitespace between items of simple field '
-          'lists.  Default: enabled.',
-          ['--compact-field-lists'],
-          {'default': True, 'action': 'store_true'}),
-         ('Disable compact simple field lists.',
-          ['--no-compact-field-lists'],
-          {'dest': 'compact_field_lists', 'action': 'store_false'}),
-         ('Embed images in the output HTML file, if the image '
-          'files are accessible during processing.',
-          ['--embed-images'],
-          {'default': 0, 'action': 'store_true'}),
-         ('Link to images in the output HTML file. '
-          'This is the default.',
-          ['--link-images'],
-          {'dest': 'embed_images', 'action': 'store_false'}),
-         ('Added to standard table classes. '
-          'Defined styles: borderless, booktabs, '
-          'align-left, align-center, align-right, colwidths-auto. '
-          'Default: ""',
-          ['--table-style'],
-          {'default': ''}),
-         ('Math output format (one of "MathML", "HTML", "MathJax", '
-          'or "LaTeX") and option(s). '
-          'Default: "HTML ../static/css/math.css"',
-          ['--math-output'],
-          {'default': 'HTML ../static/css/math.css'}),
-         ('Prepend an XML declaration. (Thwarts HTML5 conformance.) '
-          'Default: False',
-          ['--xml-declaration'],
-          {'default': False, 'action': 'store_true'}),
-         ('Omit the XML declaration.',
-          ['--no-xml-declaration'],
-          {'dest': 'xml_declaration', 'action': 'store_false'}),
-         ('Obfuscate email addresses to confuse harvesters while still '
-          'keeping email links usable with standards-compliant browsers.',
-          ['--cloak-email-addresses'],
-          {'action': 'store_true'}),))
+        (
+            ('Comma separated list of stylesheet URLs. '
+             'Overrides previous --stylesheet and --stylesheet-path settings.',
+             ['--stylesheet'],
+             {'metavar': '<URL[,URL,...]>', 'overrides': 'stylesheet_path'}),
+            ('Comma separated list of stylesheet paths.',
+             ['--stylesheet-path'],
+             {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+              'default': default_stylesheets}),
+            ('Embed the stylesheet(s) in the output HTML file.',
+             ['--embed-stylesheet'],
+             {'default': 1, 'action': 'store_true'}),
+            ('Link to the stylesheet(s) in the output HTML file.',
+             ['--link-stylesheet'],
+             {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+            ('List of directories where stylesheets are found.',
+             ['--stylesheet-dirs'],
+             {'metavar': '<dir[,dir,...]>',
+              'default': default_stylesheet_dirs}),
+            ('Specify the initial header level.',
+             ['--initial-header-level'],
+             {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+              'metavar': '<level>'}),
+            ('Format for footnote references',
+             ['--footnote-references'],
+             {'choices': ['superscript', 'brackets'], 'default': 'brackets',
+              'metavar': '<format>',
+              'overrides': 'trim_footnote_reference_space'}),
+            ('Format for block quote attributions',
+             ['--attribution'],
+             {'choices': ['dash', 'parentheses', 'parens', 'none'],
+              'default': 'dash', 'metavar': '<format>'}),
+            ('Remove extra vertical whitespace between items of bullet '
+             'lists and enumerated lists.',
+             ['--compact-lists'],
+             {'default': True, 'action': 'store_true'}),
+            ('Disable compact simple bullet and enumerated lists.',
+             ['--no-compact-lists'],
+             {'dest': 'compact_lists', 'action': 'store_false'}),
+            ('Remove extra vertical whitespace between items of simple field '
+             'lists.',
+             ['--compact-field-lists'],
+             {'default': True, 'action': 'store_true'}),
+            ('Disable compact simple field lists.',
+             ['--no-compact-field-lists'],
+             {'dest': 'compact_field_lists', 'action': 'store_false'}),
+            ('Embed images in the output HTML file, if the image '
+             'files are accessible during processing.',
+             ['--embed-images'],
+             {'default': 0, 'action': 'store_true'}),
+            ('Link to images in the output HTML file.',
+             ['--link-images'],
+             {'dest': 'embed_images', 'action': 'store_false'}),
+            ('Added to standard table classes. '
+             'Defined styles: borderless, booktabs, '
+             'align-left, align-center, align-right, colwidths-auto.',
+             ['--table-style'],
+             {'default': ''}),
+            ('Math output format (one of "MathML", "HTML", "MathJax", '
+             'or "LaTeX") and option(s).',
+             ['--math-output'],
+             {'default': 'HTML ../quaker_theme/static/css/math.css'}),
+            ('Prepend an XML declaration.',
+             ['--xml-declaration'],
+             {'default': False, 'action': 'store_true'}),
+            ('Obfuscate email addresses to confuse harvesters.',
+             ['--cloak-email-addresses'],
+             {'default': False, 'action': 'store_true'}),
+        ))
 
     config_section = 'html5 writer'
 
@@ -131,7 +105,7 @@ class Writer(docutils.writers._html_base.Writer):
         """
         Initialize Writer class.
         """
-        self.parts = {}
+        super().__init__()
         self.translator_class = HTMLTranslator
 
 
@@ -144,39 +118,36 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         Initialize the HTML translator
         """
         super().__init__(document)
-        self.bookmark_index = 0
+        self.settings = document.settings
 
         # Set base path for every document.
-        self.head.append('<base href="%s">' % document.settings.rel_base)
+        self.head.append('<base href="%s">'
+                         % self.settings.rel_base)
 
         # Add favicon to pages.
-        if document.settings.favicon is not None:
-            self.head.append('<link rel="icon" href="%s">' % document.settings.favicon)
+        if self.settings.favicon is not None:
+            self.head.append('<link rel="icon" href="%s">'
+                             % self.settings.favicon)
 
         # Build navigation bar.
-        self.navigation = ''
-        for toc in document.settings.toc:
-            self.navigation += directives.sphinx.TocTree.to_html(toc)
+        # self.navigation = ''
+        # for toc in self.settings.toc:
+        #     self.navigation += directives.sphinx.TocTree.to_html(toc)
+        self.navigation = '<div id="navigation-tree"></div>'
 
         # Add logo to pages.
         self.logo = ''
-        if document.settings.logo is not None:
-            self.logo = '<img src="%s" width="200px" alt="Logo">' % document.settings.logo
+        if self.settings.logo is not None:
+            self.logo = '<img src="%s" alt="Logo">' % self.settings.logo
 
-        # Add copyright notice to footer.
+        link = 'https://quakerdocs.nl/'
+
         self.footer.append(
-            '<p>&copy %s.</p>\
-            <p>Generated with &hearts; by <a href\
-                ="https://gitlab-fnwi.uva.nl/lreddering/pse-documentation-generator">QuakerDocs</a></p>'
-            % document.settings.copyright)
+            f'<p>&copy {self.settings.copyright}.</p>'
+            '<p>Generated with &hearts; by '
+            f'<a href="{link}">QuakerDocs</a></p>')
 
     def visit_metadata(self, node: nodes.Element):
-        """
-        Skip rendering of metadata data-element.
-        """
-        raise nodes.SkipNode
-
-    def depart_metadata(self, node: nodes.Element):
         """
         Skip rendering of metadata data-element.
         """
@@ -188,11 +159,21 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         raise nodes.SkipNode
 
-    def depart_toc_data(self, node: nodes.Element):
+    def visit_ref_element(self, node: nodes.Element):
         """
-        Skip rendering of Table of Contents data-element.
+        Find reference belonging to this element.
         """
-        raise nodes.SkipNode
+        title = node['title']
+        if node['ref'] in self.settings.id_map:
+            ref = self.settings.id_map[node['ref']]
+            self.body.append(f'<a href="{ref}">{title}</a>')
+        else:
+            self.body.append(title)
+
+    def depart_ref_element(self, node: nodes.Element):
+        """
+        End of rendering reference.
+        """
 
     def visit_kbd_element(self, node: nodes.Element):
         """
@@ -211,7 +192,6 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         Do nothing on visit.
         """
-        pass
 
     def depart_iframe_node(self, node: nodes.Element) -> None:
         """
@@ -221,7 +201,8 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         width = node['width']
         height = node['height']
 
-        code = f'<iframe src="{url}" width="{width}" height="{height}" frameborder="0" allow="autoplay"></iframe>'
+        code = (f'<iframe src="{url}" width="{width}" height="{height}" '
+                'frameborder="0" allow="autoplay"></iframe>')
         self.body.append(code)
 
     def visit_section(self, node: nodes.Element) -> None:
@@ -242,25 +223,29 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
             if close_tag.startswith('</h'):
                 self.add_bookmark_btn(node)
-            super().depart_title(node)
+        super().depart_title(node)
 
     def add_bookmark_btn(self, node: nodes.Element):
         """
         Add bookmark button for node to the document body.
         """
         title = node.astext()
-        id = self.create_bookmark_id(node)
-        onclick = f"bookmarkClick('{id}')"
-        bookmark_html = f'<button id="{id}" class="bookmark-btn" onclick="{onclick}" title="{title}" value=0>' + \
-                        '<span class="icon"><i class="fa fa-bookmark-o"></i></span></button>'
-        self.body.append(bookmark_html)
+        bookmark_id = self.create_bookmark_id(node)
+        onclick = f"bookmarkClick('{bookmark_id}')"
+        html = (f'<button id="{bookmark_id}" class="bookmark-btn" '
+                f'onclick="{onclick}" title="{title}" value=0>'
+                '<span class="icon"><i class="fa fa-bookmark-o">'
+                '</i></span></button>')
+        self.body.append(html)
 
-    # ! Needs to be improved !
     def create_bookmark_id(self, node: nodes.Element):
         """
         Assign a unique identifier to the bookmark.
         """
-        comb_str = node.astext() + str(self.bookmark_index)
-        hash_str = str(hash(comb_str))
-        self.bookmark_index += 1
-        return "BM" + hash_str
+        try:
+            id_str = "BM_" + str(node.parent['ids'][0])
+            return id_str
+        except (KeyError, IndexError):
+            print('Cannot make bookmark ID, because parent ID can '
+                  'not be established.')
+            raise

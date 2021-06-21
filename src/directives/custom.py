@@ -8,10 +8,16 @@ from docutils.parsers.rst import directives
 
 
 class ExampleDirective(Directive):
+    """
+    Directive for an admonition with title "Example"
+    """
     has_content = True
     optional_arguments = 100
 
     def run(self):
+        """
+        Create nodes for directive
+        """
         wrapper = nodes.admonition('', classes=['example'])
         title = "Example"
         # Add title to example text if it is supplied.
@@ -51,14 +57,17 @@ class IFrameDirective(Directive):
     optional_arguments = 2
 
     def run(self):
+        """
+        Create nodes for this directive
+        """
         if self.arguments:
             url = self.arguments[0]
             node = iframe_node()
             xy_ratio = 3/5
 
             if self.options:
-                width = self.options[0]
-                height = self.options[1] if len(self.options) > 1 else \
+                width = self.options['width']
+                height = self.options['height'] if len(self.options) > 1 else \
                     width * xy_ratio
             else:
                 width = 500
@@ -72,5 +81,8 @@ class IFrameDirective(Directive):
 
 
 def setup():
+    """
+    Setup function for this module.
+    """
     directives.register_directive('example', ExampleDirective)
     directives.register_directive('iframe', IFrameDirective)

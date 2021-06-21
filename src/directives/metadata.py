@@ -1,3 +1,7 @@
+"""
+Metadata directive used to embed metadata in a RST file.
+"""
+
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
@@ -11,6 +15,9 @@ false_values = {'false', 'f', '0', 'no', 'n'}
 
 
 class metadata(nodes.Inline, nodes.Element):
+    """
+    Class for the metadata node
+    """
     def __init__(self, fields):
         """Create nodes to contain the metadata."""
         nodes.Element.__init__(self)
@@ -19,7 +26,8 @@ class metadata(nodes.Inline, nodes.Element):
 
 
 class MetadataDirective(Directive):
-    """Get the metadata from the files.
+    """
+    Get the metadata from the files.
     """
 
     has_content = True
@@ -38,11 +46,11 @@ class MetadataDirective(Directive):
 
             # Parse the value and update the field.
             try:
-                if type(fields[name]) == bool:
+                if isinstance(fields[name], bool):
                     fields[name] = value.lower() not in false_values
                 else:
                     fields[name] = type(fields[name])(value)
-            except ValueError or KeyError:
+            except (ValueError or KeyError):
                 # TODO: print filename.
                 print(f'Warning: invalid metadata: {line}')
 
@@ -57,6 +65,7 @@ def get_metadata(doctree):
         return next(iter(doctree.traverse(lambda n: isinstance(n, metadata))))
     except StopIteration:
         return metadata(default_fields)
+
 
 def setup():
     """Add the metadata directives.
