@@ -165,6 +165,10 @@ function bookmarkTrashClick (id) {
     bookmarkPanel.style.display = 'none'
 }
 
+/**
+ * Create rename entry when rename button is pressed.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
 function bookmarkRenameClick(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark = getBookmark(bookmarkCookieName(id));
@@ -173,28 +177,24 @@ function bookmarkRenameClick(id) {
     inputAddListener(id);
 }
 
+/**
+ * Add EventListener so Enter key can be pressed to accept new bookmark title.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
 function inputAddListener(id) {
     let inputbox = document.getElementById(`IN_${id}`)
     inputbox.addEventListener("keyup", (e) => {
-        if (e.code == 'Escape') {
-            renameCancel(id);
-        } else if (e.code == 'Enter') {
+        if (e.code == 'Enter') {
             renameAccept(id);
         }
     });
 }
 
-function inputRemoveListener(id) {
-    let inputbox = document.getElementById(`IN_${id}`)
-    inputbox.removeEventListener("keyup");
-}
-
-function renameCancel(id) {
-    let bookmark_panel = document.getElementById(`panel-${id}`);
-    let bookmark = getBookmark(bookmarkCookieName(id));
-    bookmark_panel.innerHTML = createInnerEntry(bookmark);
-}
-
+/**
+ * When accept button is pressed: accept rename by updating bookmark title and
+ * reverting innerHTML back to default inner list entry.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
 function renameAccept(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark_old = getBookmark(bookmarkCookieName(id));
@@ -205,32 +205,38 @@ function renameAccept(id) {
     bookmark_panel.innerHTML = createInnerEntry(bookmark_new);
 }
 
-function createRenameEntry(b) {
-    let entry = `
-                <td class="icon-table">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </td>
-                <td class="input-table">
-                    <input id="IN_${b.id}" class="input" type="text"
-                    value="${b.title}">
-                </td>
-                <td class="button-table">
-                    <i class="fa fa-check bookmark-rename"
-                    onclick="renameAccept('${b.id}')" aria-hidden="true">
-                    </i>
-                </td>
-                <td class="button-table">
-                    <i class="fa fa-ban bookmark-trash"
-                    onclick="renameCancel('${b.id}')" aria-hidden="true">
-                    </i>
-                </td>
-            `;
-    return entry;
+/**
+ * When cancel button is pressed: cancel rename by reverting innerHTML back to
+ * default inner list entry.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
+function renameCancel(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark = getBookmark(bookmarkCookieName(id));
+    bookmark_panel.innerHTML = createInnerEntry(bookmark);
+}
+
+/**
+ * Render all enabled bookmarks onto the enabled overlay.
+ */
+ function renderBookmarkList() {
+    const bookmarkResults = document.getElementById('bookmark-results')
+    const bookmarks = getAllBookmarks()
+    let content = '';
+
+    for (const b of bookmarks) {
+        content += createBookmarkListEntry(b)
+    }
+
+    bookmarkResults.innerHTML = `
+                                <table class="table is-hoverable is-fullwidth">
+                                <tbody> ${content} </tbody></table>
+                                `;
 }
 
 /**
  * Create an HTML entry for the given bookmark.
- * @param {*} b The bookmark of which an entry has to be  created.
+ * @param {*} b The bookmark of which an entry has to be created.
  * @returns {string} The HTML code for the bookmark entry.
  */
  function createBookmarkListEntry(b) {
@@ -240,6 +246,12 @@ function createRenameEntry(b) {
     return entry;
 }
 
+/**
+ * Create an inner list entry for the given bookmark. This entry appears by
+ * default.
+ * @param {*} b The bookmark of which an entry has to be created.
+ * @returns {string} The HTML code for the bookmark entry.
+ */
 function createInnerEntry(b) {
     let entry = `
                 <td class="icon-table">
@@ -264,21 +276,32 @@ function createInnerEntry(b) {
 }
 
 /**
- * Render all enabled bookmarks onto the enabled overlay.
+ * Create a rename entry for the given bookmark. This entry appears when the
+ * rename button is pressed.
+ * @param {*} b The bookmark of which an entry has to be created.
+ * @returns {string} The HTML code for the bookmark entry.
  */
-function renderBookmarkList () {
-    const bookmarkResults = document.getElementById('bookmark-results')
-    const bookmarks = getAllBookmarks()
-    let content = '';
-
-    for (const b of bookmarks) {
-        content += createBookmarkListEntry(b)
-    }
-
-    bookmarkResults.innerHTML = `
-                                <table class="table is-hoverable is-fullwidth">
-                                <tbody> ${content} </tbody></table>
-                                `;
+function createRenameEntry(b) {
+    let entry = `
+                <td class="icon-table">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </td>
+                <td class="input-table">
+                    <input id="IN_${b.id}" class="input" type="text"
+                    value="${b.title}">
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-check bookmark-rename"
+                    onclick="renameAccept('${b.id}')" aria-hidden="true">
+                    </i>
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-ban bookmark-trash"
+                    onclick="renameCancel('${b.id}')" aria-hidden="true">
+                    </i>
+                </td>
+            `;
+    return entry;
 }
 
 /**
