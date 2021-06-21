@@ -71,8 +71,7 @@ function activateSearch () {
             const code = event.code;
 
             // Don't execute a new search when any arrow key or enter is pressed.
-            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter']
-                 .includes(code)) {
+            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(code)) {
                 return;
             }
 
@@ -97,11 +96,12 @@ function activateSearch () {
  * @returns An HTML element, the container of the result entry.
  */
 function createResultElement (href, title, content) {
-    const element = document.createElement('div')
-    element.innerHTML = `<a class="panel-block result is-flex-direction-column" onmouseover="selectEntry(this, 'result')" href="${href}" onclick="storeSearchResults()">
-                            <h1 class="result-title"><strong>${title}</strong></h1>
-                            <p class="result-content">${content}</p>
-                        </a>`
+    element = `<div class="result">
+                    <a class="panel-block is-flex-direction-column" href="${href}" onclick="storeSearchResults()">
+                        <h1 class="result-title"><strong>${title}</strong></h1>
+                        <p class="result-content">${content}</p>
+                    </a>
+                </div>`
 
     return element
 }
@@ -149,6 +149,7 @@ function renderResults (query, searcher, resultsWrapper) {
     const parser = new DOMParser()
     const maxResults = 9
 
+    console.log(query)
     let i = 0
     for (const r of searcher) {
         /* Limit number of search results. */
@@ -174,6 +175,7 @@ function renderResults (query, searcher, resultsWrapper) {
                 }
 
                 const displayText = highlightSearchQuery(query, text)
+                console.log(displayText)
                 const resultEl = createResultElement(href, r.title, displayText)
                 resultList.append(resultEl)
             })

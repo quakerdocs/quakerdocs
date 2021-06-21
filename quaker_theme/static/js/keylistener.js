@@ -17,17 +17,17 @@ document.addEventListener('keyup', (event) => {
 
     if (searchOpen) {
         if (code === 'ArrowDown') {
-            selectRelativeEntry(1, 'result');
+            selectRelativeEntry('result', true);
         } else if (code === 'ArrowUp') {
-            selectRelativeEntry(-1, 'result');
+            selectRelativeEntry('result', false);
         } else if (code === 'Enter') {
             redirectEntry('result');
         }
     } else if (bookmarkOpen) {
         if (code === 'ArrowDown') {
-            selectRelativeEntry(1, 'bookmark-entry');
+            selectRelativeEntry('bookmark-entry', true);
         } else if (code === 'ArrowUp') {
-            selectRelativeEntry(-1, 'bookmark-entry');
+            selectRelativeEntry('bookmark-entry', false);
         } else if (code === 'Enter') {
             redirectEntry('bookmark-entry');
         }

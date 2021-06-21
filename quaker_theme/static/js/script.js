@@ -46,37 +46,57 @@ let searchOpen = false
  * @returns {null} If the element was already selected.
  */
 function selectEntry(element, overlay) {
-    var results = document.getElementsByClassName(overlay + ' selected');
-
-    if (Array.from(results).includes(element)) {
-        return null;
+    var curEl = document.getElementsByClassName(overlay + ' selected')[0];
+    if (curEl === element) {
+        return;
     }
 
-    for (var i = 0; i < results.length; i++) {
-        results[i].classList.remove('selected');
+    if (curEl) {
+        curEl.classList.remove('selected');
     }
 
     element.classList.add('selected');
 }
 
 /**
- * Select the element which is offset elements away from the current element.
- * @param {*} offset The offset.
+ * Select the next or previous sibling of the currently selected element.
  * @param {*} overlay Which overlay the program should look in.
  *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
  *     overlay.
- * @returns {null} If the element was already selected.
+ * @param {*} forwards If true, select the next sibling, if false, select the
+ *    previous sibling.
  */
-function selectRelativeEntry(offset, overlay) {
-    var curEl = document.getElementsByClassName(overlay + ' selected');
-    var els = Array.from(document.getElementsByClassName(overlay));
-    var index = -1;
-    if (curEl.length != 0) {
-        index = els.indexOf(curEl[0])
+function selectRelativeEntry(overlay, forwards) {
+    const curEl = document.getElementsByClassName(overlay + ' selected')[0];
+
+    // If no element is currently selected, either select the first or the last
+    // element based on the given direction.
+    if (!curEl) {
+        const entries = document.getElementsByClassName(overlay);
+
+        if (forwards) {
+            selectEntry(entries[0], overlay);
+        } else {
+            selectEntry(entries[entries.length - 1], overlay);
+        }
+
+        return;
     }
 
-    var newIndex = Math.max(0, Math.min(index + offset, els.length - 1));
-    var newEl = document.getElementsByClassName(overlay)[newIndex];
+    // Determine a new, to be selected, element based on the direction of the
+    // pressed arrow key.
+    let newEl = null;
+    if (forwards) {
+        newEl = curEl.nextElementSibling;
+    } else {
+        newEl = curEl.previousElementSibling;
+    }
+
+    // If there isn't a neighbour in the given direction, don't change the
+    // selected entry.
+    if (!newEl) {
+        newEl = curEl;
+    }
 
     return selectEntry(newEl, overlay);
 }
@@ -86,20 +106,23 @@ function selectRelativeEntry(offset, overlay) {
  * @param {*} overlay Which overlay the program should look in.
  *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
  *     overlay.
- * @returns {null} If the element was already selected.
+ * @returns {null} If no element was selected.
  */
 function redirectEntry(overlay) {
-    var curEl = document.getElementsByClassName(overlay + ' selected');
-    console.log(curEl);
-    if (curEl.length == 0) {
-        return null;
+    var curEl = document.getElementsByClassName(overlay + ' selected')[0]
+
+    console.log(curEl)
+    if (!curEl) {
+        return;
     }
 
+    curEl = curEl.firstElementChild;
+
     if (overlay === 'result') {
-        window.location.href = curEl[0].href;
+        window.location.href = curEl.href
     } else if (overlay === 'bookmark-entry') {
-        console.log(curEl[0].children[0])
-        console.log(curEl[0].children[0].click());
+        curEl.firstElementChild.click()
+        // window.location.href = curEl.onclick.split(';')[0].split('=')[1]
     }
 }
 
@@ -163,8 +186,10 @@ function backToTop () {
 function expandSidebar (url) {
     const a = document.querySelector('a[href="' + url + '"]')
 
-    toggleExpand(a.parentElement, true)
-    expandULParents(a)
+    if (a) {
+        toggleExpand(a.parentElement, true)
+        expandULParents(a)
+    }
 }
 
 /**

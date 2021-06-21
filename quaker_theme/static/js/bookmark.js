@@ -291,15 +291,16 @@ function renderBookmarkList () {
  * @returns {string} The HTML code for the bookmark entry.
  */
 function createBookmarkListEntry(b) {
-    let entry = `<div id="panel-${b.id}" class="panel-block bookmark-entry">
+
+    let entry = `<div class="bookmark-entry"><div id="panel-${b.id}" class="panel-block">
                     ${createInnerEntry(b)}
-                </div>`;
+                </div></div>`;
     return entry;
 }
 
 function createInnerEntry(b) {
     let title = truncateTitle(b.title);
-    let entry = `<div class="tile is-10 bookmark-entry" onclick="location='${b.page}'; \
+    let entry = `<div class="tile is-10" onclick="location='${b.page}'; \
                 hideBookmarkOverlay()">
                     <div class="level">
                         <div class="level-item">
