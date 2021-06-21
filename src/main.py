@@ -23,6 +23,17 @@ from theme import Theme
 
 
 class Main:
+    """The central component of the program, from which everything else is called.
+
+    Parameters
+    ----------
+    source_path : pathlib.Path
+        The directory containing the source files.
+    dest_path : pathlib.Path
+        The directory to write the output.
+    builder : str
+        The builder used for the generator.
+    """
     SKIP_TAGS = {'system_message', 'problematic'}
 
     # Mapping builder name to (output file extension, writer class) tuple
@@ -82,13 +93,6 @@ class Main:
         with open('conf.py') as conf_file:
             exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
-
-        # NOTE: this shouldn't be needed.
-        # suffix = self.conf_vars['source_suffix']
-        # if isinstance(suffix, str):
-        #     self.conf_vars['source_suffix'] = [suffix]
-
-        # self.conf_vars['source_suffix']=set(self.conf_vars['source_suffix'])
 
         # Exclude static files, as they should not be processed.
         self.conf_vars['exclude_patterns'] += \
@@ -162,7 +166,7 @@ class Main:
 
                 if path.suffix == '.rst':
                     page = Page(self, path)
-                    page.parse(self)
+                    page.parse()
 
                 if str(path.with_suffix('')) == master_doc:
                     # Iterate and join ToC's.
@@ -175,11 +179,16 @@ class Main:
             for page in pages:
                 print(f'Warning: {page.src} contains an unresolved '
                       f'reference "{ref_name}"')
-                page.write(self)
+                page.write()
 
     def is_excluded(self, path):
         """
-        Check whether the supplied filename is not supposed to be excluded.
+        Check whether a file is not supposed to be excluded.
+
+        Parameters
+        ----------
+        path : pathlib.Path
+            The path to the file to be checked
         """
         exclude_pats = self.conf_vars['exclude_patterns']
         return any(fnmatch.fnmatch(path, pattern) for pattern in exclude_pats)
