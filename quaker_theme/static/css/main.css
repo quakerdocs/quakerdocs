@@ -119,15 +119,11 @@
   outline: none;
 }
 
-.bookmark-entry:hover {
-  cursor: pointer;
-  background: hsl(0, 0%, 96%);
-}
-
 .bookmark-trash {
   background: none;
   border: none;
   border-color: none;
+  padding: 0px;
 }
 
 .bookmark-trash:hover {
@@ -139,6 +135,7 @@
     border: none;
     background: none;
     border-color: none;
+    padding: 0px;
 }
 
 .bookmark-rename:hover {
@@ -146,14 +143,29 @@
     color: rgb(0, 102, 255);
 }
 
-.level-rename {
-    width:95%;
+.title-table {
+    text-align: left !important;
+    vertical-align: middle !important;
+    width:76%;
 }
 
-.level-icon {
-    width: 7%;
+.input-table {
+  text-align: left !important;
+  vertical-align: middle !important;
 }
 
-.level-title {
-    width: 93%;
+.icon-table {
+  text-align: center !important;
+    vertical-align: middle !important;
+    width:8%;
+}
+
+.button-table {
+  text-align: center !important;
+  vertical-align: middle !important;
+  width:8%;
+}
+
+.title-table:hover {
+  cursor: pointer;
 }
