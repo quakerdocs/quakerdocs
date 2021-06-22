@@ -19,7 +19,7 @@
  */
 typedef struct GLOBALS {
     /* The array containing the search result pages. */
-    page_t *result;
+    page_t result[PAGE_COUNT];
     int result_size;
     int result_index;
 
@@ -28,8 +28,8 @@ typedef struct GLOBALS {
     vector_t *words;
 
     /* Reusable page and temporary page maps. */
-    int *map_a;
-    int *map_b;
+    int map_a[PAGE_COUNT];
+    int map_b[PAGE_COUNT];
 } globals_t;
 
 /* Global variables. */
@@ -42,13 +42,13 @@ static globals_t g;
  */
 void globals_init() {
     initialised = 1;
-    g.result = malloc(total_page_count * sizeof (page_t));
+    // g.result = malloc(PAGE_COUNT * sizeof (page_t));
     g.result_size = 0;
     g.result_index = 0;
     g.stack = vector_make(8);
     g.words = vector_make(2);
-    g.map_a = malloc(total_page_count * sizeof (int));
-    g.map_b = malloc(total_page_count * sizeof (int));
+    // g.map_a = malloc(PAGE_COUNT * sizeof (int));
+    // g.map_b = malloc(PAGE_COUNT * sizeof (int));
 }
 
 /*
@@ -56,11 +56,11 @@ void globals_init() {
  */
 void globals_free() {
     initialised = 0;
-    free(g.result);
+    // free(g.result);
     vector_free(g.stack);
     vector_free(g.words);
-    free(g.map_a);
-    free(g.map_b);
+    // free(g.map_a);
+    // free(g.map_b);
 }
 
 /*
@@ -175,11 +175,11 @@ int search_word(int *page_map, const char *word) {
         return 0;
 
     /* Ignore this node, as it is a stopword. */
-    if (node->page_count == ignore_node_value)
+    if (node->page_count == IGNORE_NODE_VALUE)
         return 1;
 
     /* Clear the page map. */
-    for (int i = 0; i < total_page_count; ++i)
+    for (int i = 0; i < PAGE_COUNT; ++i)
         page_map[i] = 0;
 
     /* Now combine all of the pages starting from the found word node. */
@@ -230,7 +230,7 @@ int *search_and_combine_words() {
             else {
                 /* Intersect the two maps, adding the two counts only if
                  * the page exists in both maps. */
-                for (int i = 0; i < total_page_count; i++) {
+                for (int i = 0; i < PAGE_COUNT; i++) {
                     if (page_map[i] && temp_map[i])
                         page_map[i] += temp_map[i];
                     else
@@ -282,7 +282,7 @@ void performSearch(char *input) {
     /* Update the result array if the page map is not empty. */
     if (page_map) {
         /* Add the final page map contents to the results vector. */
-        for (int i = 0; i < total_page_count; ++i) {
+        for (int i = 0; i < PAGE_COUNT; ++i) {
             if (page_map[i] != 0)
                 g.result[g.result_size++] = (page_t){i, page_map[i]};
         }

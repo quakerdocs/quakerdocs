@@ -219,6 +219,8 @@ if __name__ == "__main__":
                             help='The directory to write the output.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html",
                             help='Builder used for the generator.')
+    arg_parser.add_argument('-e', type=str, dest='emcc', default="emcc",
+                            help='The Emscripten compiler executable.')
     args = arg_parser.parse_args()
 
     print("Running QuakerDocs 0.0.3")
