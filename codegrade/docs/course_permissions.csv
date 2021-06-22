@@ -1,0 +1,64 @@
+Name,Description
+**Submit others work**,Users with this permission can submit work to an assignment for other users. This means they can submit work that will have another user as the author.
+**Submit own work** \*,Users with this permission can submit their work to assignments of this course. Usually only students have this permission.
+**Edit others work**,"Users with this permission can edit files in the submissions of this course. Usually TAs and teachers have this permission, so they can change files in the CodeGra.de filesystem if code doesn't compile, for example."
+**Grade submission**,Users with this permission can grade submissions.
+**See grade before done**,"Users with this permission can see the grade for a submission before an assignment is set to ""done""."
+**See others submission**,Users with this permission can see submissions of other users of this course.
+**See assignments** \*,Users with this permission can view the assignments of this course.
+**See hidden assignments**,"Users with this permission can view assignments of this course that are set to ""hidden""."
+**Edit assignment info**,"Users with this permission can update the assignment info such as name, deadline and status."
+**Assign graders**,Users with this permission can assign a grader to submissions of assignments.
+**Edit .cgignore**,Users with this permission can edit the .cgignore file for an assignment.
+**Upload BlackBoard zip**,Users with this permission can upload a zip file with submissions in the BlackBoard format.
+**Edit course roles**,Users with this permission can assign or remove permissions from course roles and add new course roles.
+**Edit course users**,Users with this permission can add users to this course and assign roles to those users.
+**Create assignment**,Users with this permission can create new assignments for this course.
+**Upload after deadline**,Users with this permission can submit their work after the deadline of an assignment.
+**See assignee**,Users with this permission can see who is assigned to assess a submission.
+**Manage rubrics**,Users with this permission can update the rubrics for the assignments of this course.
+**View teacher revision** \*,Users with this permission can view the teacher's revision of their submitted work.
+**Grade history**,Users with this permission can see the grade history of an assignment.
+**Delete submission**,Users with this permission can delete submissions.
+**Update grader status**,"Users with this permission can change the status of graders for this course, whether they are done grading their assigned submissions or not."
+**Update course notifications**,Users with this permission can change the all notifications that are configured for this course. This includes when to send them and who to send them to.
+**Edit the maximum grade possible**,"Users with this permission can edit the maximum grade possible, and therefore also determine if getting a 'bonus' for an assignment is also possible."
+**View plagiarism**,"Users with this permission can view the summary of a plagiarism check and see details of a plagiarism case. To view a plagiarism case between this and another course, the user must also have either this permission, or both ""See assignments"" and ""See other's work"" in the other course."
+**Manage plagiarism**,Users with this permission can add and delete plagiarism runs.
+**List course users** \*,Users with this permission can see all users of this course including the name of their role.
+**Edit own groups** \*,"Users with this permission can edit groups they are in. This means they can join groups, add users to groups they are in and change the name of groups they are in. They cannot remove users from groups they are in, except for themselves."
+**Edit others groups**,"Users with this permission can edit groups they are not in, they can add users, remove users and rename all groups. Users with this permission can also edit groups they are in."
+**Edit groups after first submission**,"Users with this permission can edit groups which handed in a submission. Users with this permission cannot automatically edit groups, they also need either ""Edit own groups"" or ""Edit others groups""."
+**View others groups** \*,"Users with this permission can view groups they are not in, and the members of these groups."
+**Edit group assignment**,"Users with this permission can change an assignment into a group assignment, and change the minimum and maximum required group size."
+**Edit group set**,"Users with this permissions can create, delete and edit group sets."
+**Create groups** \*,Users with this permission can create new groups in group assignments.
+**View course snippets**,"Users with this permission can see the snippets of this course, and use them while writing feedback."
+**Manage course snippets**,"Users with this permission can create, edit, and delete snippets for this course."
+**View hidden AutoTest fixtures**,Users with this permission can view hidden autotest fixtures.
+**Run an AutoTest configuration**,Users with this permission can start AutoTest runs
+**Delete an AutoTest run**,Users with this permission can delete AutoTest runs
+**Edit the configuration of an AutoTest**,"Users with this permission can create, delete, edit the fixtures of, setup scripts of, and test sets of an AutoTest"
+**View the details of hidden AutoTest steps**,Users with this permission can view hidden AutoTest steps if they have the permission to view the summary of this step
+**View AutoTest details before done**,"Users with this permission can view AutoTest, such as sets, before the state of the assignment is ""Open"""
+**View the details of AutoTest steps** \*,Users with this permission are allowed to see the details of non hidden AutoTest steps
+**View non hidden AutoTest fixtures** \*,Users with this permission are allowed to see non hidden AutoTest fixtures
+**View AutoTest output files before done**,"Users with this permission can view output files created during an AutoTest before the assignment state is ""done"""
+**Delete assignments**,Users with this permission can delete assignments within this course.
+**Override submission limiting**,"Users with this permission can create new submissions, even if the maximum amount of submissions has been reacher, or if a cool-off period is in effect."
+**See linter feedback before done**,"Users with this permission can see the output of linters before an assignment is set to ""done"""
+**See feedback before done**,"Users with this permission can see feedback before an assignment is set to ""done"""
+**Can view analytics**,Users with this permission can view the analytics dashboard of an assignment.
+**Edit inline comments by others**,Users with this permission can edit inline comments left by other users
+**Add inline comments to own submissions**,Users with this permission can add and reply to inline comments on submissions they are the author of
+**View others comment edits**,Users with this permission may see the edit history of comments placed by others
+**View feedback author** \*,Users with this permission can view the author of inline and general feedback
+**Can email students**,Users with this permission can email students using the contact student button.
+**View peer feedback before approved**,"Users with this permission can view unapproved inline comments, comments that need approval include peer feedback comments. Users still need to have the permission to see the feedback, so this permission alone is not enough to see peer feedback."
+**Approve inline comments**,"Users with this permission can approve inline comments, comments that need approval include peer feedback comments."
+**Edit peer feedback settings**,Users with this permission can edit the peer feedback status of an assignment.
+**Receive login links** \*,"Users with this permission will receive login links if this is enabled for the assignment. You should not give this permission to users with powerful permissions (such as ""Can grade work"")."
+**See archived courses**,Users will be able to see a course that is archived. Users that do not have this permission will not be able to see any data (e.g. submissions) connected to an archived course.
+**Archive courses**,"Users will be able to archive courses. After archiving a course users that do not have the ""See archived courses"" permission will no longer be able too see the course."
+**Edit course info**,"Users with this permission can edit general information of a course, for example the name."
+**Upload after lock date**,Users with this permission can still upload (submit) work after the lock date of an assignment.

@@ -11,7 +11,7 @@
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://image.shutterstock.com/image-photo/monkey-face-close-260nw-220510171.jpg">
+                <img class="is-rounded" src="_static/_images/dylan.png">
             </figure>
             <a class="column" href="https://www.linkedin.com/in/dylan-koster-067884205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Dylan Koster</p>
@@ -27,17 +27,15 @@
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/lars.png">
             </figure>
-            <a class="column" href="https://www.linkedin.com/in/lars-reddering-a7a643207/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a class="column" href="https://www.linkedin.com/in/lars-reddering/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Lars Reddering</p>
-            <a href="https://www.linkedin.com/in/lars-reddering/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/philip.png">
             </figure>
-            <a class="column" href="https://www.linkedin.com/in/philip-schutte-838ab5205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a class="column" href="https://www.linkedin.com/in/philip-schutte/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Philip Schutte</p>
-            <a href="https://www.linkedin.com/in/philip-schutte/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
     </div>
 
