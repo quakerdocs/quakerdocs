@@ -3,7 +3,7 @@ Getting Started with QuakerDocs
 
 QuakerDocs is very easy to use, and you do not need a lot to get started!
 To get started, you only need a configuration file written in Python called :code:`conf.py`, and one or more files containing your documentation called :code:`<your_file_name>.rst`.
-An example can be downloaded from `here <www.google.com>`_ .
+An example project to quickly get started, can be downloaded from `here <_static/quaker-quickstart.zip>`_ .
 
 Installation
 ------------
@@ -34,10 +34,10 @@ To use QuakerDocs to turn your reStructuredText files into a static webpage you 
 
       quaker . -d build
 
-3. (Change into the build directory, and start a webserver)
+3. Change into the build directory, and start a webserver
 
    .. code-block:: bash
 
        python3 -m http.server
 
-4. To visit the generated documentation page visit localhost:8000 in your web browser.
+4. To visit the generated documentation page visit :code:`localhost:8000` in your web browser.

@@ -1,9 +1,10 @@
 /* Keep track if the webassambly module has completed loading. */
-let wasmLoaded = false
+let wasm_loaded = false
 let searcher = null;
+let search_input = '';
 
 Module.onRuntimeInitialized = () => {
-    wasmLoaded = true
+    wasm_loaded = true
 }
 
 /**
@@ -58,7 +59,7 @@ class Result {
  * @yields {Result} The next search result entry.
  */
 function * performSearch (query) {
-    if (!wasmLoaded) {
+    if (!wasm_loaded) {
         return
     }
 
@@ -78,41 +79,49 @@ function * performSearch (query) {
     }
 }
 
+
+function searchUpdateKey (event) {
+    const resultsWrapper = document.getElementById('search-results')
+    const code = event.code;
+
+    // Don't execute a new search when any arrow key or enter is pressed.
+    if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(code)) {
+        return;
+    }
+
+    const input = this.value
+
+    if (input.length) {
+        searcher = performSearch(input)
+        resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
+        searchInput
+        // renderResults(input)
+        renderResults()
+    } else {
+        resultsWrapper.innerHTML = ''
+    }
+}
+
+function handleInfiniteScroll () {
+    if (this.scrollTopMax - this.scrollTop < 90) {
+        renderResults(4)
+    }
+}
+
 /**
  * Add an keyboard event listener to activate a search function
  * {@link performSearch} on every keystroke.
  */
 function activateSearch () {
     /* Activate the search bar with an keyboard event listener.
-     */
-    const searchInput = document.getElementById('searchbar')
-    const resultsWrapper = document.getElementById('search-results')
+    */
     const results = document.getElementById('search-results')
+    const searchInput = document.getElementById('searchbar')
 
     if (searchInput) {
         // Update search results when a key is pressed.
-        searchInput.addEventListener('keyup', () => {
-            const input = searchInput.value
-
-            if (input.length) {
-                searcher = performSearch(input)
-                renderResults(input, searcher, resultsWrapper)
-            } else {
-                resultsWrapper.innerHTML = ''
-            }
-        })
-        results.addEventListener('scroll', () => {
-            if (searcher == null)
-                return;
-
-            if (results.scrollTopMax - results.scrollTop < 90) {
-                r = searcher.next()
-                if (!r.done) {
-                    let res = r.value.createResultElement()
-                    document.getElementById('result-list').append(res)
-                }
-            }
-        })
+        searchInput.addEventListener('keyup', searchUpdateKey)
+        results.addEventListener('scroll', handleInfiniteScroll)
     }
 }
 
@@ -122,12 +131,9 @@ function activateSearch () {
  * @param {*} searcher The generator which yields the search results.
  * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
-function renderResults (query, searcher, resultsWrapper) {
+function renderResults (maxResults = 10) {
     /* Reset the results and setup the parser */
-    resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
-    const resultList = document.getElementById('result-list')
-    const parser = new DOMParser()
-    const maxResults = 15
+    // const parser = new DOMParser()
 
 
     for (let i = 0; i <= maxResults; i++) {
@@ -140,6 +146,9 @@ function renderResults (query, searcher, resultsWrapper) {
         let res = r.value.createResultElement()
         document.getElementById('result-list').append(res)
 
+    }
+
+    for (let i = maxResults; i >= 0; i--) {
         /* Fetch page contents. */
         // fetch('../' + r.page)
         //     .then(res => res.text())

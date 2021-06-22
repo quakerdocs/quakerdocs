@@ -45,6 +45,64 @@
   max-width: 45vw;
 }
 
+/******************************** Popover ********************************/
+.popover {
+  position: relative;
+  display: inline-block;
+}
+
+.popover .popover-content {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, 0.7rem);
+  z-index: 99999;
+  position: absolute;
+  display: inline-block;
+  opacity: 0;
+  visibility: hidden;
+  padding: 10px;
+  color: #000000;
+  background-color: #dbfaf4;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px 0 #1abc9c7f;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 24rem;
+}
+
+.popover .popover-content::before {
+  position: absolute;
+  content: '';
+  border-style: solid;
+  pointer-events: none;
+  top: 0;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: rotate(135deg);
+  border-color: #dbfaf4 !important;
+  border-bottom-color: white;
+  border-left-color: white;
+  border-width: 0.4rem;
+  margin-left: -0.4rem;
+  margin-top: -0.4rem;
+  transform-origin: center;
+  box-shadow: -1px 1px 2px rgba(10, 10, 10, 0.2);
+}
+
+.popover.is-popover-active .popover-content, .popover:hover .popover-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popover .popover-trigger:focus ~ .popover-content {
+  opacity: 1;
+  visibility: visible;
+}
+
 /******************************** Menu ********************************/
 .menu {
   position: sticky;
@@ -90,8 +148,12 @@
   border: 1px solid #ddd;
 }
 
-.result:hover {
+.result.selected {
   background: #ddd;
+}
+
+a.panel-block:hover {
+  background: none !important;
 }
 
 .result-title {
@@ -119,15 +181,17 @@
   outline: none;
 }
 
-.bookmark-entry:hover {
+.bookmark-entry.selected {
   cursor: pointer;
-  background: hsl(0, 0%, 96%);
+  background: #ddd !important;
 }
 
 .bookmark-trash {
   background: none;
   border: none;
   border-color: none;
+  padding: 0px;
+  margin: 0px;
 }
 
 .bookmark-trash:hover {
@@ -139,6 +203,8 @@
     border: none;
     background: none;
     border-color: none;
+    padding: 0px;
+  margin: 0px;
 }
 
 .bookmark-rename:hover {
@@ -146,14 +212,29 @@
     color: rgb(0, 102, 255);
 }
 
-.level-rename {
-    width:95%;
+.title-table {
+    text-align: left !important;
+    vertical-align: middle !important;
+    width:76%;
 }
 
-.level-icon {
-    width: 7%;
+.input-table {
+  text-align: left !important;
+  vertical-align: middle !important;
 }
 
-.level-title {
-    width: 93%;
+.icon-table {
+  text-align: center !important;
+    vertical-align: middle !important;
+    width:8%;
+}
+
+.button-table {
+  text-align: center !important;
+  vertical-align: middle !important;
+  width:8%;
+}
+
+.title-table:hover {
+  cursor: pointer;
 }

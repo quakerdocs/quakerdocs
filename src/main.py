@@ -105,7 +105,7 @@ class Main:
 
         self.read_conf()
         self.sp_app = application.SphinxApp()
-        for ext in self.conf_vars['extensions']:
+        for ext in self.conf_vars.get('extensions', []):
             application.setup_extension(ext, self.sp_app)
 
         # Get path to theme
