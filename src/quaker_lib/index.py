@@ -411,7 +411,11 @@ class IndexGenerator:
     Parameters
     ----------
     title_weight : int, optional
+<<<<<<< HEAD:src/quaker_lib/index.py
         How often words in the title are counted (the default is 5).
+=======
+        How often words in the title are counted.
+>>>>>>> 2564d75... Added title_weight as option to conf.py:src/index.py
 
     Attributes
     ----------
@@ -424,8 +428,9 @@ class IndexGenerator:
 
     """
 
-    def __init__(self):
+    def __init__(self, title_weight=5):
         """Constructor for the IndexGenerator class."""
+        self.title_weight = title_weight
 
         self.urltitles = []  # [(url, title), ...]
         self.trie = Trie("")  # root of the prefix trie
@@ -448,7 +453,7 @@ class IndexGenerator:
 
         # Change to lowercase, separate _ and only keep letters/numbers.
         # TODO add title weight to config
-        content += (title + ' ') * 5
+        content += (title + ' ') * self.title_weight
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
