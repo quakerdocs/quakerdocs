@@ -6,27 +6,28 @@
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/bob.png">
             </figure>
+            <a class="column" href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Bob Reus</p>
-            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="https://image.shutterstock.com/image-photo/monkey-face-close-260nw-220510171.jpg">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/dylan-koster-067884205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Dylan Koster</p>
-            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/niels.png">
             </figure>
+            <a class="column" href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Niels Kaars</p>
-            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/lars.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/lars-reddering-a7a643207/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Lars Reddering</p>
             <a href="https://www.linkedin.com/in/lars-reddering/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
@@ -34,6 +35,7 @@
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/philip.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/philip-schutte-838ab5205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Philip Schutte</p>
             <a href="https://www.linkedin.com/in/philip-schutte/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
@@ -46,36 +48,36 @@
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/jurriaan.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/jurriaan-van-den-berg-b03958172"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Jurriaan v.d. Berg</p>
-            <a href="https://www.linkedin.com/in/jurriaan-van-den-berg-b03958172/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/marten.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/marten-fleminks/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Marten Fleminks</p>
-            <a href="https://www.linkedin.com/in/marten-fleminks/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/piraveen.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/piraveen-kd"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Piraveen Kandiah</p>
-            <a href="https://www.linkedin.com/in/piraveen-kd"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/steven.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/steven-lageveen-05b558173/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Steven Lageveen</p>
-            <a href="https://www.linkedin.com/in/steven-lageveen-05b558173/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
                 <img class="is-rounded" src="_static/_images/timo.png">
             </figure>
+            <a class="column" href="https://www.linkedin.com/in/timo-sluis-b2a41a1b9/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Timo Sluis</p>
-            <a href="https://www.linkedin.com/in/timo-sluis-b2a41a1b9/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
     </div>
 
