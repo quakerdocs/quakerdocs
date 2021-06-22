@@ -46,9 +46,9 @@
     <div class="columns has-text-centered">
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://pbs.twimg.com/profile_images/378800000388159526/524ed78748c172df1be2838cc01a7360_400x400.jpeg">
+                <img class="is-rounded" src="_static/_images/jurriaan.png">
             </figure>
-            <a class="column" href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a class="column" href="https://www.linkedin.com/in/jurriaan-van-den-berg-b03958172"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Jurriaan v.d. Berg</p>
         </div>
         <div class="column">
