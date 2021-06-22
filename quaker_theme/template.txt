@@ -21,19 +21,29 @@
 				%(logo)s
 			</a>
 
-			<a class="navbar-item">
-				<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
-					<span class="icon"><i class="fa fa-search"></i></span>
-					<span class="is-hidden-touch">Search</span>
-				</button>
-			</a>
+			<div id="search-wrapper" class="popover">
+				<a class="popover-trigger navbar-item">
+					<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
+						<span class="icon"><i class="fa fa-search"></i></span>
+						<span> Search</span>
+					</button>
+					<div class="popover-content is-hidden-touch">
+						<p>Search <b>(S)</b></p>
+					</div>
+				</a>
+			</div>
 
-			<a class="navbar-item">
-				<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
-					<span class="icon"><i class="fa fa-bookmark"></i></span>
-					<span class="is-hidden-touch">Bookmarks</span>
-				</button>
-			</a>
+			<div id="bookmarkwrapper" class="popover is-hidden-mobile">
+				<a class="popover-trigger navbar-item">
+					<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
+						<span class="icon"><i class="fa fa-bookmark"></i></span>
+						<span>Bookmarks</span>
+					</button>
+					<div class="popover-content is-hidden-touch">
+						<p>Bookmarks <b>(B)</b></p>
+					</div>
+				</a>
+			</div>
 
 			<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
 				<span aria-hidden="true"></span>
