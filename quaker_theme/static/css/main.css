@@ -94,6 +94,10 @@
   background: #ddd;
 }
 
+a.panel-block:hover {
+  background: none !important;
+}
+
 .result-title {
   font-size: 20px;
   text-align: center;
@@ -121,7 +125,7 @@
 
 .bookmark-entry.selected {
   cursor: pointer;
-  background: #ddd;
+  background: #ddd !important;
 }
 
 .bookmark-trash {
@@ -175,8 +179,4 @@
 
 .title-table:hover {
   cursor: pointer;
-}
-
-a.panel-block:hover, .table.is-hoverable tbody tr:not(.is-selected):hover {
-  background-color: transparent;
 }

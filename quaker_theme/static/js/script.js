@@ -124,7 +124,7 @@ function redirectEntry(overlay) {
     if (overlay === 'result') {
         window.location.href = curEl.href
     } else if (overlay === 'bookmark-entry') {
-        curEl.nextSibling.click()
+        curEl.nextElementSibling.click()
     }
 }
 
