@@ -23,6 +23,27 @@ from pathlib import Path
 import util
 
 
+class kbd_element(nodes.General, nodes.Element):
+    """
+    Empty node for rendering keyboard inputs
+    """
+    pass
+
+
+class toc_data(nodes.General, nodes.Element):
+    """
+    Container class for Toc data.
+    """
+    pass
+
+
+class ref_element(nodes.General, nodes.Element):
+    """
+    Custom reference node to handle unparsed pages.
+    """
+    pass
+
+
 class Only(Directive):
     """
     Directive for only including content for certain builds.
@@ -46,13 +67,6 @@ class Only(Directive):
             return [*node]
 
         return []
-
-
-class toc_data(nodes.General, nodes.Element):
-    """
-    Container class for Toc data.
-    """
-    pass
 
 
 class TocTree(Directive):
@@ -298,13 +312,6 @@ class CodeBlock(Directive):
         return [wrappernode]
 
 
-class ref_element(nodes.General, nodes.Element):
-    """
-    Custom reference node to handle unparsed pages.
-    """
-    pass
-
-
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
@@ -325,13 +332,6 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     node['ref'] = ref.replace('_', '-').lower()
 
     return [node], []
-
-
-class kbd_element(nodes.General, nodes.Element):
-    """
-    Empty node for rendering keyboard inputs
-    """
-    pass
 
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):

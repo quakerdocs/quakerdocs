@@ -2,61 +2,43 @@
  * This file contains the search engine backend. TODO
  */
 
-// #include <stdlib.h>
-
-#ifdef EMSCRIPTEN
-    #include <emscripten/emscripten.h>
-#else
-    #define EMSCRIPTEN_KEEPALIVE
-#endif
-
 #include "search.h"
 
 #define NULL 0
-
 #define WORDS_MAX 64
 
-/*
- * The global data used by the searcher.
+typedef unsigned int page_map_t;
+
+/**
+ * TODO
+ */
+typedef struct RESULT {
+    page_i page;
+    page_map_t count;
+} result_t;
+
+/**
+ * The global variables and arrays used by the searcher.
  */
 typedef struct GLOBALS {
     /* The array containing the search result pages. */
-    page_t result[PAGE_COUNT];
-    int result_size;
-    int result_index;
+    result_t results[PAGE_COUNT];
+    int results_size;
 
     /* Reusable words list. */
     const char *words[WORDS_MAX];
     int word_count;
 
     /* Reusable page and temporary page maps. */
-    int map_a[PAGE_COUNT];
-    int map_b[PAGE_COUNT];
+    page_map_t map_a[PAGE_COUNT];
+    page_map_t map_b[PAGE_COUNT];
 } globals_t;
 
 /* Global variables. */
-static int initialised = 0;
-static globals_t g;
+static globals_t g = {0};
 
 
-/*
- * Initialise the global variables and memory.
- */
-void globals_init() {
-    initialised = 1;
-    g.result_size = 0;
-    g.result_index = 0;
-    g.word_count = 0;
-}
-
-/*
- * Free the globally allocated memory.
- */
-void globals_free() {
-    initialised = 0;
-}
-
-/*
+/**
  * Parse the input string to split it into words. This overwrites the input
  * string, and adds the words to the global words vector.
  *
@@ -109,7 +91,7 @@ void parse_input(char *input) {
         g.words[g.word_count++] = found_word;
 }
 
-/*
+/**
  * Find a node which matches with the word, or NULL if no match can be found.
  * The lookup is done in the prefix trie from search.h.
  *
@@ -154,10 +136,10 @@ const node_t *find_node(const char *word) {
     return current;
 }
 
-/*
+/**
  * TODO
  */
-void fill_page_map(const node_t *node, int *page_map) {
+void fill_page_map(const node_t *node, page_map_t *page_map) {
     /* Add the pages of this node to the list. */
     for (page_s i = 0; i < node->page_count; ++i) {
         const page_t *page = pages + (node->pages + i);
@@ -169,7 +151,7 @@ void fill_page_map(const node_t *node, int *page_map) {
         fill_page_map(nodes + node->children + i, page_map);
 }
 
-/*
+/**
  * Fill a page map with all the pages which contain (a part of) a word.
  *
  * page_map: the page map to place the results in.
@@ -178,7 +160,7 @@ void fill_page_map(const node_t *node, int *page_map) {
  * returns: 0 if no pages have been found, 1 if this word should be ignored,
  *          and 2 otherwise.
  */
-int search_word(int *page_map, const char *word) {
+int search_word(page_map_t *page_map, const char *word) {
     /* Check if a matching node exists. */
     const node_t *node = find_node(word);
     if (node == NULL)
@@ -198,14 +180,14 @@ int search_word(int *page_map, const char *word) {
     return 2;
 }
 
-/*
+/**
  * Search all the words of the global word stack, combine the results, and
  * return the final page map.
  *
  * returns: a page map containing the results of the search.
  */
-int *search_and_combine_words() {
-    int *page_map = g.map_a, *temp_map = g.map_b;
+page_map_t *search_and_combine_words() {
+    page_map_t *page_map = g.map_a, *temp_map = g.map_b;
     int page_map_empty = 1;
 
     /* Iterate over the words to fill the page map. */
@@ -220,7 +202,7 @@ int *search_and_combine_words() {
             if (page_map_empty) {
                 /* Replace the empty page map with the temp map. */
                 page_map_empty = 0;
-                int *temp = temp_map;
+                page_map_t *temp = temp_map;
                 temp_map = page_map;
                 page_map = temp;
             }
@@ -241,7 +223,7 @@ int *search_and_combine_words() {
     return page_map_empty ? NULL : page_map;
 }
 
-/*
+/**
  * Compare two pages for sorting purposes.
  *
  * a: a pointer to the first page.
@@ -256,61 +238,79 @@ int page_compare(const void *a, const void *b) {
 }
 
 
-/*
+#define INPUT_MAX_SIZE 1024
+const int input_max_size = INPUT_MAX_SIZE;
+char input_output[INPUT_MAX_SIZE];
+
+/**
  * Perform the search on an input query and store the found
  * page entries in memory.
  *
  * input: the input string.
  */
-EMSCRIPTEN_KEEPALIVE
-void performSearch(char *input) {
-    if (!initialised)
-        globals_init();
-
+void performSearch() {
     /* Clear the previous search. */
-    g.result_size = 0;
-    g.result_index = 0;
+    g.results_size = 0;
     g.word_count = 0;
 
     /* Parse the input and create the page map. */
-    parse_input(input);
-    int *page_map = search_and_combine_words();
+    parse_input(input_output);
+    page_map_t *page_map = search_and_combine_words();
 
     /* Update the result array if the page map is not empty. */
     if (page_map) {
         /* Add the final page map contents to the results vector. */
         for (int i = 0; i < PAGE_COUNT; ++i) {
             if (page_map[i] != 0)
-                g.result[g.result_size++] = (page_t){i, page_map[i]};
+                g.results[g.results_size++] = (result_t){i, page_map[i]};
         }
-
-        /* Sort the results based on most occurrences count. */
-        // qsort(g.result, g.result_size, sizeof (page_t), page_compare);
     }
 }
 
-/*
+/**
  * Return the next found page as a url, title, and section title.
  *
  * returns: a url, title and section title of a page, seperated by newlines.
  */
-EMSCRIPTEN_KEEPALIVE
-const char* getSearch() {
-    /* Check that we don't exceed the found results. */
-    if (!initialised || g.result_index >= g.result_size)
-        return NULL;
+int getSearch() {
+    /* Return 0 if no results are left. */
+    if (g.results_size == 0)
+        return 0;
+
+    /* Get the highest result from the result array. */
+    int max_i = 0, max_count = 0;
+    for (int i = 0; i < g.results_size; i++) {
+        if (g.results[i].count > max_count) {
+            max_count = g.results[i].count;
+            max_i = i;
+        }
+    }
+
+    /* Remove already returned results from the back. */
+    int temp = g.results_size;
+    while (g.results_size != 0 && g.results[--temp].count == 0) {
+        g.results_size = temp;
+    }
 
     /* Get the next entry from the array. */
-    page_t found = g.result[g.result_index++];
+    g.results[max_i].count = 0;
+    const char *result_it = urltitles[g.results[max_i].page];
 
-    /* Translate the index to the page info and return. */
-    return urltitles[found.index];
+    /* Copy the output to the input_output and return its length. */
+    int i;
+    for (i = 0; *result_it; ++result_it, ++i) {
+        input_output[i] = *result_it;
+    }
+
+    return i;
 }
 
+
 #ifdef RUN_LOCAL
+#include <stdlib.h>
 #include <stdio.h>
 
-/*
+/**
  * This is main function for if we are running the search locally. The search query
  * can then be given as command line arguments. This is mainly used for testing
  * purposes.
@@ -321,14 +321,11 @@ const char* getSearch() {
  * returns: 0.
  */
 int main(int n, char **input) {
-    char buffer[1024];
-
     /* Fill the buffer with the input strings. */
-    char *buffer_it = buffer;
+    char *buffer_it = input_output;
     for (int i = 1; i < n; i++) {
-        char *str = input[i];
-        for (int j = 0, l = strlen(str); j < l; j++)
-            *(buffer_it++) = str[j];
+        for (char *str = input[i]; *str; ++str)
+            *(buffer_it++) = *str;
 
         if (i != n - 1)
             *(buffer_it++) = ' ';
@@ -337,13 +334,14 @@ int main(int n, char **input) {
     *(buffer_it++) = 0;
 
     /* Search the query. */
-    printf("Results for [%s]\n", buffer);
-    performSearch(buffer);
+    printf("Results for [%s]\n", input_output);
+    performSearch();
 
     /* Print the results. */
-    const char *result;
-    while ((result = getSearch())) {
-        printf("%s\n", result);
+    int length;
+    while ((length = getSearch())) {
+        input_output[length] = 0;
+        printf("%s\n", input_output);
     }
 
     return 0;

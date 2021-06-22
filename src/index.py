@@ -487,23 +487,42 @@ class IndexGenerator:
         template = Template((source_path / 'search.h.jinja').read_text())
 
         # Write the search index to hpp.
-        search_path = temp_path / 'search'
-        search_path.mkdir(parents=True, exist_ok=True)
-        with open(search_path / 'search.h', 'w') as f:
+        temp_path = temp_path / 'search'
+        temp_path.mkdir(parents=True, exist_ok=True)
+        with open(temp_path / 'search.h', 'w') as f:
             f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
             f.write(template.render(urltitles=self.urltitles,
                                     stopwords=stopwords,
                                     **data.__dict__))
 
         # Create the build command.
-        emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
-        cmnd = [f'{emcc}', '-Os', '-flto',
-                '-I', f'"{search_path}/"',
-                f"{source_path / 'search.c'}",
-                '-o', f"{dest_path / 'search_data.js'}",
-                '-s', 'WASM=1',
-                '-s', 'EXPORTED_FUNCTIONS=["_performSearch","_getSearch"]',
-                '-s', 'EXPORTED_RUNTIME_METHODS=\'["ccall","cwrap"]\'']
+        if False:
+            emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
+            cmnd = [f'{emcc}', '-Os', '-flto',
+                    '-I', f'"{temp_path}/"',
+                    f"{source_path / 'search.c'}",
+                    '-o', f"{dest_path / 'search_data.js'}",
+                    '-s', 'WASM=1',
+                    '-s', 'EXPORTED_FUNCTIONS=["_performSearch","_getSearch"]',
+                    '-s', 'EXPORTED_RUNTIME_METHODS=\'["ccall","cwrap"]\'']
 
-        dest_path.mkdir(parents=True, exist_ok=True)
-        os.system(' '.join(cmnd))
+            dest_path.mkdir(parents=True, exist_ok=True)
+            os.system(' '.join(cmnd))
+        else:
+            object_file = temp_path / 'search_data.o'
+            cmnd = ['clang', '-Os', '-c',
+                    '--target=wasm32', '-march=wasm32',
+                    '-fno-builtin',
+                    '-I', f'"{temp_path}"',
+                    '-o', f'{object_file}',
+                    f"{source_path / 'search.c'}"]
+
+            dest_path.mkdir(parents=True, exist_ok=True)
+            os.system(' '.join(cmnd))
+
+            cmnd = ['wasm-ld', '--no-entry',
+                    '--export-all',
+                    '-o', f"{dest_path / 'search_data.wasm'}",
+                    f'{object_file}']
+
+            os.system(' '.join(cmnd))

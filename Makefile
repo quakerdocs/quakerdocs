@@ -33,10 +33,6 @@ clean:
 local_search:
 	gcc -Wall -O3 -g3 -DRUN_LOCAL=1 -I"tmp/$(BUILDDIR)/search" src/wasm/search.c -o tmp/$(BUILDDIR)/search/search
 
-test:
-	clang -nostartfiles --target=wasm32 -march=wasm32 -Wall -O3 -g3 -I"tmp/$(BUILDDIR)/search" src/wasm/search.c -o tmp/$(BUILDDIR)/search/search.wasm
-
-
 # Download and install the Emscripten toolchain in ./emsdk. If you have
 # emscripten installed somewhere else, you can also simlink that
 # installation to ./emsdk.

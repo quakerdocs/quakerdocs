@@ -1,11 +1,8 @@
-/* Keep track if the webassambly module has completed loading. */
-let wasm_loaded = false
+/* Keep track if the WebAssembly module has completed loading. */
+let wasm = null;
 let searcher = null;
-let search_input = '';
-
-Module.onRuntimeInitialized = () => {
-    wasm_loaded = true
-}
+let searchInput = "";
+let parser = new DOMParser()
 
 /**
  * Class representing a result entry.
@@ -27,9 +24,15 @@ class Result {
 
         /* Optionally the paragraph title, to allow searching on paragraph level. */
         this.paragraph = paragraph
+    }
 
-        /* The text with highlight to be added later. */
-        this.content = ''
+    /**
+     * TODO
+     */
+    getHTML () {
+        return `<a class="panel-block result is-flex-direction-column" href="${this.page}" onclick="storeSearchResults()">
+                <h1 class="result-title"><strong>${this.title}</strong></h1>
+                </a>`
     }
 
     /**
@@ -42,15 +45,27 @@ class Result {
      */
     createResultElement () {
         const element = document.createElement('div')
-        element.innerHTML = `<a class="panel-block result is-flex-direction-column" href="${this.page}" onclick="storeSearchResults()">
-                                <h1 class="result-title"><strong>${this.title}</strong></h1>
-                                <p class="result-content">${this.content}</p>
-                            </a>`
-
+        element.innerHTML = this.getHTML()
         return element
     }
-
 };
+
+/**
+ * TODO
+ */
+async function initSearchWasm() {
+    const { instance } = await WebAssembly.instantiateStreaming(
+        fetch("./_static/js/search_data.wasm")
+    );
+
+    let mem = instance.exports.memory
+    let buffer_loc = instance.exports.input_output
+    let buffer_len = instance.exports.input_max_size
+    instance.search_buffer = new Uint8Array(mem.buffer, buffer_loc, buffer_len)
+    wasm = instance
+}
+
+initSearchWasm();
 
 /**
  * Perform a search action and yield the results to the HTML page.
@@ -59,21 +74,25 @@ class Result {
  * @yields {Result} The next search result entry.
  */
 function * performSearch (query) {
-    if (!wasm_loaded) {
+    if (wasm == null) {
         return
     }
 
-    /* Get the functions from the wasm module. */
-    const search = Module.cwrap('performSearch', null, ['string'])
-    const getres = Module.cwrap('getSearch', 'string')
+    /* Upload the string to the wasm. */
+    let i, l = Math.min(query.length, wasm.exports.input_max_size - 1);
+    for (i = 0; i < l; i++)
+        wasm.search_buffer[i] = query.charCodeAt(i)
+    wasm.search_buffer[i] = 0
 
     /* Perform the search. */
-    search(query)
+    wasm.exports.performSearch();
 
     /* Return the results as they are asked. */
-    let result
-    while (result = getres()) {
-        /* Split on new line, regex to work on all os'es. */
+    let decoder = new TextDecoder()
+    let len
+    while (len = wasm.exports.getSearch()) {
+        /* Get the result from the wasm. */
+        let result = decoder.decode(wasm.search_buffer.subarray(0, len))
         const sep = result.split('\n')
         yield new Result(sep[0], sep[1], sep[2])
     }
@@ -89,13 +108,11 @@ function searchUpdateKey (event) {
         return;
     }
 
-    const input = this.value
+    searchInput = this.value
 
-    if (input.length) {
-        searcher = performSearch(input)
+    if (searchInput) {
+        searcher = performSearch(searchInput)
         resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
-        searchInput
-        // renderResults(input)
         renderResults()
     } else {
         resultsWrapper.innerHTML = ''
@@ -104,7 +121,7 @@ function searchUpdateKey (event) {
 
 function handleInfiniteScroll () {
     if (this.scrollTopMax - this.scrollTop < 90) {
-        renderResults(4)
+        renderResults(5)
     }
 }
 
@@ -132,46 +149,66 @@ function activateSearch () {
  * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
 function renderResults (maxResults = 10) {
-    /* Reset the results and setup the parser */
-    // const parser = new DOMParser()
+    /* Array to store the results into so that the text can be added later. */
+    let newres = Array(maxResults)
 
+    let resultList = document.getElementById('result-list')
+    let index = 0
 
-    for (let i = 0; i <= maxResults; i++) {
+    for (; index < maxResults; index++) {
         /* Limit number of search results. */
-        r = searcher.next()
+        let r = searcher.next()
         if (r.done) {
             break
         }
 
-        let res = r.value.createResultElement()
-        document.getElementById('result-list').append(res)
-
+        resultList.append(r.value.createResultElement())
+        newres[index] = r.value
     }
 
-    for (let i = maxResults; i >= 0; i--) {
-        /* Fetch page contents. */
-        // fetch('../' + r.page)
-        //     .then(res => res.text())
-        //     .then(data => {
-        //         const html = parser.parseFromString(data, 'text/html')
-        //         let href = '../' + r.page
-        //         let text = html.getElementById('content').innerText
-        //         /* Look for the section containing the result. */
-        //         for (const section of html.querySelectorAll('section')) {
-        //                 if (section.textContent.includes(query) && section.id) {
-        //                         href += '#' + section.id
-        //                         text = section.innerText
-        //                         break
-        //                     }
-        //                 }
+    resultList = resultList.getElementsByTagName("a")
+    let i = 0
+    const input = searchInput.slice()
 
-        //                 const displayText = highlightSearchQuery(query, text)
-        //                 const resultEl = createResultElement(href, r.title, displayText)
-        //                 resultList.append(resultEl)
-        //             })
-        //             .catch(console.error)
+    function getContent() {
+        if (i >= index) {
+            return
+        }
+
+        let r = newres[i]
+        fetch(r.page)
+            .then(res => res.text())
+            .then(data => {
+                if (input != searchInput) {
+                    return
+                }
+
+                const html = parser.parseFromString(data, 'text/html')
+                let text = html.getElementById('content').innerText
+
+                /* Look for the section containing the result. */
+                for (const section of html.querySelectorAll('section')) {
+                    if (section.textContent.includes(searchInput) && section.id) {
+                        r.page += '#' + section.id
+                        text = section.innerText
+                        break
+                    }
+                }
+
+                let content = highlightSearchQuery(searchInput, text)
+                resultList[resultList.length - index + i].innerHTML += `<p class="result-content">${content}</p>`
+
+                i++
+                getContent()
+            })
+            .catch(console.error)
     }
+
+    /* Fetch page contents. */
+    getContent()
+
 }
+
 
 /**
  * Highlights a query in the provided text using a span tag.
