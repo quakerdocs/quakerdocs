@@ -4,7 +4,7 @@
     <div class="columns has-text-centered">
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://media.istockphoto.com/photos/closeup-of-mixedbreed-monkey-between-chimpanzee-and-bonobo-smiling-picture-id119838172?k=6&m=119838172&s=612x612&w=0&h=C6yKSGBkRi_85jnSv1aryQWKu08QKq6aLXWJGpHVd90=">
+                <img class="is-rounded" src="_static/_images/bob.png">
             </figure>
             <a class="column" href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Bob Reus</p>
@@ -25,17 +25,19 @@
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://media.npr.org/assets/img/2015/09/23/ap_836720500193_sq-57a032ff491f37e572cb77216b40d978a6f5fff3-s800-c85.jpg">
+                <img class="is-rounded" src="_static/_images/lars.png">
             </figure>
             <a class="column" href="https://www.linkedin.com/in/lars-reddering-a7a643207/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Lars Reddering</p>
+            <a href="https://www.linkedin.com/in/lars-reddering/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
         <div class="column">
             <figure class="image is-inline-block is-128x128">
-                <img class="is-rounded" src="https://cdn.shopify.com/s/files/1/0078/8575/0369/products/Monkey_Face_Diamond_Painting_Kit_550x.jpg?v=1571713803">
+                <img class="is-rounded" src="_static/_images/philip.png">
             </figure>
             <a class="column" href="https://www.linkedin.com/in/philip-schutte-838ab5205/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
             <p class="title is-4">Philip Schutte</p>
+            <a href="https://www.linkedin.com/in/philip-schutte/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
         </div>
     </div>
 
