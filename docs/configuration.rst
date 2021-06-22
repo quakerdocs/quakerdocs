@@ -9,12 +9,14 @@ Extensions
 ----------------
 Add extension module names here, as strings. Quaker will look for your
 extensions in your system path. To add a new folder containing extensions to
-the path, you can use python. For example:
+the path, you can use python.
 
-.. code-block:: python
+.. example::
 
-   sys.path.insert(0, os.path.abspath('./my_extensions'))
-   extensions = ['extension1', 'extension2']
+   .. code-block:: python
+
+      sys.path.insert(0, os.path.abspath('./my_extensions'))
+      extensions = ['extension1', 'extension2']
 
 
 Templates
