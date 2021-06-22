@@ -1,6 +1,8 @@
 import os
 import docutils
-from quaker_lib import application, directives
+import quaker_lib.directives.sphinx
+import quaker_lib.directives.metadata
+from quaker_lib import application
 from docutils import nodes
 
 
@@ -51,7 +53,7 @@ class Rst():
                 main.waiting.pop(page_id)
 
         # Check if the file can be written,
-        ref = directives.sphinx.ref_element
+        ref = quaker_lib.directives.sphinx.ref_element
         for node in self.doctree.traverse(lambda n: isinstance(n, ref)):
             if node['ref'] not in application.id_map:
                 main.waiting[node['ref']].append(self)
@@ -67,7 +69,7 @@ class Rst():
         """
 
         # Get the page metadata.
-        metadata = directives.metadata.get_metadata(self.doctree)
+        metadata = quaker_lib.directives.metadata.get_metadata(self.doctree)
         if metadata.ignore:
             return
 
