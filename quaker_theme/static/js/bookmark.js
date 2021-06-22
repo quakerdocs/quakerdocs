@@ -280,7 +280,7 @@ function createInnerEntry(b) {
                     </i>
                 </td>
                 <td class="button-right-table">
-                    <i class="fa fa-trash bookmark-trash"
+                    <i class="fas fa-trash bookmark-trash"
                     onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true">
                     </i>
                 </td>`;
