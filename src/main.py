@@ -137,7 +137,7 @@ class Main:
         self.load_extensions()
 
         # Set-up index generator and build the files.
-        self.idx = index.IndexGenerator()
+        self.idx = index.IndexGenerator(self.conf_vars.get('title_weight', 5))
         self.build_files()
 
         # Set-up Table of Contents data

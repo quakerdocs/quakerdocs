@@ -409,6 +409,11 @@ class IndexGenerator:
     A class to generate the indexing/trie used for searching as well as the
     translation of page indices to page info.
 
+    Parameters
+    ----------
+    title_weight : int, optional
+        How often words in the title are counted.
+
     Attributes
     ----------
     urltitles : [(str, str)]
@@ -420,8 +425,9 @@ class IndexGenerator:
 
     """
 
-    def __init__(self):
+    def __init__(self, title_weight=5):
         """Constructor for the IndexGenerator class."""
+        self.title_weight = title_weight
 
         self.urltitles = []  # [(url, title), ...]
         self.trie = Trie("")  # root of the prefix trie
@@ -444,7 +450,7 @@ class IndexGenerator:
 
         # Change to lowercase, separate _ and only keep letters/numbers.
         # TODO add title weight to config
-        content += (title + ' ') * 5
+        content += (title + ' ') * self.title_weight
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
