@@ -31,8 +31,10 @@ class Rst():
             content,
             main.conf_vars.get('rst_epilog', ''))
 
+        main.docutil_settings['env'].docname = self.src.name
         self.doctree = docutils.core.publish_doctree(
             content,
+            parser=main.source_parsers.get(self.src.suffix)(),
             source_path=str(self.src),
             settings_overrides={
                 **main.docutil_settings,

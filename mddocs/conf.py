@@ -6,7 +6,8 @@ sys.path.insert(0, os.path.abspath('./_ext'))
 
 # -- General configuration ------------------------------------------------
 extensions = [
-    "myst_parser"
+    'myst_parser',
+    'sphinx_fontawesome'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

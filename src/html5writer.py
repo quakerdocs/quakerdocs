@@ -159,6 +159,12 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         raise nodes.SkipNode
 
+    def visit_pending_xref(self, node: nodes.Element):
+        """
+        ...
+        """
+        raise nodes.SkipNode
+
     def visit_ref_element(self, node: nodes.Element):
         """
         Find reference belonging to this element.

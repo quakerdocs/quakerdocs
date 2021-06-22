@@ -95,7 +95,7 @@ class TocTree(Directive):
         lst = list_type()
 
         # Parse ToC content.
-        TocTree.parse_content(tocdata)
+        self.parse_content(tocdata)
         items = TocTree.to_nodes(tocdata['entries'], tocdata['maxdepth'],
                                  list_type=list_type)
 
@@ -133,8 +133,7 @@ class TocTree(Directive):
         return entries
 
     # TODO: Integrate with search index?
-    @staticmethod
-    def parse_content(tocdata: toc_data):
+    def parse_content(self, tocdata: toc_data):
         """
         Fill the toctree data structure with entries.
         """
@@ -143,6 +142,8 @@ class TocTree(Directive):
             src_dir = tocdata['src_dir']
             if entry.endswith('.rst'):
                 entry = entry[:-4]
+            if entry.endswith('.md'):
+                entry = entry[:-3]
 
             # Check if current entry is in format 'Some Title <some_link>'.
             explicit_link = util.link_explicit(entry)
@@ -158,7 +159,15 @@ class TocTree(Directive):
                     ref = Path(ref).with_suffix('.html')
             else:
                 ref = os.path.join(entry + ".html")
-                src = os.path.join(src_dir, entry + ".rst")
+                temp_src = os.path.join(src_dir, entry)
+                for s in self.state.document.settings.source_suffix:
+                    path = temp_src + s
+                    if os.path.exists(path):
+                        src = path
+                        break
+
+                if src is None:
+                    print(f"File {temp_src} not found!")
 
                 if not os.path.exists(src):
                     continue

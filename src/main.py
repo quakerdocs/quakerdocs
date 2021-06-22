@@ -17,9 +17,12 @@ import index
 import directives
 import application
 import html5writer
-
 from rst import Rst
 from theme import Theme
+from util import Config
+
+from docutils.parsers.rst import Parser
+from argparse import Namespace
 
 
 class Main:
@@ -36,6 +39,7 @@ class Main:
         self.temp_path = dest_path.parent / 'tmp' / dest_path.name
         self.static_path = dest_path / '_static'
         self.builder = builder
+        self.source_parsers = {'.rst': Parser }
 
         self.sp_app = None
         self.theme = None
@@ -84,11 +88,11 @@ class Main:
         self.conf_vars.update(conf_vars)
 
         # NOTE: this shouldn't be needed.
-        # suffix = self.conf_vars['source_suffix']
-        # if isinstance(suffix, str):
-        #     self.conf_vars['source_suffix'] = [suffix]
-
-        # self.conf_vars['source_suffix']=set(self.conf_vars['source_suffix'])
+        suffix = self.conf_vars['source_suffix']
+        if suffix is None:
+            self.conf_vars['source_suffix'] = ['.rst']
+        elif isinstance(suffix, str):
+            self.conf_vars['source_suffix'] = [suffix]
 
         # Exclude static files, as they should not be processed.
         self.conf_vars['exclude_patterns'] += \
@@ -107,6 +111,24 @@ class Main:
         self.sp_app = application.SphinxApp()
         for ext in self.conf_vars.get('extensions', []):
             application.setup_extension(ext, self.sp_app)
+
+        # Add new source suffixes and parsers
+        self.conf_vars['source_suffix'].append(*self.sp_app.source_suffix)
+        self.source_parsers.update(self.sp_app.source_parsers)
+
+        # Callback to extensions.
+        for name, lst in self.sp_app.callbacks.items():
+            if name == 'builder-inited':
+                [callback(self.sp_app) for callback in lst]
+
+        self.sp_app.env.config = Namespace(**self.sp_app.config)
+        self.sp_app.env.docname = None
+        self.sp_app.env.metadata = Namespace()
+        self.sp_app.env.metadata.setdefault = lambda x, y: {}
+        self.docutil_settings.update({
+            'env': self.sp_app.env,
+            'source_suffix': self.conf_vars['source_suffix']
+        })
 
         # Get path to theme
         self.theme = Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
@@ -161,7 +183,7 @@ class Main:
                 if self.is_excluded(path):
                     continue
 
-                if path.suffix == '.rst':
+                if path.suffix in self.conf_vars['source_suffix']:
                     page = Rst(self, path)
                     page.parse(self)
 
