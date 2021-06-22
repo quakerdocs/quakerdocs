@@ -120,6 +120,7 @@
 
 .menu-list a {
   display: inline-flex;
+  width: 90%;
 }
 
 .menu-list a:hover {
