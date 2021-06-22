@@ -408,6 +408,11 @@ class IndexGenerator:
     A class to generate the indexing/trie used for searching as well as the
     translation of page indices to page info.
 
+    Parameters
+    ----------
+    title_weight : int, optional
+        How often words in the title are counted (the default is 5).
+
     Attributes
     ----------
     urltitles : [(str, str)]
