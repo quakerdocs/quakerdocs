@@ -144,8 +144,10 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
         self.footer.append(
             f'<p>&copy {self.settings.copyright}.</p>'
-            '<p>Generated with <span style="color: red"><i class="fas fa-heart"></span></i> '
-            '& <span style="color: #ffcc4d"><i class="fas fa-beer"></i></span> by '
+            '<p>Generated with <span style="color: red"> '
+            '<i class="fas fa-heart"></span></i> & '
+            '<span style="color: #ffcc4d"><i class="fas fa-beer">'
+            '</i></span> by '
             f'<a href="{link}">QuakerDocs</a></p>')
 
     def visit_metadata(self, node: nodes.Element):
