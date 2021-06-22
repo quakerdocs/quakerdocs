@@ -20,7 +20,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 from pathlib import Path
-from quaker_lib import util
+import util
 
 
 class Only(Directive):

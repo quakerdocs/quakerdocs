@@ -479,7 +479,7 @@ class IndexGenerator:
 
         """
         print('Building the search index assembly')
-        source_path = Path(os.path.abspath(os.path.dirname(__file__))) / 'wasm'
+        source_path = Path('src') / 'wasm'
 
         if not source_path.exists():
             raise FileNotFoundError('Wasm source files are not found.')

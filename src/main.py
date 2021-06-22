@@ -13,13 +13,13 @@ from collections import defaultdict
 
 from distutils.dir_util import copy_tree
 
-from quaker_lib import index
-from quaker_lib import directives
-from quaker_lib import application
-from quaker_lib import html5writer
+import index
+import directives
+import application
+import html5writer
 
-from quaker_lib.rst import Rst
-from quaker_lib.theme import Theme
+from rst import Rst
+from theme import Theme
 
 
 class Main:
@@ -45,9 +45,9 @@ class Main:
         self.toc_navigation = []
 
         # Import and setup all directives.
-        dir_path = Path(__file__).parent / '..' / 'quaker_lib' / 'directives'
+        dir_path = Path(__file__).parent / 'directives'
         for _, module, _ in pkgutil.iter_modules([str(dir_path)]):
-            module = importlib.import_module(f'quaker_lib.directives.{module}')
+            module = importlib.import_module(f'directives.{module}')
             module.setup()
 
         self.waiting = defaultdict(list)
@@ -214,10 +214,7 @@ class Main:
                       update=1)
 
 
-def main():
-    """
-    Main entrypoint of the program.
-    """
+if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='QuakerDocs')
     arg_parser.add_argument('source_path', type=Path,
                             help='The directory containing the RST files.')
@@ -231,8 +228,3 @@ def main():
     print("Running QuakerDocs 0.0.3")
     main = Main(args.source_path, args.build_path, args.builder)
     main.generate()
-    return 0
-
-
-if __name__ == "__main__":
-    main()
