@@ -274,12 +274,12 @@ function createInnerEntry(b) {
                 onclick="location='${b.page}';hideBookmarkOverlay()">
                     ${b.title}
                 </td>
-                <td class="button-table">
+                <td class="button-left-table">
                     <i class="fa fa-pencil bookmark-rename"
                     onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true">
                     </i>
                 </td>
-                <td class="button-table">
+                <td class="button-right-table">
                     <i class="fa fa-trash bookmark-trash"
                     onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true">
                     </i>
@@ -303,12 +303,12 @@ function createRenameEntry(b) {
                     <input id="IN_${b.id}" class="input" type="text"
                     value="${b.title}">
                 </td>
-                <td class="button-table">
+                <td class="button-left-table">
                     <i class="fa fa-check bookmark-rename"
                     onclick="renameAccept('${b.id}')" aria-hidden="true">
                     </i>
                 </td>
-                <td class="button-table">
+                <td class="button-right-table">
                     <i class="fa fa-ban bookmark-trash"
                     onclick="renameCancel('${b.id}')" aria-hidden="true">
                     </i>
