@@ -1,0 +1,32 @@
+from setuptools import setup, find_packages
+from setuptools.command.install import install
+
+
+setup(
+    name = "quaker",
+    version = "0.5.1",
+    description = "Static Documentation Generator",
+    long_description = open("README.md").read(),
+    long_description_content_type = "text/markdown",
+    entry_points = {
+        'console_scripts': [
+            'quaker=quaker:main',
+        ],
+    },
+    url = "https://www.quakerdocs.nl/",
+    classifiers = [
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires = ">=3.8",
+    packages = find_packages("src"),
+    package_dir = {"quaker": "src/quaker", "quaker_lib": "src/quaker_lib"},
+    include_package_data = True,
+    package_data = {"quaker_lib": ["static/*", "wasm/*"]},
+    install_requires = [
+        "Pygments==2.9.0",
+        "docutils==0.17.1",
+        "Jinja2==2.10.3"
+    ]
+)

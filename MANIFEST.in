@@ -1,0 +1,2 @@
+recursive-include src/quaker_lib/static/ *
+recursive-include src/quaker_lib/wasm/ *
