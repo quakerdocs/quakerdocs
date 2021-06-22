@@ -12,7 +12,7 @@ typedef {{ page_i.type }} page_i;
 typedef {{ page_c.type }} page_c;
 
 /* A node of the Radix tree. */
-struct Node {
+typedef struct NODE {
     char_p chars;
     node_p children;
     page_p pages;
@@ -21,13 +21,16 @@ struct Node {
     child_s child_count;
     /* The number of pages. Is zero when this node is not an end. */
     page_s page_count;
-};
+} node_t;
 
 /* Struct storing the data associated with a page. */
-struct Page {
+typedef struct PAGE {
     page_i index;
     page_c count;
-};
+} page_t;
+
+const int total_page_count = {{ urltitles|length }};
+const page_c ignore_node_value = {{ ignore_node_value }};
 
 const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
     "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
@@ -39,6 +42,6 @@ const unsigned char page_data[] = {{ '{' }}{{ page_arr }}{{ '}' }};
 
 const char chars[] = {{ char_arr }};
 
-const Node *nodes = (Node *) node_data;
-const Page *pages = (Page *) page_data;
+const node_t *nodes = (node_t *) node_data;
+const page_t *pages = (page_t *) page_data;
 
