@@ -230,8 +230,14 @@ a.panel-block:hover {
   width:8%;
 }
 
-.button-table {
+.button-left-table {
   text-align: center !important;
+  vertical-align: middle !important;
+  width:8%;
+}
+
+.button-right-table {
+  text-align: left !important;
   vertical-align: middle !important;
   width:8%;
 }
