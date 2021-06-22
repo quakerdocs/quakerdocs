@@ -10,7 +10,6 @@ class Bookmark {
      * @param {*} id The id of the bookmark.
      * @param {*} page The page URL where the bookmark belongs to.
      * @param {*} title The title of the page where the bookmark belongs to.
-     * @param {*} paragraph TODO: Define paragraph.
      */
     constructor (id, page, title, paragraph = '') {
         this.id = id
@@ -20,11 +19,6 @@ class Bookmark {
 
         // The title of the page, for quick display.
         this.title = title
-
-        // Optionally the paragraph title, to allow searching on paragraph
-        // level. This is a stretch goal, so it doesn't have to be supported
-        // right away.
-        this.paragraph = paragraph
     }
 }
 
@@ -45,19 +39,11 @@ function setBookmark (id) {
     const name = bookmarkCookieName(id)
     const bookmarkButton = document.getElementById(id)
 
-    /* substring(3), because id starts with BM_ */
-    const pageUrl = window.location.pathname + '#' + id.substring(3)
+    /* Remove "BM_" tag from id */
+    const idPath = id.split('_')[1]
+    const pageUrl = window.location.pathname + '#' + idPath;
     const bookmark = new Bookmark(id, pageUrl, bookmarkButton.title)
     setCookie(name, JSON.stringify(bookmark))
-}
-
-/**
- * Delete the bookmark and cookie with the given id.
- * @param {string} id The id of the bookmark and cookie to be deleted.
- */
-function deleteBookmark (id) {
-    cname = bookmarkCookieName(id)
-    deleteCookie(cname)
 }
 
 /**
@@ -65,7 +51,7 @@ function deleteBookmark (id) {
  * @param {string} cname The name of the to be retrieved bookmark.
  * @returns {*} The data contained in the bookmark cookie.
  */
-function getBookmark (cname) {
+ function getBookmark (cname) {
     const cookie = getCookie(cname)
     if (cookie) {
         return JSON.parse(cookie)
@@ -81,17 +67,23 @@ function updateBookmark(b, new_title) {
 }
 
 /**
- * Check if the bookmark button of the given id is activated or not.
- * @param {string} id The id of the to be checked bookmark button.
- * @returns {number} 1 if the button was activated, 0 if not.
+ * Delete the bookmark and cookie with the given id.
+ * @param {string} id The id of the bookmark and cookie to be deleted.
  */
-function getBookmarkBtnVal (id) {
-    const name = bookmarkCookieName(id)
-    if (getBookmark(name) != null) {
-        return 1
-    }
+function deleteBookmark (id) {
+    cname = bookmarkCookieName(id)
+    deleteCookie(cname)
+}
 
-    return 0
+/**
+ * Update bookmark b's title with given new_title.
+ * @param {Bookmark} b The bookmark object.
+ * @param {string} new_title The new title the bookmark needs to be set to.
+ */
+function updateBookmark(b, new_title) {
+    let cname = bookmarkCookieName(b.id);
+    b.title = new_title;
+    setCookie(cname, JSON.stringify(b));
 }
 
 /**
@@ -147,6 +139,10 @@ function hideBookmarkOverlay () {
     document.documentElement.style.overflowY = 'scroll'
     document.body.scroll = 'yes'
 
+    // Clear bookmark searchbar query
+    const bookmarkSearchbar = document.getElementById('bookmark-searchbar')
+    bookmarkSearchbar.value = '';
+
     loadBookmarks()
 }
 
@@ -160,14 +156,12 @@ function bookmarkClick (id) {
     if (bookmarkButton.value == 0) {
         setBookmark(id)
         bookmarkButton.value = 1
-        bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
-                                    fa-bookmark"></i></span>'
     } else {
         deleteBookmark(id)
         bookmarkButton.value = 0
-        bookmarkButton.innerHTML = '<span class="icon"><i class="fa \
-                                    fa-bookmark-o"></i></span>'
     }
+
+    setBookmarkBtn(id);
 }
 
 /**
@@ -181,6 +175,10 @@ function bookmarkTrashClick (id) {
     bookmarkPanel.style.display = 'none'
 }
 
+/**
+ * Create rename entry when rename button is pressed.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
 function bookmarkRenameClick(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark = getBookmark(bookmarkCookieName(id));
@@ -189,28 +187,24 @@ function bookmarkRenameClick(id) {
     inputAddListener(id);
 }
 
+/**
+ * Add EventListener so Enter key can be pressed to accept new bookmark title.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
 function inputAddListener(id) {
     let inputbox = document.getElementById(`IN_${id}`)
     inputbox.addEventListener("keyup", (e) => {
-        if (e.code == 'Escape') {
-            renameCancel(id);
-        } else if (e.code == 'Enter') {
+        if (e.code == 'Enter') {
             renameAccept(id);
         }
     });
 }
 
-function inputRemoveListener(id) {
-    let inputbox = document.getElementById(`IN_${id}`)
-    inputbox.removeEventListener("keyup");
-}
-
-function renameCancel(id) {
-    let bookmark_panel = document.getElementById(`panel-${id}`);
-    let bookmark = getBookmark(bookmarkCookieName(id));
-    bookmark_panel.innerHTML = createInnerEntry(bookmark);
-}
-
+/**
+ * When accept button is pressed: accept rename by updating bookmark title and
+ * reverting innerHTML back to default inner list entry.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
 function renameAccept(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
     let bookmark_old = getBookmark(bookmarkCookieName(id));
@@ -219,70 +213,114 @@ function renameAccept(id) {
 
     let bookmark_new = getBookmark(bookmarkCookieName(id));
     bookmark_panel.innerHTML = createInnerEntry(bookmark_new);
+
+    // Put renamed bookmark through search filter before new keyup event.
+    searchBookmarks();
 }
 
+/**
+ * When cancel button is pressed: cancel rename by reverting innerHTML back to
+ * default inner list entry.
+ * @param {string} id The id of the to be deleted bookmark.
+ */
+function renameCancel(id) {
+    let bookmark_panel = document.getElementById(`panel-${id}`);
+    let bookmark = getBookmark(bookmarkCookieName(id));
+    bookmark_panel.innerHTML = createInnerEntry(bookmark);
+}
+
+/**
+ * Render all enabled bookmarks onto the enabled overlay.
+ */
+ function renderBookmarkList() {
+    const bookmarkResults = document.getElementById('bookmark-results')
+    const bookmarks = getAllBookmarks()
+    let content = '';
+
+    for (const b of bookmarks) {
+        content += createBookmarkListEntry(b)
+    }
+
+    bookmarkResults.innerHTML = `
+                                <table class="table is-hoverable is-fullwidth">
+                                <tbody> ${content} </tbody></table>
+                                `;
+}
+
+/**
+ * Create an HTML entry for the given bookmark.
+ * @param {*} b The bookmark of which an entry has to be created.
+ * @returns {string} The HTML code for the bookmark entry.
+ */
+ function createBookmarkListEntry(b) {
+    let entry = `<tr class="is-fullwidth bookmark-entry" id="panel-${b.id}">
+                    ${createInnerEntry(b)}
+                </tr>`;
+    return entry;
+}
+
+/**
+ * Create an inner list entry for the given bookmark. This entry appears by
+ * default.
+ * @param {*} b The bookmark of which an entry has to be created.
+ * @returns {string} The HTML code for the bookmark entry.
+ */
+function createInnerEntry(b) {
+    let entry = `
+                <td class="icon-table">
+                    <i class="fa fa-book fa" aria-hidden="true"></i>
+                </td>
+                <td class="title-table"
+                onclick="location='${b.page}';hideBookmarkOverlay()">
+                    ${b.title}
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-pencil bookmark-rename"
+                    onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true">
+                    </i>
+                </td>
+                <td class="button-table">
+                    <i class="fa fa-trash bookmark-trash"
+                    onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true">
+                    </i>
+                </td>`;
+
+    return entry;
+}
+
+/**
+ * Create a rename entry for the given bookmark. This entry appears when the
+ * rename button is pressed.
+ * @param {*} b The bookmark of which an entry has to be created.
+ * @returns {string} The HTML code for the bookmark entry.
+ */
 function createRenameEntry(b) {
-    let inputbox_maxlength = 500;
-    let title = truncateTitle(b.title);
     let entry = `
                 <td class="icon-table">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </td>
                 <td class="input-table">
                     <input id="IN_${b.id}" class="input" type="text"
-                    value="${title}"
-                    maxlength=${inputbox_maxlength}>
+                    value="${b.title}">
                 </td>
                 <td class="button-table">
-                    <i class="fa fa-check bookmark-rename" onclick="renameAccept('${b.id}')"aria-hidden="true"></i>
+                    <i class="fa fa-check bookmark-rename"
+                    onclick="renameAccept('${b.id}')" aria-hidden="true">
+                    </i>
                 </td>
                 <td class="button-table">
-                    <i class="fa fa-ban bookmark-trash" onclick="renameCancel('${b.id}')" aria-hidden="true"></i></button>
+                    <i class="fa fa-ban bookmark-trash"
+                    onclick="renameCancel('${b.id}')" aria-hidden="true">
+                    </i>
                 </td>
             `;
     return entry;
 }
 
-function createInnerEntry(b) {
-    let title = truncateTitle(b.title);
-    let entry = `
-                <td class="icon-table">
-                    <i class="fa fa-book fa" aria-hidden="true"></i>
-                </td>
-                <td class="title-table" onclick="location='${b.page}'; hideBookmarkOverlay()">
-                    ${title}
-                </td>
-                <td class="button-table">
-                    <i class="fa fa-pencil bookmark-rename"onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true"></i>
-                </td>
-                <td class="button-table">
-                    <i class="fa fa-trash bookmark-trash"onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true"></i>
-                </td>`;
-
-    return entry;
-}
-
-function renameBookmark(id) {
-    cname = bookmarkCookieName(id);
-    deleteCookie(cname);
-}
-
-function truncateTitle(title, max_words=12, max_length=50) {
-    let title_words = title.split(' ');
-
-    /* Cut off title if it is too long. */
-
-    if (title_words.length > max_words) {
-        title = title_words.slice(0, max_words).join(' ') + "...";
-    } else if (title.length > max_length) {
-        title = title.substring(0, max_length) + "...";
-    }
-
-    return title;
-}
-
 /**
- * Render all enabled bookmarks onto the enabled overlay.
+ * Check if the bookmark button of the given id is activated or not.
+ * @param {string} id The id of the to be checked bookmark button.
+ * @returns {number} 1 if the button was activated, 0 if not.
  */
 function renderBookmarkList () {
     const bookmarkResults = document.getElementById('bookmark-results')
@@ -321,12 +359,21 @@ function createBookmarkListEntry(b) {
     return element;
 }
 
+function getBookmarkBtnVal(id) {
+    const name = bookmarkCookieName(id)
+    if (getBookmark(name) != null) {
+        return 1
+    }
+
+    return 0
+}
+
 /**
  * Toggle (enabled, dark / disabled, blank) the appearance of the bookmark
  * button.
  * @param {*} id The id of the bookmark button which has to be toggled.
  */
-function setBookmarkBtn (id) {
+function setBookmarkBtn(id) {
     const bookmarkButton = document.getElementById(id)
     bookmarkButton.value = getBookmarkBtnVal(id)
 
@@ -342,7 +389,7 @@ function setBookmarkBtn (id) {
 /**
  * Load the values of the bookmark buttons when the page had just loaded.
  */
-function loadBookmarks () {
+function loadBookmarks() {
     const bookmarkButtons = document.getElementsByClassName('bookmark-btn')
 
     for (const button of bookmarkButtons) {
@@ -353,28 +400,31 @@ function loadBookmarks () {
 /**
  * The search function for the bookmarks searchbar
  */
-function searchBookmarks () {
+function searchBookmarks() {
     // const items, list, filter, filter
     let item, title, i, txtValue
     const input = document.getElementById('bookmark-searchbar')
     const filter = input.value.toUpperCase()
     /* The results are stored in list and each entry in items. */
     const list = document.getElementById('bookmark-results')
-    const items = list.getElementsByClassName('panel-block bookmark-entry')
+    const items = list.getElementsByClassName('bookmark-entry')
 
     /* Each bookmark title is collected here and indexed. */
     for (i = 0; i < items.length; i++) {
-        item = items[i].getElementsByTagName('div')
-        title = item[3]
-        txtValue = title.innerText
+        title_cell = items[i].getElementsByClassName('title-table');
 
-        /* If a title has no index then dont display  bookmark,
-         * this way you only see needed results.
-         */
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            items[i].style.display = ''
-        } else {
-            items[i].style.display = 'none'
+        /* Ignore if bookmark entry is a rename entry. */
+        if (title_cell[0] !== undefined) {
+            txtValue = title_cell[0].innerText;
+
+            /* If a title has no index then dont display bookmark,
+            * this way you only see needed results.
+            */
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                items[i].style.display = '';
+            } else {
+                items[i].style.display = 'none';
+            }
         }
     }
 }
