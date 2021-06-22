@@ -83,13 +83,6 @@ class Main:
             exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
 
-        # NOTE: this shouldn't be needed.
-        # suffix = self.conf_vars['source_suffix']
-        # if isinstance(suffix, str):
-        #     self.conf_vars['source_suffix'] = [suffix]
-
-        # self.conf_vars['source_suffix']=set(self.conf_vars['source_suffix'])
-
         # Exclude static files, as they should not be processed.
         self.conf_vars['exclude_patterns'] += \
             self.conf_vars.get('html_static_path', [])

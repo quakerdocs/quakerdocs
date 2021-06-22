@@ -6,6 +6,7 @@
 
 #define NULL 0
 #define WORDS_MAX 64
+#define INPUT_MAX_SIZE 1024
 
 typedef unsigned int page_map_t;
 
@@ -36,6 +37,9 @@ typedef struct GLOBALS {
 
 /* Global variables. */
 static globals_t g = {0};
+
+/* The input buffer for communicating with javascript. */
+char input_output[INPUT_MAX_SIZE];
 
 
 /**
@@ -164,11 +168,7 @@ int search_word(page_map_t *page_map, const char *word) {
     /* Check if a matching node exists. */
     const node_t *node = find_node(word);
     if (node == NULL)
-        return 0;
-
-    /* Ignore this node, as it is a stopword. */
-    if (node->page_count == IGNORE_NODE_VALUE)
-        return 1;
+        return -1;
 
     /* Clear the page map. */
     for (int i = 0; i < PAGE_COUNT; ++i)
@@ -177,7 +177,8 @@ int search_word(page_map_t *page_map, const char *word) {
     /* Now combine all of the pages starting from the found word node. */
     fill_page_map(node, page_map);
 
-    return 2;
+    /* Ignore this node, as it is a stopword. */
+    return node->pages == IGNORE_NODE_VALUE;
 }
 
 /**
@@ -194,19 +195,25 @@ page_map_t *search_and_combine_words() {
     for (int i = 0; i < g.word_count; ++i) {
         int found_map = search_word(temp_map, g.words[i]);
 
-        if (found_map == 0) {
-            /* A word was not found, so there are no results. */
+        if (found_map == -1) {
+            /* The word was not found, so there are no results. */
             return NULL;
         }
-        else if (found_map == 2) {
+        else {
             if (page_map_empty) {
                 /* Replace the empty page map with the temp map. */
                 page_map_empty = 0;
                 page_map_t *temp = temp_map;
                 temp_map = page_map;
                 page_map = temp;
+
+                /* Half stopword contributions. */
+                if (found_map == 1) {
+                    for (int i = 0; i < PAGE_COUNT; i++)
+                        page_map[i] /= 2;
+                }
             }
-            else {
+            else if (found_map == 0) {
                 /* Intersect the two maps, adding the two counts only if
                  * the page exists in both maps. */
                 for (int i = 0; i < PAGE_COUNT; i++) {
@@ -214,6 +221,12 @@ page_map_t *search_and_combine_words() {
                         page_map[i] += temp_map[i];
                     else
                         page_map[i] = 0;
+                }
+            }
+            else if (found_map == 1) {
+                /* The word was a stopword, so union both maps. */
+                for (int i = 0; i < PAGE_COUNT; i++) {
+                    page_map[i] += temp_map[i] / 2;
                 }
             }
         }
@@ -224,23 +237,20 @@ page_map_t *search_and_combine_words() {
 }
 
 /**
- * Compare two pages for sorting purposes.
- *
- * a: a pointer to the first page.
- * b: a pointer to the second page.
- *
- * returns: the count of the second page minus the first.
+ * TODO
  */
-int page_compare(const void *a, const void *b) {
-    const page_t *page_a = (const page_t *) a;
-    const page_t *page_b = (const page_t *) b;
-    return page_b->count - page_a->count;
+__attribute__((export_name("getIOBuffer")))
+char *get_io_buffer() {
+    return input_output;
 }
 
-
-#define INPUT_MAX_SIZE 1024
-const int input_max_size = INPUT_MAX_SIZE;
-char input_output[INPUT_MAX_SIZE];
+/**
+ * TODO
+ */
+__attribute__((export_name("getIOBufferSize")))
+int get_io_buffer_size() {
+    return INPUT_MAX_SIZE;
+}
 
 /**
  * Perform the search on an input query and store the found
@@ -248,7 +258,8 @@ char input_output[INPUT_MAX_SIZE];
  *
  * input: the input string.
  */
-void performSearch() {
+__attribute__((export_name("performSearch")))
+void perform_search() {
     /* Clear the previous search. */
     g.results_size = 0;
     g.word_count = 0;
@@ -272,7 +283,8 @@ void performSearch() {
  *
  * returns: a url, title and section title of a page, seperated by newlines.
  */
-int getSearch() {
+ __attribute__((export_name("getSearch")))
+int get_search() {
     /* Return 0 if no results are left. */
     if (g.results_size == 0)
         return 0;
@@ -286,15 +298,15 @@ int getSearch() {
         }
     }
 
+    /* Get the next entry from the array. */
+    g.results[max_i].count = 0;
+    const char *result_it = urltitles[g.results[max_i].page];
+
     /* Remove already returned results from the back. */
     int temp = g.results_size;
     while (g.results_size != 0 && g.results[--temp].count == 0) {
         g.results_size = temp;
     }
-
-    /* Get the next entry from the array. */
-    g.results[max_i].count = 0;
-    const char *result_it = urltitles[g.results[max_i].page];
 
     /* Copy the output to the input_output and return its length. */
     int i;

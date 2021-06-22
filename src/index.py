@@ -311,8 +311,8 @@ class Trie:
 
         """
         data, nodes = SimpleNamespace(), []
-        data.page_p, data.char_p, data.child_s = 0, 0, 0
-        data.page_s, data.page_i, data.page_c = 0, 0, 1
+        data.char_p, data.page_p, data.child_s = 0, 1, 0
+        data.page_s, data.page_i, data.page_c = 0, 0, 0
 
         # Iterate over all the nodes.
         queue = deque([[self]])
@@ -348,7 +348,7 @@ class Trie:
 
         # Get the smallest size primitives which can store the found values.
         data.nodes, data.node_p = nodes, get_primitive(len(nodes))
-        data.ignore_node_value = (1 << data.page_s.bytes) - 1
+        data.ignore_node_value = (1 << data.page_p.bytes) - 1
 
         return data
 
@@ -374,17 +374,17 @@ class Trie:
                              + t.child_s.id + t.page_s.id)
 
             # Check if this is a word we should ignore.
-            page_count_value = len(node.pages)
+            pages_ptr = len(page_arr) // (t.page_i.bytes + t.page_c.bytes)
             if not node.pages and node.end:
-                page_count_value = t.ignore_node_value
+                pages_ptr = t.ignore_node_value
 
             # Add the node data.
             node_arr += struct.pack(
                 struct_format,
                 char_len,
                 node.children_list[0].i if node.children else 0,
-                len(page_arr) // (t.page_i.bytes + t.page_c.bytes),
-                len(node.children), page_count_value
+                pages_ptr,
+                len(node.children), len(node.pages)
             )
 
             # Add the pages.
@@ -521,7 +521,6 @@ class IndexGenerator:
             os.system(' '.join(cmnd))
 
             cmnd = ['wasm-ld', '--no-entry',
-                    '--export-all',
                     '-o', f"{dest_path / 'search_data.wasm'}",
                     f'{object_file}']
 
