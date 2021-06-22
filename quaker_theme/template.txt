@@ -2,7 +2,8 @@
 %(head)s
 %(stylesheet)s
 
-<link rel="stylesheet" type="text/css" href="_static/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="_static/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="_static/css/v4-shims.min.css">
 <link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
 <link rel="stylesheet" type="text/css" href="_static/css/content.css">
 <link rel="stylesheet" type="text/css" href="_static/css/main.css">
