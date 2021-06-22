@@ -268,19 +268,19 @@ function renameCancel(id) {
 function createInnerEntry(b) {
     let entry = `
                 <td class="icon-table">
-                    <i class="fa fa-book fa" aria-hidden="true"></i>
+                    <i class="fas fa-book" aria-hidden="true"></i>
                 </td>
                 <td class="title-table"
                 onclick="location='${b.page}';hideBookmarkOverlay()">
                     ${b.title}
                 </td>
                 <td class="button-left-table">
-                    <i class="fa fa-pencil bookmark-rename"
+                    <i class="fas fa-edit bookmark-rename"
                     onclick="bookmarkRenameClick('${b.id}')" aria-hidden="true">
                     </i>
                 </td>
                 <td class="button-right-table">
-                    <i class="fa fa-trash bookmark-trash"
+                    <i class="fas fa-trash bookmark-trash"
                     onclick="bookmarkTrashClick('${b.id}')" aria-hidden="true">
                     </i>
                 </td>`;
@@ -297,7 +297,7 @@ function createInnerEntry(b) {
 function createRenameEntry(b) {
     let entry = `
                 <td class="icon-table">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <i class="fas fa-edit" aria-hidden="true"></i>
                 </td>
                 <td class="input-table">
                     <input id="IN_${b.id}" class="input" type="text"
