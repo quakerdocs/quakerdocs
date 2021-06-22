@@ -60,6 +60,12 @@ function setBookmark (id) {
     return null
 }
 
+function updateBookmark(b, new_title) {
+    let cname = bookmarkCookieName(b.id);
+    b.title = new_title;
+    setCookie(cname, JSON.stringify(b));
+}
+
 /**
  * Delete the bookmark and cookie with the given id.
  * @param {string} id The id of the bookmark and cookie to be deleted.
@@ -114,6 +120,10 @@ function showBookmarkOverlay () {
     // Prevent background from scrolling while search window is open.
     document.documentElement.style.overflowY = 'hidden'
     document.body.scroll = 'no'
+
+    const searchbar = document.getElementById('bookmark-searchbar')
+    searchbar.focus()
+    searchbar.select()
 
     renderBookmarkList()
 }
@@ -312,7 +322,44 @@ function createRenameEntry(b) {
  * @param {string} id The id of the to be checked bookmark button.
  * @returns {number} 1 if the button was activated, 0 if not.
  */
- function getBookmarkBtnVal(id) {
+function renderBookmarkList () {
+    const bookmarkResults = document.getElementById('bookmark-results')
+    const bookmarks = getAllBookmarks()
+    let content = '';
+
+    let tab = document.createElement('table')
+    tab.className = "table is-hoverable is-fullwidth"
+    let tbody = document.createElement('tbody')
+    tab.appendChild(tbody)
+
+    for (const b of bookmarks) {
+        tbody.appendChild(createBookmarkListEntry(b))
+    }
+
+    tab.appendChild(tbody)
+    bookmarkResults.innerHTML = '';
+    bookmarkResults.appendChild(tab);
+}
+
+/**
+ * Create an HTML entry for the given bookmark.
+ * @param {*} b The bookmark of which an entry has to be created.
+ * @returns {string} The HTML code for the bookmark entry.
+ */
+function createBookmarkListEntry(b) {
+    var element = document.createElement('tr')
+    element.className = "is-fullwidth bookmark-entry"
+    element.id = "panel-" + b.id
+    element.innerHTML = createInnerEntry(b);
+
+    element.addEventListener('mouseenter', function(event) {
+        selectEntry(element, 'bookmark-entry')
+    })
+
+    return element;
+}
+
+function getBookmarkBtnVal(id) {
     const name = bookmarkCookieName(id)
     if (getBookmark(name) != null) {
         return 1

@@ -90,8 +90,12 @@
   border: 1px solid #ddd;
 }
 
-.result:hover {
+.result.selected {
   background: #ddd;
+}
+
+a.panel-block:hover {
+  background: none !important;
 }
 
 .result-title {
@@ -117,6 +121,11 @@
 
 .bookmark-btn:focus {
   outline: none;
+}
+
+.bookmark-entry.selected {
+  cursor: pointer;
+  background: #ddd !important;
 }
 
 .bookmark-trash {
