@@ -129,6 +129,10 @@ function hideBookmarkOverlay () {
     document.documentElement.style.overflowY = 'scroll'
     document.body.scroll = 'yes'
 
+    // Clear bookmark searchbar query
+    const bookmarkSearchbar = document.getElementById('bookmark-searchbar')
+    bookmarkSearchbar.value = '';
+
     loadBookmarks()
 }
 
@@ -199,6 +203,9 @@ function renameAccept(id) {
 
     let bookmark_new = getBookmark(bookmarkCookieName(id));
     bookmark_panel.innerHTML = createInnerEntry(bookmark_new);
+
+    // Put renamed bookmark through search filter before new keyup event.
+    searchBookmarks();
 }
 
 /**
@@ -236,7 +243,7 @@ function renameCancel(id) {
  * @returns {string} The HTML code for the bookmark entry.
  */
  function createBookmarkListEntry(b) {
-    let entry = `<tr class="is-fullwidth" id="panel-${b.id}">
+    let entry = `<tr class="is-fullwidth bookmark-entry" id="panel-${b.id}">
                     ${createInnerEntry(b)}
                 </tr>`;
     return entry;
@@ -353,21 +360,24 @@ function searchBookmarks() {
     const filter = input.value.toUpperCase()
     /* The results are stored in list and each entry in items. */
     const list = document.getElementById('bookmark-results')
-    const items = list.getElementsByClassName('panel-block bookmark-entry')
+    const items = list.getElementsByClassName('bookmark-entry')
 
     /* Each bookmark title is collected here and indexed. */
     for (i = 0; i < items.length; i++) {
-        item = items[i].getElementsByTagName('div')
-        title = item[3]
-        txtValue = title.innerText
+        title_cell = items[i].getElementsByClassName('title-table');
 
-        /* If a title has no index then dont display  bookmark,
-         * this way you only see needed results.
-         */
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            items[i].style.display = ''
-        } else {
-            items[i].style.display = 'none'
+        /* Ignore if bookmark entry is a rename entry. */
+        if (title_cell[0] !== undefined) {
+            txtValue = title_cell[0].innerText;
+
+            /* If a title has no index then dont display bookmark,
+            * this way you only see needed results.
+            */
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                items[i].style.display = '';
+            } else {
+                items[i].style.display = 'none';
+            }
         }
     }
 }
