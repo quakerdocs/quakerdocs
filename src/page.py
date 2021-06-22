@@ -1,6 +1,5 @@
 import os
 import docutils
-import application
 import directives.metadata
 from docutils import nodes
 from directives.sphinx import ref_element
@@ -15,7 +14,13 @@ class Page:
         The instance of main, from which settings are extracted.
     path : pathlib.Path
         The path to the file to be handled.
+
+    Attributes
+    ----------
+    id_map : dict
+        An index shared by all Page instances, to track references.
     """
+    id_map = {}
 
     def __init__(self, main, path):
         self.main = main
@@ -46,20 +51,20 @@ class Page:
         )
 
         for page_id in self.doctree.ids:
-            application.id_map.update({page_id: self.html_path})
+            self.id_map.update({page_id: self.html_path})
 
             # Resolve the references of the waiting pages.
             if page_id in self.main.waiting:
                 for page in self.main.waiting[page_id]:
                     page.unresolved_references -= 1
                     if page.unresolved_references == 0:
-                        page.write(self.main)
+                        page.write()
 
                 self.main.waiting.pop(page_id)
 
         # Check if the file can be written,
         for node in self.doctree.traverse(ref_element):
-            if node['ref'] not in application.id_map:
+            if node['ref'] not in self.id_map:
                 self.main.waiting[node['ref']].append(self)
                 self.unresolved_references += 1
 
@@ -81,6 +86,43 @@ class Page:
         except StopIteration:
             return
 
+    def get_settings_overrides(self):
+        """Get the settings_override for this page.
+        Used as arg for the call to docutils.core.publish_from_doctree
+        in write.
+
+        Returns
+        -------
+        dict
+            The argument expected by publish_from_doctree.
+        """
+        return {
+            'toc': self.main.toc_navigation,
+            'template': self.main.theme.get_template(),
+            'stylesheet': os.path.join(
+                '_static',
+                self.main.conf_vars.get('html_style',
+                                        self.main.theme.get_style())),
+            'src_dir': self.main.source_path,
+            'dest_dir': self.main.relative_path(self.src),
+            'html_path': self.html_path,
+            'embed_stylesheet': False,
+            'rel_base': os.path.relpath(self.main.dest_path,
+                                        self.dest.parent),
+            'handlers': self.main.sp_app.get_handlers(),
+            'favicon': self.main.conf_vars.get('html_favicon', None),
+            'logo': self.main.conf_vars.get('html_logo', None),
+            'copyright': self.main.conf_vars.get('copyright', ''),
+            'id_map': self.id_map
+        }
+
+    def del_skipped_nodes(self):
+        """Delete the nodes from the page's doctree that match SKIP_TAGS."""
+        for node in self.doctree.traverse():
+            for i, child in reversed(list(enumerate(node.children))):
+                if child.tagname in self.main.SKIP_TAGS:
+                    del node[i]
+
     def write(self):
         """
         Parse an RST file and write its contents to a file.
@@ -92,10 +134,7 @@ class Page:
             return
 
         # Delete the nodes we want to skip.
-        for node in self.doctree.traverse():
-            for i, child in reversed(list(enumerate(node.children))):
-                if child.tagname in self.main.SKIP_TAGS:
-                    del node[i]
+        self.del_skipped_nodes()
 
         # Find the page title.
         title = self.get_title()
@@ -111,25 +150,7 @@ class Page:
             self.doctree,
             destination_path=self.dest,
             writer=self.main.writer(),
-            settings_overrides={
-                'toc': self.main.toc_navigation,
-                'template': self.main.theme.get_template(),
-                'stylesheet': os.path.join(
-                    '_static',
-                    self.main.conf_vars.get('html_style',
-                                            self.main.theme.get_style())),
-                'src_dir': self.main.source_path,
-                'dest_dir': self.main.relative_path(self.src),
-                'html_path': self.html_path,
-                'embed_stylesheet': False,
-                'rel_base': os.path.relpath(self.main.dest_path,
-                                            self.dest.parent),
-                'handlers': self.main.sp_app.get_handlers(),
-                'favicon': self.main.conf_vars.get('html_favicon', None),
-                'logo': self.main.conf_vars.get('html_logo', None),
-                'copyright': self.main.conf_vars.get('copyright', ''),
-                'id_map': application.id_map
-            })
+            settings_overrides=self.get_settings_overrides())
 
         # Write the document to a file.
         self.dest.parent.mkdir(parents=True, exist_ok=True)

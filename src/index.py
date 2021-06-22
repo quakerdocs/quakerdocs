@@ -411,7 +411,7 @@ class IndexGenerator:
     Parameters
     ----------
     title_weight : int, optional
-        How often words in the title are counted.
+        How often words in the title are counted (the default is 5).
 
     Attributes
     ----------

@@ -7,8 +7,6 @@ from importlib import import_module
 # from docutils import nodes
 from docutils.parsers.rst import directives, roles
 
-id_map = {}
-
 
 class SphinxApp:
     """
