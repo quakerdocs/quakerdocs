@@ -20,12 +20,11 @@ class Theme:
         self.stylesheet = None
 
         # Get the paths to places where themes could be.
-        src_file_path = os.path.abspath(os.path.dirname(__file__))
-        dirs = [os.path.join(src_file_path, 'static')]
-
         if theme_path is not None:
-            for cur_dir in theme_path:
-                dirs.append(cur_dir)
+            dirs = [os.path.abspath(path) for path in theme_path]
+        else:
+            src_file_path = os.path.abspath(os.path.dirname(__file__))
+            dirs = [os.path.join(src_file_path, '..')]
 
         # Find the requested theme in the given directories.
         for current_dir in dirs:
