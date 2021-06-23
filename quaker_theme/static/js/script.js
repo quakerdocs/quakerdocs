@@ -57,6 +57,7 @@ function selectEntry(element, overlay) {
         curEl.classList.remove('selected');
     }
 
+    element.scrollIntoView({behavior: "smooth", block:"nearest"})
     element.classList.add('selected');
 }
 
