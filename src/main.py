@@ -19,7 +19,6 @@ import application
 import html5writer
 from rst import Rst
 from theme import Theme
-from util import Config
 
 from docutils.parsers.rst import Parser
 from argparse import Namespace
@@ -39,7 +38,7 @@ class Main:
         self.temp_path = dest_path.parent / 'tmp' / dest_path.name
         self.static_path = dest_path / '_static'
         self.builder = builder
-        self.source_parsers = {'.rst': Parser }
+        self.source_parsers = {'.rst': Parser}
 
         self.sp_app = None
         self.theme = None

@@ -2,9 +2,6 @@
 Functionality related to the application.
 """
 
-from optparse import Values
-from argparse import Namespace
-
 from importlib import import_module
 from docutils.parsers.rst import directives, roles
 
