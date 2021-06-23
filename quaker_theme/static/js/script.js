@@ -37,6 +37,96 @@ function toggleExpand (element, onlyExpand = false) {
 }
 
 let searchOpen = false
+/**
+ * Selects and highlights selected element in the search or bookmark overlay.
+ * @param {*} element The element to be highlighted.
+ * @param {*} overlay Which overlay the program should look in.
+ *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
+ *     overlay.
+ */
+function selectEntry(element, overlay) {
+    var curEl = document.getElementsByClassName(overlay + ' selected')[0];
+
+    // Stop if the given element is already selected.
+    if (curEl === element) {
+        return
+    }
+
+    // If any element is selected, unselect it.
+    if (curEl) {
+        curEl.classList.remove('selected');
+    }
+
+    element.classList.add('selected');
+}
+
+/**
+ * Select the next or previous sibling of the currently selected element.
+ * @param {*} overlay Which overlay the program should look in.
+ *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
+ *     overlay.
+ * @param {*} forwards If true, select the next sibling, if false, select the
+ *    previous sibling.
+ */
+function selectRelativeEntry(overlay, forwards) {
+    const curEl = document.getElementsByClassName(overlay + ' selected')[0];
+
+    // If no element is currently selected, either select the first or the last
+    // element based on the given direction.
+    if (!curEl) {
+        const entries = document.getElementsByClassName(overlay);
+
+        if (forwards) {
+            selectEntry(entries[0], overlay);
+        } else {
+            selectEntry(entries[entries.length - 1], overlay);
+        }
+
+        return;
+    }
+
+    // Determine a new, to be selected, element based on the direction of the
+    // pressed arrow key.
+    let newEl = null;
+    if (forwards) {
+        newEl = curEl.nextElementSibling;
+    } else {
+        newEl = curEl.previousElementSibling;
+    }
+
+    // If there isn't a neighbour in the given direction, don't change the
+    // selected entry.
+    if (!newEl) {
+        newEl = curEl;
+    }
+
+    return selectEntry(newEl, overlay);
+}
+
+/**
+ * Click the entry to redirect the page to the href of the selected element.
+ * @param {*} overlay Which overlay the program should look in.
+ *     'result' for the search overlay, and 'bookmark-entry' for the bookmark
+ *     overlay.
+ * @returns {null} If no element was selected.
+ */
+function redirectEntry(overlay) {
+    var curEl = document.getElementsByClassName(overlay + ' selected')[0]
+
+    // If no element is selected, return to prevent errors.
+    if (!curEl) {
+        return
+    }
+
+
+    curEl = curEl.firstElementChild
+    // Behaviour has to differ between search and bookmark.
+    if (overlay === 'result') {
+        window.location.href = curEl.href
+    } else if (overlay === 'bookmark-entry') {
+        curEl.nextElementSibling.click()
+    }
+}
 
 /**
  * Active the overlay containing the search bar and search results.
@@ -98,8 +188,10 @@ function backToTop () {
 function expandSidebar (url) {
     const a = document.querySelector('a[href="' + url + '"]')
 
-    toggleExpand(a.parentElement, true)
-    expandULParents(a)
+    if (a) {
+        toggleExpand(a.parentElement, true)
+        expandULParents(a)
+    }
 }
 
 /**
