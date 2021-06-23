@@ -91,3 +91,28 @@ kbd {
 kbd > kbd {
     padding: 2px;
 }
+
+.automodule > em::before {
+    content: 'module ';
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.automodule > em {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.automodule > dt em {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.automodule .type_name {
+    margin-right: 8px;
+    font-weight: normal;
+}
+
+.automodule > dt > dl {
+    margin-top: 16px;
+}

@@ -2,8 +2,7 @@
 Implement directives used by Sphinx
 
 All implementations of the directives have been inspired by:
-https://github.com/sphinx-doc/sphinx/blob/9e1b4a8f1678e26670d3
-4765e74edf3a3be3c62c/sphinx/directives/other.py
+`https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/directives/other.py`
 """
 
 import os.path
@@ -14,6 +13,8 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives, roles
 from docutils.parsers.rst.roles import set_classes
 from docutils.parsers.rst.directives.misc import Class, Include
+from importlib import import_module
+import inspect
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -298,6 +299,67 @@ class CodeBlock(Directive):
         return [wrappernode]
 
 
+class AutoModule(Directive):
+    """
+    Directive for automatically documenting a Python module.
+    """
+    required_arguments = 1
+    option_spec = {
+        'members': directives.flag,
+        'show-inheritance': directives.flag,
+        'undoc-members': directives.flag
+    }
+
+    class_translation = {
+        'type': 'class',
+        'function': 'def'
+    }
+
+    def run(self):
+        """
+        Create nodes for this directive.
+        """
+        modname = self.arguments[0]
+        mod = import_module(modname)
+
+        ret = nodes.compound(classes=['automodule'])
+        ret.append(nodes.emphasis('', modname))
+        ret.append(nodes.term('', mod.__doc__))
+        if 'members' in self.options:
+            members = [(i, getattr(mod, i)) for i in dir(mod)
+                       if not i.startswith('__')
+                       and not inspect.ismodule(getattr(mod, i))]
+            members = [(m, n) for m, n in members
+                       if hasattr(n, '__module__') and n.__module__ == modname]
+
+            for member in members:
+                node = nodes.definition_list()
+                mem_type = type(member[1]).__name__
+
+                if mem_type == 'type':
+                    init_params = inspect.getargspec(member[1].__init__).args
+                    function_params = f'({", ".join(init_params)})'
+                elif mem_type == 'function':
+                    params = inspect.getargspec(member[1]).args
+                    function_params = f'({", ".join(params)})'
+
+                type_name = self.class_translation.get(mem_type, mem_type)
+                items = [
+                    nodes.emphasis('', f'{type_name}', classes=['type_name']),
+                    nodes.emphasis('', f'{modname}.'),
+                    nodes.emphasis('', member[0]),
+                    nodes.emphasis('', function_params),
+                    nodes.term('', member[1].__doc__)
+                ]
+
+                # TODO: Display member attributes/methods?
+
+                node.append(nodes.definition_list_item('', *items))
+                ret.append(node)
+
+        return [ret]
+
+
 class ref_element(nodes.General, nodes.Element):
     """
     Custom reference node to handle unparsed pages.
@@ -353,6 +415,7 @@ def setup():
     directives.register_directive('include', Include)  # Does not work yet
     directives.register_directive('toctree', TocTree)
     directives.register_directive('code-block', CodeBlock)
+    directives.register_directive('automodule', AutoModule)
 
     roles.register_canonical_role('ref', ref_role)
     roles.register_canonical_role('kbd', kbd_role)
