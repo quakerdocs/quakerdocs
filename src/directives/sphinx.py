@@ -303,7 +303,7 @@ class AutoModule(Directive):
 
     class_translation = {
         'type': 'class',
-        'function': 'function'
+        'function': 'def'
     }
 
     def run(self):
@@ -313,35 +313,37 @@ class AutoModule(Directive):
         modname = self.arguments[0]
         mod = import_module(modname)
 
-        ret = nodes.compound()
+        ret = nodes.compound(classes=['automodule'])
         ret.append(nodes.emphasis('', modname))
         ret.append(nodes.term('', mod.__doc__))
         if 'members' in self.options:
             members = [(i, getattr(mod, i)) for i in dir(mod)
                        if not i.startswith('__')
-                       and not inspect.ismodule(getattr(mod, i))
-                       and getattr(mod, i).__module__ == modname]
+                       and not inspect.ismodule(getattr(mod, i))]
+            members = [(m, n) for m, n in members
+                       if hasattr(n, '__module__') and n.__module__ == modname]
 
             for member in members:
                 node = nodes.definition_list()
-                member_type = type(member[1]).__name__
+                mem_type = type(member[1]).__name__
 
-                if member_type == 'type':
+                if mem_type == 'type':
                     init_params = inspect.getargspec(member[1].__init__).args
                     function_params = f'({", ".join(init_params)})'
-                elif member_type == 'function':
+                elif mem_type == 'function':
                     params = inspect.getargspec(member[1]).args
                     function_params = f'({", ".join(params)})'
 
+                type_name = self.class_translation.get(mem_type, mem_type)
                 items = [
-                    nodes.emphasis('', self.class_translation[member_type]),
-                    nodes.term('', f'{modname}.'),
-                    nodes.term('', member[0]),
+                    nodes.emphasis('', f'{type_name}', classes=['type_name']),
+                    nodes.emphasis('', f'{modname}.'),
+                    nodes.emphasis('', member[0]),
                     nodes.emphasis('', function_params),
                     nodes.term('', member[1].__doc__)
                 ]
 
-                # TODO: Display member attributes/methods
+                # TODO: Display member attributes/methods?
 
                 node.append(nodes.definition_list_item('', *items))
                 ret.append(node)
