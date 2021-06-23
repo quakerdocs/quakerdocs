@@ -2,7 +2,9 @@ import os
 import docutils
 import directives.metadata
 from docutils import nodes
+from types import SimpleNamespace
 from directives.sphinx import ref_element
+from util import make_id
 
 
 class Page:
@@ -25,9 +27,9 @@ class Page:
     def __init__(self, main, path):
         self.main = main
         self.path = path
-        self.html_path = path.with_suffix('.html')
+        self.path_html = str(path.with_suffix('.html'))
         self.src = main.source_path / path
-        self.dest = main.dest_path / self.html_path
+        self.dest = main.dest_path / self.path_html
         self.doctree = None
         self.unresolved_references = 0
 
@@ -40,41 +42,98 @@ class Page:
                    f"{self.src.read_text()}\n"
                    f"{self.main.conf_vars.get('rst_epilog', '')}")
 
+        # Parse the file contents.
         self.doctree = docutils.core.publish_doctree(
             content,
             source_path=str(self.src),
             settings_overrides={
                 **self.main.docutil_settings,
-                'src_path': self.path
+                'page': self,
+                'main': self.main
             }
         )
 
-        for page_id, subtree in self.doctree.ids.items():
-            contents = self.html_path  # TODO #section
-
-            # Walk over subtree to create list of sections
-            # And sublist of toctrees.
-            self.main.id_map[page_id] = contents
-            self.main.id_map[self.html_path.parent / page_id] = contents
-
-            # Resolve the references of the waiting pages.
-            if page_id in self.main.waiting:
-                for page in self.main.waiting[page_id]:
-                    page.unresolved_references -= 1
-                    if page.unresolved_references == 0:
-                        page.write()
-
-                self.main.waiting.pop(page_id)
+        self.handle_references(self.main)
 
         # Check if the file can be written,
-        for node in self.doctree.traverse(ref_element):
-            if node['ref'] not in self.id_map:
-                self.main.waiting[node['ref']].append(self)
-                self.unresolved_references += 1
+        # for node in self.doctree.traverse(ref_element):
+        #     self.use_reference(node['ref'])
 
         # Write if all the references are already resolved.
         if self.unresolved_references == 0:
-            self.write()
+            self.write(self.main)
+
+    def use_reference(self, ref):
+        """TODO"""
+        if ref not in self.main.id_map:
+            self.main.waiting[ref].append(self)
+            self.unresolved_references += 1
+
+    def handle_references(self, main):
+        """TODO"""
+        print(self.path, '\n')
+
+        page_id = make_id(self.path.name)
+        all_references = []
+
+        # Add all the ids to the reference map.
+        first = True
+        for id, node in [(page_id, self.doctree), *self.doctree.ids.items()]:
+            anchor = ''
+            if not first:
+                anchor = '#' + id
+            first = False
+
+            references = [id, str(self.path.with_suffix('')) + anchor]
+            all_references += references
+
+            contents = SimpleNamespace()
+            contents.url = self.path_html + anchor
+            contents.title = None
+            contents.sections = []  # We will fill these later.
+
+            # Get the title.
+            title_node = node.next_node(nodes.Titular)
+            if title_node:
+                title = title_node.astext()
+
+            # Add all references.
+            for ref in references:
+                main.id_map[ref] = contents
+
+        # Loop over the sections of this node, and add these to the
+        # contents of this page's reference.
+        stack = [self.doctree]
+        while stack:
+            node = stack.pop()
+            id = node.attributes['ids'][0]
+            contents = main.map_id[id]
+
+            # Fill the sections:
+            for child in node.children:
+                if not isinstance(child, nodes.section):
+                    continue
+
+                id = child.attributes['ids'][0]
+                contents.sections.append(id)
+
+                # Only continue if the current section contains a title.
+                if len(child.children) > 0:
+                    # Use id of the anchor, not of the section!
+                    stack.append(child)
+
+        # Resolve all the references we have added.
+        for ref in all_references:
+            if ref in self.main.waiting:
+                for page in self.main.waiting[ref]:
+                    page.unresolved_references -= 1
+                    if page.unresolved_references == 0:
+                        page.write(self.main)
+
+                self.main.waiting.pop(ref)
+
+        exit(0)
+        # Loop over the sections to create the content lists
 
     def get_title(self):
         """Get the title of the page.
