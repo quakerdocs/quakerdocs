@@ -8,7 +8,7 @@ site.ENABLE_USER_SITE = '--user' in sys.argv[1:]
 
 setup(
     name = "quaker",
-    version = "0.5.12",
+    version = "0.5.15",
     description = "Static Documentation Generator",
     long_description = open("README.md").read(),
     long_description_content_type = "text/markdown",
@@ -27,7 +27,7 @@ setup(
     packages = find_packages("src"),
     package_dir = {"": "src"},
     include_package_data = True,
-    package_data = {"quaker_lib": ["static/*", "wasm/*"]},
+    package_data = {"quaker_lib": ["static/*", "wasm/*", "quickstart/*"]},
     install_requires = [
         "Pygments==2.9.0",
         "docutils==0.17.1",

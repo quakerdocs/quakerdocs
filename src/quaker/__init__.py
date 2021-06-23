@@ -213,6 +213,20 @@ class Main:
                       str(self.static_path),
                       update=1)
 
+    def init_empty_project(self):
+        """
+        Initializes an empty project
+        """
+        path = Path(self.source_path)
+        file_path = Path(os.path.abspath(os.path.dirname(__file__)))
+        qs_path = file_path / '..' / 'quaker_lib' / 'quickstart'
+
+        if not path.is_dir() or not path.exists():
+            copy_tree(str(qs_path), str(path), update=1)
+            print('Created an empty project in', self.source_path)
+        else:
+            print(f'Error: directory \'{path}\' already exists!')
+
 
 def main():
     """
@@ -226,10 +240,29 @@ def main():
                             help='The directory to write the output.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html",
                             help='Builder used for the generator.')
+    arg_parser.add_argument('--init', dest='init', action='store_true',
+                            help="Initializes an empty project in the \
+                                  specified source_path.")
+    arg_parser.set_defaults(init=False)
+
     args = arg_parser.parse_args()
 
-    print("Running QuakerDocs 0.0.3")
+    print("Running QuakerDocs")
     main = Main(args.source_path, args.build_path, args.builder)
+
+    if args.init:
+        main.init_empty_project()
+        return 0
+
+    if not Path(args.source_path).is_dir():
+        print("Error: not a directory")
+        arg_parser.print_help()
+        return 1
+    if not Path(args.source_path).exists():
+        print("Error: directory not found")
+        arg_parser.print_help()
+        return 1
+
     main.generate()
     return 0
 

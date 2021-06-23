@@ -81,7 +81,7 @@ def get_primitive(size: int) -> SimpleNamespace:
 
     """
     prim = SimpleNamespace()
-    prim.actual_bytes = math.ceil(math.log2(size) / 8)
+    prim.actual_bytes = math.ceil(math.log2(size) / 8) if size > 0 else 0
 
     if prim.actual_bytes <= 1:
         prim.id, prim.type, prim.bytes = 'B', 'unsigned char', 1
