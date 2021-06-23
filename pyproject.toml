@@ -1,0 +1,8 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "Pygments==2.9.0",
+    "docutils==0.17.1",
+    "Jinja2==2.10.3"
+]
+build-backend = "setuptools.build_meta"
