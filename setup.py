@@ -1,10 +1,13 @@
 from setuptools import setup, find_packages
-from setuptools.command.install import install
+
+import site
+import sys
+site.ENABLE_USER_SITE = '--user' in sys.argv[1:]
 
 
 setup(
     name = "quaker",
-    version = "0.5.1",
+    version = "0.5.12",
     description = "Static Documentation Generator",
     long_description = open("README.md").read(),
     long_description_content_type = "text/markdown",
@@ -21,7 +24,7 @@ setup(
     ],
     python_requires = ">=3.8",
     packages = find_packages("src"),
-    package_dir = {"quaker": "src/quaker", "quaker_lib": "src/quaker_lib"},
+    package_dir = {"": "src"},
     include_package_data = True,
     package_data = {"quaker_lib": ["static/*", "wasm/*"]},
     install_requires = [
