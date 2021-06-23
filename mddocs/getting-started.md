@@ -3,10 +3,10 @@ Getting Started with QuakerDocs
 
 QuakerDocs is very easy to use, and you do not need a lot to get
 started! To get started, you only need a configuration file written in
-Python called conf.py, and one or more files containing your
-documentation called \<your\_file\_name\>.rst. An example project to
+Python called `conf.py`, and one or more files containing your
+documentation called `<your_file_name>.rst`. An example project to
 quickly get started, can be downloaded from
-[here](_static/quaker-quickstart.zip) .
+[here](./_static/quaker-quickstart.zip).
 
 Installation
 ------------
@@ -48,4 +48,3 @@ webpage you need the follow these steps:
 
 4.  To visit the generated documentation page visit localhost:8000 in
     your web browser.
-

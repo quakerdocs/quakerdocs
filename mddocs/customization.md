@@ -18,7 +18,7 @@ provided stylesheets.
 html_style = 'css/bulma.min.css'
 ```
 
-|bulma-min-png|
+![Bulma Default](_static/_images/bulma.min.png)
 
 ### Bulma.min-classy
 
@@ -26,7 +26,7 @@ html_style = 'css/bulma.min.css'
 html_style = 'css/bulma.min-classy.css'
 ```
 
-|bulma-min-classy-png|
+![Bulma Classy](_static/_images/bulma.min-classy.png)
 
 ### Bulma.min-dark
 
@@ -34,7 +34,7 @@ html_style = 'css/bulma.min-classy.css'
 html_style = 'css/bulma.min-dark.css'
 ```
 
-|bulma-min-dark-png|
+![Bulma Dark](_static/_images/bulma.min-dark.png)
 
 ### Bulma.min-jet
 
@@ -42,7 +42,7 @@ html_style = 'css/bulma.min-dark.css'
 html_style = 'css/bulma.min-jet.css'
 ```
 
-|bulma-min-jet-png|
+![Bulma Jet](_static/_images/bulma.min-jet.png)
 
 ### Bulma.min-night
 
@@ -50,7 +50,7 @@ html_style = 'css/bulma.min-jet.css'
 html_style = 'css/bulma.min-night.css'
 ```
 
-|bulma-min-night-png|
+![Bulma Night](_static/_images/bulma.min-night.png)
 
 ### Bulma.min-red
 
@@ -58,7 +58,7 @@ html_style = 'css/bulma.min-night.css'
 html_style = 'css/bulma.min-red.css'
 ```
 
-|bulma-min-red-png|
+![Bulma Red](_static/_images/bulma.min-red.png)
 
 Adding your own css
 -------------------
