@@ -223,9 +223,9 @@ class Main:
 
         if not path.is_dir() or not path.exists():
             copy_tree(str(qs_path), str(path), update=1)
-
-        print('Created an empty project in', self.source_path)
-
+            print('Created an empty project in', self.source_path)
+        else:
+            print(f'Error: directory \'{path}\' already exists!')
 
 
 def main():
@@ -241,7 +241,8 @@ def main():
     arg_parser.add_argument('-b', type=str, dest='builder', default="html",
                             help='Builder used for the generator.')
     arg_parser.add_argument('--init', dest='init', action='store_true',
-                            help="Initializes an empty project in the specified source_path.")
+                            help="Initializes an empty project in the \
+                                  specified source_path.")
     arg_parser.set_defaults(init=False)
 
     args = arg_parser.parse_args()
@@ -257,7 +258,7 @@ def main():
         print("Error: not a directory")
         arg_parser.print_help()
         return 1
-    if not (Path.cwd() / args.source_path).exists():
+    if not Path(args.source_path).exists():
         print("Error: directory not found")
         arg_parser.print_help()
         return 1
