@@ -41,3 +41,11 @@ Some of the features that QuakerDocs has are:
 - Handy bookmarking system  |fa-bookmark|
 - Easily configurable  |fa-adjust|
 - Only takes one command!  |fa-terminal|
+
+.. _page:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Other pages
+
+   page

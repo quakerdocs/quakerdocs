@@ -7,6 +7,10 @@ author = 'My Author'
 version = '0.1'
 release = version
 
+source_suffix = ['.rst']
+
+extensions = []
+
 exclude_patterns = [
     'build'
 ]
