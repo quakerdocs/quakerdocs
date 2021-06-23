@@ -38,7 +38,7 @@ class Page():
         )
 
         for page_id, subtree in self.doctree.ids.items():
-            contents = self.html_path # TODO #section
+            contents = self.html_path  # TODO #section
 
             # Walk over subtree to create list of sections
             # And sublist of toctrees.
