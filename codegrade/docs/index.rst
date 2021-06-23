@@ -1,7 +1,12 @@
+
 .. CodeGra.de documentation master file, created by
    sphinx-quickstart on Thu Jun 29 15:43:19 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
+
+.. _codegrade-docum:
+
+.. _codegrade-docum-two:
 
 The CodeGrade Documentation
 ======================================
@@ -71,3 +76,19 @@ details on `the CodeGrade website <https://codegrade.com>`_.
         :caption: API Documentation
 
         api
+
+
+
+.. _section_id_wow:
+
+A section
+--------------------------------------
+wow
+
+subB section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ahh
+
+B section
+--------------------------------------
+ahh

@@ -23,6 +23,27 @@ from pathlib import Path
 import util
 
 
+class kbd_element(nodes.General, nodes.Element):
+    """
+    Empty node for rendering keyboard inputs
+    """
+    pass
+
+
+class toc_data(nodes.General, nodes.Element):
+    """
+    Container class for Toc data.
+    """
+    pass
+
+
+class ref_element(nodes.General, nodes.Element):
+    """
+    Custom reference node to handle unparsed pages.
+    """
+    pass
+
+
 class Only(Directive):
     """
     Directive for only including content for certain builds.
@@ -46,13 +67,6 @@ class Only(Directive):
             return [*node]
 
         return []
-
-
-class toc_data(nodes.General, nodes.Element):
-    """
-    Container class for Toc data.
-    """
-    pass
 
 
 class TocTree(Directive):
@@ -80,7 +94,7 @@ class TocTree(Directive):
         tocdata = toc_data()
         tocdata['content'] = self.content
         tocdata['src_dir'] = self.state.document.settings.src_dir
-        tocdata['src_path'] = self.state.document.settings.src_path
+        tocdata['src_path'] = self.state.document.settings.path
 
         tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
@@ -155,7 +169,7 @@ class TocTree(Directive):
                     if not ref.startswith('/'):
                         ref = tocdata['src_path'].parent / ref
 
-                    ref = Path(ref).with_suffix('.html')
+                    ref = str(Path(ref).with_suffix('.html'))
             else:
                 ref = os.path.join(entry + ".html")
                 src = os.path.join(src_dir, entry + ".rst")
@@ -168,7 +182,7 @@ class TocTree(Directive):
                     source_path=src,
                     settings_overrides={
                         'src_dir': src[:-4],
-                        'src_path': (tocdata['src_path'] / entry).parent
+                        'path': (tocdata['src_path'] / entry).parent
                     }
                 )
 
@@ -298,13 +312,6 @@ class CodeBlock(Directive):
         return [wrappernode]
 
 
-class ref_element(nodes.General, nodes.Element):
-    """
-    Custom reference node to handle unparsed pages.
-    """
-    pass
-
-
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
@@ -322,16 +329,9 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
     node = ref_element()
     node['title'] = title
-    node['ref'] = ref.replace('_', '-').lower()
+    node['ref'] = ref
 
     return [node], []
-
-
-class kbd_element(nodes.General, nodes.Element):
-    """
-    Empty node for rendering keyboard inputs
-    """
-    pass
 
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
