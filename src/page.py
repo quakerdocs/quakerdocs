@@ -1,6 +1,5 @@
 import os
 import docutils
-import application
 import directives.metadata
 from docutils import nodes
 from directives.sphinx import ref_element
@@ -12,7 +11,7 @@ class Page():
 
     def __init__(self, main, path):
         self.path = path
-        self.html_path = str(path.with_suffix('.html'))
+        self.html_path = path.with_suffix('.html')
         self.src = main.source_path / path
         self.dest = main.dest_path / self.html_path
         self.doctree = None
@@ -40,8 +39,13 @@ class Page():
             }
         )
 
-        for page_id in self.doctree.ids:
-            application.id_map.update({page_id: self.html_path})
+        for page_id, subtree in self.doctree.ids.items():
+            contents = self.html_path # TODO #section
+
+            # Walk over subtree to create list of sections
+            # And sublist of toctrees.
+            main.id_map[page_id] = contents
+            main.id_map[self.html_path.parent / page_id] = contents
 
             # Resolve the references of the waiting pages.
             if page_id in main.waiting:
@@ -55,7 +59,7 @@ class Page():
         # Check if the file can be written,
         ref = ref_element
         for node in self.doctree.traverse(lambda n: isinstance(n, ref)):
-            if node['ref'] not in application.id_map:
+            if node['ref'] not in main.id_map:
                 main.waiting[node['ref']].append(self)
                 self.unresolved_references += 1
 
@@ -110,7 +114,7 @@ class Page():
                 'favicon': main.conf_vars.get('html_favicon', None),
                 'logo': main.conf_vars.get('html_logo', None),
                 'copyright': main.conf_vars.get('copyright', ''),
-                'id_map': application.id_map
+                'id_map': main.id_map
             })
 
         # Write the document to a file.

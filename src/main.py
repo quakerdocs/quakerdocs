@@ -45,6 +45,8 @@ class Main:
         self.idx = None
         self.toc_navigation = []
 
+        self.id_map = {}
+
         # Import and setup all directives.
         dir_path = Path(__file__).parent / 'directives'
         for _, module, _ in pkgutil.iter_modules([str(dir_path)]):
@@ -52,6 +54,7 @@ class Main:
             module.setup()
 
         self.waiting = defaultdict(list)
+        self.hierarchy = defaultdict(list)
 
         self.docutil_settings = {
             'src_dir': self.source_path,
