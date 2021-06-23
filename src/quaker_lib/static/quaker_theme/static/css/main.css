@@ -245,3 +245,23 @@ a.panel-block:hover {
 .title-table:hover {
   cursor: pointer;
 }
+
+/**************************** Cookie notification ****************************/
+.cookie-notif {
+  max-width: 18em;
+  display: none;
+  z-index: 99999;
+  position: fixed;
+  bottom: 0.05em;
+  left: 1.2em;
+  padding: 15px;
+
+}
+
+.button-notif {
+  padding-top:10px;
+}
+
+.thumb-notif {
+  padding-right:6px;
+}

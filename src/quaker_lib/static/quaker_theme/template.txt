@@ -123,6 +123,18 @@
 	</section>
 </div>
 
+<!--Cookie notification-->
+<div id="cookie-notification" class="notification cookie-notif">
+	Pssst, your bookmarks will be stored using cookies.
+	<a href="https://www.cookiesandyou.com/" target="_blank">What are cookies?</a>
+	<div class="button-notif">
+		<button class="button is-primary is-fullwidth"
+			onclick="notificationAccept()">
+			<span><i class="fas fa-cookie-bite thumb-notif"></i><b>Alrighty!</b></span>
+		</button>
+	</div>
+</div>
+
 <script src="_static/js/load_navbar.js"></script>
 
 %(body_suffix)s

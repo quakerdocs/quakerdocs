@@ -1,4 +1,5 @@
 const BOOKMARK_TAG = 'BMCOOK_'
+const BOOKMARK_NOTIF = "BMNOTIF";
 
 /**
  * Class representing the necessary bookmark data.
@@ -44,6 +45,22 @@ function setBookmark (id) {
     const pageUrl = window.location.pathname + '#' + idPath;
     const bookmark = new Bookmark(id, pageUrl, bookmarkButton.title)
     setCookie(name, JSON.stringify(bookmark))
+}
+
+function notificationAccept() {
+    const button = document.getElementById('cookie-notification');
+    setCookie(BOOKMARK_NOTIF, 1);
+    button.style.display = 'none';
+}
+
+function checkNotification() {
+    const cookie = getCookie(BOOKMARK_NOTIF);
+    console.log(`DIKKKE KAAAAAAAK ${cookie}`);
+
+    if (cookie === null) {
+        const button = document.getElementById('cookie-notification');
+        button.style.display = 'block';
+    }
 }
 
 /**
@@ -390,6 +407,8 @@ function setBookmarkBtn(id) {
  * Load the values of the bookmark buttons when the page had just loaded.
  */
 function loadBookmarks() {
+    // Show notification is messaged hasn't been read yet.
+    checkNotification();
     const bookmarkButtons = document.getElementsByClassName('bookmark-btn')
 
     for (const button of bookmarkButtons) {
@@ -428,6 +447,8 @@ function searchBookmarks() {
         }
     }
 }
+
+
 
 // Check bookmark states for buttons on page load.
 window.onload = loadBookmarks
