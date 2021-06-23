@@ -8,7 +8,7 @@ site.ENABLE_USER_SITE = '--user' in sys.argv[1:]
 
 setup(
     name = "quaker",
-    version = "0.5.12",
+    version = "0.5.13",
     description = "Static Documentation Generator",
     long_description = open("README.md").read(),
     long_description_content_type = "text/markdown",

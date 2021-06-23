@@ -213,6 +213,13 @@ class Main:
                       str(self.static_path),
                       update=1)
 
+    def init_empty_project(self):
+        """
+        Initializes an empty project
+        """
+
+
+
 
 def main():
     """
@@ -226,9 +233,22 @@ def main():
                             help='The directory to write the output.')
     arg_parser.add_argument('-b', type=str, dest='builder', default="html",
                             help='Builder used for the generator.')
+    arg_parser.add_argument('--init', dest='init', action='store_true',
+                            help="Initializes an empty project in the specified source_path.")
+    arg_parser.set_defaults(init=False)
+
     args = arg_parser.parse_args()
 
-    print("Running QuakerDocs 0.0.3")
+    if not Path(args.source_path).is_dir():
+        print("Error: Not a directory")
+        arg_parser.print_help()
+        return 1
+    if not (Path.cwd() / args.source_path).exists():
+        print("Error: Directory not found")
+        arg_parser.print_help()
+        return 1
+
+    print("Running QuakerDocs")
     main = Main(args.source_path, args.build_path, args.builder)
     main.generate()
     return 0
