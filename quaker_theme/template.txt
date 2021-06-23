@@ -26,7 +26,7 @@
 				<a class="popover-trigger navbar-item">
 					<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
 						<span class="icon"><i class="fa fa-search"></i></span>
-						<span> Search</span>
+						<span class="is-hidden-touch"> Search</span>
 					</button>
 					<div class="popover-content is-hidden-touch">
 						<p>Search <b>(S)</b></p>
@@ -34,11 +34,11 @@
 				</a>
 			</div>
 
-			<div id="bookmarkwrapper" class="popover is-hidden-mobile">
+			<div id="bookmarkwrapper" class="popover">
 				<a class="popover-trigger navbar-item">
 					<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
 						<span class="icon"><i class="fa fa-bookmark"></i></span>
-						<span>Bookmarks</span>
+						<span class="is-hidden-touch">Bookmarks</span>
 					</button>
 					<div class="popover-content is-hidden-touch">
 						<p>Bookmarks <b>(B)</b></p>
