@@ -27,7 +27,6 @@ document.addEventListener('keyup', (event) => {
             selectRelativeEntry('result', false);
         } else if (code === 'Enter') {
             redirectEntry('result');
-            storeSearchResults();
         }
     } else if (bookmarkOpen) {
         if (code === 'ArrowDown') {
