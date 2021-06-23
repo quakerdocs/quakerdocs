@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 
+# From https://github.com/pypa/pip/issues/7953#issuecomment-645133255
 import site
 import sys
 site.ENABLE_USER_SITE = '--user' in sys.argv[1:]
