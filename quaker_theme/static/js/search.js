@@ -1,9 +1,8 @@
-/* Keep track if the webassambly module has completed loading. */
-let wasmLoaded = false
-
-Module.onRuntimeInitialized = () => {
-    wasmLoaded = true
-}
+/* Keep track if the WebAssembly module has completed loading. */
+let wasm = null
+let searcher = null
+let searchInput = ""
+let parser = new DOMParser()
 
 /**
  * Class representing a result entry.
@@ -16,17 +15,62 @@ class Result {
      * @param {*} title The title of the result page.
      * @param {*} paragraph The paragraph title (STRETCH GOAL)
      */
-    constructor (page, title, paragraph = '') {
-        // The page URL.
+    constructor (page, title, paragraph = "") {
+        /* The page URL. */
         this.page = page
 
-        // The title of the page, for quick display.
+        /* The title of the page, for quick display. */
         this.title = title
 
-        // Optionally the paragraph title, to allow searching on paragraph level.
+        /* Optionally the paragraph title, to allow searching on paragraph level. */
         this.paragraph = paragraph
+
+        /* Use the page url as title if necessary. */
+        if (!this.title) {
+            this.title = this.page.split('.').slice(0, -1).join('.')
+        }
     }
-};
+
+    /**
+     * TODO
+     */
+    getHTML () {
+        return `<a class="panel-block result is-flex-direction-column" href="${this.page}" onclick="storeSearchResults()">
+                <h1 class="result-title"><strong>${this.title}</strong></h1>
+                </a>`
+    }
+
+    /**
+     * Create a <div> element containing the necessary HTML code to display the
+     * data of the results.
+     * @param {*} url The url of the Result page.
+     * @param {*} title The title of the Result page.
+     * @param {*} content The content that should be displayed under the title.
+     * @returns An HTML element, the container of the result entry.
+     */
+    createResultElement () {
+        const element = document.createElement("div")
+        element.innerHTML = this.getHTML()
+        return element
+    }
+}
+
+/**
+ * TODO
+ */
+async function initSearchWasm () {
+    const { instance } = await WebAssembly.instantiateStreaming(
+        fetch("./_static/js/search_data.wasm")
+    )
+
+    let mem = instance.exports.memory
+    let buffer_loc = instance.exports.getIOBuffer()
+    let buffer_len = instance.exports.getIOBufferSize()
+    instance.search_buffer = new Uint8Array(mem.buffer, buffer_loc, buffer_len)
+    wasm = instance
+}
+
+initSearchWasm()
 
 /**
  * Perform a search action and yield the results to the HTML page.
@@ -35,23 +79,54 @@ class Result {
  * @yields {Result} The next search result entry.
  */
 function * performSearch (query) {
-    if (!wasmLoaded) {
+    if (wasm == null) {
         return
     }
 
-    /* Get the functions from the wasm module. */
-    const search = Module.cwrap('performSearch', null, ['string'])
-    const getres = Module.cwrap('getSearch', 'string')
+    /* Upload the string to the wasm. */
+    let i, l = Math.min(query.length, wasm.search_buffer.length - 1)
+    for (i = 0; i < l; i++)
+        wasm.search_buffer[i] = query.charCodeAt(i)
+    wasm.search_buffer[i] = 0
 
     /* Perform the search. */
-    search(query)
+    wasm.exports.performSearch()
 
     /* Return the results as they are asked. */
-    let result
-    while (result = getres()) {
-        /* Split on new line, regex to work on all os'es. */
+    let decoder = new TextDecoder()
+    let len
+    while (len = wasm.exports.getSearch()) {
+        /* Get the result from the wasm. */
+        let result = decoder.decode(wasm.search_buffer.subarray(0, len))
         const sep = result.split('\n')
         yield new Result(sep[0], sep[1], sep[2])
+    }
+}
+
+
+function searchUpdateKey (event) {
+    const resultsWrapper = document.getElementById('search-results')
+    const code = event.code
+
+    // Don't execute a new search when any arrow key or enter is pressed.
+    if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(code)) {
+        return
+    }
+
+    searchInput = this.value
+
+    if (searchInput) {
+        searcher = performSearch(searchInput)
+        resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
+        renderResults()
+    } else {
+        resultsWrapper.innerHTML = ''
+    }
+}
+
+function handleInfiniteScroll () {
+    if (this.scrollTopMax - this.scrollTop < 90) {
+        renderResults(5)
     }
 }
 
@@ -60,55 +135,88 @@ function * performSearch (query) {
  * {@link performSearch} on every keystroke.
  */
 function activateSearch () {
-    /* Activate the search bar with an keyboard event listener.
-     */
+    /* Activate the search bar with an keyboard event listener. */
+    const results = document.getElementById('search-results')
     const searchInput = document.getElementById('searchbar')
-    const resultsWrapper = document.getElementById('search-results')
 
     if (searchInput) {
         // Update search results when a key is pressed.
-        searchInput.addEventListener('keyup', (event) => {
-            const code = event.code;
-
-            // Don't execute a new search when any arrow key or enter is pressed.
-            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(code)) {
-                return;
-            }
-
-            const input = searchInput.value
-
-            if (input.length) {
-                const searcher = performSearch(input)
-                renderResults(input, searcher, resultsWrapper)
-            } else {
-                resultsWrapper.innerHTML = ''
-            }
-        })
+        searchInput.addEventListener('keyup', searchUpdateKey)
+        results.addEventListener('scroll', handleInfiniteScroll)
     }
 }
 
 /**
- * Create a <div> element containing the necessary HTML code to display the
- * data of the results.
- * @param {*} url The url of the Result page.
- * @param {*} title The title of the Result page.
- * @param {*} content The content that should be displayed under the title.
- * @returns An HTML element, the container of the result entry.
+ * Display the results acquired by the search function {@link performSearch}
+ * inside the HTML page alongside some text found in the appropriate pages.
+ * @param {*} searcher The generator which yields the search results.
+ * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
-function createResultElement (href, title, content) {
-    const element = document.createElement('div')
-    element.className = 'result'
+function renderResults (maxResults = 10) {
+    /* Array to store the results into so that the text can be added later. */
+    let newResults = Array(maxResults)
 
-    element.innerHTML = `<a class="panel-block is-flex-direction-column" href="${href}" onclick="storeSearchResults()">
-                            <h1 class="result-title"><strong>${title}</strong></h1>
-                            <p class="result-content">${content}</p>
-                        </a>`
+    let resultList = document.getElementById('result-list')
+    let index = 0
 
-    element.addEventListener('mouseenter', function(event) {
-        selectEntry(element, 'result')
-    })
-    return element
+    for (; index < maxResults; index++) {
+        /* Limit number of search results. */
+        if (searcher == null) {
+            return
+        }
+        let r = searcher.next()
+        if (r.done) {
+            break
+        }
+
+        resultList.append(r.value.createResultElement())
+        newResults[index] = r.value
+    }
+
+    resultList = resultList.getElementsByTagName("a")
+    let i = 0
+    const input = searchInput.slice()
+
+    function getContent() {
+        if (i >= index) {
+            return
+        }
+
+        let r = newResults[i]
+        fetch(r.page)
+            .then(res => res.text())
+            .then(data => {
+                if (input != searchInput) {
+                    return
+                }
+
+                const html = parser.parseFromString(data, 'text/html')
+                let text = html.getElementById('content').innerText
+
+                /* Look for the section containing the result. */
+                for (const section of html.querySelectorAll('section')) {
+                    if (section.textContent.includes(searchInput) && section.id) {
+                        r.page += '#' + section.id
+                        text = section.innerText
+                        break
+                    }
+                }
+
+                /* TODO: highlight each word in the input separately. */
+                let content = highlightSearchQuery(searchInput, text)
+                resultList[resultList.length - index + i].innerHTML += `<p class="result-content">${content}</p>`
+
+                i++
+                getContent()
+            })
+            .catch(console.error)
+    }
+
+    /* Fetch page contents. */
+    getContent()
+
 }
+
 
 /**
  * Highlights a query in the provided text using a span tag.
@@ -116,7 +224,7 @@ function createResultElement (href, title, content) {
  * @param {*} text The text.
  * @returns The text to be displayed containing the highlighted query.
  */
-function highlightSearchQuery (query, text) {
+ function highlightSearchQuery (query, text) {
     const maxLenTextBefore = 50
     const maxLenTextAfter = 100
     const highlighter = '<span class="has-background-primary-light has-text-primary">'
@@ -139,50 +247,6 @@ function highlightSearchQuery (query, text) {
     }
 
     return displayText.slice(startIndex, endIndex) + ' ...'
-}
-
-/**
- * Display the results acquired by the search function {@link performSearch}
- * inside the HTML page alongside some text found in the appropriate pages.
- * @param {*} searcher The generator which yields the search results.
- * @param {*} resultsWrapper The html element in which the results are to be placed.
- */
-function renderResults (query, searcher, resultsWrapper) {
-    resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
-    const resultList = document.getElementById('result-list')
-    const parser = new DOMParser()
-    const maxResults = 9
-
-    let i = 0
-    for (const r of searcher) {
-        /* Limit number of search results. */
-        if (++i > maxResults) {
-            break
-        }
-
-        /* Fetch page contents. */
-        fetch('../' + r.page)
-            .then(res => res.text())
-            .then(data => {
-                const html = parser.parseFromString(data, 'text/html')
-                let href = '../' + r.page
-                let text = html.getElementById('content').innerText
-
-                /* Look for the section containing the result. */
-                for (const section of html.querySelectorAll('section')) {
-                    if (section.textContent.includes(query) && section.id) {
-                        href += '#' + section.id
-                        text = section.innerText
-                        break
-                    }
-                }
-
-                const displayText = highlightSearchQuery(query, text)
-                const resultEl = createResultElement(href, r.title, displayText)
-                resultList.append(resultEl)
-            })
-            .catch(console.error)
-    }
 }
 
 function storeSearchResults () {

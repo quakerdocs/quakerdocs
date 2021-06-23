@@ -29,8 +29,11 @@ typedef struct PAGE {
     page_c count;
 } page_t;
 
-const int total_page_count = {{ urltitles|length }};
-const page_c ignore_node_value = {{ ignore_node_value }};
+#define PAGE_COUNT {{ urltitles|length }}
+#define IGNORE_NODE_VALUE {{ ignore_node_value }}
+
+// const int total_page_count = {{ urltitles|length }};
+// const page_c ignore_node_value = {{ ignore_node_value }};
 
 const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
     "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
