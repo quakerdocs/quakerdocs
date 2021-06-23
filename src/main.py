@@ -233,3 +233,8 @@ if __name__ == "__main__":
     print("Running QuakerDocs 0.0.3")
     main = Main(args.source_path, args.build_path, args.builder)
     main.generate()
+    args = arg_parser.parse_args()
+
+    print("Running QuakerDocs 0.0.3")
+    main = Main(args.source_path, args.build_path, args.builder)
+    main.generate()
