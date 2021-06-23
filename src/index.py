@@ -495,33 +495,19 @@ class IndexGenerator:
                                     stopwords=stopwords,
                                     **data.__dict__))
 
-        # Create the build command.
-        if False:
-            emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
-            cmnd = [f'{emcc}', '-Os', '-flto',
-                    '-I', f'"{temp_path}/"',
-                    f"{source_path / 'search.c'}",
-                    '-o', f"{dest_path / 'search_data.js'}",
-                    '-s', 'WASM=1',
-                    '-s', 'EXPORTED_FUNCTIONS=["_performSearch","_getSearch"]',
-                    '-s', 'EXPORTED_RUNTIME_METHODS=\'["ccall","cwrap"]\'']
+        # Compile the C code using clang.
+        object_file = temp_path / 'search_data.o'
+        cmnd = ['clang', '-Os', '-c',
+                '--target=wasm32', '-march=wasm32',
+                '-fno-builtin',
+                '-I', f'"{temp_path}"',
+                '-o', f'{object_file}',
+                f"{source_path / 'search.c'}"]
+        os.system(' '.join(cmnd))
 
-            dest_path.mkdir(parents=True, exist_ok=True)
-            os.system(' '.join(cmnd))
-        else:
-            object_file = temp_path / 'search_data.o'
-            cmnd = ['clang', '-Os', '-c',
-                    '--target=wasm32', '-march=wasm32',
-                    '-fno-builtin',
-                    '-I', f'"{temp_path}"',
-                    '-o', f'{object_file}',
-                    f"{source_path / 'search.c'}"]
-
-            dest_path.mkdir(parents=True, exist_ok=True)
-            os.system(' '.join(cmnd))
-
-            cmnd = ['wasm-ld', '--no-entry',
-                    '-o', f"{dest_path / 'search_data.wasm'}",
-                    f'{object_file}']
-
-            os.system(' '.join(cmnd))
+        # Link the object file to create a usable webassembly binary.
+        cmnd = ['wasm-ld', '--no-entry',
+                '-o', f"{dest_path / 'search_data.wasm'}",
+                f'{object_file}']
+        dest_path.mkdir(parents=True, exist_ok=True)
+        os.system(' '.join(cmnd))
