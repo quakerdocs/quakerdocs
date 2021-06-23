@@ -42,10 +42,6 @@ Some of the features that QuakerDocs has are:
 - Easily configurable  |fa-adjust|
 - Only takes one command!  |fa-terminal|
 
-.. automodule:: application
-   :members:
-
-
 .. _getting-started:
 
 .. toctree::
