@@ -182,6 +182,10 @@ function renderResults (maxResults = 10) {
     let i = 0
     const input = searchInput
 
+    // let words = input.split(/[ ]+/)
+    // let wordsRegex =
+    // new RegExp(query, 'i')
+
     function getContent() {
         if (i >= index) {
             return
