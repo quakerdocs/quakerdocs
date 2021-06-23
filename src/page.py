@@ -49,7 +49,8 @@ class Page:
             settings_overrides={
                 **self.main.docutil_settings,
                 'page': self,
-                'main': self.main
+                'main': self.main,
+                'path': self.path #TODO remove
             }
         )
 
@@ -107,7 +108,7 @@ class Page:
         while stack:
             node = stack.pop()
             id = node.attributes['ids'][0]
-            contents = main.map_id[id]
+            contents = main.id_map[id]
 
             # Fill the sections:
             for child in node.children:

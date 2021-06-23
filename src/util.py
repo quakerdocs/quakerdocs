@@ -23,13 +23,13 @@ def link_explicit(link):
     res = _explicit_title_re.match(link)
     if res:
         title = res.group(1)
-        ref = make_id(ref)
+        ref = make_id(res.group(2))
         return (title, ref)
 
     return None
 
 def make_id(ref):
-    id = res.group(2).lower()
+    id = ref.lower()
     id = _non_id_chars.sub('-', ' '.join(id.split()))
     id = _non_id_at_ends.sub('', id)
     return id
