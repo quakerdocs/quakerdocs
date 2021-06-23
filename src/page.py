@@ -3,7 +3,7 @@ import docutils
 import directives.metadata
 from docutils import nodes
 from types import SimpleNamespace
-from directives.sphinx import ref_element
+from directives.sphinx import ref_role
 from util import make_id
 
 
@@ -42,6 +42,8 @@ class Page:
                    f"{self.src.read_text()}\n"
                    f"{self.main.conf_vars.get('rst_epilog', '')}")
 
+        ref_role.options = {'page' : self}
+
         # Parse the file contents.
         self.doctree = docutils.core.publish_doctree(
             content,
@@ -56,19 +58,16 @@ class Page:
 
         self.handle_references(self.main)
 
-        # Check if the file can be written,
-        # for node in self.doctree.traverse(ref_element):
-        #     self.use_reference(node['ref'])
-
         # Write if all the references are already resolved.
         if self.unresolved_references == 0:
-            self.write(self.main)
+            self.write()
 
     def use_reference(self, ref):
         """TODO"""
         if ref not in self.id_map:
             self.main.waiting[ref].append(self)
             self.unresolved_references += 1
+        return ref
 
     def handle_references(self, main):
         """TODO"""
@@ -133,7 +132,7 @@ class Page:
 
                 self.main.waiting.pop(ref)
 
-        exit(0)
+        # exit(0)
         # Loop over the sections to create the content lists
 
     def get_title(self):
@@ -169,7 +168,7 @@ class Page:
                                         self.main.theme.get_style())),
             'src_dir': self.main.source_path,
             'dest_dir': self.main.relative_path(self.src),
-            'html_path': self.html_path,
+            'html_path': self.path_html,
             'embed_stylesheet': False,
             'rel_base': os.path.relpath(self.main.dest_path,
                                         self.dest.parent),
@@ -207,7 +206,7 @@ class Page:
         content = ' '.join(n.astext()
                            for n in self.doctree.traverse(nodes.Text))
         self.main.idx.add_file(content, title,
-                               self.html_path, metadata.priority)
+                               self.path_html, metadata.priority)
 
         # Create the output file contents.
         output = docutils.core.publish_from_doctree(

@@ -146,7 +146,7 @@ class Main:
 
         # Set-up Table of Contents data and build the search index
         self.script_dest_path.mkdir(parents=True, exist_ok=True)
-        self.build_global_toc()
+        # self.build_global_toc()
         self.idx.build(self.temp_path, self.script_dest_path)
 
         # Copy the Javascript source files to the static directory in build.
@@ -181,11 +181,11 @@ class Main:
                     page = Page(self, path)
                     page.parse()
 
-                if str(path.with_suffix('')) == master_doc:
-                    # Iterate and join ToC's.
-                    ds = directives.sphinx
-                    for queue in page.doctree.traverse(ds.toc_data):
-                        self.toc_navigation.append(ds.TocTree.to_html(queue))
+                # if str(path.with_suffix('')) == master_doc:
+                #     # Iterate and join ToC's.
+                #     ds = directives.sphinx
+                #     for queue in page.doctree.traverse(ds.toc_data):
+                #         self.toc_navigation.append(ds.TocTree.to_html(queue))
 
         # Check if all the references are resolved.
         for ref_name, pages in self.waiting.items():
