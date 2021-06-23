@@ -28,9 +28,9 @@ def link_explicit(link):
 
     return None
 
+
 def make_id(ref):
     id = ref.lower()
     id = _non_id_chars.sub('-', ' '.join(id.split()))
     id = _non_id_at_ends.sub('', id)
     return id
-

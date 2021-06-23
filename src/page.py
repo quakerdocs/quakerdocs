@@ -66,7 +66,7 @@ class Page:
 
     def use_reference(self, ref):
         """TODO"""
-        if ref not in self.main.id_map:
+        if ref not in self.id_map:
             self.main.waiting[ref].append(self)
             self.unresolved_references += 1
 
@@ -100,7 +100,7 @@ class Page:
 
             # Add all references.
             for ref in references:
-                main.id_map[ref] = contents
+                self.id_map[ref] = contents
 
         # Loop over the sections of this node, and add these to the
         # contents of this page's reference.
@@ -108,7 +108,7 @@ class Page:
         while stack:
             node = stack.pop()
             id = node.attributes['ids'][0]
-            contents = main.id_map[id]
+            contents = self.id_map[id]
 
             # Fill the sections:
             for child in node.children:
