@@ -32,7 +32,7 @@ class Result {
     }
 
     /**
-     * TODO
+     * Create the html representation of the result
      */
     getHTML () {
         return `<a class="panel-block result is-flex-direction-column" href="${this.page}" onclick="storeSearchResults()">
@@ -50,7 +50,11 @@ class Result {
      */
     createResultElement () {
         const element = document.createElement("div")
+        element.className = 'result'
         element.innerHTML = this.getHTML()
+        element.addEventListener('mouseenter', function(event) {
+            selectEntry(element, 'result')
+        })
         return element
     }
 }
@@ -119,6 +123,7 @@ function searchUpdateKey (event) {
         searcher = performSearch(searchInput)
         resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
         renderResults()
+        selectEntry(document.getElementsByClassName("result")[0], "result");
     } else {
         resultsWrapper.innerHTML = ''
     }
@@ -175,7 +180,7 @@ function renderResults (maxResults = 10) {
 
     resultList = resultList.getElementsByTagName("a")
     let i = 0
-    const input = searchInput.slice()
+    const input = searchInput
 
     function getContent() {
         if (i >= index) {
@@ -214,9 +219,7 @@ function renderResults (maxResults = 10) {
 
     /* Fetch page contents. */
     getContent()
-
 }
-
 
 /**
  * Highlights a query in the provided text using a span tag.

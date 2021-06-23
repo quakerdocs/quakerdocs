@@ -34,7 +34,8 @@ class Main:
         self.source_path = source_path
         self.dest_path = dest_path
         self.temp_path = dest_path.parent / 'tmp' / dest_path.name
-        self.static_path = dest_path / '_static'
+        self.static_dest_path = dest_path / '_static'
+        self.script_dest_path = self.static_dest_path / 'js'
         self.builder = builder
 
         self.sp_app = None
@@ -119,7 +120,7 @@ class Main:
 
         self.file_ext, self.writer = Main.supported_builders[self.builder]
 
-        # Make the destination directory if it does not exist.
+        # Create the destination directory if it does not exist.
         self.dest_path.mkdir(parents=True, exist_ok=True)
 
         # Load user configuration and extensions.
@@ -129,14 +130,23 @@ class Main:
         self.idx = index.IndexGenerator()
         self.build_files()
 
-        # Set-up Table of Contents data
+        # Set-up Table of Contents data and build the search index
+        self.script_dest_path.mkdir(parents=True, exist_ok=True)
         self.build_global_toc()
-        # Build search index.
-        self.idx.build(self.temp_path, self.static_path / 'js')
+        self.idx.build(self.temp_path, self.script_dest_path)
+
+        # Copy the Javascript source files to the static directory in build.
+        copy_tree(os.path.join('src', 'js'), str(self.script_dest_path),
+                  update=1)
 
         # Copy the directories from our theme directly to the dest folder.
         self.theme.copy_files(self.dest_path)
+
+        # Copy static files from the source directly to the static dest folder.
         self.copy_static_files()
+
+        # Delete the temporary build files.
+        # TODO
 
         print('The generated documents have been saved in %s' % self.dest_path)
 
@@ -182,8 +192,7 @@ class Main:
         Read and save the ToC from master_doc.
         """
 
-        path = self.static_path / 'js'
-        path.mkdir(parents=True, exist_ok=True)
+        path = self.script_dest_path
 
         with (path / 'load_navbar.js').open('w') as f:
             f.write('document.getElementById("navigation-tree").innerHTML = `')
@@ -199,7 +208,7 @@ class Main:
         """
         for path in self.conf_vars['html_static_path']:
             copy_tree(str(self.source_path / path),
-                      str(self.static_path),
+                      str(self.static_dest_path),
                       update=1)
 
 

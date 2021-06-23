@@ -4,8 +4,8 @@ This module implements a radix prefix trie class that only contains methods
 to add new words to the trie or to store the contents of the trie in a binary
 representation. A class is also implemented to find the minimum sized data type
 that is able to store a given integer using the struct library. Lastly there
-is also a class that can parse a block of text and create a hpp file containing
-the resulting trie and page infos.
+is also a class that can parse a block of text and create a header file
+containing the resulting trie and page infos.
 
 Notes
 -----
@@ -482,11 +482,11 @@ class IndexGenerator:
         for stopword in stopwords:
             self.trie.insert_ignore(stopword)
 
-        # Generate the search.hpp.
+        # Generate the search.h.
         data = self.trie.to_binary()
         template = Template((source_path / 'search.h.jinja').read_text())
 
-        # Write the search index to hpp.
+        # Write the search index to header.
         temp_path = temp_path / 'search'
         temp_path.mkdir(parents=True, exist_ok=True)
         with open(temp_path / 'search.h', 'w') as f:

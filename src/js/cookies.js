@@ -9,7 +9,7 @@ function setCookie (cname, cvalue) {
     const date = new Date()
     date.setFullYear(2999)
 
-    document.cookie = `${cname}=${cvalue};expires=${date};path=${path};SameSite=Lax;Secure`
+    document.cookie = `${cname}=${cvalue};expires=${date};path=${path};SameSite=Lax;`
 }
 
 /**

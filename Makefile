@@ -18,10 +18,10 @@ help:
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.
-%: Makefile emsdk
+%: Makefile
 	python3 $(BUILDFILE) "$(SOURCEDIR)" -d "$(BUILDDIR)" -b $@
 
-docs: Makefile emsdk
+docs: Makefile
 	python3 $(BUILDFILE) "docs" -d "builddocs" -b html
 
 clean:
@@ -32,10 +32,3 @@ clean:
 # Only run after the search.hpp file has been created by the build process.
 local_search:
 	gcc -Wall -O3 -g3 -DRUN_LOCAL=1 -I"tmp/$(BUILDDIR)/search" src/wasm/search.c -o tmp/$(BUILDDIR)/search/search
-
-# Download and install the Emscripten toolchain in ./emsdk. If you have
-# emscripten installed somewhere else, you can also simlink that
-# installation to ./emsdk.
-emsdk:
-	git clone https://github.com/emscripten-core/emsdk.git
-	cd emsdk && ./emsdk install latest && ./emsdk activate latest
