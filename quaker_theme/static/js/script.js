@@ -45,7 +45,8 @@ let searchOpen = false
  *     overlay.
  */
 function selectEntry(element, overlay) {
-    var curEl = document.getElementsByClassName(overlay + ' selected')[0];
+    const curEl = document.getElementsByClassName(overlay + ' selected')[0];
+    const results = document.getElementById("search-results")
 
     // Stop if the given element is already selected.
     if (curEl === element) {
@@ -57,6 +58,7 @@ function selectEntry(element, overlay) {
         curEl.classList.remove('selected');
     }
 
+    element.scrollIntoView({behaviour: "smooth", block: "nearest"})
     element.classList.add('selected');
 }
 
@@ -111,7 +113,7 @@ function selectRelativeEntry(overlay, forwards) {
  * @returns {null} If no element was selected.
  */
 function redirectEntry(overlay) {
-    var curEl = document.getElementsByClassName(overlay + ' selected')[0]
+    let curEl = document.getElementsByClassName(overlay + ' selected')[0]
 
     // If no element is selected, return to prevent errors.
     if (!curEl) {
