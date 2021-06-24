@@ -23,6 +23,7 @@ import os
 import re
 import math
 import struct
+import shutil
 from pathlib import Path
 from typing import Tuple
 from jinja2 import Template
@@ -512,8 +513,16 @@ class IndexGenerator:
                 f'"{source_file}"']
         os.system(' '.join(cmnd))
 
+        # Find the wasm-ld executable.
+        wasm_linker = 'wasm-ld'
+        if shutil.which(wasm_linker) is None:
+            wasm_linker = '/usr/lib/llvm-10/bin/wasm-ld'
+        if shutil.which(wasm_linker) is None:
+            print('wasm-ld is not found! You should probably '
+                  'install it (TODO: better message)')
+
         # Link the object file to create a usable webassembly binary.
-        cmnd = ['wasm-ld', '--no-entry',
+        cmnd = [wasm_linker, '--no-entry',
                 '-o', f"{dest_path / 'search_data.wasm'}",
                 f'{object_file}']
         dest_path.mkdir(parents=True, exist_ok=True)
