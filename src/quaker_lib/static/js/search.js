@@ -162,6 +162,10 @@ function renderResults (maxResults = 10) {
     let newResults = Array(maxResults)
 
     let resultList = document.getElementById('result-list')
+    if (resultList == null) {
+        return
+    }
+
     let index = 0
 
     for (; index < maxResults; index++) {
@@ -260,6 +264,9 @@ function storeSearchResults () {
     const searchbar = document.getElementById('searchbar')
     const query = searchbar.value
     const resultList = document.getElementById('result-list')
+    if (resultList == null) {
+        return
+    }
 
     localStorage.setItem('searchQuery', query)
     localStorage.setItem('searchResults', resultList.innerHTML)
