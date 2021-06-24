@@ -67,7 +67,6 @@ async function initSearchWasm () {
         .then(res => res.arrayBuffer())
         .then(buffer => WebAssembly.instantiate(buffer))
         .then(obj => {
-            console.log("got wasm")
             let mem = obj.instance.exports.memory
             let buffer_loc = obj.instance.exports.getIOBuffer()
             let buffer_len = obj.instance.exports.getIOBufferSize()
