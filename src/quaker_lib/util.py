@@ -14,9 +14,10 @@ _non_id_chars = re.compile('[^a-z0-9/]+')
 _non_id_at_ends = re.compile('^[-0-9]+|-+$')
 
 
-def link_explicit(link):
-    """
-    Check whether the link format is a 'explicit link' in the format of:
+def link_explicit(link: str):
+    """Check whether the link format is a 'explicit link'.
+
+    Explicit links are of the format:
     Link Title <link_ref>
     If this is the case, return tuple (Title, Reference).
     Otherwise return None.
@@ -43,8 +44,8 @@ class Config(dict):
         self.__dict__ = self
 
 
-def make_id(ref):
-    """TODO"""
+def make_id(ref: str) -> str:
+    """Convert a string to an id format."""
     ref_list = ref.split('#')
 
     for i, ref in enumerate(ref_list):

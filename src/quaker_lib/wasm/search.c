@@ -190,6 +190,7 @@ int search_word(page_map_t *page_map, const char *word) {
 page_map_t *search_and_combine_words() {
     page_map_t *page_map = g.map_a, *temp_map = g.map_b;
     int page_map_empty = 1;
+    int added_non_stopword = 0;
 
     /* Iterate over the words to fill the page map. */
     for (int i = 0; i < g.word_count; ++i) {
@@ -212,21 +213,34 @@ page_map_t *search_and_combine_words() {
                     for (int i = 0; i < PAGE_COUNT; i++)
                         page_map[i] /= 2;
                 }
+                else
+                    added_non_stopword = 1;
             }
-            else if (found_map == 0) {
-                /* Intersect the two maps, adding the two counts only if
-                 * the page exists in both maps. */
-                for (int i = 0; i < PAGE_COUNT; i++) {
-                    if (page_map[i] && temp_map[i])
-                        page_map[i] += temp_map[i];
-                    else
-                        page_map[i] = 0;
-                }
-            }
-            else if (found_map == 1) {
+            else if (found_map == 1 || !added_non_stopword) {
                 /* The word was a stopword, so union both maps. */
                 for (int i = 0; i < PAGE_COUNT; i++) {
                     page_map[i] += temp_map[i] / 2;
+                }
+            }
+            else if (found_map == 0) {
+                if (!added_non_stopword) {
+                    for (int i = 0; i < PAGE_COUNT; i++) {
+                        if (temp_map[i])
+                            page_map[i] += temp_map[i];
+                        else
+                            page_map[i] = 0;
+                    }
+                    added_non_stopword = 1;
+                }
+                else {
+                    /* Intersect the two maps, adding the two counts only if
+                    * the page exists in both maps. */
+                    for (int i = 0; i < PAGE_COUNT; i++) {
+                        if (page_map[i] && temp_map[i])
+                            page_map[i] += temp_map[i];
+                        else
+                            page_map[i] = 0;
+                    }
                 }
             }
         }
@@ -347,11 +361,11 @@ int main(int n, char **input) {
 
     /* Search the query. */
     printf("Results for [%s]\n", input_output);
-    performSearch();
+    perform_search();
 
     /* Print the results. */
     int length;
-    while ((length = getSearch())) {
+    while ((length = get_search())) {
         input_output[length] = 0;
         printf("%s\n", input_output);
     }

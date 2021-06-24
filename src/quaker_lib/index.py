@@ -32,6 +32,7 @@ from collections import Counter
 from types import SimpleNamespace
 
 
+# A set of stopwords that should be ignored when part of a search.
 stopwords = {
     'him', 'then', 'i', 'couldn', 'too', 'shan', 'a', 'them', 'doesnt', 'it',
     'shouldnt', 'no', 'only', 'that', 'yourself', 'because', 'ain', 'very',
@@ -229,7 +230,7 @@ class Trie:
         current.pages = []
 
     @staticmethod
-    def match(n_word: str, s_word: str):
+    def match(n_word: str, s_word: str) -> Tuple[str, str, str]:
         """Method to match a part of a word to a part in the node.
 
         Parameters
@@ -264,7 +265,7 @@ class Trie:
         # Return matching part and both remainders.
         return n_word[:i], n_word[i:], s_word[i:]
 
-    def get_word(self, word):
+    def get_word(self, word: str):
         """"Find the node for a specific word in the trie.
 
         Parameters
@@ -427,13 +428,12 @@ class IndexGenerator:
 
     def __init__(self):
         """Constructor for the IndexGenerator class."""
-
         self.urltitles = []  # [(url, title), ...]
         self.trie = Trie("")  # root of the prefix trie
         self.remover = re.compile('[^\\w\\s\\n]')
 
     def add_file(self, content: list, title: str, url: str,
-                 priority: float = 1.0):
+                 priority: float = 1.0, t_weight: int = 5):
         """Add a file to the index.
 
         Parameters
@@ -446,10 +446,8 @@ class IndexGenerator:
             The url of the page.
 
         """
-
         # Change to lowercase, separate _ and only keep letters/numbers.
-        # TODO add title weight to config
-        content += (title + ' ') * 5
+        content += (title + ' ') * t_weight
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 

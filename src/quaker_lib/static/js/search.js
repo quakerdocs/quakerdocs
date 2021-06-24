@@ -2,7 +2,15 @@
 let wasm = null
 let searcher = null
 let searchInput = ""
+let searchWords;
 let parser = new DOMParser()
+let results = []
+let scraperProgress = 0
+let scraperActive = false
+let scraperWordsRegex;
+let scraperReplacer;
+
+
 
 /**
  * Class representing a result entry.
@@ -60,7 +68,7 @@ class Result {
 }
 
 /**
- * TODO
+ * Load and initialise the wasm object that is responsible for the search.
  */
 async function initSearchWasm () {
     fetch("./_static/js/search_data.wasm")
@@ -108,18 +116,28 @@ function * performSearch (query) {
     }
 }
 
-
+/**
+ * Callback to update the search whenever a key is pressed.
+ * @param event The event that called the callback
+ */
 function searchUpdateKey (event) {
     const resultsWrapper = document.getElementById('search-results')
-    const code = event.code
 
-    // Don't execute a new search when any arrow key or enter is pressed.
-    if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(code)) {
-        return
-    }
+    /* Check that the input was changed, if not, do nothing. */
+    if (this.value == searchInput)
+        return;
 
+    /* Get and store the new input. */
     searchInput = this.value
+    scraperProgress = 0
+    searchWords = searchInput.split(' ').filter(word => word)
+    scraperWordsRegex = searchWords.map(word => new RegExp('\\b' + word, 'ig'))
+    let capture = searchWords.map(word => '\\b' + word).join('|')
+    scraperReplacer = new RegExp('(' + capture + ')', 'ig')
 
+    results = []
+
+    /* Update the results if there's new input. */
     if (searchInput) {
         searcher = performSearch(searchInput)
         resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
@@ -130,6 +148,9 @@ function searchUpdateKey (event) {
     }
 }
 
+/**
+ * Callback to add more results to the search when scrolling to the bottom.
+ */
 function handleInfiniteScroll () {
     if (this.scrollTopMax - this.scrollTop < 90) {
         renderResults(5)
@@ -167,9 +188,7 @@ function renderResults (maxResults = 10) {
         return
     }
 
-    let index = 0
-
-    for (; index < maxResults; index++) {
+    for (let index = 0; index < maxResults; index++) {
         /* Limit number of search results. */
         if (searcher == null) {
             return
@@ -180,88 +199,76 @@ function renderResults (maxResults = 10) {
         }
 
         resultList.append(r.value.createResultElement())
-        newResults[index] = r.value
+        results.push(r.value)
     }
 
-    resultList = resultList.getElementsByTagName("a")
-    let i = 0
-    const input = searchInput
-
-    // let words = input.split(/[ ]+/)
-    // let wordsRegex =
-    // new RegExp(query, 'i')
-
-    function getContent() {
-        if (i >= index) {
-            return
-        }
-
-        let r = newResults[i]
-        fetch(r.page)
-            .then(res => res.text())
-            .then(data => {
-                if (input != searchInput) {
-                    return
-                }
-
-                const html = parser.parseFromString(data, 'text/html')
-                let text = html.getElementById('content').innerText
-
-                /* Look for the section containing the result. */
-                for (const section of html.querySelectorAll('section')) {
-                    if (section.textContent.includes(searchInput) && section.id) {
-                        r.page += '#' + section.id
-                        text = section.innerText
-                        break
-                    }
-                }
-
-                /* TODO: highlight each word in the input separately. */
-                let content = highlightSearchQuery(searchInput, text)
-                console.log(resultList[resultList.length - index + i])
-                resultList[resultList.length - index + i].href = r.page
-                resultList[resultList.length - index + i].innerHTML += `<p class="result-content">${content}</p>`
-
-                i++
-                getContent()
-            })
-            .catch(console.error)
+    /* Link the link elements. */
+    let elements = resultList.getElementsByTagName('a')
+    for (let i = 0; i < elements.length; i++) {
+        results[i].el = elements[i];
     }
 
-    /* Fetch page contents. */
-    getContent()
+    /* Activate the scraper if it is not running yet. */
+    if (!scraperActive)
+        scraperIterate()
 }
+
 
 /**
- * Highlights a query in the provided text using a span tag.
- * @param {*} query The query to be highlighted in the text.
- * @param {*} text The text.
- * @returns The text to be displayed containing the highlighted query.
+ * Start the scraper iterator, which fills the search result textboxes
+ * one by one, one after the other.
  */
- function highlightSearchQuery (query, text) {
-    const maxLenTextBefore = 50
-    const maxLenTextAfter = 100
-    const highlighter = '<span class="has-background-primary-light has-text-primary">'
-    const index = text.search(new RegExp(query, 'i'))
-    if (index < 0) {
-        return ''
+function scraperIterate () {
+    if (scraperProgress >= results.length) {
+        scraperActive = false
+        return
     }
+    scraperActive = true;
 
-    /* Slice out the target text and wrap it in a span tag. */
-    const target = text.slice(index, index + query.length)
-    const textBefore = text.slice(Math.max(index - maxLenTextBefore, 0), index)
-    const textAfter = text.slice(index + query.length, index + maxLenTextAfter)
-    const displayText = textBefore + highlighter + target + '</span>' + textAfter
-    const endIndex = displayText.lastIndexOf(' ')
-    let startIndex = 0
+    let r = results[scraperProgress++]
+    fetch(r.page)
+        .then(res => res.text())
+        .then(data => {
+            const html = parser.parseFromString(data, 'text/html')
+            let maxCount = 0, maxSection, maxIndices
 
-    /* Split resulting text on full words. */
-    if (textBefore.trim() && textBefore.indexOf(' ') >= 0) {
-        startIndex = displayText.indexOf(' ')
-    }
+            /* Look for the section containing the most words. */
+            for (const section of html.querySelectorAll('section')) {
+                if (!section.id)
+                    continue
+                const text = section.textContent;
+                let indices = scraperWordsRegex.map(regex => text.search(regex))
+                let wordCount = indices.filter(x => x >= 0).length
+                if (wordCount > maxCount) {
+                    maxCount = wordCount
+                    maxSection = section
+                    maxIndices = indices
+                }
+            }
 
-    return displayText.slice(startIndex, endIndex) + ' ...'
+            /* Use the main page of everything no viable section has been found. */
+            if (maxCount == 0) {
+                maxSection = html.querySelector('main')
+                const text = maxSection.textContent;
+                maxIndices = scraperWordsRegex.map(regex => text.search(regex))
+            }
+            else
+                r.page += '#' + maxSection.id
+
+            /* Update the html page. */
+            r.el.href = r.page
+            const start = Math.max(maxIndices[0] - 10, 0)
+            let text = maxSection.textContent.substr(start, start + 256)
+            text = '...' + text.replace(scraperReplacer,
+                '<span class="has-background-primary-light ' +
+                'has-text-primary">$1</span>')
+            r.el.innerHTML += `<p class="result-content">${text}</p>`
+
+            scraperIterate()
+        })
+        .catch(console.error)
 }
+
 
 function storeSearchResults () {
     const searchbar = document.getElementById('searchbar')

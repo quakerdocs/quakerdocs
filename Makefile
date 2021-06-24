@@ -28,4 +28,4 @@ clean:
 # Create a local search executable to test the search functionality.
 # Only run after the search.hpp file has been created by the build process.
 local_search:
-	gcc -Wall -O3 -g3 -DRUN_LOCAL=1 -I"tmp/$(BUILDDIR)/search" src/wasm/search.c -o tmp/$(BUILDDIR)/search/search
+	gcc -Wall -O3 -g3 -DRUN_LOCAL=1 -I"tmp/$(BUILDDIR)/search" src/quaker_lib/wasm/search.c -o tmp/$(BUILDDIR)/search/search

@@ -28,11 +28,29 @@ class kbd_element(nodes.General, nodes.Element):
 
 
 class toc_data(nodes.General, nodes.Element):
+    """Node representing the ToC data.
+
+    Stores the configuration options of the given ToC as well as the references
+    given. It is also responsible for it's own html translation.
+
     """
-    Container class for Toc data.
-    """
-    def create_html(self, id_map, css_class='toc'):
-        """TODO"""
+    def create_html(self, id_map: dict, css_class: str = 'toc'):
+        """Turn the contents of the ToC into a html table.
+
+        Parameters
+        ----------
+        id_map : dict
+            Dictionary mapping the references to content objects.
+        css_class : str
+            Specify which css class the toc uses.
+
+        Returns
+        -------
+        body : list
+            List of html strings.
+
+        """
+        # Make max_depth and collapse depth complete if -1.
         max_depth = self['maxdepth']
         if max_depth < 0:
             max_depth = 10000
@@ -42,21 +60,14 @@ class toc_data(nodes.General, nodes.Element):
             collapse_depth = max_depth
 
         list_tag = 'ol' if self['numbered'] else 'ul'
-        number_types = self['number_types'].split()
-
-        stack = []
-        def get_numbered_type():
-            if self['numbered']:
-                return f' type="{number_types[len(stack) % len(number_types)]}"'
-            else:
-                return ''
 
         body = [f'<p class="caption {css_class}-label">\n'
                 '\t<span class="caption-text">\n'
                 f'\t{self["caption"]}\n\t\t</span>\n\t</p>'
-                f'<{list_tag}{get_numbered_type()} class="{css_class}-list">\n']
+                f'<{list_tag}{self.get_numbered_type(0)} '
+                f'class="{css_class}-list">\n']
 
-        stack.append(list(reversed(self['entries'])))
+        stack = [list(reversed(self['entries']))]
         while stack:
             depth = len(stack)
             if not stack[-1]:
@@ -98,8 +109,8 @@ class toc_data(nodes.General, nodes.Element):
                                     'aria-hidden="true"></i></span>')
 
                     body.append('</span>')
-                    body.append(f'<{list_tag}{get_numbered_type()} class="'
-                                f'{css_class}-list{collapsed}">\n')
+                    body.append(f'<{list_tag}{self.get_numbered_type(depth)} '
+                                f'class="{css_class}-list{collapsed}">\n')
 
                     new = [None] + [(None, sec)
                                     for sec in reversed(ref.sections)]
@@ -113,6 +124,14 @@ class toc_data(nodes.General, nodes.Element):
 
         body.append(f'</{list_tag}>\n')
         return body
+
+    def get_numbered_type(self, depth: int):
+        """ Helper method to get the type of number labels for enumerates. """
+        if self['numbered']:
+            nt = self['number_types']
+            return f' type="{nt[depth % len(nt)]}"'
+        else:
+            return ''
 
 
 class ref_element(nodes.General, nodes.Element):
@@ -148,8 +167,18 @@ class Only(Directive):
 
 
 class TocTree(Directive):
-    """
-    Directive for generating a Table of Contents
+    """Directive for generating a Table of Contents
+
+    This also includes the generation of the navbar as this uses the ToC
+    outlined in the master file of the website.
+
+    Attributes
+    ----------
+    has_content : bool
+        Tell docutils that this directive uses it's content.
+    option_spec : dict
+        Tell docutils which options are needed and their types.
+
     """
     has_content = True
 
@@ -169,8 +198,13 @@ class TocTree(Directive):
     }
 
     def run(self):
-        """
-        Code that is being run for the directive.
+        """Code that is being run for the directive.
+
+        Returns
+        -------
+        [tocdata] : list
+            A node containing the information necessary for the ToC.
+
         """
         tocdata = toc_data()
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
@@ -179,16 +213,16 @@ class TocTree(Directive):
         tocdata['reversed'] = 'reversed' in self.options
         tocdata['numbered'] = 'numbered' in self.options
         tocdata['number_types'] = self.options.get('number_types', '1 a i A I')
+        tocdata['number_types'] = tocdata['number_types'].split()
         tocdata['hidden'] = 'hidden' in self.options
 
         tocdata['entries'] = self.parse_content()
         return [tocdata]
 
     def parse_content(self):
-        """
-        Fill the toctree data structure with entries.
-        """
+        """ Fill the toctree data structure with entries. """
         result = []
+        # Add each entry to the list as a title and reference tuple.
         for entry in self.content:
             # Check if current entry is in format 'Some Title <some_link>'.
             explicit_link = util.link_explicit(entry)
@@ -198,14 +232,25 @@ class TocTree(Directive):
             else:
                 title = None
                 ref = entry
+
+            # Get the actual reference from the id_map using the appropriate
+            # logic safely.
             ref = self.state.document.settings.page.use_reference(ref)
             result.append((title, ref))
         return result
 
 
 class CodeBlock(Directive):
-    """
-    Directive for displaying code samples.
+    """Directive for displaying code samples.
+
+    Attributes
+    ----------
+    has_content : bool
+        Tell docutils that this directive uses it's content.
+    option_spec : dict
+        Tell docutils which options are needed and their types.
+    optional_arguments : int
+        Tell docutils how many optional arguments to expect.
     """
     option_spec = {
         'name': directives.unchanged,
@@ -218,9 +263,7 @@ class CodeBlock(Directive):
     optional_arguments = 1
 
     def run(self):
-        """
-        Create nodes for this directive.
-        """
+        """ Create nodes for this directive. """
         language = self.arguments[0] if len(self.arguments) > 0 else None
         linenos = 'linenos' in self.options
         linenostart = self.options.get('lineno-start', 1)
@@ -327,6 +370,7 @@ def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
     node = kbd_element()
     node['keys'] = text.split('+')
+
     return [node], []
 
 

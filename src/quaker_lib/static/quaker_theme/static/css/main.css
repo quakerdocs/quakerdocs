@@ -156,7 +156,7 @@
 .result {
   text-align: left;
   border: 1px solid #ddd;
-  min-height: 100px;
+  height: 94px;
   overflow: hidden;
 }
 

@@ -1,5 +1,15 @@
-"""
-TODO
+"""Module that manages the main logic for QuakerDocs
+
+This module implements a Main class that can be used to translate Rst or
+markdown documentation to a website that is both static and interactive.
+The resulting website does not need a database or any server side logic, it
+is completely client-side yet does include a fast live search, an interactive
+sidebar, bookmarks and custom html or iframes are also supported.
+
+This should be a drop in replacement for sphynx in most cases and supports
+most of it's extensions. Custom extensions, directives and roles should be
+supported as well.
+
 """
 
 import os
@@ -34,6 +44,7 @@ class Main:
         The directory to write the output.
     builder : str
         The builder used for the generator.
+
     """
     SKIP_TAGS = {'system_message', 'problematic'}
 
@@ -42,12 +53,15 @@ class Main:
         'html': ('html', html5writer.Writer)
     }
 
-    def __init__(self, source_path, dest_path, builder):
+    def __init__(self, source_path: Path, dest_path: Path, builder: Path):
+        # Create and store the various paths.
         self.source_path = source_path
         self.dest_path = dest_path
         self.temp_path = dest_path.parent / 'tmp' / dest_path.name
         self.static_dest_path = dest_path / '_static'
         self.script_dest_path = self.static_dest_path / 'js'
+
+        # Store the builder and the parser.
         self.builder = builder
         self.source_parsers = {'.rst': Parser}
 
@@ -56,6 +70,8 @@ class Main:
         self.file_ext = '.out'
         self.writer = None
         self.idx = None
+
+        # List to store the nodes for the navbar and id_map to link references.
         self.toc_navigation = []
         self.id_map = {}
 
@@ -65,9 +81,10 @@ class Main:
             module = importlib.import_module(f'quaker_lib.directives.{module}')
             module.setup()
 
+        # A waiting queue to handle any linking.
         self.waiting = defaultdict(list)
-        self.hierarchy = defaultdict(list)
 
+        # The general settings for parsing using docutils.
         self.docutil_settings = {
             'src_dir': self.source_path,
             'dst_dir': self.dest_path,
@@ -78,10 +95,8 @@ class Main:
             'html_static_path': [],
         }
 
-    def relative_path(self, path):
-        """
-        Get the path of a source directory relative to the source file.
-        """
+    def relative_path(self, path: Path) -> Path:
+        """ Get the path of a source directory relative to the source file. """
         return Path(path).relative_to(self.source_path)
 
     def read_conf(self):
@@ -94,10 +109,17 @@ class Main:
         }
         conf_vars = {}
 
-        # Check if file exists? Other cwd?
-        with open('conf.py') as conf_file:
+        conf_path = Path('conf.py')
+
+        # Check if the file exists.
+        if not conf_path.exists():
+            print("Error: conf.py not found in source directory.")
+            exit(1)
+
+        with conf_path.open('r') as conf_file:
             exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
+
 
         # Make sure source_suffix is a list.
         suffix = self.conf_vars['source_suffix']
@@ -151,9 +173,15 @@ class Main:
         os.chdir(prev_cwd)
 
     def generate(self):
-        """
+        """ Generate the html files from the source files.
+
         Read all the input files from the source directory, parse them, and
         output the results to the build directory.
+
+        Raises
+        ------
+        NotImplementedError
+            When an unsupported builder is specified.
         """
         # Check if requested format is supported.
         if self.builder not in Main.supported_builders:
@@ -188,12 +216,19 @@ class Main:
         self.copy_static_files()
 
         # Delete the temporary build files.
-        # TODO
+        # TODO implement and add flag because they are needed for local search
+        # and potentially other stuff for testing.
 
         print(f'The generated documents have been saved in {self.dest_path}')
 
     def build_files(self):
         """Iterate over files in source directory and save in [(path, content)]
+
+        This method parses and translates the source files and writes the
+        resulting output files to the correct destination. Ideally only one
+        file is kept in memory at a time, but in order to resolve linking some
+        files have to wait for others to finish first.
+
         """
         master_doc = self.conf_vars.get('master_doc', 'index')
 
@@ -202,9 +237,11 @@ class Main:
             for file in files:
                 path = self.relative_path(root) / file
 
+                # Skip excluded files.
                 if self.is_excluded(path):
                     continue
 
+                # Parse the files if found (parse also writes when possible).
                 if path.suffix in self.conf_vars['source_suffix']:
                     page = Page(self, path)
                     page.parse()
@@ -213,9 +250,8 @@ class Main:
 
                 # Add the toc trees of the master doc page for the
                 # creation of the sidebar.
-                if (page is not None and
-                        (str(path) == master_doc
-                         or str(path.with_suffix('')) == master_doc)):
+                if (page is not None and (str(path) == master_doc
+                        or str(path.with_suffix('')) == master_doc)):
                     toc_node_type = directives.sphinx.toc_data
                     for toc_node in page.doctree.traverse(toc_node_type):
                         self.toc_navigation.append(toc_node)
@@ -227,32 +263,37 @@ class Main:
                       f'reference "{ref_name}"')
                 page.write()
 
-    def is_excluded(self, path):
+    def is_excluded(self, path: Path) -> bool:
         """
-        Check whether a file is not supposed to be excluded.
+        Check whether a file is supposed to be excluded.
 
         Parameters
         ----------
         path : pathlib.Path
             The path to the file to be checked
+
+        Returns
+        -------
+        bool
+            Whether the path should be excluded (true).
         """
         exclude_pats = self.conf_vars['exclude_patterns']
         return any(fnmatch.fnmatch(path, pattern) for pattern in exclude_pats)
 
     def build_global_toc(self):
-        """
-        Read and save the ToC from master_doc.
-        """
+        """ Write the ToC's from master_doc as a navbar. """
         with (self.script_dest_path / 'load_navbar.js').open('w') as f:
+            # Create javascript that inserts it so it can be included.
             f.write('document.getElementById("navigation-tree").innerHTML = `')
 
+            # Set parameters for each node and create the html.
             for node in self.toc_navigation:
                 node['numbered'] = False
                 node['maxdepth'] = -1
                 node['collapsedepth'] = 0
                 for html in node.create_html(self.id_map, 'menu'):
                     f.write(html)
-
+            # End the javascript.
             f.write('`;')
 
     def copy_static_files(self):
