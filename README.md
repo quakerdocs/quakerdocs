@@ -23,15 +23,24 @@ started!
 Installation
 ------------
 
-First of all to install the QuakerDocs application use the following
-command:
+First of all, make sure you have the LLVM wasm-compiler installed.
 
-``` {.bash}
-pip install .
-```
+.. example::
 
-After running this command all the requirements are installed and you
-can immediately use the quaker command.
+   On Ubuntu:
+
+   .. code-block:: bash
+
+      apt-get install lld
+
+Then, to install the QuakerDocs application use the following command:
+
+.. code-block:: bash
+
+   pip3 install -i https://test.pypi.org/simple/ quaker
+
+After running this command all the requirements are installed and you can
+immediately use the quaker command.
 
 Quickstart
 ----------
