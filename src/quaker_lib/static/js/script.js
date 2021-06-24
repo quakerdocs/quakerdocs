@@ -166,9 +166,9 @@ function hideSearchOverlay () {
  */
 function toggleBackToTopButton () {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById('backTopBtn').style.display = 'block'
+        document.getElementById('backTopBtn').classList.add('backTopBtn__hide')
     } else {
-        document.getElementById('backTopBtn').style.display = 'none'
+        document.getElementById('backTopBtn').classList.remove('backTopBtn__hide')
     }
 }
 

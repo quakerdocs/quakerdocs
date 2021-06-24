@@ -32,13 +32,22 @@
   overflow: auto;
 }
 
-#backTopBtn {
-  display: none;
+.backTopBtn {
+  display: block;
   position: fixed;
   right: 5vw;
   bottom: 3vh;
   padding: 15px;
   font-size: 18px;
+  transition: all .4s ease-in-out;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.backTopBtn.backTopBtn__hide {
+  opacity: 1;
+  transform: scale(1);
+  transition: all .4s ease-in-out;
 }
 
 .navbar-brand img{
@@ -147,7 +156,7 @@
 .result {
   text-align: left;
   border: 1px solid #ddd;
-  height: 100px;
+  min-height: 100px;
   overflow: hidden;
 }
 
