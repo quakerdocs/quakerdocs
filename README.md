@@ -18,42 +18,59 @@ Getting Started with QuakerDocs
 ===============================
 
 QuakerDocs is very easy to use, and you do not need a lot to get
-started! To get started, you only need a configuration file written in
-Python called `conf.py`, and one or more files containing your
-documentation called `<your_file_name>.rst`.
+started!
 
 Installation
 ------------
-You can install QuakerDocs from PyPI as follows:
+
+First of all to install the QuakerDocs application use the following
+command:
 
 ``` {.bash}
-$ pip install quaker
+pip install .
 ```
+
+After running this command all the requirements are installed and you
+can immediately use the quaker command.
+
+Quickstart
+----------
+
+To create an example quickstart project in a directory, you can use the
+following command:
+
+``` {.bash}
+quaker --init <your_directory_name>
+```
+
+This command creates a directory with some of the necessary files to get
+you started such as `conf.py`, and `index.rst`.
 
 Usage
 -----
 
-To use QuakerDocs to turn your RST or Markdown files into a static
-webpage you need the follow these steps:
+To use QuakerDocs to turn your RST of Markdown files into static
+webpages you need the follow these steps:
 
 1.  Open the directory containing your `conf.py` in the terminal.
 
     ``` {.bash}
-    cd path/to/my/project
+    cd path/to/my/project/
     ```
 
-2.  To convert your documentation files into a static webpage, run the
+2.  To convert your documentation files into static webpages, run the
     following command.
 
     ``` {.bash}
-    quaker . -d build
+    quaker .
     ```
 
-3.  (Change into the build directory, and start a webserver)
+3.  Change into the `build/` directory, and start a webserver.
 
     ``` {.bash}
+    cd build/
     python3 -m http.server
     ```
 
-4.  To visit the generated documentation page visit localhost:8000 in
+4.  To visit the generated documentation page visit `localhost:8000` in
     your web browser.
