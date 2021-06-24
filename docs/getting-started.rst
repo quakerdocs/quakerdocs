@@ -28,7 +28,7 @@ This command creates a directory with some of the necessary files to get you sta
 Usage
 -----
 
-To use QuakerDocs to turn your RST of Markdown files into static webpages you need the follow these steps:
+To use QuakerDocs to turn your RST or Markdown files into static webpages you need the follow these steps:
 
 1. Open the directory containing your :code:`conf.py` in the terminal.
 

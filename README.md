@@ -49,7 +49,7 @@ you started such as `conf.py`, and `index.rst`.
 Usage
 -----
 
-To use QuakerDocs to turn your RST of Markdown files into static
+To use QuakerDocs to turn your RST or Markdown files into static
 webpages you need the follow these steps:
 
 1.  Open the directory containing your `conf.py` in the terminal.
