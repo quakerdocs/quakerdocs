@@ -136,7 +136,7 @@ class Page:
 
         return ref
 
-    def id_to_map(self, id: str, node, anchor: str =''):
+    def id_to_map(self, id: str, node, anchor: str = ''):
         """Helper method to add a new id to the id_map.
 
         Parameters

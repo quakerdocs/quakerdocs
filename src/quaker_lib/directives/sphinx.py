@@ -102,7 +102,7 @@ class toc_data(nodes.General, nodes.Element):
                 if len(ref.sections) > 0 and depth < max_depth:
                     if collapsed:
                         body.append('<span onclick='
-                        '       "toggleExpand(this.parentNode)"'
+                                    '"toggleExpand(this.parentNode)"'
                                     ' class="is-clickable icon is-small '
                                     'level-right">'
                                     '<i class="fa arrow-icon fa-angle-right" '

@@ -213,7 +213,6 @@ function renderResults (maxResults = 10) {
         scraperIterate()
 }
 
-
 /**
  * Start the scraper iterator, which fills the search result textboxes
  * one by one, one after the other.
@@ -268,7 +267,6 @@ function scraperIterate () {
         })
         .catch(console.error)
 }
-
 
 function storeSearchResults () {
     const searchbar = document.getElementById('searchbar')

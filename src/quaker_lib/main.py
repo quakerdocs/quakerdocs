@@ -120,7 +120,6 @@ class Main:
             exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
 
-
         # Make sure source_suffix is a list.
         suffix = self.conf_vars['source_suffix']
         if suffix is None:
@@ -250,8 +249,9 @@ class Main:
 
                 # Add the toc trees of the master doc page for the
                 # creation of the sidebar.
-                if (page is not None and (str(path) == master_doc
-                        or str(path.with_suffix('')) == master_doc)):
+                if (page is not None and
+                        (str(path) == master_doc
+                         or str(path.with_suffix('')) == master_doc)):
                     toc_node_type = directives.sphinx.toc_data
                     for toc_node in page.doctree.traverse(toc_node_type):
                         self.toc_navigation.append(toc_node)
