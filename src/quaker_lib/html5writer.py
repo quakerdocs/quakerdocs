@@ -121,13 +121,12 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         self.settings = document.settings
 
         # Set base path for every document.
-        self.head.append('<base href="%s">'
-                         % self.settings.rel_base)
+        self.head.append(f'<base href="{self.settings.rel_base}">')
 
         # Add favicon to pages.
         if self.settings.favicon is not None:
-            self.head.append('<link rel="icon" href="%s">'
-                             % self.settings.favicon)
+            self.head.append('<link rel="icon" '
+                             f'href="{self.settings.favicon}">')
 
         # Build navigation bar.
         # self.navigation = ''
@@ -138,7 +137,7 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         # Add logo to pages.
         self.logo = ''
         if self.settings.logo is not None:
-            self.logo = '<img src="%s" alt="Logo">' % self.settings.logo
+            self.logo = f'<img src="{self.settings.logo}" alt="Logo">'
 
         link = 'https://quakerdocs.nl/'
 
@@ -157,9 +156,13 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
 
     def visit_toc_data(self, node: nodes.Element):
         """
-        Skip rendering of Table of Contents data-element.
+        Render the Table of Contents data-element.
         """
-        raise nodes.SkipNode
+        for i in node.create_html(self.settings.id_map):
+            self.body.append(i)
+
+    def depart_toc_data(self, node: nodes.Element):
+        pass
 
     def visit_ref_element(self, node: nodes.Element):
         """
@@ -168,9 +171,15 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         title = node['title']
         if node['ref'] in self.settings.id_map:
             ref = self.settings.id_map[node['ref']]
-            self.body.append(f'<a href="{ref}">{title}</a>')
+
+            # Make sure the title exists.
+            if title is None:
+                title = ref if ref.title is None else ref.title
+
+            self.body.append(f'<a href="{ref.url}">{title}</a>')
         else:
-            self.body.append(title)
+            if title is not None:
+                self.body.append(title)
 
     def depart_ref_element(self, node: nodes.Element):
         """

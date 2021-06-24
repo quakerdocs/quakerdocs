@@ -34,7 +34,7 @@ class Theme:
                 self.theme_path = path
                 break
         if self.theme_path is None:
-            raise RuntimeError("Failed to find theme %s!" % theme_name)
+            raise RuntimeError(f'Failed to find theme {theme_name}!')
 
         # Save additional paths to templates
         self.templates_path = [os.path.abspath(path) for path in templ_path] \

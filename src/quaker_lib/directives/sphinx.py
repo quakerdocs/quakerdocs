@@ -5,9 +5,6 @@ All implementations of the directives have been inspired by:
 `https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/directives/other.py`
 """
 
-import os.path
-from typing import Iterable
-import docutils.core
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives, roles
@@ -20,8 +17,100 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
-from pathlib import Path
 from quaker_lib import util
+
+
+class kbd_element(nodes.General, nodes.Element):
+    """
+    Empty node for rendering keyboard inputs
+    """
+    pass
+
+
+class toc_data(nodes.General, nodes.Element):
+    """
+    Container class for Toc data.
+    """
+    def create_html(self, id_map, css_class='toc'):
+        """TODO"""
+        list_tag = 'ol' if self['numbered'] else 'ul'
+
+        body = [f'<p class="caption {css_class}-label">\n'
+                '\t<span class="caption-text">\n'
+                f'\t{self["caption"]}\n\t\t</span>\n\t</p>'
+                f'<{list_tag} class="{css_class}-list">\n']
+
+        max_depth = self['maxdepth']
+        collapse_depth = self['collapsedepth']
+
+        if max_depth < 0:
+            max_depth = 10000
+
+        if collapse_depth < 0:
+            collapse_depth = max_depth
+
+        stack = [list(reversed(self['entries']))]
+        while stack:
+            depth = len(stack)
+            if not stack[-1]:
+                stack.pop()
+                continue
+
+            current = stack[-1].pop()
+            tab_size = depth * '\t'
+
+            if current is None:
+                # Print end of the sublist.
+                body.append(tab_size)
+                body.append(f'</{list_tag}>\n')
+                body.append('</li>\n')
+                continue
+
+            collapsed = ' is-collapsed' if depth > collapse_depth else ''
+
+            title, ref_id = current
+            body.append('<li><span class="level mb-0"><a ')
+
+            ref = id_map.get(ref_id, None)
+            if ref is not None:
+                if title is None:
+                    title = ref.url if ref.title is None else ref.title
+
+                if '#' in ref.url:
+                    body.append(f'onClick="expandSidebar(\'{ref.url}\')" ')
+
+                body.append(f'href="{ref.url}">{title}</a>')
+
+                if len(ref.sections) > 0 and depth < max_depth:
+                    body.append('<span onclick="toggleExpand(this.parentNode)"'
+                                ' class="is-clickable icon is-small '
+                                'level-right">'
+                                '<i class="fa arrow-icon fa-angle-right" '
+                                'aria-hidden="true"></i></span>')
+
+                    body.append('</span>')
+                    body.append(f'<{list_tag} class="'
+                                f'{css_class}-list{collapsed}">\n')
+
+                    new = [None] + [(None, sec)
+                                    for sec in reversed(ref.sections)]
+                    stack.append(new)
+                else:
+                    body.append('</span></li>\n')
+            else:
+                if title is None:
+                    title = ref_id
+                body.append(f'href="{ref_id}">{title}</a></span></li>\n')
+
+        body.append(f'</{list_tag}>\n')
+        return body
+
+
+class ref_element(nodes.General, nodes.Element):
+    """
+    Custom reference node to handle unparsed pages.
+    """
+    pass
 
 
 class Only(Directive):
@@ -49,13 +138,6 @@ class Only(Directive):
         return []
 
 
-class toc_data(nodes.General, nodes.Element):
-    """
-    Container class for Toc data.
-    """
-    pass
-
-
 class TocTree(Directive):
     """
     Directive for generating a Table of Contents
@@ -64,6 +146,7 @@ class TocTree(Directive):
 
     option_spec = {
         'maxdepth': int,
+        'collapsedepth': int,
         'name': directives.unchanged,
         'caption': directives.unchanged_required,
         'glob': directives.flag,
@@ -79,186 +162,32 @@ class TocTree(Directive):
         Code that is being run for the directive.
         """
         tocdata = toc_data()
-        tocdata['content'] = self.content
-        tocdata['src_dir'] = self.state.document.settings.src_dir
-        tocdata['src_path'] = self.state.document.settings.src_path
-
-        tocdata['entries'] = []
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
-        tocdata['caption'] = self.options.get('caption')
-        tocdata['numbered'] = 'numbered' in self.options
+        tocdata['collapsedepth'] = self.options.get('collapsedepth', 1)
+        tocdata['caption'] = self.options.get('caption', '')
         tocdata['reversed'] = 'reversed' in self.options
+        tocdata['numbered'] = 'numbered' in self.options
 
-        wrappernode = nodes.compound(classes=['toctree-wrapper'])
-        wrappernode.append(tocdata)
-        list_type = (nodes.enumerated_list if tocdata['numbered']
-                     else nodes.bullet_list)
-        lst = list_type()
+        tocdata['entries'] = self.parse_content()
+        return [tocdata]
 
-        # Parse ToC content.
-        TocTree.parse_content(tocdata)
-        items = TocTree.to_nodes(tocdata['entries'], tocdata['maxdepth'],
-                                 list_type=list_type)
-
-        # Add ToC to document.
-        lst.extend(items)
-        if tocdata['caption'] is not None:
-            wrappernode += nodes.paragraph('', tocdata['caption'],
-                                           classes=['caption'])
-        if len(lst) > 0:
-            wrappernode += lst
-        return [wrappernode]
-
-    @staticmethod
-    def parse_node(node, ref):
-        """
-        Generate a tree-like structure for the sections in a given doctree.
-        """
-        entries = []
-
-        # Iterate over all section-nodes belonging to node.
-        for child in node.children:
-            if not isinstance(child, nodes.section):
-                continue
-
-            # Only continue if the current section contains a title.
-            if len(child.children) > 0:
-                title = child.next_node(nodes.Titular)
-                if title:
-                    children = TocTree.parse_node(child, ref)
-                    # Use id of the anchor, not of the section!
-                    anchor = child.attributes['ids'][0]
-                    entries.append((title.astext(), '%s#%s'
-                                    % (ref, anchor), children))
-
-        return entries
-
-    # TODO: Integrate with search index?
-    @staticmethod
-    def parse_content(tocdata: toc_data):
+    def parse_content(self):
         """
         Fill the toctree data structure with entries.
         """
-        for entry in tocdata['content']:
-            children = []
-            src_dir = tocdata['src_dir']
-            if entry.endswith('.rst'):
-                entry = entry[:-4]
-
+        result = []
+        for entry in self.content:
             # Check if current entry is in format 'Some Title <some_link>'.
             explicit_link = util.link_explicit(entry)
 
-            if explicit_link is not None:
+            if explicit_link:
                 title, ref = explicit_link
-                if (not ref.startswith("https://")
-                        and not ref.startswith("http://")):
-
-                    if not ref.startswith('/'):
-                        ref = tocdata['src_path'].parent / ref
-
-                    ref = Path(ref).with_suffix('.html')
             else:
-                ref = os.path.join(entry + ".html")
-                src = os.path.join(src_dir, entry + ".rst")
-
-                if not os.path.exists(src):
-                    continue
-
-                doctree = docutils.core.publish_doctree(
-                    Path(src).read_text(),
-                    source_path=src,
-                    settings_overrides={
-                        'src_dir': src[:-4],
-                        'src_path': (tocdata['src_path'] / entry).parent
-                    }
-                )
-
-                # Find the page title.
-                try:
-                    title = next(iter(doctree.traverse(nodes.title)))
-                    title = title[0].astext()
-                except StopIteration:
-                    title = 'Not found'
-
-                # Find section headers in document.
-                children = TocTree.parse_node(doctree, ref)
-
-            tocdata['entries'].append((title, ref, children))
-
-        # Reverse if required.
-        if tocdata['reversed']:
-            tocdata['entries'] = list(reversed(tocdata['entries']))
-
-    @staticmethod
-    def to_nodes(entries, depth=999, list_type=nodes.bullet_list):
-        """
-        Convert a given ToC-tree into a displayable structure for the document.
-        """
-        items = []
-        for title, ref, children in entries:
-            lst_item = nodes.list_item('', nodes.paragraph('', '',
-                                       nodes.reference('', title, refuri=ref)))
-
-            # Parse children, but only if maxdepth is not yet reached.
-            if len(children) > 0 and depth > 1:
-                # Do we want to collapse some entries? i.e. plagiarism.html
-                # This is similar to Sphinx
-                while len(children) == 1 and len(children[0][2]) > 1:
-                    children = children[0][2]
-                blst = list_type()
-                blst.extend(TocTree.to_nodes(children, depth=depth-1,
-                                             list_type=list_type))
-                lst_item.append(blst)
-            items.append(lst_item)
-        return items
-
-    @staticmethod
-    def to_html(tocdata: toc_data):
-        """
-        Parse the TocData data-structure to HTML.
-        """
-        ret = ('<p class="caption menu-label"><span class="caption-text">'
-               '%s</span></p>' % tocdata['caption'])
-        ret += TocTree.entries_to_html(tocdata['entries'])
-        return ret
-
-    @staticmethod
-    def entries_to_html(entries: Iterable, depth=999, begin_depth=0):
-        """
-        Parse the entries that need to be in the ToC to HTML format.
-        """
-        # TODO: Fix indentation
-        add_class = '' if begin_depth == 0 else 'is-collapsed'
-        ret = f'<ul class="menu-list {add_class}">\n'
-        for title, ref, children in entries:
-            lst_item = '<li><span class="level mb-0"><a '
-
-            if '#' in ref:
-                lst_item += f'onClick="expandSidebar(\'{ref}\')" '
-
-            lst_item += f'href={ref}>{title}</a>'
-
-            if len(children) > 0:
-                lst_item += ('<span onclick="toggleExpand(this.parentNode)" '
-                             'class="is-clickable icon is-small level-right">'
-                             '<i class="fa arrow-icon fa-angle-right" '
-                             'aria-hidden="true"></i></span>')
-
-            lst_item += '</span>'
-
-            # Parse children, but only if maxdepth is not yet reached.
-            if len(children) > 0 and depth > 1:
-                # Do we want to collapse some entries? i.e. plagiarism.html
-                # This is similar to Sphinx
-                while len(children) == 1 and len(children[0][2]) > 1:
-                    children = children[0][2]
-                blst = TocTree.entries_to_html(children, depth=depth-1,
-                                               begin_depth=begin_depth+1)
-                lst_item += blst
-            lst_item += "</li>\n"
-            ret += lst_item
-        ret += "</ul>"
-        return ret
+                title = None
+                ref = entry
+            ref = self.state.document.settings.page.use_reference(ref)
+            result.append((title, ref))
+        return result
 
 
 class CodeBlock(Directive):
@@ -360,40 +289,22 @@ class AutoModule(Directive):
         return [ret]
 
 
-class ref_element(nodes.General, nodes.Element):
-    """
-    Custom reference node to handle unparsed pages.
-    """
-    pass
-
-
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
     """
     explicit_link = util.link_explicit(text)
-    if explicit_link is None:
-        msg = inliner.reporter.error(
-            'Link %s in invalid format; '
-            'must be "Some Title <some_link_label>"' % text, line=lineno)
-        prb = inliner.problematic(rawtext, rawtext, msg)
-        return [prb], [msg]
 
-    title, ref = explicit_link
-    set_classes(options)
+    if explicit_link is not None:
+        title, ref = explicit_link
+    else:
+        ref, title = text, None
 
     node = ref_element()
     node['title'] = title
-    node['ref'] = ref.replace('_', '-').lower()
+    node['ref'] = ref_role.page.use_reference(ref)
 
     return [node], []
-
-
-class kbd_element(nodes.General, nodes.Element):
-    """
-    Empty node for rendering keyboard inputs
-    """
-    pass
 
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):

@@ -8,7 +8,6 @@
 <link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
 <link rel="stylesheet" type="text/css" href="_static/css/content.css">
 <link rel="stylesheet" type="text/css" href="_static/css/main.css">
-<script src="_static/js/search_data.js"></script>
 <script src="_static/js/search.js"></script>
 <script src="_static/js/script.js"></script>
 <script src="_static/js/cookies.js"></script>
@@ -64,7 +63,7 @@
 <!--Search window-->
 <div id="search" class="modal">
 	<div class="modal-background" onclick="hideSearchOverlay()"></div>
-	<div class="modal-content height panel">
+	<div class="modal-content panel">
 		<p class="panel-heading">
 			<span>Search</span>
 			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
@@ -79,7 +78,7 @@
 			</p>
 		</div>
 
-		<div id="search-results" class="results max-height"></div>
+		<div id="search-results" class="results"></div>
 	</div>
 </div>
 
@@ -101,7 +100,7 @@
 			</p>
 		</div>
 
-		<div id="bookmark-results" class="results max-height"></div>
+		<div id="bookmark-results" class="results"></div>
 	</div>
 </div>
 

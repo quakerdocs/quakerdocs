@@ -4,8 +4,8 @@ This module implements a radix prefix trie class that only contains methods
 to add new words to the trie or to store the contents of the trie in a binary
 representation. A class is also implemented to find the minimum sized data type
 that is able to store a given integer using the struct library. Lastly there
-is also a class that can parse a block of text and create a hpp file containing
-the resulting trie and page infos.
+is also a class that can parse a block of text and create a header file
+containing the resulting trie and page infos.
 
 Notes
 -----
@@ -30,12 +30,7 @@ from collections import deque
 from collections import Counter
 from types import SimpleNamespace
 
-# Stopwords taken from nltk using:
-#     from nltk.corpus import stopwords
-#     from nltk import download
-#     download('stopwords')
-#     stopwords = stopwords.words('english')
-#     stopwords = set(word.replace("'", '') for word in stopwords)
+
 stopwords = {
     'him', 'then', 'i', 'couldn', 'too', 'shan', 'a', 'them', 'doesnt', 'it',
     'shouldnt', 'no', 'only', 'that', 'yourself', 'because', 'ain', 'very',
@@ -315,19 +310,17 @@ class Trie:
             An object containing the data from the trie as separate arrays.
 
         """
-        # Flatten the node trie into a list.
-        data = SimpleNamespace()
-        nodes = []
-
-        data.page_p, data.char_p = 0, 0
-        data.child_s, data.page_s = 0, 0
-        data.page_i, data.page_c = 0, 0
+        data, nodes = SimpleNamespace(), []
+        data.char_p, data.page_p, data.child_s = 0, 1, 0
+        data.page_s, data.page_i, data.page_c = 0, 0, 0
 
         # Iterate over all the nodes.
         queue = deque([[self]])
         while queue:
-            # Get the node and continue iterating over the children.
+            # Append the node to the node list.
             node = queue[0].pop()
+            node.i = len(nodes)
+            nodes.append(node)
             if not queue[0]:
                 queue.popleft()
 
@@ -335,10 +328,6 @@ class Trie:
             node.children_list = list(node.children.values())
             if node.children_list:
                 queue.append(list(reversed(node.children_list)))
-
-            # Append the node to the node list.
-            node.i = len(nodes)
-            nodes.append(node)
 
             # Count the number of children, pages and characters.
             data.page_p += len(node.pages)
@@ -358,8 +347,8 @@ class Trie:
             setattr(data, key, get_primitive(val))
 
         # Get the smallest size primitives which can store the found values.
-        data.nodes = nodes
-        data.node_p = get_primitive(len(nodes))
+        data.nodes, data.node_p = nodes, get_primitive(len(nodes))
+        data.ignore_node_value = (1 << data.page_p.bytes) - 1
 
         return data
 
@@ -384,12 +373,17 @@ class Trie:
             struct_format = (t.char_p.id + t.node_p.id + t.page_p.id
                              + t.child_s.id + t.page_s.id)
 
+            # Check if this is a word we should ignore.
+            pages_ptr = len(page_arr) // (t.page_i.bytes + t.page_c.bytes)
+            if not node.pages and node.end:
+                pages_ptr = t.ignore_node_value
+
             # Add the node data.
             node_arr += struct.pack(
                 struct_format,
                 char_len,
                 node.children_list[0].i if node.children else 0,
-                len(page_arr) // (t.page_i.bytes + t.page_c.bytes),
+                pages_ptr,
                 len(node.children), len(node.pages)
             )
 
@@ -413,6 +407,11 @@ class IndexGenerator:
     """
     A class to generate the indexing/trie used for searching as well as the
     translation of page indices to page info.
+
+    Parameters
+    ----------
+    title_weight : int, optional
+        How often words in the title are counted (the default is 5).
 
     Attributes
     ----------
@@ -479,7 +478,7 @@ class IndexGenerator:
 
         """
         print('Building the search index assembly')
-        source_path = Path(os.path.abspath(os.path.dirname(__file__))) / 'wasm'
+        source_path = Path(__file__).parent / 'wasm'
 
         if not source_path.exists():
             raise FileNotFoundError('Wasm source files are not found.')
@@ -488,28 +487,34 @@ class IndexGenerator:
         for stopword in stopwords:
             self.trie.insert_ignore(stopword)
 
-        # Generate the search.hpp.
+        # Generate the search.h.
         data = self.trie.to_binary()
-        template = Template((source_path / 'search.hpp.jinja').read_text())
+        template = Template((source_path / 'search.h.jinja').read_text())
 
-        # Write the search index to hpp.
-        search_path = temp_path / 'search'
-        search_path.mkdir(parents=True, exist_ok=True)
-        with open(search_path / 'search.hpp', 'w') as f:
+        # Write the search index to header.
+        temp_path = temp_path / 'search'
+        temp_path.mkdir(parents=True, exist_ok=True)
+        with open(temp_path / 'search.h', 'w') as f:
             f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
             f.write(template.render(urltitles=self.urltitles,
                                     stopwords=stopwords,
                                     **data.__dict__))
 
-        # Create the build command.
-        emcc = Path('emsdk') / 'upstream' / 'emscripten' / 'emcc'
-        cmnd = [f'{emcc}', '-std=c++17', '-flto', '-Os',
-                '-I', f'"{search_path}/"',
-                f"{source_path / 'search.cpp'}",
-                '-o', f"{dest_path / 'search_data.js'}",
-                '-s', 'WASM=1',
-                '-s', 'EXPORTED_FUNCTIONS=["_performSearch","_getSearch"]',
-                '-s', 'EXPORTED_RUNTIME_METHODS=\'["ccall","cwrap"]\'']
+        # Compile the C code using clang.
+        object_file = temp_path / 'search_data.o'
+        source_file = str(source_path / 'search.c')
 
+        cmnd = ['clang', '-Os', '-c',
+                '--target=wasm32', '-march=wasm32',
+                '-fno-builtin',
+                '-I', f'"{temp_path}"',
+                '-o', f'{object_file}',
+                f'"{source_file}"']
+        os.system(' '.join(cmnd))
+
+        # Link the object file to create a usable webassembly binary.
+        cmnd = ['wasm-ld', '--no-entry',
+                '-o', f"{dest_path / 'search_data.wasm'}",
+                f'{object_file}']
         dest_path.mkdir(parents=True, exist_ok=True)
         os.system(' '.join(cmnd))
