@@ -411,11 +411,7 @@ class IndexGenerator:
     Parameters
     ----------
     title_weight : int, optional
-<<<<<<< HEAD:src/quaker_lib/index.py
         How often words in the title are counted (the default is 5).
-=======
-        How often words in the title are counted.
->>>>>>> 2564d75... Added title_weight as option to conf.py:src/index.py
 
     Attributes
     ----------
