@@ -8,8 +8,8 @@ from pathlib import Path
 # From https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/util/nodes.py
 _explicit_title_re = re.compile(r'^(.+?)\s*(?<!\x00)<([^<]*?)>$', re.DOTALL)
 
-
-# From Docutils: https://github.com/docutils-mirror/docutils/blob/master/docutils/nodes.py
+# From Docutils:
+# https://github.com/docutils-mirror/docutils/blob/master/docutils/nodes.py
 _non_id_chars = re.compile('[^a-z0-9/]+')
 _non_id_at_ends = re.compile('^[-0-9]+|-+$')
 

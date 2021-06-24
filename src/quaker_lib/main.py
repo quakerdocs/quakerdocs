@@ -213,12 +213,7 @@ class Main:
         """
         Read and save the ToC from master_doc.
         """
-
-        body = []
-
-        path = self.script_dest_path
-
-        with (path / 'load_navbar.js').open('w') as f:
+        with (self.script_dest_path / 'load_navbar.js').open('w') as f:
             f.write('document.getElementById("navigation-tree").innerHTML = `')
 
             for node in self.toc_navigation:
@@ -226,7 +221,6 @@ class Main:
                 node['collapsedepth'] = 0
                 for html in node.create_html(self.id_map, 'menu'):
                     f.write(html)
-
 
             f.write('`;')
 

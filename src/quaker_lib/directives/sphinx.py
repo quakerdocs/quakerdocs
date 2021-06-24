@@ -63,7 +63,7 @@ class toc_data(nodes.General, nodes.Element):
                 # Print end of the sublist.
                 body.append(tab_size)
                 body.append(f'</{list_tag}>\n')
-                body.append(f'</li>\n')
+                body.append('</li>\n')
                 continue
 
             collapsed = ' is-collapsed' if depth > collapse_depth else ''
@@ -82,15 +82,18 @@ class toc_data(nodes.General, nodes.Element):
                 body.append(f'href="{ref.url}">{title}</a>')
 
                 if len(ref.sections) > 0 and depth < max_depth:
-                    body.append('<span onclick="toggleExpand(this.parentNode)" '
-                                'class="is-clickable icon is-small level-right">'
+                    body.append('<span onclick="toggleExpand(this.parentNode)"'
+                                ' class="is-clickable icon is-small '
+                                'level-right">'
                                 '<i class="fa arrow-icon fa-angle-right" '
                                 'aria-hidden="true"></i></span>')
 
                     body.append('</span>')
-                    body.append(f'<{list_tag} class="{css_class}-list{collapsed}">\n')
+                    body.append(f'<{list_tag} class="'
+                                f'{css_class}-list{collapsed}">\n')
 
-                    new = [None] + [(None, sec) for sec in reversed(ref.sections)]
+                    new = [None] + [(None, sec)
+                                    for sec in reversed(ref.sections)]
                     stack.append(new)
                 else:
                     body.append('</span></li>\n')
@@ -286,13 +289,6 @@ class AutoModule(Directive):
         return [ret]
 
 
-class ref_element(nodes.General, nodes.Element):
-    """
-    Custom reference node to handle unparsed pages.
-    """
-    pass
-
-
 def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
     Role for creating hyperlink to other documents.
@@ -309,6 +305,7 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     node['ref'] = ref_role.page.use_reference(ref)
 
     return [node], []
+
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """

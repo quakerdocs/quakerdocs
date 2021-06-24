@@ -53,13 +53,13 @@ class Page:
                 **self.main.docutil_settings,
                 'page': self,
                 'main': self.main,
-                'path': self.path #TODO remove
             }
         )
 
         # Find the page title.
         try:
-            self.title = next(iter(self.doctree.traverse(nodes.title)))[0].astext()
+            self.title = next(iter(self.doctree.traverse(nodes.title)))[0]
+            self.title = self.title.astext()
         except StopIteration:
             self.title = ''
 
@@ -125,9 +125,7 @@ class Page:
         # Add all the ids to the reference map.
         all_references = self.id_to_map(page_id, self.doctree)
 
-        # print('-----------------------------------------------')
         for id, node in self.doctree.ids.items():
-            # print(id)
             all_references += self.id_to_map(id, node, anchor='#' + id)
 
         # Loop over the sections of this node, and add these to the
@@ -140,26 +138,23 @@ class Page:
                 continue
 
             id = node.attributes['ids'][0]
-            # print(stack, node.attributes['ids'])
-            contents = self.main.id_map[id]
+            sections = self.main.id_map[id].sections
 
             if first:
                 first = False
-                self.main.id_map[all_references[1]].sections = contents.sections
+                self.main.id_map[all_references[1]].sections = sections
 
             for id in node.attributes['ids'][1:]:
-                self.main.id_map[id].sections = contents.sections
+                self.main.id_map[id].sections = sections
 
             # Fill the sections:
             for child in node.children:
                 if not isinstance(child, nodes.section):
                     continue
 
-
                 id = child.attributes['ids'][0]
-                # print('      ', id)
                 id = make_id(str(self.path) + '#' + id)
-                contents.sections.append(id)
+                sections.append(id)
 
                 # Go over the subsections.
                 if len(child.children) > 0:
@@ -174,11 +169,6 @@ class Page:
                         page.write()
             except KeyError:
                 pass
-
-        # if 'analytics-dashboard' in str(self.path):
-            # print(self.main.id_map['user/' + page_id])
-            # print(':O')
-            # exit(0)
 
     def get_settings_overrides(self):
         """Get the settings_override for this page.
