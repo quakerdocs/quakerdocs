@@ -55,7 +55,6 @@ function notificationAccept() {
 
 function checkNotification() {
     const cookie = getCookie(BOOKMARK_NOTIF);
-    console.log(`DIKKKE KAAAAAAAK ${cookie}`);
 
     if (cookie === null) {
         const button = document.getElementById('cookie-notification');

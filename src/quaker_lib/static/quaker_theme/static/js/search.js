@@ -99,7 +99,8 @@ function createResultElement (href, title, content) {
     const element = document.createElement('div')
     element.className = 'result'
 
-    element.innerHTML = `<a class="panel-block is-flex-direction-column" href="${href}" onclick="storeSearchResults()">
+    element.innerHTML = `<a class="panel-block is-flex-direction-column" href="${href}"
+                          onclick="storeSearchResults();hideSearchOverlay()">
                             <h1 class="result-title"><strong>${title}</strong></h1>
                             <p class="result-content">${content}</p>
                         </a>`
