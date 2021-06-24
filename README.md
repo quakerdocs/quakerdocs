@@ -25,13 +25,11 @@ Installation
 
 First of all, make sure you have the LLVM wasm-compiler installed.
 
-.. example::
+For example, on Ubuntu:
 
-   On Ubuntu:
-
-   .. code-block:: bash
-
-      apt-get install lld
+``` {.bash}
+apt-get install lld
+```
 
 Then, to install the QuakerDocs application use the following command:
 
