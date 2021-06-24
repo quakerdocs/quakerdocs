@@ -3,13 +3,14 @@ Utility file containing useful functionality for throughout the project.
 """
 
 import re
+from pathlib import Path
 
 # From https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/util/nodes.py
 _explicit_title_re = re.compile(r'^(.+?)\s*(?<!\x00)<([^<]*?)>$', re.DOTALL)
 
 
 # From Docutils: https://github.com/docutils-mirror/docutils/blob/master/docutils/nodes.py
-_non_id_chars = re.compile('[^a-z0-9]+')
+_non_id_chars = re.compile('[^a-z0-9/]+')
 _non_id_at_ends = re.compile('^[-0-9]+|-+$')
 
 
@@ -23,14 +24,21 @@ def link_explicit(link):
     res = _explicit_title_re.match(link)
     if res:
         title = res.group(1)
-        ref = make_id(res.group(2))
+        ref = res.group(2)
         return (title, ref)
 
     return None
 
 
 def make_id(ref):
-    id = ref.lower()
-    id = _non_id_chars.sub('-', ' '.join(id.split()))
-    id = _non_id_at_ends.sub('', id)
-    return id
+    """TODO"""
+    ref_list = ref.split('#')
+
+    for i, ref in enumerate(ref_list):
+        ref = str(Path(ref).with_suffix(''))
+        ref = ref.lower()
+        ref = _non_id_chars.sub('-', ' '.join(ref.split()))
+        ref = _non_id_at_ends.sub('', ref)
+        ref_list[i] = ref
+
+    return '#'.join(ref_list)

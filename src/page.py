@@ -1,10 +1,11 @@
 import os
 import docutils
 import directives.metadata
+
+from util import make_id
 from docutils import nodes
 from types import SimpleNamespace
 from directives.sphinx import ref_role
-from util import make_id
 
 
 class Page:
@@ -22,7 +23,6 @@ class Page:
     id_map : dict
         An index shared by all Page instances, to track references.
     """
-    id_map = {}
 
     def __init__(self, main, path):
         self.main = main
@@ -42,7 +42,7 @@ class Page:
                    f"{self.src.read_text()}\n"
                    f"{self.main.conf_vars.get('rst_epilog', '')}")
 
-        ref_role.options = {'page' : self}
+        ref_role.page = self
 
         # Parse the file contents.
         self.doctree = docutils.core.publish_doctree(
@@ -56,6 +56,12 @@ class Page:
             }
         )
 
+        # Find the page title.
+        try:
+            self.title = next(iter(self.doctree.traverse(nodes.title)))[0].astext()
+        except StopIteration:
+            self.title = ''
+
         self.handle_references(self.main)
 
         # Write if all the references are already resolved.
@@ -64,90 +70,114 @@ class Page:
 
     def use_reference(self, ref):
         """TODO"""
-        if ref not in self.id_map:
+        if (ref.count('.') >= 2
+                or ref.startswith('https://')
+                or ref.startswith('http://')):
+            return ref
+
+        ref = make_id(ref)
+
+        # If absolute path simply add to waiting list.
+        if ref[0] == '/':
+            pass
+        # TODO
+        elif ref[0] == '#':
+            ref = make_id(str(self.path) + '#' + ref[1:])
+        # If relative path prepend the current path.
+        elif '/' in ref or '.' in ref or '#' in ref:
+            ref = make_id(str(self.path.parent / ref))
+        # Otherwise assume (global) id (else user should prepend ./).
+        else:
+            pass
+
+        if ref not in self.main.id_map:
             self.main.waiting[ref].append(self)
             self.unresolved_references += 1
+
         return ref
+
+    def id_to_map(self, id, node, anchor=''):
+        """ TODO """
+        references = [id, str(self.path.with_suffix('')) + anchor]
+
+        contents = SimpleNamespace()
+        contents.url = self.path_html + anchor
+        contents.title = None
+        contents.sections = []  # We will fill these later.
+
+        # Get the title.
+        title_node = node.next_node(nodes.Titular)
+        if title_node:
+            contents.title = title_node.astext()
+
+        # Add all references.
+        for ref in references:
+            self.main.id_map[ref] = contents
+
+        return references
 
     def handle_references(self, main):
         """TODO"""
-        print(self.path, '\n')
 
-        page_id = make_id(self.path.name)
-        all_references = []
+        page_id = make_id(str(self.path.name))
 
         # Add all the ids to the reference map.
-        first = True
-        for id, node in [(page_id, self.doctree), *self.doctree.ids.items()]:
-            anchor = ''
-            if not first:
-                anchor = '#' + id
-            first = False
+        all_references = self.id_to_map(page_id, self.doctree)
 
-            references = [id, str(self.path.with_suffix('')) + anchor]
-            all_references += references
-
-            contents = SimpleNamespace()
-            contents.url = self.path_html + anchor
-            contents.title = None
-            contents.sections = []  # We will fill these later.
-
-            # Get the title.
-            title_node = node.next_node(nodes.Titular)
-            if title_node:
-                title = title_node.astext()
-
-            # Add all references.
-            for ref in references:
-                self.id_map[ref] = contents
+        # print('-----------------------------------------------')
+        for id, node in self.doctree.ids.items():
+            # print(id)
+            all_references += self.id_to_map(id, node, anchor='#' + id)
 
         # Loop over the sections of this node, and add these to the
         # contents of this page's reference.
         stack = [self.doctree]
+        first = True
         while stack:
             node = stack.pop()
+            if not node.attributes['ids']:
+                continue
+
             id = node.attributes['ids'][0]
-            contents = self.id_map[id]
+            # print(stack, node.attributes['ids'])
+            contents = self.main.id_map[id]
+
+            if first:
+                first = False
+                self.main.id_map[all_references[1]].sections = contents.sections
+
+            for id in node.attributes['ids'][1:]:
+                self.main.id_map[id].sections = contents.sections
 
             # Fill the sections:
             for child in node.children:
                 if not isinstance(child, nodes.section):
                     continue
 
+
                 id = child.attributes['ids'][0]
+                # print('      ', id)
+                id = make_id(str(self.path) + '#' + id)
                 contents.sections.append(id)
 
-                # Only continue if the current section contains a title.
+                # Go over the subsections.
                 if len(child.children) > 0:
-                    # Use id of the anchor, not of the section!
                     stack.append(child)
 
         # Resolve all the references we have added.
         for ref in all_references:
-            if ref in self.main.waiting:
-                for page in self.main.waiting[ref]:
+            try:
+                for page in self.main.waiting.pop(ref):
                     page.unresolved_references -= 1
                     if page.unresolved_references == 0:
-                        page.write(self.main)
+                        page.write()
+            except KeyError:
+                pass
 
-                self.main.waiting.pop(ref)
-
-        # exit(0)
-        # Loop over the sections to create the content lists
-
-    def get_title(self):
-        """Get the title of the page.
-
-        Returns
-        -------
-        title : str
-            The title of the page.
-        """
-        # TODO this is the biggest hack I've ever seen.
-        try:
-            return next(iter(self.doctree.traverse(nodes.title)))[0].astext()
-        except StopIteration:
-            return
+        # if 'analytics-dashboard' in str(self.path):
+            # print(self.main.id_map['user/' + page_id])
+            # print(':O')
+            # exit(0)
 
     def get_settings_overrides(self):
         """Get the settings_override for this page.
@@ -176,7 +206,7 @@ class Page:
             'favicon': self.main.conf_vars.get('html_favicon', None),
             'logo': self.main.conf_vars.get('html_logo', None),
             'copyright': self.main.conf_vars.get('copyright', ''),
-            'id_map': self.id_map
+            'id_map': self.main.id_map
         }
 
     def del_skipped_nodes(self):
@@ -199,13 +229,10 @@ class Page:
         # Delete the nodes we want to skip.
         self.del_skipped_nodes()
 
-        # Find the page title.
-        title = self.get_title()
-
         # Collect all the text content to add the page to the index.
         content = ' '.join(n.astext()
                            for n in self.doctree.traverse(nodes.Text))
-        self.main.idx.add_file(content, title,
+        self.main.idx.add_file(content, self.title,
                                self.path_html, metadata.priority)
 
         # Create the output file contents.

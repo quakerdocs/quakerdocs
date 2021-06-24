@@ -34,7 +34,76 @@ class toc_data(nodes.General, nodes.Element):
     """
     Container class for Toc data.
     """
-    pass
+    def create_html(self, id_map, css_class='toc'):
+        """TODO"""
+        list_tag = 'ol' if self['numbered'] else 'ul'
+
+        body = [f'<p class="caption {css_class}-label">\n'
+                '\t<span class="caption-text">\n'
+                f'\t{self["caption"]}\n\t\t</span>\n\t</p>'
+                f'<{list_tag} class="{css_class}-list">\n']
+
+        max_depth = self['maxdepth']
+        collapse_depth = self['collapsedepth']
+
+        if max_depth < 0:
+            max_depth = 10000
+
+        if collapse_depth < 0:
+            collapse_depth = max_depth
+
+        stack = [list(reversed(self['entries']))]
+        while stack:
+            depth = len(stack)
+            if not stack[-1]:
+                stack.pop()
+                continue
+
+            current = stack[-1].pop()
+            tab_size = depth * '\t'
+
+            if current is None:
+                # Print end of the sublist.
+                body.append(tab_size)
+                body.append(f'</{list_tag}>\n')
+                body.append(f'</li>\n')
+                continue
+
+            collapsed = ' is-collapsed' if depth > collapse_depth else ''
+
+            title, ref_id = current
+            body.append('<li><span class="level mb-0"><a ')
+
+            ref = id_map.get(ref_id, None)
+            if ref is not None:
+                if title is None:
+                    title = ref.url if ref.title is None else ref.title
+
+                if '#' in ref.url:
+                    body.append(f'onClick="expandSidebar(\'{ref.url}\')" ')
+
+                body.append(f'href="{ref.url}">{title}</a>')
+
+                if len(ref.sections) > 0 and depth < max_depth:
+                    body.append('<span onclick="toggleExpand(this.parentNode)" '
+                                'class="is-clickable icon is-small level-right">'
+                                '<i class="fa arrow-icon fa-angle-right" '
+                                'aria-hidden="true"></i></span>')
+
+                    body.append('</span>')
+                    body.append(f'<{list_tag} class="{css_class}-list{collapsed}">\n')
+
+                    new = [None] + [(None, sec) for sec in reversed(ref.sections)]
+                    stack.append(new)
+                else:
+                    body.append('</span></li>\n')
+            else:
+                if title is None:
+                    title = ref_id
+                body.append(f'href="{ref_id}">{title}</a></span></li>\n')
+
+        body.append(f'</{list_tag}>\n')
+        return body
 
 
 class ref_element(nodes.General, nodes.Element):
@@ -77,6 +146,7 @@ class TocTree(Directive):
 
     option_spec = {
         'maxdepth': int,
+        'collapsedepth': int,
         'name': directives.unchanged,
         'caption': directives.unchanged_required,
         'glob': directives.flag,
@@ -93,10 +163,10 @@ class TocTree(Directive):
         """
         tocdata = toc_data()
         tocdata['maxdepth'] = self.options.get('maxdepth', -1)
-        tocdata['caption'] = self.options.get('caption')
+        tocdata['collapsedepth'] = self.options.get('collapsedepth', 1)
+        tocdata['caption'] = self.options.get('caption', '')
         tocdata['reversed'] = 'reversed' in self.options
-        tocdata['type'] = (nodes.enumerated_list if 'numbered' in self.options
-                            else nodes.bullet_list)()
+        tocdata['numbered'] = 'numbered' in self.options
 
         tocdata['entries'] = self.parse_content()
         return [tocdata]
@@ -115,8 +185,8 @@ class TocTree(Directive):
             else:
                 title = None
                 ref = entry
+            ref = self.state.document.settings.page.use_reference(ref)
             result.append((title, ref))
-            self.state.document.settings.page.use_reference(ref)
         return result
 
 
@@ -163,23 +233,17 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     Role for creating hyperlink to other documents.
     """
     explicit_link = util.link_explicit(text)
-    if explicit_link is None:
-        msg = inliner.reporter.error(
-            'Link %s in invalid format; '
-            'must be "Some Title <some_link_label>"' % text, line=lineno)
-        prb = inliner.problematic(rawtext, rawtext, msg)
-        return [prb], [msg]
 
-    title, ref = explicit_link
-    set_classes(options)
+    if explicit_link is not None:
+        title, ref = explicit_link
+    else:
+        ref, title = text, None
 
     node = ref_element()
     node['title'] = title
-    node['ref'] = options['page'].use_reference(ref)
-    print(node['ref'], 'hello')
+    node['ref'] = ref_role.page.use_reference(ref)
 
     return [node], []
-
 
 def kbd_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """

@@ -55,7 +55,6 @@ class Main:
         self.writer = None
         self.idx = None
         self.toc_navigation = []
-
         self.id_map = {}
 
         # Import and setup all directives.
@@ -146,7 +145,7 @@ class Main:
 
         # Set-up Table of Contents data and build the search index
         self.script_dest_path.mkdir(parents=True, exist_ok=True)
-        # self.build_global_toc()
+        self.build_global_toc()
         self.idx.build(self.temp_path, self.script_dest_path)
 
         # Copy the Javascript source files to the static directory in build.
@@ -180,12 +179,17 @@ class Main:
                 if path.suffix == '.rst':
                     page = Page(self, path)
                     page.parse()
+                else:
+                    page = None
 
-                # if str(path.with_suffix('')) == master_doc:
-                #     # Iterate and join ToC's.
-                #     ds = directives.sphinx
-                #     for queue in page.doctree.traverse(ds.toc_data):
-                #         self.toc_navigation.append(ds.TocTree.to_html(queue))
+                # Add the toc trees of the master doc page for the
+                # creation of the sidebar.
+                if (page is not None and
+                        (str(path) == master_doc
+                         or str(path.with_suffix('')) == master_doc)):
+                    toc_node_type = directives.sphinx.toc_data
+                    for toc_node in page.doctree.traverse(toc_node_type):
+                        self.toc_navigation.append(toc_node)
 
         # Check if all the references are resolved.
         for ref_name, pages in self.waiting.items():
@@ -211,13 +215,19 @@ class Main:
         Read and save the ToC from master_doc.
         """
 
+        body = []
+
         path = self.script_dest_path
 
         with (path / 'load_navbar.js').open('w') as f:
             f.write('document.getElementById("navigation-tree").innerHTML = `')
 
-            for html in self.toc_navigation:
-                f.write(html)
+            for node in self.toc_navigation:
+                node['maxdepth'] = -1
+                node['collapsedepth'] = 0
+                for html in node.create_html(self.id_map, 'menu'):
+                    f.write(html)
+
 
             f.write('`;')
 
