@@ -63,15 +63,17 @@ class Result {
  * TODO
  */
 async function initSearchWasm () {
-    const { instance } = await WebAssembly.instantiateStreaming(
-        fetch("./_static/js/search_data.wasm")
-    )
-
-    let mem = instance.exports.memory
-    let buffer_loc = instance.exports.getIOBuffer()
-    let buffer_len = instance.exports.getIOBufferSize()
-    instance.search_buffer = new Uint8Array(mem.buffer, buffer_loc, buffer_len)
-    wasm = instance
+    fetch("./_static/js/search_data.wasm")
+        .then(res => res.arrayBuffer())
+        .then(buffer => WebAssembly.instantiate(buffer))
+        .then(obj => {
+            console.log("got wasm")
+            let mem = obj.instance.exports.memory
+            let buffer_loc = obj.instance.exports.getIOBuffer()
+            let buffer_len = obj.instance.exports.getIOBufferSize()
+            obj.instance.search_buffer = new Uint8Array(mem.buffer, buffer_loc, buffer_len)
+            wasm = obj.instance
+        })
 }
 
 initSearchWasm()
