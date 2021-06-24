@@ -1,6 +1,9 @@
-document.addEventListener('keyup', (event) => {
+document.addEventListener('keydown', (event) => {
     const code = event.code;
 
+    if (document.getElementsByClassName('bookmark-entry edit').length != 0) {
+        return;
+    }
     /**
      * If user presses Escape and the search overlay or bookmark overlay
      *  is open, close the search overlay or bookmark overlay.

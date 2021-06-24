@@ -197,6 +197,8 @@ function bookmarkTrashClick (id) {
  */
 function bookmarkRenameClick(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
+    bookmark_panel.classList.add("edit");
+
     let bookmark = getBookmark(bookmarkCookieName(id));
 
     bookmark_panel.innerHTML = createRenameEntry(bookmark);
@@ -214,6 +216,8 @@ function inputAddListener(id) {
             renameAccept(id);
         }
     });
+    inputbox.focus();
+    inputbox.select();
 }
 
 /**
@@ -223,6 +227,8 @@ function inputAddListener(id) {
  */
 function renameAccept(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
+    bookmark_panel.classList.remove("edit");
+
     let bookmark_old = getBookmark(bookmarkCookieName(id));
     let input_val = document.getElementById(`IN_${id}`).value;
     updateBookmark(bookmark_old, input_val);
@@ -241,6 +247,8 @@ function renameAccept(id) {
  */
 function renameCancel(id) {
     let bookmark_panel = document.getElementById(`panel-${id}`);
+    bookmark_panel.classList.remove("edit");
+
     let bookmark = getBookmark(bookmarkCookieName(id));
     bookmark_panel.innerHTML = createInnerEntry(bookmark);
 }
