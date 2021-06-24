@@ -24,7 +24,10 @@ function toggleExpand (element, onlyExpand = false) {
         return
     }
 
-    const ul = element.parentElement.getElementsByTagName('UL')[0]
+    let ul = element.parentElement.getElementsByTagName('UL')[0]
+    if (ul === undefined)
+        ul = element.parentElement.getElementsByTagName('OL')[0]
+
     const i = element.children[1].firstChild
 
     if (ul.classList.contains('is-expanded') && !onlyExpand) {
@@ -202,7 +205,7 @@ function expandSidebar (url) {
  */
 function expandULParents (element) {
     while (element) {
-        if (element.tagName === 'UL' &&
+        if ((element.tagName === 'UL' || element.tagName === 'OL') &&
             (element.classList.contains('is-collapsed') ||
             element.classList.contains('is-expanded'))) {
             toggleExpand(element.previousSibling, true)

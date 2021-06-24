@@ -247,6 +247,7 @@ class Main:
             f.write('document.getElementById("navigation-tree").innerHTML = `')
 
             for node in self.toc_navigation:
+                node['numbered'] = False
                 node['maxdepth'] = -1
                 node['collapsedepth'] = 0
                 for html in node.create_html(self.id_map, 'menu'):

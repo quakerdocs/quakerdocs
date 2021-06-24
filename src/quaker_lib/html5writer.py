@@ -158,6 +158,10 @@ class HTMLTranslator(docutils.writers.html5_polyglot.HTMLTranslator):
         """
         Render the Table of Contents data-element.
         """
+        if node['hidden']:
+            raise nodes.SkipNode
+            return
+
         for i in node.create_html(self.settings.id_map):
             self.body.append(i)
 

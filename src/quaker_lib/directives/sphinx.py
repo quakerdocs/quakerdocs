@@ -33,23 +33,30 @@ class toc_data(nodes.General, nodes.Element):
     """
     def create_html(self, id_map, css_class='toc'):
         """TODO"""
+        max_depth = self['maxdepth']
+        if max_depth < 0:
+            max_depth = 10000
+
+        collapse_depth = self['collapsedepth']
+        if collapse_depth < 0:
+            collapse_depth = max_depth
+
         list_tag = 'ol' if self['numbered'] else 'ul'
+        number_types = self['number_types'].split()
+
+        stack = []
+        def get_numbered_type():
+            if self['numbered']:
+                return f' type="{number_types[len(stack) % len(number_types)]}"'
+            else:
+                return ''
 
         body = [f'<p class="caption {css_class}-label">\n'
                 '\t<span class="caption-text">\n'
                 f'\t{self["caption"]}\n\t\t</span>\n\t</p>'
-                f'<{list_tag} class="{css_class}-list">\n']
+                f'<{list_tag}{get_numbered_type()} class="{css_class}-list">\n']
 
-        max_depth = self['maxdepth']
-        collapse_depth = self['collapsedepth']
-
-        if max_depth < 0:
-            max_depth = 10000
-
-        if collapse_depth < 0:
-            collapse_depth = max_depth
-
-        stack = [list(reversed(self['entries']))]
+        stack.append(list(reversed(self['entries'])))
         while stack:
             depth = len(stack)
             if not stack[-1]:
@@ -82,14 +89,16 @@ class toc_data(nodes.General, nodes.Element):
                 body.append(f'href="{ref.url}">{title}</a>')
 
                 if len(ref.sections) > 0 and depth < max_depth:
-                    body.append('<span onclick="toggleExpand(this.parentNode)"'
-                                ' class="is-clickable icon is-small '
-                                'level-right">'
-                                '<i class="fa arrow-icon fa-angle-right" '
-                                'aria-hidden="true"></i></span>')
+                    if collapsed:
+                        body.append('<span onclick='
+                        '       "toggleExpand(this.parentNode)"'
+                                    ' class="is-clickable icon is-small '
+                                    'level-right">'
+                                    '<i class="fa arrow-icon fa-angle-right" '
+                                    'aria-hidden="true"></i></span>')
 
                     body.append('</span>')
-                    body.append(f'<{list_tag} class="'
+                    body.append(f'<{list_tag}{get_numbered_type()} class="'
                                 f'{css_class}-list{collapsed}">\n')
 
                     new = [None] + [(None, sec)
@@ -149,10 +158,12 @@ class TocTree(Directive):
         'collapsedepth': int,
         'name': directives.unchanged,
         'caption': directives.unchanged_required,
-        'glob': directives.flag,
-        'hidden': directives.flag,
-        'includehidden': directives.flag,
         'numbered': directives.flag,
+        'number_types': directives.unchanged,
+        'hidden': directives.flag,
+        # Ignore:
+        'glob': directives.flag,
+        'includehidden': directives.flag,
         'titlesonly': directives.flag,
         'reversed': directives.flag,
     }
@@ -167,6 +178,8 @@ class TocTree(Directive):
         tocdata['caption'] = self.options.get('caption', '')
         tocdata['reversed'] = 'reversed' in self.options
         tocdata['numbered'] = 'numbered' in self.options
+        tocdata['number_types'] = self.options.get('number_types', '1 a i A I')
+        tocdata['hidden'] = 'hidden' in self.options
 
         tocdata['entries'] = self.parse_content()
         return [tocdata]

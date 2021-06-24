@@ -63,9 +63,10 @@ class Result {
  * TODO
  */
 async function initSearchWasm () {
-    const { instance } = await WebAssembly.instantiateStreaming(
-        fetch("./_static/js/search_data.wasm")
-    )
+    const response = await fetch("./_static/js/search_data.wasm");
+    const buffer = await response.arrayBuffer();
+    const obj = await WebAssembly.instantiate(buffer);
+    const instance = obj.instance;
 
     let mem = instance.exports.memory
     let buffer_loc = instance.exports.getIOBuffer()
@@ -217,6 +218,8 @@ function renderResults (maxResults = 10) {
 
                 /* TODO: highlight each word in the input separately. */
                 let content = highlightSearchQuery(searchInput, text)
+                console.log(resultList[resultList.length - index + i])
+                resultList[resultList.length - index + i].href = r.page
                 resultList[resultList.length - index + i].innerHTML += `<p class="result-content">${content}</p>`
 
                 i++
