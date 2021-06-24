@@ -238,8 +238,7 @@ class Main:
         Initializes an empty project
         """
         path = Path(self.source_path)
-        file_path = Path(os.path.abspath(os.path.dirname(__file__)))
-        qs_path = file_path / '..' / 'quaker_lib' / 'quickstart'
+        qs_path = Path(__file__).parent / '..' / 'quaker_lib' / 'quickstart'
 
         if not path.is_dir() or not path.exists():
             copy_tree(str(qs_path), str(path), update=1)
