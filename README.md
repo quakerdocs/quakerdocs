@@ -33,9 +33,9 @@ apt-get install lld
 
 Then, to install the QuakerDocs application use the following command:
 
-.. code-block:: bash
-
-   pip3 install -i https://test.pypi.org/simple/ quaker
+``` {.bash}
+pip3 install -i https://test.pypi.org/simple/ quaker
+```
 
 After running this command all the requirements are installed and you can
 immediately use the quaker command.
