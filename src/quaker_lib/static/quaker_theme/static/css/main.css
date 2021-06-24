@@ -147,7 +147,7 @@
 .result {
   text-align: left;
   border: 1px solid #ddd;
-  height: 100px;
+  min-height: 100px;
   overflow: hidden;
 }
 
