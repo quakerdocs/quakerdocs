@@ -6,7 +6,7 @@ QuakerDocs is very easy to use, and you do not need a lot to get started!
 Installation
 ------------
 
-First of all, make sure you have the LLVM wasm-compiler installed.
+First of all, make sure you have Clang and the LLVM wasm-compiler installed.
 
 .. example::
 
@@ -14,13 +14,13 @@ First of all, make sure you have the LLVM wasm-compiler installed.
 
    .. code-block:: bash
 
-      apt-get install lld
+      apt install clang lld
 
 Then, to install the QuakerDocs application use the following command:
 
 .. code-block:: bash
 
-   pip3 install -i https://test.pypi.org/simple/ quaker
+   pip install quaker
 
 After running this command all the requirements are installed and you can
 immediately use the quaker command.
