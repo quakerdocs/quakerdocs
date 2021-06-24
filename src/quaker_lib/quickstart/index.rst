@@ -42,10 +42,10 @@ Some of the features that QuakerDocs has are:
 - Easily configurable  |fa-adjust|
 - Only takes one command!  |fa-terminal|
 
-.. _page:
+.. page:
 
 .. toctree::
    :maxdepth: 2
-   :caption: Other pages
+   :caption: Another page
 
    page
