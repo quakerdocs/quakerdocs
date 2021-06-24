@@ -323,7 +323,7 @@ def setup():
     """
     directives.register_directive('only', Only)
     directives.register_directive('rst-class', Class)
-    directives.register_directive('include', Include)  # Does not work yet
+    directives.register_directive('include', Include)
     directives.register_directive('toctree', TocTree)
     directives.register_directive('code-block', CodeBlock)
     directives.register_directive('automodule', AutoModule)

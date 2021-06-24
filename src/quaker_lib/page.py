@@ -44,10 +44,12 @@ class Page:
                    f"{self.main.conf_vars.get('rst_epilog', '')}")
 
         ref_role.page = self
+        self.main.docutil_settings['env'].docname = self.src.name
 
         # Parse the file contents.
         self.doctree = docutils.core.publish_doctree(
             content,
+            parser=self.main.source_parsers.get(self.src.suffix)(),
             source_path=str(self.src),
             settings_overrides={
                 **self.main.docutil_settings,

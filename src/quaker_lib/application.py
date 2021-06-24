@@ -2,10 +2,10 @@
 Functionality related to the application.
 """
 
-from types import SimpleNamespace
 from importlib import import_module
-# from docutils import nodes
 from docutils.parsers.rst import directives, roles
+
+from quaker_lib.util import Config
 
 
 class SphinxApp:
@@ -14,12 +14,17 @@ class SphinxApp:
     """
     def __init__(self):
         # Ignore for now
-        self.config = SimpleNamespace()
+        self.env = Config()
+        self.config = Config()
+        self.callbacks = {}
         self.handlers = {
             'html': [],
             'latex': [],
             'text': []
         }
+
+        self.source_suffix = {}
+        self.source_parsers = {}
 
     def get_handlers(self):
         """
@@ -45,6 +50,41 @@ class SphinxApp:
         Does nothing at the moment.
         """
         ...
+
+    def add_source_suffix(self, file_ext, file_type):
+        """
+        Add a source suffix to the project.
+        """
+        self.source_suffix.update({file_ext: file_type})
+
+    def add_source_parser(self, parser):
+        """
+        Add a source parser to the project.
+        """
+        for file_ext, file_type in self.source_suffix.items():
+            if file_type in parser.supported:
+                self.source_parsers.update({file_ext: parser})
+                return
+
+    def add_post_transform(self, post_transform):
+        """
+        Add a post transform to the project.
+        """
+        ...
+
+    def add_config_value(self, name, value, map):
+        """
+        Add a config value to the project.
+        """
+        self.config[name] = value
+
+    def connect(self, event, callback):
+        """
+        Add an event callback to the project.
+        """
+        if event not in self.callbacks:
+            self.callbacks[event] = []
+        self.callbacks[event].append(callback)
 
 
 def setup_extension(extension, app):

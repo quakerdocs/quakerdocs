@@ -19,6 +19,9 @@ from quaker_lib import html5writer
 from quaker_lib.page import Page
 from quaker_lib.theme import Theme
 
+from docutils.parsers.rst import Parser
+from argparse import Namespace
+
 
 class Main:
     """The central component of the program, from which everything else is called.
@@ -46,6 +49,7 @@ class Main:
         self.static_dest_path = dest_path / '_static'
         self.script_dest_path = self.static_dest_path / 'js'
         self.builder = builder
+        self.source_parsers = {'.rst': Parser}
 
         self.sp_app = None
         self.theme = None
@@ -95,6 +99,13 @@ class Main:
             exec(conf_file.read(), global_vars, conf_vars)
         self.conf_vars.update(conf_vars)
 
+        # Make sure source_suffix is a list.
+        suffix = self.conf_vars['source_suffix']
+        if suffix is None:
+            self.conf_vars['source_suffix'] = ['.rst']
+        elif isinstance(suffix, str):
+            self.conf_vars['source_suffix'] = [suffix]
+
         # Exclude static files, as they should not be processed.
         self.conf_vars['exclude_patterns'] += \
             self.conf_vars.get('html_static_path', [])
@@ -112,6 +123,25 @@ class Main:
         self.sp_app = application.SphinxApp()
         for ext in self.conf_vars['extensions']:
             application.setup_extension(ext, self.sp_app)
+
+        # Add new source suffixes and parsers
+        if len(self.sp_app.source_suffix) > 0:
+            self.conf_vars['source_suffix'].append(*self.sp_app.source_suffix)
+        self.source_parsers.update(self.sp_app.source_parsers)
+
+        # Callback to extensions.
+        for name, lst in self.sp_app.callbacks.items():
+            if name == 'builder-inited':
+                [callback(self.sp_app) for callback in lst]
+
+        self.sp_app.env.config = Namespace(**self.sp_app.config)
+        self.sp_app.env.docname = None
+        self.sp_app.env.metadata = Namespace()
+        self.sp_app.env.metadata.setdefault = lambda x, y: {}
+        self.docutil_settings.update({
+            'env': self.sp_app.env,
+            'source_suffix': self.conf_vars['source_suffix']
+        })
 
         # Get path to theme
         self.theme = Theme(self.conf_vars.get('html_theme', 'quaker_theme'),
@@ -175,7 +205,7 @@ class Main:
                 if self.is_excluded(path):
                     continue
 
-                if path.suffix == '.rst':
+                if path.suffix in self.conf_vars['source_suffix']:
                     page = Page(self, path)
                     page.parse()
                 else:

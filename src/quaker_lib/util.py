@@ -30,6 +30,19 @@ def link_explicit(link):
     return None
 
 
+# https://stackoverflow.com/questions/4984647/accessing-dict-keys-like-an-attribute
+class Config(dict):
+    """
+    Dictionary that can be accessed using attributes
+    """
+    def __init__(self, *args, **kwargs):
+        """
+        Initialize Config
+        """
+        super(Config, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+
+
 def make_id(ref):
     """TODO"""
     ref_list = ref.split('#')
