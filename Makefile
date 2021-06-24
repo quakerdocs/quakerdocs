@@ -3,8 +3,8 @@
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
-BUILDFILE	  = src/main.py
-SOURCEDIR     = codegrade/docs
+BUILDFILE	  = src/quaker
+SOURCEDIR     = docs
 BUILDDIR      = build
 
 .PHONY: main help Makefile
@@ -20,9 +20,6 @@ help:
 # "make mode" option.
 %: Makefile
 	python3 $(BUILDFILE) "$(SOURCEDIR)" -d "$(BUILDDIR)" -b $@
-
-docs: Makefile
-	python3 $(BUILDFILE) "docs" -d "builddocs" -b html
 
 clean:
 	rm -rf $(BUILDDIR) tmp

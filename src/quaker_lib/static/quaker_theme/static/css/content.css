@@ -1,0 +1,118 @@
+/* CSS for note, warning and tip boxes. */
+div.admonition {
+    padding: 12px;
+    margin-top: 12px;
+    line-height: 24px;
+    margin-bottom: 24px;
+    border-radius: 6px;
+}
+
+p.admonition-title {
+    font-weight: 700;
+    display: block;
+    color: #fff;
+    background: #3273dc;
+    padding: 6px 12px;
+    margin: -12px -12px 12px;
+    border-radius: 6px 6px 0px 0px;
+}
+
+p.example-title {
+    font-weight: 700;
+    display: block;
+    color: #fff;
+    padding: 6px 12px;
+    margin: -12px -12px 12px;
+    border-radius: 6px 6px 0px 0px;
+    background: #8AC91A;
+}
+
+div.example {
+    background: #f0ffd6;
+}
+
+div.note, div.attention, div.important {
+    background-color: #add8e6;
+}
+
+div.warning, div.caution, div.danger, div.error {
+    background-color: #fafad2;
+}
+
+div.warning p.admonition-title {
+    background-color: #ebab34;
+}
+
+div.tip, div.hint {
+    background-color: #dbfaf4;
+}
+
+div.tip p.admonition-title {
+    background-color: #1abc9c;
+}
+
+section, div.compound {
+    margin-bottom: 2em;
+}
+
+div.section {
+    padding-top: 1rem;
+    padding-right: 1.5rem;
+    padding-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.caption-text {
+    font-weight: bold;
+}
+
+span.docutils.literal {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: blue;
+    border-radius: 3px;
+    border: 1px solid lightgrey;
+    box-shadow: 1px 1px 2px darkgrey;
+    padding: 0 4px;
+    background: #f5f5f5;
+}
+
+kbd {
+    background: white;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: lightgrey;
+    padding: 2px;
+    font-size: 0.9em;
+}
+
+kbd > kbd {
+    padding: 2px;
+}
+
+.automodule > em::before {
+    content: 'module ';
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.automodule > em {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.automodule > dt em {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.automodule .type_name {
+    margin-right: 8px;
+    font-weight: normal;
+}
+
+.automodule > dt > dl {
+    margin-top: 16px;
+}
