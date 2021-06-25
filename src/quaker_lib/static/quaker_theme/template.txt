@@ -1,0 +1,140 @@
+%(head_prefix)s
+%(head)s
+%(stylesheet)s
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="_static/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="_static/css/v4-shims.min.css">
+<link rel="stylesheet" type="text/css" href="_static/css/friendly.css">
+<link rel="stylesheet" type="text/css" href="_static/css/content.css">
+<link rel="stylesheet" type="text/css" href="_static/css/main.css">
+<script src="_static/js/search.js"></script>
+<script src="_static/js/script.js"></script>
+<script src="_static/js/cookies.js"></script>
+<script src="_static/js/bookmark.js"></script>
+<script src="_static/js/keylistener.js"></script>
+
+%(body_prefix)s
+<nav id="navbar" class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+	<div class="container">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="/">
+				%(logo)s
+			</a>
+
+			<div id="search-wrapper" class="popover">
+				<a class="popover-trigger navbar-item">
+					<button class="button is-dark is-inverted" onclick="showSearchOverlay()">
+						<span class="icon"><i class="fa fa-search"></i></span>
+						<span class="is-hidden-touch"> Search</span>
+					</button>
+					<div class="popover-content is-hidden-touch">
+						<p>Search <b>(S)</b></p>
+					</div>
+				</a>
+			</div>
+
+			<div id="bookmarkwrapper" class="popover">
+				<a class="popover-trigger navbar-item">
+					<button class="button is-dark is-inverted" onclick="showBookmarkOverlay()">
+						<span class="icon"><i class="fa fa-bookmark"></i></span>
+						<span class="is-hidden-touch">Bookmarks</span>
+					</button>
+					<div class="popover-content is-hidden-touch">
+						<p>Bookmarks <b>(B)</b></p>
+					</div>
+				</a>
+			</div>
+
+			<a role="button" class="navbar-burger is-flex-touch" aria-label="menu" aria-expanded="false" data-target="menuPanel" onclick="toggleMenu()">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+
+		<div class="navbar-menu">
+			<div class="navbar-start"></div>
+			<div class="navbar-end"></div>
+		</div>
+	</div>
+</nav>
+
+<!--Search window-->
+<div id="search" class="modal">
+	<div class="modal-background" onclick="hideSearchOverlay()"></div>
+	<div class="modal-content panel">
+		<p class="panel-heading">
+			<span>Search</span>
+			<button onclick="hideSearchOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="searchbar" class="input" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
+		<div id="search-results" class="results"></div>
+	</div>
+</div>
+
+<!--Bookmarks window-->
+<div id="bookmark-window" class="modal">
+	<div class="modal-background" onclick="hideBookmarkOverlay()"></div>
+	<div class="modal-content height panel">
+		<p class="panel-heading">
+			<span>Bookmarks</span>
+			<button onclick="hideBookmarkOverlay()" class="delete is-pulled-right" aria-label="close"></button>
+		</p>
+
+		<div class="panel-block">
+			<p class="control has-icons-left">
+				<input id="bookmark-searchbar" class="input" onkeyup="searchBookmarks()" type="text" placeholder="Search">
+				<span class="icon is-left">
+					<span class="icon"><i class="fa fa-search"></i></span>
+				</span>
+			</p>
+		</div>
+
+		<div id="bookmark-results" class="results"></div>
+	</div>
+</div>
+
+<!--Main content-->
+<div class="container">
+	<section class="main-content columns is-desktop">
+		<aside class="menu column is-3-desktop is-hidden-touch" id="menuPanel">
+			%(navigation)s
+		</aside>
+		<div id="content" class="column content">
+			%(body_pre_docinfo)s
+			%(docinfo)s
+			%(body)s
+			<button onclick="backToTop()" id="backTopBtn" class="backTopBtn button is-light fas fa-chevron-up" title="Go to top"></button>
+			<hr>
+			<footer class="footer-doc">
+				%(footer)s
+			</footer>
+		</div>
+	</section>
+</div>
+
+<!--Cookie notification-->
+<div id="cookie-notification" class="notification cookie-notif">
+	Pssst, your bookmarks will be stored using cookies.
+	<a href="https://www.cookiesandyou.com/" target="_blank">What are cookies?</a>
+	<div class="button-notif">
+		<button class="button is-primary is-fullwidth"
+			onclick="notificationAccept()">
+			<span><i class="fas fa-cookie-bite thumb-notif"></i><b>Alrighty!</b></span>
+		</button>
+	</div>
+</div>
+
+<script src="_static/js/load_navbar.js"></script>
+
+%(body_suffix)s

@@ -1,0 +1,50 @@
+/* Child and page sizes. */
+typedef {{ child_s.type }} child_s;
+typedef {{ page_s.type }} page_s;
+
+/* Int as pointers. */
+typedef {{ char_p.type }} char_p;
+typedef {{ node_p.type }} node_p;
+typedef {{ page_p.type }} page_p;
+
+/* Page index type and page count type. */
+typedef {{ page_i.type }} page_i;
+typedef {{ page_c.type }} page_c;
+
+/* A node of the Radix tree. */
+typedef struct NODE {
+    char_p chars;
+    node_p children;
+    page_p pages;
+
+    /* The number of children. */
+    child_s child_count;
+    /* The number of pages. Is zero when this node is not an end. */
+    page_s page_count;
+} node_t;
+
+/* Struct storing the data associated with a page. */
+typedef struct PAGE {
+    page_i index;
+    page_c count;
+} page_t;
+
+#define PAGE_COUNT {{ urltitles|length }}
+#define IGNORE_NODE_VALUE {{ ignore_node_value }}
+
+// const int total_page_count = {{ urltitles|length }};
+// const page_c ignore_node_value = {{ ignore_node_value }};
+
+const char *urltitles[] = {{ '{' }}{% for item in urltitles -%}
+    "{{ item[0] }}\n{{ item[1] }}\n"{% if not loop.last %},{% endif %}
+{%- endfor %}{{ '}' }};
+
+const unsigned char node_data[] = {{ '{' }}{{ node_arr }}{{ '}' }};
+
+const unsigned char page_data[] = {{ '{' }}{{ page_arr }}{{ '}' }};
+
+const char chars[] = {{ char_arr }};
+
+const node_t *nodes = (node_t *) node_data;
+const page_t *pages = (page_t *) page_data;
+

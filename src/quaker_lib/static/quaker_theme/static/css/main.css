@@ -1,0 +1,307 @@
+/***************************** Containers *****************************/
+.main-content {
+  margin-top: 58px;
+}
+
+.content {
+  display: inline-block;
+  padding: 24px;
+  max-width: 100%;
+}
+
+.anchor {
+  position: relative;
+  display: block;
+  height: 6vh;
+  margin-top: -6vh;
+  visibility: hidden;
+}
+
+.modal-content {
+  height: 80%;
+  max-height: 1000px;
+}
+
+.panel {
+  background-color: #fff;
+}
+
+.results {
+  /* TODO: maybe we should not hardcode these values. */
+  height: calc(100% - 55px - 57px);
+  overflow: auto;
+}
+
+.backTopBtn {
+  display: block;
+  position: fixed;
+  right: 5vw;
+  bottom: 3vh;
+  padding: 15px;
+  font-size: 18px;
+  transition: all .4s ease-in-out;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.backTopBtn.backTopBtn__hide {
+  opacity: 1;
+  transform: scale(1);
+  transition: all .4s ease-in-out;
+}
+
+.navbar-brand img{
+  max-width: 45vw;
+}
+
+/******************************** Popover ********************************/
+.popover {
+  position: relative;
+  display: inline-block;
+}
+
+.popover .popover-content {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, 0.7rem);
+  z-index: 99999;
+  position: absolute;
+  display: inline-block;
+  opacity: 0;
+  visibility: hidden;
+  padding: 10px;
+  color: #000000;
+  background-color: #dbfaf4;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px 0 #1abc9c7f;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 24rem;
+}
+
+.popover .popover-content::before {
+  position: absolute;
+  content: '';
+  border-style: solid;
+  pointer-events: none;
+  top: 0;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: rotate(135deg);
+  border-color: #dbfaf4 !important;
+  border-bottom-color: white;
+  border-left-color: white;
+  border-width: 0.4rem;
+  margin-left: -0.4rem;
+  margin-top: -0.4rem;
+  transform-origin: center;
+  box-shadow: -1px 1px 2px rgba(10, 10, 10, 0.2);
+}
+
+.popover.is-popover-active .popover-content, .popover:hover .popover-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popover .popover-trigger:focus ~ .popover-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+/******************************** Menu ********************************/
+.menu {
+  position: sticky;
+  bottom: 0;
+  display: inline-block;
+  max-height: calc(100vh - 58px);
+  padding: 2%;
+  overflow-y: auto;
+  vertical-align: top;
+}
+
+.menu-list li ul {
+  border-left: 2px solid #3273dc;
+}
+
+.menu-list a {
+  display: inline-flex;
+  width: 90%;
+}
+
+.menu-list a:hover {
+  color: #3273dc;
+}
+
+.menu-list a.is-active:hover {
+  color: #fff;
+}
+
+.is-expanded {
+  display: block;
+}
+
+.is-collapsed {
+  display: none;
+}
+
+.arrow-icon {
+  font-size: 24px;
+}
+
+/******************************** Results ********************************/
+.result {
+  text-align: left;
+  border: 1px solid #ddd;
+  height: 94px;
+  overflow: hidden;
+}
+
+.result.selected {
+  background: #ddd;
+}
+
+a.panel-block:hover {
+  background: none !important;
+}
+
+.result-title {
+  font-size: 20px;
+}
+
+.result-content {
+  padding-left: 20px;
+  color: #808080;
+  animation: fadeIn linear 0.2s;
+  -webkit-animation: fadeIn linear 0.2s;
+  -moz-animation: fadeIn linear 0.2s;
+  -o-animation: fadeIn linear 0.2s;
+  -ms-animation: fadeIn linear 0.2s;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+/******************************** Bookmarks ********************************/
+.bookmark-btn {
+  font-size: 20px;
+  background: none;
+  border: none;
+}
+
+.bookmark-btn:hover {
+  cursor: pointer;
+}
+
+.bookmark-btn:focus {
+  outline: none;
+}
+
+.bookmark-entry.selected {
+  cursor: pointer;
+  background: #ddd !important;
+}
+
+.bookmark-trash {
+  background: none;
+  border: none;
+  border-color: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.bookmark-trash:hover {
+  color: #f00;
+  cursor: pointer;
+}
+
+.bookmark-rename {
+    border: none;
+    background: none;
+    border-color: none;
+    padding: 0px;
+  margin: 0px;
+}
+
+.bookmark-rename:hover {
+    cursor: pointer;
+    color: rgb(0, 102, 255);
+}
+
+.title-table {
+    text-align: left !important;
+    vertical-align: middle !important;
+    width:76%;
+}
+
+.input-table {
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+.icon-table {
+  text-align: center !important;
+    vertical-align: middle !important;
+    width:8%;
+}
+
+.button-left-table {
+  text-align: center !important;
+  vertical-align: middle !important;
+  width:8%;
+}
+
+.button-right-table {
+  text-align: left !important;
+  vertical-align: middle !important;
+  width:8%;
+}
+
+.title-table:hover {
+  cursor: pointer;
+}
+
+/**************************** Cookie notification ****************************/
+.cookie-notif {
+  max-width: 18em;
+  display: none;
+  z-index: 99999;
+  position: fixed;
+  bottom: 0.05em;
+  left: 1.2em;
+  padding: 15px;
+
+}
+
+.button-notif {
+  padding-top:10px;
+}
+
+.thumb-notif {
+  padding-right:6px;
+}

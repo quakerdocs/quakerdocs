@@ -3,7 +3,7 @@
 QuakerDocs - Documentation
 ===========================
 
-Welcome to the documentation of QuakerDocs!
+Welcome to QuakerDocs!
 
 QuakerDocs is a modern and reliable static documentation generator.
 It was designed from the ground up to replace older documentation generators.
@@ -42,11 +42,10 @@ Some of the features that QuakerDocs has are:
 - Easily configurable  |fa-adjust|
 - Only takes one command!  |fa-terminal|
 
-.. toctree::
-   :maxdepth: 10
-   :caption: Getting Started
+.. page:
 
-   getting-started
-   configuration
-   customization
-   credits
+.. toctree::
+   :maxdepth: 2
+   :caption: Another page
+
+   page
