@@ -452,7 +452,7 @@ class IndexGenerator:
         content = self.remover.sub('', content)
 
         # Remove stopwords.
-        content = [word for word in content.split()]
+        content = content.split()
 
         # Count occurrences of words in page.
         word_counter = Counter(content)

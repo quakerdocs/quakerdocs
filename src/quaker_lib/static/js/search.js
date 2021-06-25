@@ -151,8 +151,8 @@ function searchUpdateKey (event) {
 /**
  * Callback to add more results to the search when scrolling to the bottom.
  */
-function handleInfiniteScroll () {
-    if (this.scrollTopMax - this.scrollTop < 90) {
+function handleInfiniteScroll (event) {
+    if (this.scrollHeight - this.clientHeight - this.scrollTop < 90) {
         renderResults(5)
     }
 }
@@ -169,7 +169,7 @@ function activateSearch () {
     if (searchInput) {
         // Update search results when a key is pressed.
         searchInput.addEventListener('keyup', searchUpdateKey)
-        results.addEventListener('scroll', handleInfiniteScroll)
+        results.onscroll = handleInfiniteScroll
     }
 }
 
