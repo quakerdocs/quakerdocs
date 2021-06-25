@@ -27,7 +27,6 @@
 }
 
 .results {
-  /* TODO: maybe we should not hardcode these values. */
   height: calc(100% - 55px - 57px);
   overflow: auto;
 }
@@ -241,22 +240,22 @@ a.panel-block:hover {
 }
 
 .bookmark-rename {
-    border: none;
-    background: none;
-    border-color: none;
-    padding: 0px;
+  border: none;
+  background: none;
+  border-color: none;
+  padding: 0px;
   margin: 0px;
 }
 
 .bookmark-rename:hover {
-    cursor: pointer;
-    color: rgb(0, 102, 255);
+  cursor: pointer;
+  color: rgb(0, 102, 255);
 }
 
 .title-table {
-    text-align: left !important;
-    vertical-align: middle !important;
-    width:76%;
+  text-align: left !important;
+  vertical-align: middle !important;
+  width:76%;
 }
 
 .input-table {
@@ -266,8 +265,8 @@ a.panel-block:hover {
 
 .icon-table {
   text-align: center !important;
-    vertical-align: middle !important;
-    width:8%;
+  vertical-align: middle !important;
+  width:8%;
 }
 
 .button-left-table {

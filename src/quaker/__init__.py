@@ -18,8 +18,6 @@ def main():
     arg_parser.add_argument('-d', type=Path, dest='build_path',
                             default='build',
                             help='The directory to write the output.')
-    arg_parser.add_argument('-b', type=str, dest='builder', default="html",
-                            help='Builder used for the generator.')
     arg_parser.add_argument('--init', dest='init', action='store_true',
                             help="Initializes an empty project in the \
                                   specified source_path.")
@@ -28,7 +26,7 @@ def main():
     args = arg_parser.parse_args()
 
     print("Running QuakerDocs")
-    main = Main(args.source_path, args.build_path, args.builder)
+    main = Main(args.source_path, args.build_path, 'html')
 
     if args.init:
         main.init_empty_project()
