@@ -57,13 +57,16 @@ class Main:
         # Create and store the various paths.
         self.source_path = source_path
         self.dest_path = dest_path
-        self.temp_path = dest_path.parent / 'tmp' / dest_path.name
+        self.temp_path = dest_path / 'tmp'
         self.static_dest_path = dest_path / '_static'
         self.script_dest_path = self.static_dest_path / 'js'
 
         # Store the builder and the parser.
         self.builder = builder
         self.source_parsers = {'.rst': Parser}
+
+        # Build a locally executable search program using the created index.
+        self.build_local_search = False
 
         self.sp_app = None
         self.theme = None
@@ -195,13 +198,14 @@ class Main:
         self.load_extensions()
 
         # Set-up index generator and build the files.
-        self.idx = index.IndexGenerator()
+        self.idx = index.IndexGenerator(self.conf_vars.get('title_weight', 5))
         self.build_files()
 
         # Set-up Table of Contents data and build the search index
         self.script_dest_path.mkdir(parents=True, exist_ok=True)
         self.build_global_toc()
-        self.idx.build(self.temp_path, self.script_dest_path)
+        self.idx.build(self.temp_path, self.script_dest_path,
+                       self.build_local_search)
 
         # Copy the Javascript source files to the static directory in build.
         copy_tree(Path(__file__).parent / 'static' / 'js',
@@ -213,10 +217,6 @@ class Main:
 
         # Copy static files from the source directly to the static dest folder.
         self.copy_static_files()
-
-        # Delete the temporary build files.
-        # TODO implement and add flag because they are needed for local search
-        # and potentially other stuff for testing.
 
         print(f'The generated documents have been saved in {self.dest_path}')
 

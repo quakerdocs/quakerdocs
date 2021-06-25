@@ -1,5 +1,8 @@
 /**
- * This file contains the search engine backend. TODO
+ * This file contains the search engine backend, for compilation to
+ * webassembly. This code uses the page data and the prefix tree stored in
+ * search.h, which are generated during the Python build process, to provide
+ * the actual search functionality.
  */
 
 #include "search.h"
@@ -11,7 +14,8 @@
 typedef unsigned int page_map_t;
 
 /**
- * TODO
+ * A result struct, which hold the total calculated count
+ * of a page, and that pages index
  */
 typedef struct RESULT {
     page_i page;
@@ -119,7 +123,8 @@ const node_t *find_node(const char *word) {
                 match = 1;
 
                 /* Check if the rest of the str matches. */
-                for (str++, progress++; *str && word[progress]; str++, progress++) {
+                for (str++, progress++; *str && word[progress];
+                     str++, progress++) {
                     if (*str != word[progress]) {
                         /* This is not a match after all, return empty. */
                         return NULL;
@@ -141,7 +146,7 @@ const node_t *find_node(const char *word) {
 }
 
 /**
- * TODO
+ * Fill a page map with all the pages associated with a node and its children.
  */
 void fill_page_map(const node_t *node, page_map_t *page_map) {
     /* Add the pages of this node to the list. */
@@ -218,18 +223,14 @@ page_map_t *search_and_combine_words() {
             }
             else if (found_map == 1 || !added_non_stopword) {
                 /* The word was a stopword, so union both maps. */
-                for (int i = 0; i < PAGE_COUNT; i++) {
+                for (int i = 0; i < PAGE_COUNT; i++)
                     page_map[i] += temp_map[i] / 2;
-                }
             }
             else if (found_map == 0) {
                 if (!added_non_stopword) {
-                    for (int i = 0; i < PAGE_COUNT; i++) {
-                        if (temp_map[i])
-                            page_map[i] += temp_map[i];
-                        else
-                            page_map[i] = 0;
-                    }
+                    /* This is the first non-stopword, so use all its words. */
+                    for (int i = 0; i < PAGE_COUNT; i++)
+                        page_map[i] += temp_map[i];
                     added_non_stopword = 1;
                 }
                 else {
@@ -251,7 +252,8 @@ page_map_t *search_and_combine_words() {
 }
 
 /**
- * TODO
+ * Get the memory location of input/output buffer. This is used to
+ * get the buffer in the Javascript code.
  */
 __attribute__((export_name("getIOBuffer")))
 char *get_io_buffer() {
@@ -259,7 +261,8 @@ char *get_io_buffer() {
 }
 
 /**
- * TODO
+ * Get the size of the input/output buffer. This is used to
+ * get the buffer in the Javascript code.
  */
 __attribute__((export_name("getIOBufferSize")))
 int get_io_buffer_size() {

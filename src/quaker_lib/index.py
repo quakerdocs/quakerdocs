@@ -52,7 +52,7 @@ stopwords = {
     'while', 'o', 'themselves', 'youd', 'each', 't', 'just', 'their', 'm',
     'won', 'hers', 'who', 'by', 'does', 'above', 'hadn', 'more', 'we',
     'weren', 'had', 'couldnt', 'is', 'or', 'an', 'needn', 'y', 'further',
-    'now', 'you', 'how', 'against', 'those', 'can', 'here', 'has', 'theirs',
+    'now', 'you', 'against', 'those', 'can', 'here', 'has', 'theirs',
     'with', 'yourselves', 'the', 'wasnt', 'havent', 'whom', 'do', 'other',
     'shouldn'
 }
@@ -426,14 +426,16 @@ class IndexGenerator:
 
     """
 
-    def __init__(self):
+    def __init__(self, title_weight=5):
         """Constructor for the IndexGenerator class."""
+        self.title_weight = title_weight
+
         self.urltitles = []  # [(url, title), ...]
         self.trie = Trie("")  # root of the prefix trie
         self.remover = re.compile('[^\\w\\s\\n]')
 
     def add_file(self, content: list, title: str, url: str,
-                 priority: float = 1.0, t_weight: int = 5):
+                 priority: float = 1.0):
         """Add a file to the index.
 
         Parameters
@@ -447,15 +449,12 @@ class IndexGenerator:
 
         """
         # Change to lowercase, separate _ and only keep letters/numbers.
-        content += (title + ' ') * t_weight
+        content += (title + ' ') * self.title_weight
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
-        # Remove stopwords.
-        content = [word for word in content.split()]
-
         # Count occurrences of words in page.
-        word_counter = Counter(content)
+        word_counter = Counter(content.split())
 
         # Get the index of the current page and update the list.
         i = len(self.urltitles)
@@ -465,7 +464,7 @@ class IndexGenerator:
         for word, count in sorted(word_counter.items(), key=lambda x: x[1]):
             self.trie.insert(word, i, int(count * priority))
 
-    def build(self, temp_path: Path, dest_path: Path):
+    def build(self, temp_path: Path, dest_path: Path, build_local: bool):
         """Write the search index file to the destination directory.
 
         Parameters
@@ -491,7 +490,6 @@ class IndexGenerator:
         template = Template((source_path / 'search.h.jinja').read_text())
 
         # Write the search index to header.
-        temp_path = temp_path / 'search'
         temp_path.mkdir(parents=True, exist_ok=True)
         with open(temp_path / 'search.h', 'w') as f:
             f.write('/*=== AUTOMATICALLY GENERATED FILE ===*/\n\n')
@@ -516,8 +514,7 @@ class IndexGenerator:
         if shutil.which(wasm_linker) is None:
             wasm_linker = '/usr/lib/llvm-10/bin/wasm-ld'
         if shutil.which(wasm_linker) is None:
-            print('wasm-ld is not found! You should probably '
-                  'install it (TODO: better message)')
+            print('wasm-ld is not found, the search index could not be build!')
 
         # Link the object file to create a usable webassembly binary.
         cmnd = [wasm_linker, '--no-entry',
@@ -525,3 +522,15 @@ class IndexGenerator:
                 f'{object_file}']
         dest_path.mkdir(parents=True, exist_ok=True)
         os.system(' '.join(cmnd))
+
+        if build_local:
+            cmnd = ['clang', '-O3', '-g3',
+                    '-Wno-unknown-attributes',
+                    '-DRUN_LOCAL=1',
+                    '-I', f'"{temp_path}"',
+                    '-o', f"{dest_path / 'local_search.out'}",
+                    f'"{source_file}"']
+            os.system(' '.join(cmnd))
+
+        # Delete the temporary files.
+        shutil.rmtree(str(temp_path))

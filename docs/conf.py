@@ -32,6 +32,10 @@ release = version
 exclude_patterns = [
 ]
 
+# The weight of words in the title relative to regular content, for building
+# the search index.
+title_weight = 5
+
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
