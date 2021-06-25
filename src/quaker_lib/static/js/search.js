@@ -1,16 +1,14 @@
+const parser = new DOMParser()
 /* Keep track if the WebAssembly module has completed loading. */
 let wasm = null
 let searcher = null
-let searchInput = ""
-let searchWords;
-let parser = new DOMParser()
+let searchInput = ''
+let searchWords
 let results = []
 let scraperProgress = 0
 let scraperActive = false
-let scraperWordsRegex;
-let scraperReplacer;
-
-
+let scraperWordsRegex
+let scraperReplacer
 
 /**
  * Class representing a result entry.
@@ -23,7 +21,7 @@ class Result {
      * @param {*} title The title of the result page.
      * @param {*} paragraph The paragraph title (STRETCH GOAL)
      */
-    constructor (page, title, paragraph = "") {
+    constructor (page, title, paragraph = '') {
         /* The page URL. */
         this.page = page
 
@@ -57,10 +55,10 @@ class Result {
      * @returns An HTML element, the container of the result entry.
      */
     createResultElement () {
-        const element = document.createElement("div")
+        const element = document.createElement('div')
         element.className = 'result'
         element.innerHTML = this.getHTML()
-        element.addEventListener('mouseenter', function(event) {
+        element.addEventListener('mouseenter', (event) => {
             selectEntry(element, 'result')
         })
         return element
@@ -71,14 +69,14 @@ class Result {
  * Load and initialise the wasm object that is responsible for the search.
  */
 async function initSearchWasm () {
-    fetch("./_static/js/search_data.wasm")
+    fetch('./_static/js/search_data.wasm')
         .then(res => res.arrayBuffer())
         .then(buffer => WebAssembly.instantiate(buffer))
         .then(obj => {
-            let mem = obj.instance.exports.memory
-            let buffer_loc = obj.instance.exports.getIOBuffer()
-            let buffer_len = obj.instance.exports.getIOBufferSize()
-            obj.instance.search_buffer = new Uint8Array(mem.buffer, buffer_loc, buffer_len)
+            const mem = obj.instance.exports.memory
+            const bufferLoc = obj.instance.exports.getIOBuffer()
+            const bufferLen = obj.instance.exports.getIOBufferSize()
+            obj.instance.search_buffer = new Uint8Array(mem.buffer, bufferLoc, bufferLen)
             wasm = obj.instance
         })
 }
@@ -97,20 +95,22 @@ function * performSearch (query) {
     }
 
     /* Upload the string to the wasm. */
-    let i, l = Math.min(query.length, wasm.search_buffer.length - 1)
-    for (i = 0; i < l; i++)
+    let i
+    const l = Math.min(query.length, wasm.search_buffer.length - 1)
+    for (i = 0; i < l; i++) {
         wasm.search_buffer[i] = query.charCodeAt(i)
+    }
     wasm.search_buffer[i] = 0
 
     /* Perform the search. */
     wasm.exports.performSearch()
 
     /* Return the results as they are asked. */
-    let decoder = new TextDecoder()
+    const decoder = new TextDecoder()
     let len
     while (len = wasm.exports.getSearch()) {
         /* Get the result from the wasm. */
-        let result = decoder.decode(wasm.search_buffer.subarray(0, len))
+        const result = decoder.decode(wasm.search_buffer.subarray(0, len))
         const sep = result.split('\n')
         yield new Result(sep[0], sep[1], sep[2])
     }
@@ -124,15 +124,16 @@ function searchUpdateKey (event) {
     const resultsWrapper = document.getElementById('search-results')
 
     /* Check that the input was changed, if not, do nothing. */
-    if (this.value == searchInput)
-        return;
+    if (this.value === searchInput) {
+        return
+    }
 
     /* Get and store the new input. */
     searchInput = this.value
     scraperProgress = 0
     searchWords = searchInput.split(' ').filter(word => word)
     scraperWordsRegex = searchWords.map(word => new RegExp('\\b' + word, 'ig'))
-    let capture = searchWords.map(word => '\\b' + word).join('|')
+    const capture = searchWords.map(word => '\\b' + word).join('|')
     scraperReplacer = new RegExp('(' + capture + ')', 'ig')
 
     results = []
@@ -142,7 +143,7 @@ function searchUpdateKey (event) {
         searcher = performSearch(searchInput)
         resultsWrapper.innerHTML = '<ul id="result-list"></ul>'
         renderResults()
-        selectEntry(document.getElementsByClassName("result")[0], "result");
+        selectEntry(document.getElementsByClassName('result')[0], 'result')
     } else {
         resultsWrapper.innerHTML = ''
     }
@@ -180,10 +181,7 @@ function activateSearch () {
  * @param {*} resultsWrapper The html element in which the results are to be placed.
  */
 function renderResults (maxResults = 10) {
-    /* Array to store the results into so that the text can be added later. */
-    let newResults = Array(maxResults)
-
-    let resultList = document.getElementById('result-list')
+    const resultList = document.getElementById('result-list')
     if (resultList == null) {
         return
     }
@@ -193,7 +191,7 @@ function renderResults (maxResults = 10) {
         if (searcher == null) {
             return
         }
-        let r = searcher.next()
+        const r = searcher.next()
         if (r.done) {
             break
         }
@@ -203,14 +201,15 @@ function renderResults (maxResults = 10) {
     }
 
     /* Link the link elements. */
-    let elements = resultList.getElementsByTagName('a')
+    const elements = resultList.getElementsByTagName('a')
     for (let i = 0; i < elements.length; i++) {
-        results[i].el = elements[i];
+        results[i].el = elements[i]
     }
 
     /* Activate the scraper if it is not running yet. */
-    if (!scraperActive)
+    if (!scraperActive) {
         scraperIterate()
+    }
 }
 
 /**
@@ -222,22 +221,25 @@ function scraperIterate () {
         scraperActive = false
         return
     }
-    scraperActive = true;
+    scraperActive = true
 
-    let r = results[scraperProgress++]
+    const r = results[scraperProgress++]
     fetch(r.page)
         .then(res => res.text())
         .then(data => {
             const html = parser.parseFromString(data, 'text/html')
-            let maxCount = 0, maxSection, maxIndices
+            let maxCount = 0
+            let maxSection
+            let maxIndices
 
             /* Look for the section containing the most words. */
             for (const section of html.querySelectorAll('section')) {
-                if (!section.id)
+                if (!section.id) {
                     continue
-                const text = section.textContent;
-                let indices = scraperWordsRegex.map(regex => text.search(regex))
-                let wordCount = indices.filter(x => x >= 0).length
+                }
+                const text = section.textContent
+                const indices = scraperWordsRegex.map(regex => text.search(regex))
+                const wordCount = indices.filter(x => x >= 0).length
                 if (wordCount > maxCount) {
                     maxCount = wordCount
                     maxSection = section
@@ -246,13 +248,13 @@ function scraperIterate () {
             }
 
             /* Use the main page of everything no viable section has been found. */
-            if (maxCount == 0) {
+            if (maxCount === 0) {
                 maxSection = html.querySelector('main')
-                const text = maxSection.textContent;
+                const text = maxSection.textContent
                 maxIndices = scraperWordsRegex.map(regex => text.search(regex))
-            }
-            else
+            } else {
                 r.page += '#' + maxSection.id
+            }
 
             /* Update the html page. */
             r.el.href = r.page
