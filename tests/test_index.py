@@ -1,9 +1,12 @@
 """
 Module for testing functionality related to search index generation.
+
+To run tests, go to project root and use
+"python -m pytest --cov=src.quaker_lib.index --cov term-missing tests/"
 """
 
 import pytest
-from src.index import *
+from src.quaker_lib.index import *
 
 
 def all_in(container, *items):

@@ -426,14 +426,16 @@ class IndexGenerator:
 
     """
 
-    def __init__(self):
+    def __init__(self, title_weight=5):
         """Constructor for the IndexGenerator class."""
+        self.title_weight = title_weight
+
         self.urltitles = []  # [(url, title), ...]
         self.trie = Trie("")  # root of the prefix trie
         self.remover = re.compile('[^\\w\\s\\n]')
 
     def add_file(self, content: list, title: str, url: str,
-                 priority: float = 1.0, t_weight: int = 5):
+                 priority: float = 1.0):
         """Add a file to the index.
 
         Parameters
@@ -447,7 +449,7 @@ class IndexGenerator:
 
         """
         # Change to lowercase, separate _ and only keep letters/numbers.
-        content += (title + ' ') * t_weight
+        content += (title + ' ') * self.title_weight
         content = content.lower().replace('_', ' ').replace('.', ' ')
         content = self.remover.sub('', content)
 
