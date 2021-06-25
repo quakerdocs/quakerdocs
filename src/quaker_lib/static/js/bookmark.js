@@ -47,21 +47,6 @@ function setBookmark (id) {
     setCookie(name, JSON.stringify(bookmark))
 }
 
-function notificationAccept() {
-    const button = document.getElementById('cookie-notification');
-    setCookie(BOOKMARK_NOTIF, 1);
-    button.style.display = 'none';
-}
-
-function checkNotification() {
-    const cookie = getCookie(BOOKMARK_NOTIF);
-
-    if (cookie === null) {
-        const button = document.getElementById('cookie-notification');
-        button.style.display = 'block';
-    }
-}
-
 /**
  * Get the data bookmark with the given cname.
  * @param {string} cname The name of the to be retrieved bookmark.
@@ -121,6 +106,28 @@ function getAllBookmarks () {
     }
 
     return bookmarks
+}
+
+/**
+ * Store a cookie when the user has read the cookie notification
+ * and hide the cookie notification.
+ */
+function notificationAccept() {
+    const button = document.getElementById('cookie-notification');
+    setCookie(BOOKMARK_NOTIF, 1);
+    button.style.display = 'none';
+}
+
+/**
+ * Check if user has already read the cookie notification.
+ */
+function checkNotification() {
+    const cookie = getCookie(BOOKMARK_NOTIF);
+
+    if (cookie === null) {
+        const button = document.getElementById('cookie-notification');
+        button.style.display = 'block';
+    }
 }
 
 let bookmarkOpen = false
@@ -454,8 +461,6 @@ function searchBookmarks() {
         }
     }
 }
-
-
 
 // Check bookmark states for buttons on page load.
 window.onload = loadBookmarks
